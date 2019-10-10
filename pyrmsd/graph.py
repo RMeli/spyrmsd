@@ -2,6 +2,8 @@ import networkx as nx
 import qcelemental as qcel
 import numpy as np
 
+covalent_bond_multiplier: float = 1.3
+
 def graph_from_molecule(atomicnums, coordinates):
 
     n = len(atomicnums)
@@ -18,7 +20,7 @@ def graph_from_molecule(atomicnums, coordinates):
 
             distance = np.sqrt(np.sum((coordinates[i] - coordinates[j])**2))
 
-            if distance < (r_i + r_j) * 1.2:
+            if distance < (r_i + r_j) * covalent_bond_multiplier:
                 G.add_edge(i, j)
 
     assert G.number_of_nodes() == n
