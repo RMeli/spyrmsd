@@ -37,8 +37,13 @@ class Molecule():
         self.atomicnums = atomicnums
         self.coordinates = coordinates
 
+    def rotate(self, angle, axis, units="rad"):
+        # TODO: More efficient (numpy vectorsation)
+        for i, coord in enumerate(self.coordinates):
+            self.coordinates[i] = utils.rotate(coord, angle, axis, units)
+
     def to_graph():
-        pass
+        raise NotImplementedError
 
     def __len__(self):
         return self.natoms

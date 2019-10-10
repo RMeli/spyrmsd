@@ -28,3 +28,19 @@ def test_deg_to_rad():
     assert utils.deg_to_rad(180) == pytest.approx(np.pi)
     assert utils.deg_to_rad(270) == pytest.approx(3 * np.pi / 2)
     assert utils.deg_to_rad(360) == pytest.approx(2 * np.pi)
+
+def test_rotate_invalid():
+    
+    with pytest.raises(Exception):
+        utils.rotate(np.array([1,0,0]), 0, np.array([0,0,1]), units="none")
+
+def test_rotate_z():
+
+    z = np.array([0,0,1])
+
+    for deg, rad in [(0, 0), (45, np.pi / 4), (90, np.pi / 2)]:
+        v_deg = utils.rotate(np.array([1,0,0]), deg, z, units="deg")
+        v_rad = utils.rotate(np.array([1,0,0]), rad, z, units="rad")
+
+        assert np.allclose(v_deg, v_rad)
+        assert np.allclose(v_deg, np.array([np.cos(rad), np.sin(rad), 0]))

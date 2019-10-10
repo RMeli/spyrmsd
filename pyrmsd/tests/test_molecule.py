@@ -1,6 +1,7 @@
-from pyrmsd import molecule
+from pyrmsd import molecule, utils
 from pyrmsd.tests import molecules
 
+import numpy as np
 import os
 
 def test_load_benzene():
@@ -25,4 +26,24 @@ def test_openbabel_to_molecule_benzene():
 
     assert m.atomicnums.shape == (12,)
     assert m.coordinates.shape == (12, 3)
+
+def test_molecule_rotate_z():
+
+    mol = molecules.benzene
+    m = molecule.openbabel_to_molecule(mol)
+
+    z_axis = np.array([0, 0, 1])
+
+    for angle in [0, 45, 90]:
+
+        rotated = np.zeros((len(m), 3))
+        for i, coord in enumerate(m.coordinates):
+            rotated[i] = utils.rotate(coord, angle, z_axis, units="deg")
+
+        m.rotate(angle, z_axis, units="deg")
+
+        assert np.allclose(m.coordinates, rotated)
+
+        # Reset
+        m.rotate(-angle, z_axis, units="deg")
 
