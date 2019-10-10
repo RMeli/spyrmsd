@@ -1,6 +1,6 @@
 """
 pyrmsd.py
-Python tRMSD tool
+Python RMSD tool
 
 Handles the primary functions
 """
