@@ -7,10 +7,15 @@ dependencies:
 
   # Maths
   - numpy
+  - scipy
   - networkx
 
   # Chemistry
   - openbabel
+  - qcelemental
+
+  # Plotting
+  - matplotlib
 
   # Testing
   - pytest
