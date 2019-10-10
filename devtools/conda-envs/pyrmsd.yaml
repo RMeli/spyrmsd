@@ -1,6 +1,5 @@
 name: prmsd
 channels:
-  - conda-forge
 dependencies:
   # Base
   - python
