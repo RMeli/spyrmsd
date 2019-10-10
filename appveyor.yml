@@ -26,7 +26,7 @@ install:
   - conda update --all
 
     # Create test environment for package
-  - python devtools\\scripts\\create_conda_env.py -n=test -p=%PYTHON_VERSION% devtools\\conda-envs\\test_env.yaml
+  - python devtools\\scripts\\create_conda_env.py -n=test -p=%PYTHON_VERSION% devtools\\conda-envs\\pyrmsd.yaml
 
     # Activate the test environment
   - activate test

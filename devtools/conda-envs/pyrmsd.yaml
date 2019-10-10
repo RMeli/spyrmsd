@@ -1,4 +1,4 @@
-name: prmsd
+name: pyrmsd
 channels:
 dependencies:
   # Base
