@@ -1,0 +1,19 @@
+name: prmsd
+channels:
+  - conda-forge
+dependencies:
+  # Base
+  - python
+  - pip
+
+  # Maths
+  - numpy
+  - networkx
+
+  # Chemistry
+  - openbabel
+
+  # Testing
+  - pytest
+  - pytest-cov
+  - codecov
