@@ -21,3 +21,9 @@ dependencies:
   - pytest
   - pytest-cov
   - codecov
+
+  # Dev
+  - mypy
+  - flake8
+  - pre-commit
+  - black
