@@ -1,23 +1,11 @@
 from pyrmsd import molecule
+from pyrmsd.tests import molecules
 
 import os
 
-fdir = os.path.dirname(os.path.abspath(__file__))
-molpath = os.path.join(fdir, os.pardir, "data/molecules/")
-
-def load(fname: str):
-
-    fname = os.path.join(molpath, fname)
-
-    mol = molecule.load(fname)
-
-    return mol
-
-benzene = load("benzene.xyz")
-
 def test_load_benzene():
 
-    mol = benzene
+    mol = molecules.benzene
 
     assert len(mol.atoms) == 12
 
@@ -31,7 +19,7 @@ def test_load_benzene():
 
 def test_openbabel_to_molecule_benzene():
 
-    mol = benzene
+    mol = molecules.benzene
 
     m = molecule.openbabel_to_molecule(mol)
 

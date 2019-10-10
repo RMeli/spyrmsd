@@ -30,10 +30,17 @@ class Molecule():
 
     def __init__(self, atomicnums, coordinates):
 
+        self.natoms = len(atomicnums)
+
+        assert coordinates.shape == (self.natoms, 3)
+
         self.atomicnums = atomicnums
         self.coordinates = coordinates
 
     def to_graph():
         pass
+
+    def __len__(self):
+        return self.natoms
 
 
