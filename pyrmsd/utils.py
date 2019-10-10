@@ -1,3 +1,4 @@
+import numpy as np
 import os
 
 def format(fname: str) -> str:
@@ -13,3 +14,7 @@ def format_openbabel(fname: str) -> str:
         ext = ext.upper()
 
     return ext
+
+def deg_to_rad(angle):
+
+    return angle * np.pi / 180.0
