@@ -1,6 +1,6 @@
 [run]
 source = pyrmsd
-omit = _version.py
+omit = pyrmsd/_version.py
 
 [report]
 exclude_lines =
