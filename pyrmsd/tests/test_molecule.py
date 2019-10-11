@@ -64,3 +64,11 @@ def test_molecule_rotate_z():
 
         # Reset
         m.rotate(-angle, z_axis, units="deg")
+
+
+def test_molecule_center_of_geometry_benzene():
+
+    mol = molecules.benzene
+    m = molecule.openbabel_to_molecule(mol)
+
+    assert np.allclose(m.center_of_geometry(), np.zeros(3))

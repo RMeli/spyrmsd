@@ -7,4 +7,7 @@ def rmsd_molecules(mol1, mol2):
 
     assert np.all(mol1.atomicnums == mol2.atomicnums)
 
-    return np.sqrt(np.sum((mol1.coordinates - mol2.coordinates) ** 2) / n)
+    c1 = mol1.coordinates
+    c2 = mol2.coordinates
+
+    return np.sqrt(np.sum((c1 - c2) ** 2) / n)

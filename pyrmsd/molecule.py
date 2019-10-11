@@ -1,6 +1,7 @@
 from pyrmsd import utils
 
 from openbabel import pybel
+import qcelemental as qcel
 
 import numpy as np
 
@@ -49,6 +50,15 @@ class Molecule:
         # TODO: More efficient (numpy vectorsation)
         for i, coord in enumerate(self.coordinates):
             self.coordinates[i] = utils.rotate(coord, angle, axis, units)
+
+    def center_of_mass(self):
+        # TODO: Cache this
+        masses = [qcel.periodictable.to_mass(anum) for anum in self.atomicnums]
+
+        return np.average(self.coordinates, axis=0, weights=masses)
+
+    def center_of_geometry(self):
+        return np.mean(self.coordinates, axis=0)
 
     def to_graph(self):
         raise NotImplementedError

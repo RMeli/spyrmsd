@@ -1,6 +1,6 @@
 """
 pyrmsd
-Python tRMSD tool
+Python RMSD tool
 """
 import sys
 from setuptools import setup, find_packages
