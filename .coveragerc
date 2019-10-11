@@ -1,5 +1,6 @@
 [run]
 source = pyrmsd
+omit = _version.py
 
 [report]
 exclude_lines =
