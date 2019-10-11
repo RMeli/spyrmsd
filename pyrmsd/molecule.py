@@ -1,7 +1,11 @@
 from pyrmsd import utils
 
-from openbabel import pybel
 import qcelemental as qcel
+
+try:
+    import pybel  # 2.0
+except ImportError:
+    from openbabel import pybel  # 3.0
 
 import numpy as np
 
