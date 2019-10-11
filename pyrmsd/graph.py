@@ -2,10 +2,10 @@ import networkx as nx
 import qcelemental as qcel
 import numpy as np
 
-covalent_bond_multiplier: float = 1.3
+covalent_bond_multiplier: float = 1.2
 
 
-def graph_from_molecule(atomicnums, coordinates):
+def graph_from_molecule(atomicnums, coordinates, named=False):
 
     n = len(atomicnums)
 
@@ -25,6 +25,13 @@ def graph_from_molecule(atomicnums, coordinates):
                 G.add_edge(i, j)
 
     assert G.number_of_nodes() == n
+
+    if named:
+        mapping = {
+            i: {"element": qcel.periodictable.to_symbol(anum)}
+            for i, anum in enumerate(atomicnums)
+        }
+        nx.set_node_attributes(G, mapping)
 
     return G
 
@@ -46,9 +53,10 @@ if __name__ == "__main__":
     mol = molecule.load(args.input)
     m = molecule.openbabel_to_molecule(mol)
 
-    G = graph_from_molecule(m.atomicnums, m.coordinates)
+    G = graph_from_molecule(m.atomicnums, m.coordinates, named=True)
+    labels = nx.get_node_attributes(G, "element")
 
-    nx.draw_kamada_kawai(G)
+    nx.draw_kamada_kawai(G, labels=labels)
     if args.output is None:
         plt.plot()
     else:
