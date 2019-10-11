@@ -4,6 +4,7 @@ import numpy as np
 
 covalent_bond_multiplier: float = 1.3
 
+
 def graph_from_molecule(atomicnums, coordinates):
 
     n = len(atomicnums)
@@ -13,12 +14,12 @@ def graph_from_molecule(atomicnums, coordinates):
     G = nx.Graph()
 
     for i in range(n):
-        r_i = qcel.covalentradii.get(atomicnums[i], units='angstrom')
+        r_i = qcel.covalentradii.get(atomicnums[i], units="angstrom")
 
         for j in range(i + 1, n):
-            r_j = qcel.covalentradii.get(atomicnums[i], units='angstrom')
+            r_j = qcel.covalentradii.get(atomicnums[i], units="angstrom")
 
-            distance = np.sqrt(np.sum((coordinates[i] - coordinates[j])**2))
+            distance = np.sqrt(np.sum((coordinates[i] - coordinates[j]) ** 2))
 
             if distance < (r_i + r_j) * covalent_bond_multiplier:
                 G.add_edge(i, j)
@@ -27,9 +28,10 @@ def graph_from_molecule(atomicnums, coordinates):
 
     return G
 
+
 if __name__ == "__main__":
 
-    from pyrmsd import molecule, graph
+    from pyrmsd import molecule
 
     import argparse as ap
     from matplotlib import pyplot as plt

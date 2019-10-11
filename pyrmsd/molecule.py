@@ -1,9 +1,9 @@
 from pyrmsd import utils
 
 from openbabel import pybel
-import qcelemental as qcel
 
 import numpy as np
+
 
 def load(fname: str):
 
@@ -11,7 +11,8 @@ def load(fname: str):
 
     mol = next(pybel.readfile(fmt, fname))
 
-    return  mol
+    return mol
+
 
 def openbabel_to_molecule(mol):
 
@@ -25,9 +26,9 @@ def openbabel_to_molecule(mol):
         coordinates[i] = atom.coords
 
     return Molecule(atomicnums, coordinates)
-    
-class Molecule():
 
+
+class Molecule:
     def __init__(self, atomicnums, coordinates):
 
         self.natoms = len(atomicnums)
@@ -42,10 +43,8 @@ class Molecule():
         for i, coord in enumerate(self.coordinates):
             self.coordinates[i] = utils.rotate(coord, angle, axis, units)
 
-    def to_graph():
+    def to_graph(self):
         raise NotImplementedError
 
     def __len__(self):
         return self.natoms
-
-

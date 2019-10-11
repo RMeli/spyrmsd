@@ -1,10 +1,12 @@
 import numpy as np
 import os
 
+
 def format(fname: str) -> str:
     name, ext = os.path.splitext(fname)
 
-    return ext[1:] # Remove "."
+    return ext[1:]  # Remove "."
+
 
 def format_openbabel(fname: str) -> str:
 
@@ -14,6 +16,7 @@ def format_openbabel(fname: str) -> str:
         ext = ext.upper()
 
     return ext
+
 
 def deg_to_rad(angle):
 
@@ -27,7 +30,7 @@ def rotate(v, angle, axis, units="rad"):
     elif units.lower() == "deg":
         angle = deg_to_rad(angle)
     else:
-        raise Exception # TODO
+        raise Exception  # TODO
 
     t1 = axis * np.dot(axis, v)
     t2 = np.cos(angle) * np.cross(np.cross(axis, v), axis)

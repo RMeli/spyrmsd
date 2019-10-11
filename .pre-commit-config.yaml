@@ -2,7 +2,7 @@ repos:
 - repo: local
   hooks:
   - id: black
-    name: black
+    name: black .
     stages: [commit]
     language: system
     entry: black
@@ -21,20 +21,5 @@ repos:
     stages: [commit]
     language: system
     entry: mypy
-    types: [python]
-    pass_filenames: false
-
-  - id: pytest
-    name: pytest
-    stages: [commit]
-    language: system
-    entry: pytest
-    types: [python]
-
-  - id: pytest-cov
-    name: pytest
-    stages: [push]
-    language: system
-    entry: pytest --cov --cov-fail-under=100
     types: [python]
     pass_filenames: false

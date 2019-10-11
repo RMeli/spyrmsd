@@ -2,7 +2,7 @@ from pyrmsd import molecule, utils
 from pyrmsd.tests import molecules
 
 import numpy as np
-import os
+
 
 def test_load_benzene():
 
@@ -18,6 +18,7 @@ def test_load_benzene():
             num_c += 1
     assert num_h == num_c == 6
 
+
 def test_openbabel_to_molecule_benzene():
 
     mol = molecules.benzene
@@ -26,6 +27,7 @@ def test_openbabel_to_molecule_benzene():
 
     assert m.atomicnums.shape == (12,)
     assert m.coordinates.shape == (12, 3)
+
 
 def test_molecule_rotate_z():
 
@@ -46,4 +48,3 @@ def test_molecule_rotate_z():
 
         # Reset
         m.rotate(-angle, z_axis, units="deg")
-
