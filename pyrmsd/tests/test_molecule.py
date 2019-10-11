@@ -1,6 +1,8 @@
 from pyrmsd import molecule, utils
 from pyrmsd.tests import molecules
 
+import copy
+
 import numpy as np
 
 
@@ -27,6 +29,20 @@ def test_openbabel_to_molecule_benzene():
 
     assert m.atomicnums.shape == (12,)
     assert m.coordinates.shape == (12, 3)
+
+
+def test_molecule_translate():
+
+    mol = molecules.benzene
+    mt = molecule.openbabel_to_molecule(mol)
+
+    m = copy.deepcopy(mt)
+
+    t = np.array([0.5, 1.1, -0.1])
+    mt.translate(t)
+
+    for tcoord, coord in zip(mt.coordinates, m.coordinates):
+        assert np.allclose(tcoord - t, coord)
 
 
 def test_molecule_rotate_z():

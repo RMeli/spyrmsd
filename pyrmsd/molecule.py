@@ -38,7 +38,14 @@ class Molecule:
         self.atomicnums = atomicnums
         self.coordinates = coordinates
 
+    def translate(self, vector):
+        assert len(vector) == 3
+        # TODO: More efficient (numpy vectorsation)
+        for i, coord in enumerate(self.coordinates):
+            self.coordinates[i] += vector
+
     def rotate(self, angle, axis, units="rad"):
+        assert len(axis) == 3
         # TODO: More efficient (numpy vectorsation)
         for i, coord in enumerate(self.coordinates):
             self.coordinates[i] = utils.rotate(coord, angle, axis, units)
