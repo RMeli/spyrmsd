@@ -16,3 +16,5 @@ def load(fname: str):
 
 
 benzene = load("benzene.xyz")
+ethanol = load("ethanol.xyz")
+xyz = [benzene, ethanol]
