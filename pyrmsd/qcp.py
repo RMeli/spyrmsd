@@ -85,11 +85,8 @@ def qcp_rmsd(A, B):
     l_max = lambda_max(Ga, Gb, c2, c1, c0)
 
     s = Ga + Gb - 2 * l_max
-    print(s)
-    if s < 0 and abs(s) < 1e-12:
+    if abs(s) < 1e-12:  # Avoid numerical errors when Ga + Gb = 2 * l_max
         rmsd = 0
-    elif s < 0 and abs(s) > 1e-12:
-        raise Exception(f"Ga + Gb - 2 * lambda_max = {s} < 0")
     else:
         rmsd = np.sqrt(s / N)
 
