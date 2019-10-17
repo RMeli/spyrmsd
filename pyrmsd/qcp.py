@@ -53,8 +53,6 @@ def coefficients(M, K):
 
 
 def lambda_max(Ga, Gb, c2, c1, c0):
-
-    # TODO: Check equations with paper: c3 missing
     def P(x):
         return x ** 4 + c2 * x ** 2 + c1 * x + c0
 
