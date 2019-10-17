@@ -21,3 +21,5 @@ xyz = [benzene, ethanol]
 
 dialanine = load("dialanine.sdf")
 sdf = [dialanine]
+
+allmolecules = xyz + sdf
