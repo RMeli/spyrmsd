@@ -14,7 +14,7 @@ def test_rmsd_benzene():
     m1 = molecule.openbabel_to_molecule(mol1)
     m2 = molecule.openbabel_to_molecule(mol2)
 
-    assert rmsd.rmsd_molecules(m1, m2) == pytest.approx(0)
+    assert rmsd.rmsd_dummy(m1, m2) == pytest.approx(0)
 
 
 def test_rmsd_shifted_benzene():
@@ -27,4 +27,4 @@ def test_rmsd_shifted_benzene():
 
     m2.translate(np.array([0, 0, 1]))
 
-    assert rmsd.rmsd_molecules(m1, m2) == pytest.approx(1)
+    assert rmsd.rmsd_dummy(m1, m2) == pytest.approx(1)
