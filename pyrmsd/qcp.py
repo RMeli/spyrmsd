@@ -45,22 +45,21 @@ def K_mtx(M):
 
 def coefficients(M, K):
 
-    c3 = -np.trace(K)
     c2 = -2 * np.trace(M.T @ M)
     c1 = -8 * np.linalg.det(M)  # TODO: Slow
     c0 = np.linalg.det(K)  # TODO: Slow
 
-    return c3, c2, c1, c0
+    return c2, c1, c0
 
 
-def lambda_max(Ga, Gb, c3, c2, c1, c0):
+def lambda_max(Ga, Gb, c2, c1, c0):
 
     # TODO: Check equations with paper: c3 missing
     def P(x):
-        return x ** 4 + c3 * x ** 3 + c2 * x ** 2 + c1 * x + c0
+        return x ** 4 + c2 * x ** 2 + c1 * x + c0
 
     def dP(x):
-        return 4 * x ** 3 + 3 * c3 * x ** 2 + 2 * c2 * x + c1
+        return 4 * x ** 3 + 2 * c2 * x + c1
 
     x0 = (Ga + Gb) / 2.0
 
@@ -81,9 +80,9 @@ def qcp_rmsd(A, B):
 
     assert np.allclose(K, K.T)
 
-    c3, c2, c1, c0 = coefficients(M, K)
+    c2, c1, c0 = coefficients(M, K)
 
-    l_max = lambda_max(Ga, Gb, c3, c2, c1, c0)
+    l_max = lambda_max(Ga, Gb, c2, c1, c0)
 
     s = Ga + Gb - 2 * l_max
     print(s)

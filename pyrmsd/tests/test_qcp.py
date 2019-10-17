@@ -47,19 +47,19 @@ def test_K_mtx():
 def test_lambda_max():
 
     # f(x) = x^4 - 1; x_0 = 2
-    assert qcp.lambda_max(2, 2, 0, 0, 0, -1) == pytest.approx(1)
+    assert qcp.lambda_max(2, 2, 0, 0, -1) == pytest.approx(1)
 
     # f(x) = x^4 - 1; x_0 = -2
-    assert qcp.lambda_max(-2, -2, 0, 0, 0, -1) == pytest.approx(-1)
+    assert qcp.lambda_max(-2, -2, 0, 0, -1) == pytest.approx(-1)
 
     # f(x) = x^4 - 5 * x^2 + 4; x_0 = 3
-    assert qcp.lambda_max(3, 3, 0, -5, 0, 4) == pytest.approx(2)
+    assert qcp.lambda_max(3, 3, -5, 0, 4) == pytest.approx(2)
 
     # f(x) = x^4 - 5 * x^2 + 4; x_0 = 1/2
-    assert qcp.lambda_max(1, 1, 0, -5, 0, 4) == pytest.approx(1)
+    assert qcp.lambda_max(1, 1, -5, 0, 4) == pytest.approx(1)
 
     # f(x) = x^4 - 5 * x^2 + 4; x_0 = -1/2
-    assert qcp.lambda_max(-1, -1, 0, -5, 0, 4) == pytest.approx(-1)
+    assert qcp.lambda_max(-1, -1, -5, 0, 4) == pytest.approx(-1)
 
     # f(x) = x^4 - 5 * x^2 + 4; x_0 = -3
-    assert qcp.lambda_max(-3, -3, 0, -5, 0, 4) == pytest.approx(-2)
+    assert qcp.lambda_max(-3, -3, -5, 0, 4) == pytest.approx(-2)
