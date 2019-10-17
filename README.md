@@ -7,10 +7,15 @@ PyRMSD
 
 Python RMSD tool
 
+### References
+
+| Method    | Reference                                          |
+| --------- | -------------------------------------------------- |
+| QCP       | D. L. Theobald, Acta Crys. A**61**, 478-480 (2005) |
+
 ### Copyright
 
 Copyright (c) 2019, Rocco Meli
-
 
 #### Acknowledgements
  
