@@ -27,6 +27,9 @@ def rotate(v, angle, axis, units="rad"):
 
     assert len(axis) == 3
 
+    # Ensure rotation axis is normalised
+    axis = axis / np.linalg.norm(axis)
+
     if units.lower() == "rad":
         pass
     elif units.lower() == "deg":
