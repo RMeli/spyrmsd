@@ -30,7 +30,7 @@ def K_mtx(M):
     S_xy_yx_pp = S_xy + S_yx
     S_zx_xz_pp = S_zx + S_xz
     S_xx_yy_zz_mpm = -S_xx + S_yy - S_zz
-    S_yz_zy_pp = S_yz = S_zy
+    S_yz_zy_pp = S_yz + S_zy
     S_xx_yy_zz_mmp = -S_xx - S_yy + S_zz
 
     return np.array(
@@ -87,8 +87,10 @@ def qcp_rmsd(A, B):
 
     s = Ga + Gb - 2 * l_max
     print(s)
-    if s < 0 and abs(s) < 1e12:
+    if s < 0 and abs(s) < 1e-12:
         rmsd = 0
+    elif s < 0 and abs(s) > 1e-12:
+        raise Exception(f"Ga + Gb - 2 * lambda_max = {s} < 0")
     else:
         rmsd = np.sqrt(s / N)
 
