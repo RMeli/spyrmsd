@@ -67,3 +67,22 @@ def test_rmsd_qcp_ethanol():
     assert rmsd.rmsd_dummy(m1, m2) > 0.0
 
     assert rmsd.rmsd_qcp(m1, m2) == pytest.approx(0)
+
+
+def test_rmsd_qcp_dialanine():
+
+    mol1 = molecules.dialanine
+    mol2 = molecules.dialanine
+
+    m1 = molecule.openbabel_to_molecule(mol1)
+    m2 = molecule.openbabel_to_molecule(mol2)
+
+    assert rmsd.rmsd_dummy(m1, m2) == pytest.approx(0)
+    assert rmsd.rmsd_qcp(m1, m2) == pytest.approx(0)
+
+    m2.translate(5 * np.random.rand(3))
+    m2.rotate(15, np.array([-2, 1, 3]))
+
+    assert rmsd.rmsd_dummy(m1, m2) > 0.0
+
+    assert rmsd.rmsd_qcp(m1, m2) == pytest.approx(0)
