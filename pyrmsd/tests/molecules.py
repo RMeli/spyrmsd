@@ -22,4 +22,8 @@ xyz = [benzene, ethanol]
 dialanine = load("dialanine.sdf")
 sdf = [dialanine]
 
+docking_2viz = {}
+for i in [1, 2, 3]:
+    docking_2viz[i] = load(f"2viz_{i}.sdf")
+
 allmolecules = xyz + sdf
