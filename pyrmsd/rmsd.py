@@ -6,6 +6,7 @@ import numpy as np
 def rmsd_dummy(mol1, mol2, center=False):
 
     assert np.all(mol1.atomicnums == mol2.atomicnums)
+    assert mol1.coordinates.shape == mol2.coordinates.shape
 
     n = len(mol1)
 
