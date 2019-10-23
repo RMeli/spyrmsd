@@ -1,28 +1,24 @@
-from pyrmsd import molecule, graph
+from pyrmsd import graph
 from pyrmsd.tests import molecules
 
 
-def test_graph_from_molecule_benzene():
+def test_graph_from_molecule_benzene() -> None:
 
     mol = molecules.benzene
 
-    m = molecule.openbabel_to_molecule(mol)
+    G = graph.graph_from_molecule(mol.atomicnums, mol.coordinates)
 
-    G = graph.graph_from_molecule(m.atomicnums, m.coordinates)
-
-    assert G.number_of_nodes() == len(m)
+    assert G.number_of_nodes() == len(mol)
     assert G.number_of_edges() == 12
 
 
-def test_graph_from_molecule_named_benzene():
+def test_graph_from_molecule_named_benzene() -> None:
 
     mol = molecules.benzene
 
-    m = molecule.openbabel_to_molecule(mol)
+    G = graph.graph_from_molecule(mol.atomicnums, mol.coordinates, named=True)
 
-    G = graph.graph_from_molecule(m.atomicnums, m.coordinates, named=True)
-
-    assert G.number_of_nodes() == len(m)
+    assert G.number_of_nodes() == len(mol)
     assert G.number_of_edges() == 12
 
     nodes = G.nodes()
@@ -32,25 +28,21 @@ def test_graph_from_molecule_named_benzene():
         assert element == "H" or element == "C"
 
 
-def test_graph_from_molecule_ethanol():
+def test_graph_from_molecule_ethanol() -> None:
 
     mol = molecules.ethanol
 
-    m = molecule.openbabel_to_molecule(mol)
+    G = graph.graph_from_molecule(mol.atomicnums, mol.coordinates)
 
-    G = graph.graph_from_molecule(m.atomicnums, m.coordinates)
-
-    assert G.number_of_nodes() == len(m)
+    assert G.number_of_nodes() == len(mol)
     assert G.number_of_edges() == 8
 
 
-def test_graph_from_molecule_dialanine():
+def test_graph_from_molecule_dialanine() -> None:
 
     mol = molecules.dialanine
 
-    m = molecule.openbabel_to_molecule(mol)
+    G = graph.graph_from_molecule(mol.atomicnums, mol.coordinates)
 
-    G = graph.graph_from_molecule(m.atomicnums, m.coordinates)
-
-    assert G.number_of_nodes() == len(m)
+    assert G.number_of_nodes() == len(mol)
     assert G.number_of_edges() == 22

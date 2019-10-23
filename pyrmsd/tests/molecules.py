@@ -6,11 +6,13 @@ fdir = os.path.dirname(os.path.abspath(__file__))
 molpath = os.path.join(fdir, os.pardir, "data/molecules/")
 
 
-def load(fname: str):
+def load(fname: str) -> molecule.Molecule:
 
     fname = os.path.join(molpath, fname)
 
-    mol = molecule.load(fname)
+    m = molecule.load(fname)
+
+    mol = molecule.openbabel_to_molecule(m)
 
     return mol
 

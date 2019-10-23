@@ -1,16 +1,17 @@
-from pyrmsd import molecule, qcp
+from pyrmsd import qcp
 from pyrmsd.tests import molecules
 
 import numpy as np
 import itertools
+import copy
 
 import pytest
 
 
 def test_M_mtx():
     for mol in molecules.allmolecules:
-        mol1 = molecule.openbabel_to_molecule(mol)
-        mol2 = molecule.openbabel_to_molecule(mol)
+        mol1 = copy.deepcopy(mol)
+        mol2 = copy.deepcopy(mol)
 
         # Build rotated coordinate set
         mol2.rotate(10, np.random.rand(3))
@@ -30,8 +31,8 @@ def test_M_mtx():
 def test_K_mtx():
 
     for mol in molecules.allmolecules:
-        mol1 = molecule.openbabel_to_molecule(mol)
-        mol2 = molecule.openbabel_to_molecule(mol)
+        mol1 = copy.deepcopy(mol)
+        mol2 = copy.deepcopy(mol)
 
         # Build rotated coordinate set
         mol2.rotate(10, np.random.rand(3))

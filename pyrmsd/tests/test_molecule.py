@@ -8,135 +8,121 @@ import copy
 import numpy as np
 
 
-def test_load_benzene_xyz():
+def test_load_benzene() -> None:
 
     mol = molecules.benzene
 
-    assert len(mol.atoms) == 12
+    assert len(mol) == 12
 
     num_h = num_c = 0
-    for atom in mol.atoms:
-        if atom.atomicnum == 1:
+    for atomicnum in mol.atomicnums:
+        if atomicnum == 1:
             num_h += 1
-        if atom.atomicnum == 6:
+        if atomicnum == 6:
             num_c += 1
     assert num_h == num_c == 6
 
+    assert mol.atomicnums.shape == (12,)
+    assert mol.coordinates.shape == (12, 3)
 
-def test_load_ethanol_xyz():
+
+def test_load_ethanol() -> None:
 
     mol = molecules.ethanol
 
-    assert len(mol.atoms) == 9
+    assert len(mol) == 9
 
     num_h = num_c = num_o = 0
-    for atom in mol.atoms:
-        if atom.atomicnum == 1:
+    for atomicnum in mol.atomicnums:
+        if atomicnum == 1:
             num_h += 1
-        if atom.atomicnum == 6:
+        if atomicnum == 6:
             num_c += 1
-        if atom.atomicnum == 8:
+        if atomicnum == 8:
             num_o += 1
     assert num_h == 6
     assert num_c == 2
     assert num_o == 1
 
 
-def test_openbabel_to_molecule_benzene():
-
-    mol = molecules.benzene
-
-    m = molecule.openbabel_to_molecule(mol)
-
-    assert m.atomicnums.shape == (12,)
-    assert m.coordinates.shape == (12, 3)
-
-
-def test_molecule_translate():
+def test_molecule_translate() -> None:
 
     for mol in molecules.xyz:
-        mt = molecule.openbabel_to_molecule(mol)
 
-        m = copy.deepcopy(mt)
+        mt = copy.deepcopy(mol)
 
         t = np.array([0.5, 1.1, -0.1])
         mt.translate(t)
 
-        for tcoord, coord in zip(mt.coordinates, m.coordinates):
+        for tcoord, coord in zip(mt.coordinates, mol.coordinates):
             assert np.allclose(tcoord - t, coord)
 
 
-def test_molecule_rotate_z():
+def test_molecule_rotate_z() -> None:
 
     for mol in molecules.xyz:
-
-        m = molecule.openbabel_to_molecule(mol)
 
         z_axis = np.array([0, 0, 1])
 
         for angle in [0, 45, 90]:
 
-            rotated = np.zeros((len(m), 3))
-            for i, coord in enumerate(m.coordinates):
+            rotated = np.zeros((len(mol), 3))
+            for i, coord in enumerate(mol.coordinates):
                 rotated[i] = utils.rotate(coord, angle, z_axis, units="deg")
 
-            m.rotate(angle, z_axis, units="deg")
+            mol.rotate(angle, z_axis, units="deg")
 
-            assert np.allclose(m.coordinates, rotated)
+            assert np.allclose(mol.coordinates, rotated)
 
             # Reset
-            m.rotate(-angle, z_axis, units="deg")
+            mol.rotate(-angle, z_axis, units="deg")
 
 
-def test_molecule_rotate():
+def test_molecule_rotate() -> None:
 
     for mol in molecules.xyz:
-
-        m = molecule.openbabel_to_molecule(mol)
 
         axis = np.random.rand(3)
 
         for angle in np.random.rand(10) * 180:
 
-            rotated = np.zeros((len(m), 3))
-            for i, coord in enumerate(m.coordinates):
+            rotated = np.zeros((len(mol), 3))
+            for i, coord in enumerate(mol.coordinates):
                 rotated[i] = utils.rotate(coord, angle, axis, units="deg")
 
-            m.rotate(angle, axis, units="deg")
+            mol.rotate(angle, axis, units="deg")
 
-            assert np.allclose(m.coordinates, rotated)
+            assert np.allclose(mol.coordinates, rotated)
 
             # Reset
-            m.rotate(-angle, axis, units="deg")
+            mol.rotate(-angle, axis, units="deg")
 
 
-def test_molecule_center_of_geometry_benzene():
-
-    mol = molecules.benzene
-    m = molecule.openbabel_to_molecule(mol)
-
-    assert np.allclose(m.center_of_geometry(), np.zeros(3))
-
-
-def test_molecule_center_of_mass_benzene():
+def test_molecule_center_of_geometry_benzene() -> None:
 
     mol = molecules.benzene
-    m = molecule.openbabel_to_molecule(mol)
 
-    assert np.allclose(m.center_of_mass(), np.zeros(3))
+    assert np.allclose(mol.center_of_geometry(), np.zeros(3))
 
 
-def test_molecule_center_of_mass_H2():
+def test_molecule_center_of_mass_benzene() -> None:
+
+    mol = molecules.benzene
+
+    assert np.allclose(mol.center_of_mass(), np.zeros(3))
+
+
+def test_molecule_center_of_mass_H2() -> None:
 
     atomicnums = [1, 1]
     coordinates = [[0, 0, -1], [0, 0, 1]]
 
-    m = molecule.Molecule(atomicnums, coordinates)
+    mol = molecule.Molecule(atomicnums, coordinates)
 
-    assert np.allclose(m.center_of_mass(), np.zeros(3))
+    assert np.allclose(mol.center_of_mass(), np.zeros(3))
 
 
-def test_molecule_center_of_mass_HF():
+def test_molecule_center_of_mass_HF() -> None:
 
     atomicnums = [1, 9]
     coordinates = [[0, 0, -1], [0, 0, 1]]
@@ -146,19 +132,17 @@ def test_molecule_center_of_mass_HF():
 
     z_com = (-H_mass + F_mass) / (H_mass + F_mass)
 
-    m = molecule.Molecule(atomicnums, coordinates)
+    mol = molecule.Molecule(atomicnums, coordinates)
 
-    assert np.allclose(m.center_of_mass(), np.array([0, 0, z_com]))
+    assert np.allclose(mol.center_of_mass(), np.array([0, 0, z_com]))
 
 
-def test_molecule_strip_dialanine():
+def test_molecule_strip_dialanine() -> None:
 
     mol = molecules.dialanine
 
-    m = molecule.openbabel_to_molecule(mol)
+    assert len(mol) == 23
 
-    assert len(m) == 23
+    mol.strip()
 
-    m.strip()
-
-    assert len(m) == 11
+    assert len(mol) == 11
