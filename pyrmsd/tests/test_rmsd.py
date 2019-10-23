@@ -30,6 +30,20 @@ def test_rmsd_dummy_shifted_benzene():
     assert rmsd.rmsd_dummy(m1, m2) == pytest.approx(1)
 
 
+def test_rmsd_dummy_centred_benzene():
+
+    mol1 = molecules.benzene
+    mol2 = molecules.benzene
+
+    m1 = molecule.openbabel_to_molecule(mol1)
+    m2 = molecule.openbabel_to_molecule(mol2)
+
+    m2.translate(np.array([0, 0, 1]))
+
+    assert rmsd.rmsd_dummy(m1, m2) == pytest.approx(1)
+    assert rmsd.rmsd_dummy(m1, m2, center=True) == pytest.approx(0)
+
+
 def test_rmsd_qcp_benzene():
 
     mol1 = molecules.benzene
