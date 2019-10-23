@@ -1,6 +1,8 @@
 from pyrmsd import molecule, utils
 from pyrmsd.tests import molecules
 
+import qcelemental as qcel
+
 import copy
 
 import numpy as np
@@ -114,3 +116,36 @@ def test_molecule_center_of_geometry_benzene():
     m = molecule.openbabel_to_molecule(mol)
 
     assert np.allclose(m.center_of_geometry(), np.zeros(3))
+
+
+def test_molecule_center_of_mass_benzene():
+
+    mol = molecules.benzene
+    m = molecule.openbabel_to_molecule(mol)
+
+    assert np.allclose(m.center_of_mass(), np.zeros(3))
+
+
+def test_molecule_center_of_mass_H2():
+
+    atomicnums = [1, 1]
+    coordinates = [[0, 0, -1], [0, 0, 1]]
+
+    m = molecule.Molecule(atomicnums, coordinates)
+
+    assert np.allclose(m.center_of_mass(), np.zeros(3))
+
+
+def test_molecule_center_of_mass_HF():
+
+    atomicnums = [1, 9]
+    coordinates = [[0, 0, -1], [0, 0, 1]]
+
+    H_mass = qcel.periodictable.to_mass(1)
+    F_mass = qcel.periodictable.to_mass(9)
+
+    z_com = (-H_mass + F_mass) / (H_mass + F_mass)
+
+    m = molecule.Molecule(atomicnums, coordinates)
+
+    assert np.allclose(m.center_of_mass(), np.array([0, 0, z_com]))
