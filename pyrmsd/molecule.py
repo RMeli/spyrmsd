@@ -36,8 +36,12 @@ def openbabel_to_molecule(mol):
 class Molecule:
     def __init__(self, atomicnums, coordinates):
 
+        atomicnums = np.asarray(atomicnums)
+        coordinates = np.asarray(coordinates)
+
         self.natoms = len(atomicnums)
 
+        assert atomicnums.shape == (self.natoms,)
         assert coordinates.shape == (self.natoms, 3)
 
         self.atomicnums = atomicnums
