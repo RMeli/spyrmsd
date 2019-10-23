@@ -18,12 +18,12 @@ def format_openbabel(fname: str) -> str:
     return ext
 
 
-def deg_to_rad(angle):
+def deg_to_rad(angle: float) -> float:
 
     return angle * np.pi / 180.0
 
 
-def rotate(v, angle, axis, units="rad"):
+def rotate(v, angle, axis, units: str = "rad"):
 
     assert len(axis) == 3
 

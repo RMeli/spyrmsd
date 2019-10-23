@@ -36,8 +36,8 @@ def openbabel_to_molecule(mol):
 class Molecule:
     def __init__(self, atomicnums, coordinates):
 
-        atomicnums = np.asarray(atomicnums)
-        coordinates = np.asarray(coordinates)
+        atomicnums = np.asarray(atomicnums, dtype=int)
+        coordinates = np.asarray(coordinates, dtype=float)
 
         self.natoms = len(atomicnums)
 
@@ -46,6 +46,8 @@ class Molecule:
 
         self.atomicnums = atomicnums
         self.coordinates = coordinates
+
+        self.stripped = np.all(atomicnums != 1)
 
     def translate(self, vector):
         assert len(vector) == 3
@@ -67,6 +69,20 @@ class Molecule:
 
     def center_of_geometry(self):
         return np.mean(self.coordinates, axis=0)
+
+    def strip(self):
+
+        if not self.stripped:
+            idx = self.atomicnums != 1  # Hydrogen atoms
+
+            # Strip
+            self.atomicnums = self.atomicnums[idx]
+            self.coordinates = self.coordinates[idx, :]
+
+            # Update number of atoms
+            self.natoms = len(self.atomicnums)
+
+            self.stripped = True
 
     def to_graph(self):
         raise NotImplementedError

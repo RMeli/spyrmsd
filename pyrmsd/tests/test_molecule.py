@@ -149,3 +149,16 @@ def test_molecule_center_of_mass_HF():
     m = molecule.Molecule(atomicnums, coordinates)
 
     assert np.allclose(m.center_of_mass(), np.array([0, 0, z_com]))
+
+
+def test_molecule_strip_dialanine():
+
+    mol = molecules.dialanine
+
+    m = molecule.openbabel_to_molecule(mol)
+
+    assert len(m) == 23
+
+    m.strip()
+
+    assert len(m) == 11
