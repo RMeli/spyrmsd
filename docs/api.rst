@@ -2,7 +2,7 @@ API Documentation
 =================
 
 .. autosummary::
-   :toctree: autosummary
+   :toctree: api
 
    pyrmsd.graph
    pyrmsd.molecule

@@ -10,6 +10,7 @@ pyrmsd.rmsd
    .. autosummary::
    
       rmsd_dummy
+      rmsd_hungarian
       rmsd_qcp
    
    
