@@ -5,6 +5,7 @@ PyRMSD
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/rhd5wi1ce7i24hgb/branch/master?svg=true)](https://ci.appveyor.com/project/rhd5wi1ce7i24hgb/pyrmsd/branch/master)
 [![codecov](https://codecov.io/gh/RMeli/pyrmsd/branch/master/graph/badge.svg)](https://codecov.io/gh/RMeli/pyrmsd/branch/master)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/RMeli/pyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/pyrmsd/context:python)
+[![Documentation Status](https://readthedocs.org/projects/pyrmsd/badge/?version=latest)](https://pyrmsd.readthedocs.io/en/latest/?badge=latest)
 [![Doc](https://img.shields.io/badge/doc-pyrmsd.readthedocs.io-blueviolet)](https://pyrmsd.readthedocs.io)
 
 Python RMSD tool
