@@ -3,11 +3,81 @@ import numpy as np
 from scipy import optimize
 
 
-def M_mtx(A, B):
+def M_mtx(A: np.ndarray, B: np.ndarray) -> np.ndarray:
+    """
+    Compute inner product between coordinate matrices
+
+    Parameters
+    ----------
+    A: numpy.ndarray
+        Coordinates `A`
+    B: numpy.ndarray
+        Coordinates `B`
+
+    Returns
+    -------
+    numpy.ndarray
+        Inner product of the coordinate matrices `A` and `B`
+
+    Notes
+    -----
+    The inner product of the coordinate matrices `A` and `B` corresponds to the matrix
+    :math:`\\matbf{M}` in [1]_.
+
+    If :math:`S_{xy}` is defined as
+
+    .. math:: S_{xy} = \\sum_i^N x_{B,i} y_{A,i}
+
+    then :math:`\\matbf{M}` is the :math:`3\\times 3` matrix given by
+
+    .. math::
+       \\begin{pmatrix}
+            S_{xx} & S_{xy} & S_{xz} \\\\
+            S_{yx} & S_{yy} & S_{yz} \\\\
+            S_{zx} & S_{zy} & S_{zz} \\\\
+       \\end{pmatrix}
+
+    .. [1] D. L. Theobald, *Rapid calculation of RMSDs using a quaternion-based
+       characteristic polynomial*, Acta Crys. A**61**, 478-480 (2005).
+    """
     return B.T @ A
 
 
 def K_mtx(M):
+    """
+    Compute symmetric key matrix
+
+    Parameters
+    ----------
+    M : numpy.ndarray
+        Inner product between coordinate matrices
+
+    Returns
+    -------
+    numpy.ndarray
+        Symmetric key matrix
+
+    Notes
+    -----
+    The symmetric key matrix corresponds to the matrix :math:`\\matbf{K}` in [1]_.
+
+    If :math:`S_{xy}` is defined as
+
+    .. math:: S_{xy} = \\sum_i^N x_{B,i} y_{A,i}
+
+    then :math:`\\matbf{K}` is the :math:`4\\times 4` matrix given by
+
+    .. math::
+       \\begin{pmatrix}
+            S_{xx} + S_{yy} + S_zz{} &  & & \\\\
+            & S_{xx} - S_{yy} - S_zz{} & & \\\\
+            & & -S_{xx} + S_{yy} - S_zz{} & \\\\
+            &  & -S_{xx} - S_{yy} + S_zz{} & \\\\
+       \\end{pmatrix}
+
+    .. [1] D. L. Theobald, *Rapid calculation of RMSDs using a quaternion-based
+       characteristic polynomial*, Acta Crys. A**61**, 478-480 (2005).
+    """
 
     assert M.shape == (3, 3)
 
