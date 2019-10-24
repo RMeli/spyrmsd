@@ -1,8 +1,6 @@
 API Documentation
 =================
 
-.. automodule:: pyrmsd
-
 .. autosummary::
    :toctree: api
 
