@@ -23,6 +23,10 @@ dependencies:
   - pytest-cov
   - codecov
 
+  # Doc
+  - sphinx
+  - sphinx_rtd_theme 
+
   # Dev
   - mypy
   - flake8
