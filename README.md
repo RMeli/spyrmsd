@@ -11,7 +11,7 @@ Python RMSD tool
 ### References
 
 | Method    | Reference                                          | DOI |
-| --------- | -------------------------------------------------- | --- |
+| :-------: | -------------------------------------------------- | :--: |
 | QCP       | D. L. Theobald, Acta Crys. A**61**, 478-480 (2005) | [![doi](https://img.shields.io/badge/doi-10.1107%2FS0108767305015266-blue)](https://doi.org/10.1107/S0108767305015266) |
 | Hungarian | W. J. Allen and R. C. Rizzo, J. Chem. Inf. Model. *54*, 518-529 (2014) | [![doi](https://img.shields.io/badge/doi-10.1021%2Fci400534h-blue)](https://doi.org/10.1021/ci400534h)
 
