@@ -10,10 +10,7 @@ Welcome to pyrmsd's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   getting_started
    api
-
-
 
 Indices and tables
 ==================
