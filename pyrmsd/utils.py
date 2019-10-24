@@ -81,7 +81,33 @@ def deg_to_rad(angle: float) -> float:
     return angle * np.pi / 180.0
 
 
-def rotate(v, angle, axis, units: str = "rad"):
+def rotate(v: np.array, angle: float, axis: np.array, units: str = "rad") -> np.array:
+    """
+    Rotate vector
+
+    Parameters
+    ----------
+    v: numpy.array
+        3D vector to be rotated
+    angle : float
+        Angle of rotation (in `units`)
+    axis : numpy.array
+        3D axis of rotation
+    units: {"rad", "deg"}
+        Units of `angle` (in radians `rad` or degrees `deg`)
+
+    Returns
+    -------
+    numpy.array
+        Rotated vector
+
+    Raises
+    ------
+    AssertionError
+        If the axis of rotation is not a 3D vector
+    ValueError
+        If `units` is not `rad` or `deg`
+    """
 
     assert len(axis) == 3
 
@@ -93,7 +119,9 @@ def rotate(v, angle, axis, units: str = "rad"):
     elif units.lower() == "deg":
         angle = deg_to_rad(angle)
     else:
-        raise Exception  # TODO
+        raise ValueError(
+            f"Units {units} for angle is not supported. Use 'deg' or 'rad' instead."
+        )
 
     t1 = axis * np.dot(axis, v)
     t2 = np.cos(angle) * np.cross(np.cross(axis, v), axis)

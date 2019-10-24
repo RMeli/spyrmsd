@@ -35,7 +35,7 @@ def test_deg_to_rad():
 
 def test_rotate_invalid():
 
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError):
         utils.rotate(np.array([1, 0, 0]), 0, np.array([0, 0, 1]), units="none")
 
 
