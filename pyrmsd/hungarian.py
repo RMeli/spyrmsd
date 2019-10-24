@@ -7,19 +7,14 @@ def cost_mtx(A, B):
     assert A.shape == B.shape
     assert A.shape[1] == B.shape[1] == 3
 
-    n = A.shape[0]
+    # Vectorization of pairwise distances
+    # (B-A)**2 = A**2  + B**2 - 2*A*B
+    A2 = np.sum(A ** 2, axis=1)
+    B2 = np.sum(B ** 2, axis=1)[:, np.newaxis]
+    C = -2 * A @ B.T + A2 + B2
 
-    C = np.zeros((n, n))
-
-    # TODO: Vectorize
-    for i in range(n):
-        for j in range(n):
-            a = A[i, :]
-            b = B[j, :]
-
-            ab = b - a
-
-            C[i, j] = np.dot(ab, ab)
+    # Subtraction can lead to small negative elements because of numerical errors
+    C[np.abs(C) < 1e-12] = 0.0
 
     return C
 
