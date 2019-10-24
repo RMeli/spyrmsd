@@ -46,8 +46,8 @@ def K_mtx(M):
 def coefficients(M, K):
 
     c2 = -2 * np.trace(M.T @ M)
-    c1 = -8 * np.linalg.det(M)  # TODO: Slow
-    c0 = np.linalg.det(K)  # TODO: Slow
+    c1 = -8 * np.linalg.det(M)  # TODO: Slow?
+    c0 = np.linalg.det(K)  # TODO: Slow?
 
     return c2, c1, c0
 

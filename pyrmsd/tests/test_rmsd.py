@@ -142,3 +142,41 @@ def test_rmsd_qcp_2viz_stripped(i: int, j: int, result: float) -> None:
     molj.strip()
 
     assert rmsd.rmsd_qcp(moli, molj) == pytest.approx(result)
+
+
+@pytest.mark.parametrize(
+    "angle, tol", [(60, 1e-5), (120, 1e-5), (180, 1e-12), (240, 1e-5), (300, 1e-5)]
+)
+def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
+
+    mol1 = copy.deepcopy(molecules.benzene)
+    mol2 = copy.deepcopy(molecules.benzene)
+
+    assert rmsd.rmsd_dummy(mol1, mol2) == pytest.approx(0)
+    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(0)
+
+    # Rotations different than 180 degrees introduce numerical errors (~1e-6)
+    mol2.rotate(angle, [0, 0, 1], units="deg")
+
+    assert rmsd.rmsd_dummy(mol1, mol2) > 0
+    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(0, abs=tol)
+
+
+@pytest.mark.parametrize(
+    "angle, tol", [(60, 1e-10), (120, 1e-9), (180, 1e-12), (240, 1e-9), (300, 1e-9)]
+)
+def test_rmsd_hungarian_benzene_shifted_rotated(angle: float, tol: float) -> None:
+
+    mol1 = copy.deepcopy(molecules.benzene)
+    mol2 = copy.deepcopy(molecules.benzene)
+
+    mol2.translate([0, 0, 1])
+
+    assert rmsd.rmsd_dummy(mol1, mol2) == pytest.approx(1)
+    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(1)
+
+    # Rotations different than 180 degrees introduce numerical errors (~1e-11)
+    mol2.rotate(angle, [0, 0, 1], units="deg")
+
+    assert rmsd.rmsd_dummy(mol1, mol2) > 1
+    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(1, abs=tol)
