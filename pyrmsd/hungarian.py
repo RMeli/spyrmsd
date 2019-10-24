@@ -4,19 +4,7 @@ import scipy
 
 def cost_mtx(A, B):
 
-    assert A.shape == B.shape
-    assert A.shape[1] == B.shape[1] == 3
-
-    # Vectorization of pairwise distances
-    # (B-A)**2 = A**2  + B**2 - 2*A*B
-    A2 = np.sum(A ** 2, axis=1)
-    B2 = np.sum(B ** 2, axis=1)[:, np.newaxis]
-    C = -2 * A @ B.T + A2 + B2
-
-    # Subtraction can lead to small negative elements because of numerical errors
-    C[np.abs(C) < 1e-12] = 0.0
-
-    return C
+    return scipy.spatial.distance.cdist(A, B) ** 2
 
 
 def optimal_assignment(A, B):
