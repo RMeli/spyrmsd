@@ -42,6 +42,4 @@ def rmsd_hungarian(mol1, mol2, center=False):
         c1 -= mol1.center_of_geometry()
         c2 -= mol2.center_of_geometry()
 
-    rmsd, _, _ = hungarian.hungarian_rmsd(c1, c2)
-
-    return rmsd
+    return hungarian.hungarian_rmsd(c1, c2, mol1.atomicnums, mol2.atomicnums)

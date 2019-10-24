@@ -36,14 +36,26 @@ def optimal_assignment(A, B):
     return cost, row_idx, col_idx
 
 
-def hungarian_rmsd(A, B):
+def hungarian_rmsd(A, B, typesA, typesB):
 
     assert A.shape == B.shape
+    assert typesA.shape == typesB.shape
+
+    types = set(typesA)
+
+    total_cost: float = 0.0
+    for t in types:
+        typesA_idx = typesA == t
+        typesB_idx = typesB == t
+
+        assert typesA_idx.shape == typesB_idx.shape
+
+        cost, row_idx, col_idx = optimal_assignment(A[typesA_idx, :], B[typesB_idx, :])
+
+        total_cost += cost
 
     N = A.shape[0]
 
-    cost, row_idx, col_idx = optimal_assignment(A, B)
+    rmsd = np.sqrt(total_cost / N)
 
-    rmsd = np.sqrt(cost / N)
-
-    return rmsd, row_idx, col_idx
+    return rmsd
