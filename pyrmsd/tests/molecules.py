@@ -3,9 +3,9 @@ from pyrmsd import molecule
 import os
 
 try:
-    import pybel  # 2.0
-except ImportError:
     from openbabel import pybel  # 3.0
+except ImportError:
+    import pybel  # 2.0
 
 from typing import Tuple
 

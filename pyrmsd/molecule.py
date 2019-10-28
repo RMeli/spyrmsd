@@ -4,9 +4,9 @@ import qcelemental as qcel
 import numpy as np
 
 try:
-    import pybel  # 2.0
-except ImportError:
     from openbabel import pybel  # 3.0
+except ImportError:
+    import pybel  # 2.0
 
 
 def load(fname: str):

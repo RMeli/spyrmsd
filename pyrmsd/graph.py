@@ -2,7 +2,11 @@ import networkx as nx
 import qcelemental as qcel
 import numpy as np
 
-from openbabel import openbabel as ob
+try:
+    from openbabel import openbabel as ob
+except ImportError:
+    import openbabel as ob
+
 
 covalent_bond_multiplier: float = 1.2
 

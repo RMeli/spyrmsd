@@ -2,7 +2,11 @@ from pyrmsd import graph
 from pyrmsd.tests import molecules
 
 import numpy as np
-from openbabel import openbabel as ob
+
+try:
+    from openbabel import openbabel as ob
+except ImportError:
+    import openbabel as ob
 
 import pytest
 
