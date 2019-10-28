@@ -1,6 +1,11 @@
 from pyrmsd import graph
 from pyrmsd.tests import molecules
 
+import numpy as np
+from openbabel import openbabel as ob
+
+import pytest
+
 
 def test_graph_from_molecule_benzene() -> None:
 
@@ -46,3 +51,30 @@ def test_graph_from_molecule_dialanine() -> None:
 
     assert G.number_of_nodes() == len(mol)
     assert G.number_of_edges() == 22
+
+
+@pytest.mark.parametrize(
+    "obmol",
+    [
+        molecules.obbenzene,
+        molecules.obethanol,
+        molecules.obdialanine,
+        *molecules.obdocking_2viz.values(),
+    ],
+)
+def test_adjacency_matrix_from_obmol(obmol) -> None:
+
+    natoms = obmol.OBMol.NumAtoms()
+    nbonds = obmol.OBMol.NumBonds()
+
+    A = graph.adjacency_matrix_from_obmol(obmol)
+
+    assert A.shape == (natoms, natoms)
+    assert np.alltrue(A == A.T)
+    assert np.sum(A) == nbonds * 2
+
+    for bond in ob.OBMolBondIter(obmol.OBMol):
+        i = bond.GetBeginAtomIdx() - 1
+        j = bond.GetEndAtomIdx() - 1
+
+        assert A[i, j] == 1

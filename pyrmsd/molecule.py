@@ -1,32 +1,31 @@
 from pyrmsd import utils
 
 import qcelemental as qcel
+import numpy as np
 
 try:
     import pybel  # 2.0
 except ImportError:
     from openbabel import pybel  # 3.0
 
-import numpy as np
-
 
 def load(fname: str):
 
     fmt = utils.format_openbabel(fname)
 
-    mol = next(pybel.readfile(fmt, fname))
+    obmol = next(pybel.readfile(fmt, fname))
 
-    return mol
+    return obmol
 
 
-def openbabel_to_molecule(mol):
+def openbabel_to_molecule(obmol):
 
-    n = len(mol.atoms)
+    n = len(obmol.atoms)
 
     atomicnums = np.zeros(n, dtype=int)
     coordinates = np.zeros((n, 3))
 
-    for i, atom in enumerate(mol.atoms):
+    for i, atom in enumerate(obmol.atoms):
         atomicnums[i] = atom.atomicnum
         coordinates[i] = atom.coords
 

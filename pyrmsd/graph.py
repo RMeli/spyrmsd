@@ -2,7 +2,24 @@ import networkx as nx
 import qcelemental as qcel
 import numpy as np
 
+from openbabel import openbabel as ob
+
 covalent_bond_multiplier: float = 1.2
+
+
+def adjacency_matrix_from_obmol(obmol):
+
+    n = len(obmol.atoms)
+
+    A = np.zeros((n, n), dtype=int)
+
+    for bond in ob.OBMolBondIter(obmol.OBMol):
+        i = bond.GetBeginAtomIdx() - 1
+        j = bond.GetEndAtomIdx() - 1
+
+        A[i, j] = A[j, i] = 1
+
+    return A
 
 
 def graph_from_molecule(atomicnums, coordinates, named=False):
