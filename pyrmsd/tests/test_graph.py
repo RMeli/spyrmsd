@@ -53,15 +53,7 @@ def test_graph_from_molecule_dialanine() -> None:
     assert G.number_of_edges() == 22
 
 
-@pytest.mark.parametrize(
-    "obmol",
-    [
-        molecules.obbenzene,
-        molecules.obethanol,
-        molecules.obdialanine,
-        *molecules.obdocking_2viz.values(),
-    ],
-)
+@pytest.mark.parametrize("obmol", molecules.allobmolecules)
 def test_adjacency_matrix_from_obmol(obmol) -> None:
 
     natoms = obmol.OBMol.NumAtoms()
@@ -78,3 +70,21 @@ def test_adjacency_matrix_from_obmol(obmol) -> None:
         j = bond.GetEndAtomIdx() - 1
 
         assert A[i, j] == 1
+
+
+@pytest.mark.parametrize("obmol", molecules.allobmolecules)
+def test_graph_from_adjacency_matrix(obmol) -> None:
+
+    natoms = obmol.OBMol.NumAtoms()
+    nbonds = obmol.OBMol.NumBonds()
+
+    A = graph.adjacency_matrix_from_obmol(obmol)
+
+    assert A.shape == (natoms, natoms)
+    assert np.alltrue(A == A.T)
+    assert np.sum(A) == nbonds * 2
+
+    G = graph.graph_from_adjacency_matrix(A)
+
+    assert G.number_of_nodes() == natoms
+    assert G.number_of_edges() == nbonds

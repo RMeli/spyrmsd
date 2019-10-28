@@ -26,9 +26,11 @@ def load(fname: str) -> Tuple[pybel.Molecule, molecule.Molecule]:
 
 obbenzene, benzene = load("benzene.xyz")
 obethanol, ethanol = load("ethanol.xyz")
+obxyz = [obbenzene, obethanol]
 xyz = [benzene, ethanol]
 
 obdialanine, dialanine = load("dialanine.sdf")
+obsdf = [obdialanine]
 sdf = [dialanine]
 
 docking_2viz = {}
@@ -36,4 +38,5 @@ obdocking_2viz = {}
 for i in [1, 2, 3]:
     obdocking_2viz[i], docking_2viz[i] = load(f"2viz_{i}.sdf")
 
+allobmolecules = obxyz + obsdf + list(obdocking_2viz.values())
 allmolecules = xyz + sdf

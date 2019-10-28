@@ -1,4 +1,4 @@
-from pyrmsd import utils
+from pyrmsd import utils, graph
 
 import qcelemental as qcel
 import numpy as np
@@ -18,7 +18,7 @@ def load(fname: str):
     return obmol
 
 
-def openbabel_to_molecule(obmol):
+def openbabel_to_molecule(obmol, adjacency=True):
 
     n = len(obmol.atoms)
 
@@ -29,11 +29,14 @@ def openbabel_to_molecule(obmol):
         atomicnums[i] = atom.atomicnum
         coordinates[i] = atom.coords
 
-    return Molecule(atomicnums, coordinates)
+    if adjacency:
+        A = graph.adjacency_matrix_from_obmol(obmol)
+
+    return Molecule(atomicnums, coordinates, A)
 
 
 class Molecule:
-    def __init__(self, atomicnums, coordinates):
+    def __init__(self, atomicnums, coordinates, adjacency_matrix=None):
 
         atomicnums = np.asarray(atomicnums, dtype=int)
         coordinates = np.asarray(coordinates, dtype=float)
@@ -47,6 +50,11 @@ class Molecule:
         self.coordinates = coordinates
 
         self.stripped = np.all(atomicnums != 1)
+
+        if adjacency_matrix is not None:
+            self.adjacency_matrix = adjacency_matrix
+
+        self.G = None
 
     def translate(self, vector):
         assert len(vector) == 3
