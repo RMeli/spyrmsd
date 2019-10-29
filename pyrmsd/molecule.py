@@ -4,35 +4,13 @@ import qcelemental as qcel
 import numpy as np
 
 try:
-    from openbabel import pybel  # 3.0
+    # 3.0
+    from openbabel import openbabel as ob
+    from openbabel import pybel
 except ImportError:
-    import pybel  # 2.0
-
-
-def load(fname: str):
-
-    fmt = utils.format_openbabel(fname)
-
-    obmol = next(pybel.readfile(fmt, fname))
-
-    return obmol
-
-
-def openbabel_to_molecule(obmol, adjacency=True):
-
-    n = len(obmol.atoms)
-
-    atomicnums = np.zeros(n, dtype=int)
-    coordinates = np.zeros((n, 3))
-
-    for i, atom in enumerate(obmol.atoms):
-        atomicnums[i] = atom.atomicnum
-        coordinates[i] = atom.coords
-
-    if adjacency:
-        A = graph.adjacency_matrix_from_obmol(obmol)
-
-    return Molecule(atomicnums, coordinates, A)
+    # 2.0
+    import openbabel as ob
+    import pybel
 
 
 class Molecule:
@@ -96,3 +74,57 @@ class Molecule:
 
     def __len__(self):
         return self.natoms
+
+
+def load(fname: str) -> ob.OBMol:
+    """
+    Load molecule from file
+
+    Parameters
+    ----------
+    fname: str
+        File name
+
+    Returns
+    -------
+    openbabel.OBMol
+        OpenBabel molecule
+    """
+
+    fmt = utils.format_openbabel(fname)
+
+    obmol = next(pybel.readfile(fmt, fname))
+
+    return obmol
+
+
+def openbabel_to_molecule(obmol: ob.OBMol, adjacency: bool = True) -> Molecule:
+    """
+    Transform OpenBabel molecule to `pyrmsd` molecule
+
+    Parameters
+    ----------
+    obmol: ob.OBMol
+        OpenBabel molecule
+    adjacency: boolean, optional
+        Flag to decide wether to build the adjacency matrix from the OpenBabel molecule
+
+    Returns
+    -------
+    pyrmsd.molecule.Molecule
+        `pyrmsd` molecule
+    """
+
+    n = len(obmol.atoms)
+
+    atomicnums = np.zeros(n, dtype=int)
+    coordinates = np.zeros((n, 3))
+
+    for i, atom in enumerate(obmol.atoms):
+        atomicnums[i] = atom.atomicnum
+        coordinates[i] = atom.coords
+
+    if adjacency:
+        A = graph.adjacency_matrix_from_obmol(obmol)
+
+    return Molecule(atomicnums, coordinates, A)
