@@ -24,13 +24,13 @@ def M_mtx(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     Notes
     -----
     The inner product of the coordinate matrices `A` and `B` corresponds to the matrix
-    :math:`\\matbf{M}` in [1]_.
+    :math:`\\mathbf{M}` in [1]_.
 
     If :math:`S_{xy}` is defined as
 
     .. math:: S_{xy} = \\sum_i^N x_{B,i} y_{A,i}
 
-    then :math:`\\matbf{M}` is the :math:`3\\times 3` matrix given by
+    then :math:`\\mathbf{M}` is the :math:`3\\times 3` matrix given by
 
     .. math::
        \\begin{pmatrix}
@@ -61,23 +61,23 @@ def K_mtx(M):
 
     Notes
     -----
-    The symmetric key matrix corresponds to the matrix :math:`\\matbf{K}` in [1]_.
+    The symmetric key matrix corresponds to the matrix :math:`\\mathbf{K}` in [2]_.
 
     If :math:`S_{xy}` is defined as
 
     .. math:: S_{xy} = \\sum_i^N x_{B,i} y_{A,i}
 
-    then :math:`\\matbf{K}` is the :math:`4\\times 4` matrix given by
+    then :math:`\\mathbf{K}` is the :math:`4\\times 4` matrix given by
 
     .. math::
        \\begin{pmatrix}
             S_{xx} + S_{yy} + S_{zz} &  & & \\\\
             & S_{xx} - S_{yy} - S_{zz} & & \\\\
             & & -S_{xx} + S_{yy} - S_{zz} & \\\\
-            &  & -S_{xx} - S_{yy} + S_{zz} & \\\\
+            &  & & -S_{xx} - S_{yy} + S_{zz} \\\\
        \\end{pmatrix}
 
-    .. [1] D. L. Theobald, *Rapid calculation of RMSDs using a quaternion-based
+    .. [2] D. L. Theobald, *Rapid calculation of RMSDs using a quaternion-based
        characteristic polynomial*, Acta Crys. A**61**, 478-480 (2005).
     """
 
@@ -193,7 +193,38 @@ def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
     return optimize.newton(P, x0, fprime=dP)
 
 
-def qcp_rmsd(A, B):
+def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
+    """
+    Compute RMSD using the quaternion polynomial method
+
+    Parameters
+    ----------
+    A: numpy.ndarray
+        Coordinates of structure A
+    B: numpy.ndarray
+        Coordinates of structure B
+
+    Raturns
+    -------
+    float
+        RMSD between structures `A` and `B`
+
+    Raises
+    ------
+    AssertionError
+        If the shape of structures `A` and `B` is different
+
+    Notes
+    -----
+    If the structures `A` and `B` can be superimposed exactly (i.e. they differ only
+    by center-of-mass translations and rotations), we have
+
+        .. math:: G_a + G_b = 2 \\lambda_\\text{max}
+
+    This means that :math:`s = G_a + G_bb - 2 * \\lambda_\\text{max}` can become negative because of
+    numerical errors and therefore :math:`\\sqrt{s}` fails. In order to avoid this
+    problem, the final RMSD is set to :math:`0` if :math:`|s| < 10^{-12}`.
+    """
 
     assert A.shape == B.shape
 
@@ -204,8 +235,6 @@ def qcp_rmsd(A, B):
 
     M = M_mtx(A, B)
     K = K_mtx(M)
-
-    assert np.allclose(K, K.T)
 
     c2, c1, c0 = coefficients(M, K)
 
