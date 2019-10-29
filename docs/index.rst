@@ -8,7 +8,7 @@
    :maxdepth: 2
    :caption: Contents:
 
-   api
+   api/pyrmsd
 
 Indices and tables
 ==================

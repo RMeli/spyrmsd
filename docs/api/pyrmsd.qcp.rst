@@ -1,26 +1,7 @@
-pyrmsd.qcp
-==========
+pyrmsd.qcp module
+=================
 
 .. automodule:: pyrmsd.qcp
-
-   
-   
-   .. rubric:: Functions
-
-   .. autosummary::
-   
-      K_mtx
-      M_mtx
-      coefficients
-      lambda_max
-      qcp_rmsd
-   
-   
-
-   
-   
-   
-
-   
-   
-   
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,22 +1,7 @@
-pyrmsd.graph
-============
+pyrmsd.graph module
+===================
 
 .. automodule:: pyrmsd.graph
-
-   
-   
-   .. rubric:: Functions
-
-   .. autosummary::
-   
-      graph_from_molecule
-   
-   
-
-   
-   
-   
-
-   
-   
-   
+   :members:
+   :undoc-members:
+   :show-inheritance:

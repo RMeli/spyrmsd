@@ -1,24 +1,7 @@
-pyrmsd.rmsd
-===========
+pyrmsd.rmsd module
+==================
 
 .. automodule:: pyrmsd.rmsd
-
-   
-   
-   .. rubric:: Functions
-
-   .. autosummary::
-   
-      rmsd_dummy
-      rmsd_hungarian
-      rmsd_qcp
-   
-   
-
-   
-   
-   
-
-   
-   
-   
+   :members:
+   :undoc-members:
+   :show-inheritance:
