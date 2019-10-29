@@ -2,6 +2,8 @@ import numpy as np
 
 from scipy import optimize
 
+from typing import Tuple
+
 
 def M_mtx(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     """
@@ -69,10 +71,10 @@ def K_mtx(M):
 
     .. math::
        \\begin{pmatrix}
-            S_{xx} + S_{yy} + S_zz{} &  & & \\\\
-            & S_{xx} - S_{yy} - S_zz{} & & \\\\
-            & & -S_{xx} + S_{yy} - S_zz{} & \\\\
-            &  & -S_{xx} - S_{yy} + S_zz{} & \\\\
+            S_{xx} + S_{yy} + S_{zz} &  & & \\\\
+            & S_{xx} - S_{yy} - S_{zz} & & \\\\
+            & & -S_{xx} + S_{yy} - S_{zz} & \\\\
+            &  & -S_{xx} - S_{yy} + S_{zz} & \\\\
        \\end{pmatrix}
 
     .. [1] D. L. Theobald, *Rapid calculation of RMSDs using a quaternion-based
@@ -113,7 +115,36 @@ def K_mtx(M):
     )
 
 
-def coefficients(M, K):
+def coefficients(M: np.ndarray, K: np.ndarray) -> Tuple[float, float, float]:
+    """
+    Compute quaternion polynomial coefficients
+
+    Parameters
+    ----------
+    M : numpy.ndarray
+        Inner product between coordinate matrices
+    K: numpy.ndarray
+        Symmetric key matrix
+
+    Returns
+    -------
+    Tuple[float, float, float]
+        Quaternion polynomial coefficients
+
+    Notes
+    _____
+    Returns only non-zero and non-unitary coefficients (i.e. :math:`c_4=1` and
+    :math:`c_3=0` are not returned).
+
+    The non-zero and non-unitary quaternion polynomial coefficients are given by
+
+    .. math:: c_2 = -2 \\text{ tr}\\left(\\mathbf{M}^T\\mathbf{M}\\right)
+
+    .. math:: c_1 = -8 \\text{ det}(\\mathbf{M})
+
+    .. math:: c_0 = \\text{ det}(\\mathbf{K})
+
+    """
 
     c2 = -2 * np.trace(M.T @ M)
     c1 = -8 * np.linalg.det(M)  # TODO: Slow?
@@ -122,11 +153,39 @@ def coefficients(M, K):
     return c2, c1, c0
 
 
-def lambda_max(Ga, Gb, c2, c1, c0):
+def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
+    """
+    Find largest root of the quaternion polynomial
+
+    Parameters
+    ----------
+    Ga: float
+        Inner product of structure A
+    Gb:
+        Inner product of structure B
+    c2:
+        Coefficient :math:`c_2` of the quaternion polynomial
+    c1:
+        Coefficient :math:`c_1` of the quaternion polynomial
+    c0:
+        Coefficient :math:`c_0` of the quaternion polynomial
+
+    Returns
+    -------
+    float
+        Largest root of the quaternion polynomial (:math:`\\lambda_\\text{max}`)
+    """
+
     def P(x):
+        """
+        Quaternion polynomial
+        """
         return x ** 4 + c2 * x ** 2 + c1 * x + c0
 
     def dP(x):
+        """
+        Fist derivative of the quaternion polynomial
+        """
         return 4 * x ** 3 + 2 * c2 * x + c1
 
     x0 = (Ga + Gb) / 2.0
