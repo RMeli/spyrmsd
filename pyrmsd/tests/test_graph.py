@@ -1,4 +1,4 @@
-from pyrmsd import graph
+from pyrmsd import graph, molecule
 from pyrmsd.tests import molecules
 
 import numpy as np
@@ -11,17 +11,21 @@ except ImportError:
 import pytest
 
 
-def test_graph_from_molecule_benzene() -> None:
+@pytest.mark.parametrize(
+    "mol, n_bonds",
+    [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
+)
+def test_graph_from_atomic_coordinates(mol: molecule.Molecule, n_bonds: int) -> None:
 
-    mol = molecules.benzene
+    mol = molecules.dialanine
 
     G = graph.graph_from_atomic_coordinates(mol.atomicnums, mol.coordinates)
 
     assert G.number_of_nodes() == len(mol)
-    assert G.number_of_edges() == 12
+    assert G.number_of_edges() == 22
 
 
-def test_graph_from_molecule_named_benzene() -> None:
+def test_graph_from_atomic_coordinates_named_benzene() -> None:
 
     mol = molecules.benzene
 
@@ -35,26 +39,6 @@ def test_graph_from_molecule_named_benzene() -> None:
         element = nodes[node]["element"]
 
         assert element == "H" or element == "C"
-
-
-def test_graph_from_molecule_ethanol() -> None:
-
-    mol = molecules.ethanol
-
-    G = graph.graph_from_atomic_coordinates(mol.atomicnums, mol.coordinates)
-
-    assert G.number_of_nodes() == len(mol)
-    assert G.number_of_edges() == 8
-
-
-def test_graph_from_molecule_dialanine() -> None:
-
-    mol = molecules.dialanine
-
-    G = graph.graph_from_atomic_coordinates(mol.atomicnums, mol.coordinates)
-
-    assert G.number_of_nodes() == len(mol)
-    assert G.number_of_edges() == 22
 
 
 @pytest.mark.parametrize("obmol", molecules.allobmolecules)
