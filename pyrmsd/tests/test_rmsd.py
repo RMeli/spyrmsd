@@ -1,4 +1,4 @@
-from pyrmsd import rmsd
+from pyrmsd import rmsd, molecule
 from pyrmsd.tests import molecules
 
 import numpy as np
@@ -65,53 +65,22 @@ def test_rmsd_dummy_centred_benzene() -> None:
     assert rmsd.rmsd_dummy(mol1, mol2, center=True) == pytest.approx(0)
 
 
-def test_rmsd_qcp_benzene() -> None:
+@pytest.mark.parametrize("mol", molecules.allmolecules)
+def test_rmsd_qcp(mol: molecule.Molecule) -> None:
 
-    mol1 = copy.deepcopy(molecules.benzene)
-    mol2 = copy.deepcopy(molecules.benzene)
-
-    assert rmsd.rmsd_dummy(mol1, mol2) == pytest.approx(0)
-    assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
-
-    mol2.rotate(10, np.array([1, -2, -1]))
-
-    assert rmsd.rmsd_dummy(mol1, mol2) > 0.0
-
-    assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
-
-
-def test_rmsd_qcp_ethanol() -> None:
-
-    mol1 = copy.deepcopy(molecules.ethanol)
-    mol2 = copy.deepcopy(molecules.ethanol)
+    mol1 = copy.deepcopy(mol)
+    mol2 = copy.deepcopy(mol)
 
     assert rmsd.rmsd_dummy(mol1, mol2) == pytest.approx(0)
     assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
 
-    cog = mol2.center_of_geometry()
-    mol2.translate(-cog)
-    mol2.rotate(15, np.array([-2, 1, 3]))
-    mol2.translate(cog)
+    for _ in range(10):
+        mol2.translate(np.random.rand(3))
+        mol2.rotate(np.random.rand(1), np.random.rand(3))
 
-    assert rmsd.rmsd_dummy(mol1, mol2) > 0.0
+        assert rmsd.rmsd_dummy(mol1, mol2) > 0.0
 
-    assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
-
-
-def test_rmsd_qcp_dialanine() -> None:
-
-    mol1 = copy.deepcopy(molecules.dialanine)
-    mol2 = copy.deepcopy(molecules.dialanine)
-
-    assert rmsd.rmsd_dummy(mol1, mol2) == pytest.approx(0)
-    assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
-
-    mol2.translate(5 * np.random.rand(3))
-    mol2.rotate(15, np.array([-2, 1, 3]))
-
-    assert rmsd.rmsd_dummy(mol1, mol2) > 0.0
-
-    assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
+        assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
 
 
 # Results obtained with PyTraj
