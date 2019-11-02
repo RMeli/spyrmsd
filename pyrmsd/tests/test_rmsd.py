@@ -149,3 +149,15 @@ def test_rmsd_hungarian_benzene_shifted_rotated(angle: float, tol: float) -> Non
 
     assert rmsd.rmsd_dummy(mol1, mol2) > 1
     assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(1, abs=tol)
+
+
+@pytest.mark.parametrize("mol", molecules.allmolecules)
+def test_rmsd_hungarian_centred(mol: molecule.Molecule) -> None:
+
+    mol1 = copy.deepcopy(mol)
+    mol2 = copy.deepcopy(mol)
+
+    mol2.translate(np.random.rand(3))
+
+    assert rmsd.rmsd_hungarian(mol1, mol2) > 0
+    assert rmsd.rmsd_hungarian(mol1, mol2, center=True) == pytest.approx(0)
