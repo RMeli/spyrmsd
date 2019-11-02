@@ -4,33 +4,30 @@ import pytest
 import numpy as np
 
 
-def test_format():
-    for ext in ["pdf", "smi", "xyz"]:
-        for fname in ["test", "root/test", "root/test.test"]:
-            fmt = utils.format(f"{fname}.{ext}")
-            assert fmt == ext
-
-
-def test_format_openbabel():
-
-    for ext in ["smi", "pdb"]:
-        for fname in ["test", "root/test", "root/test.test"]:
-            fmt = utils.format_openbabel(f"{fname}.{ext}")
-            assert fmt == ext
-
-    # .xyz extension has to be capitalized (XYZ)
+@pytest.mark.parametrize("ext", ["pdf", "smi", "xyz"])
+def test_format(ext: str) -> None:
     for fname in ["test", "root/test", "root/test.test"]:
-        fmt = utils.format_openbabel(f"{fname}.xyz")
-        assert fmt == "XYZ"
+        fmt = utils.format(f"{fname}.{ext}")
+        assert fmt == ext
 
 
-def test_deg_to_rad():
+@pytest.mark.parametrize(
+    "extin, extout", [("smi", "smi"), ("pdb", "pdb"), ("xyz", "XYZ")]
+)
+def test_format_openbabel(extin: str, extout: str) -> None:
 
-    assert utils.deg_to_rad(0) == pytest.approx(0)
-    assert utils.deg_to_rad(90) == pytest.approx(np.pi / 2)
-    assert utils.deg_to_rad(180) == pytest.approx(np.pi)
-    assert utils.deg_to_rad(270) == pytest.approx(3 * np.pi / 2)
-    assert utils.deg_to_rad(360) == pytest.approx(2 * np.pi)
+    for fname in ["test", "root/test", "root/test.test"]:
+        fmt = utils.format_openbabel(f"{fname}.{extin}")
+        assert fmt == extout
+
+
+@pytest.mark.parametrize(
+    "deg, rad",
+    [(0, 0), (90, np.pi / 2), (180, np.pi), (270, 3 * np.pi / 2), (360, 2 * np.pi)],
+)
+def test_deg_to_rad(deg: float, rad: float) -> None:
+
+    assert utils.deg_to_rad(deg) == pytest.approx(rad)
 
 
 def test_rotate_invalid():
