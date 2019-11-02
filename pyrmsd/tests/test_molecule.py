@@ -1,101 +1,93 @@
 from pyrmsd import molecule, utils
 from pyrmsd.tests import molecules
 
-import qcelemental as qcel
+import pytest
 
-import copy
+import qcelemental as qcel
 
 import numpy as np
 
+from collections import defaultdict
+from typing import List, Tuple, DefaultDict
+import copy
 
-def test_load_benzene() -> None:
 
-    mol = molecules.benzene
+# atoms is a list of atomic numbers and atom counts
+@pytest.mark.parametrize(
+    "mol, atoms",
+    [
+        (molecules.benzene, [(1, 6), (6, 6)]),
+        (molecules.ethanol, [(1, 6), (6, 2), (8, 1)]),
+        (molecules.dialanine, [(1, 12), (6, 6), (7, 2), (8, 3)]),
+    ],
+)
+def test_load_benzene(mol: molecule.Molecule, atoms: List[Tuple[int, int]]) -> None:
 
-    assert len(mol) == 12
+    n = sum([n_atoms for _, n_atoms in atoms])
 
-    num_h = num_c = 0
+    assert len(mol) == n
+    assert mol.atomicnums.shape == (n,)
+    assert mol.coordinates.shape == (n, 3)
+
+    # Count number of atoms of different elements
+    atomcount: DefaultDict[int, int] = defaultdict(int)
     for atomicnum in mol.atomicnums:
-        if atomicnum == 1:
-            num_h += 1
-        if atomicnum == 6:
-            num_c += 1
-    assert num_h == num_c == 6
+        atomcount[atomicnum] += 1
 
-    assert mol.atomicnums.shape == (12,)
-    assert mol.coordinates.shape == (12, 3)
+    assert len(atomcount) == len(atoms)
+
+    for Z, n_atoms in atoms:
+        assert atomcount[Z] == n_atoms
 
 
-def test_load_ethanol() -> None:
+@pytest.mark.parametrize("mol", molecules.allmolecules)
+def test_molecule_translate(mol: molecule.Molecule) -> None:
 
-    mol = molecules.ethanol
+    mt = copy.deepcopy(mol)
 
-    assert len(mol) == 9
+    t = np.array([0.5, 1.1, -0.1])
+    mt.translate(t)
 
-    num_h = num_c = num_o = 0
-    for atomicnum in mol.atomicnums:
-        if atomicnum == 1:
-            num_h += 1
-        if atomicnum == 6:
-            num_c += 1
-        if atomicnum == 8:
-            num_o += 1
-    assert num_h == 6
-    assert num_c == 2
-    assert num_o == 1
+    for tcoord, coord in zip(mt.coordinates, mol.coordinates):
+        assert np.allclose(tcoord - t, coord)
 
 
-def test_molecule_translate() -> None:
+@pytest.mark.parametrize("mol", molecules.allmolecules)
+def test_molecule_rotate_z(mol: molecule.Molecule) -> None:
 
-    for mol in molecules.xyz:
+    z_axis = np.array([0, 0, 1])
 
-        mt = copy.deepcopy(mol)
+    for angle in [0, 45, 90]:
 
-        t = np.array([0.5, 1.1, -0.1])
-        mt.translate(t)
+        rotated = np.zeros((len(mol), 3))
+        for i, coord in enumerate(mol.coordinates):
+            rotated[i] = utils.rotate(coord, angle, z_axis, units="deg")
 
-        for tcoord, coord in zip(mt.coordinates, mol.coordinates):
-            assert np.allclose(tcoord - t, coord)
+        mol.rotate(angle, z_axis, units="deg")
 
+        assert np.allclose(mol.coordinates, rotated)
 
-def test_molecule_rotate_z() -> None:
-
-    for mol in molecules.xyz:
-
-        z_axis = np.array([0, 0, 1])
-
-        for angle in [0, 45, 90]:
-
-            rotated = np.zeros((len(mol), 3))
-            for i, coord in enumerate(mol.coordinates):
-                rotated[i] = utils.rotate(coord, angle, z_axis, units="deg")
-
-            mol.rotate(angle, z_axis, units="deg")
-
-            assert np.allclose(mol.coordinates, rotated)
-
-            # Reset
-            mol.rotate(-angle, z_axis, units="deg")
+        # Reset
+        mol.rotate(-angle, z_axis, units="deg")
 
 
-def test_molecule_rotate() -> None:
+@pytest.mark.parametrize("mol", molecules.allmolecules)
+def test_molecule_rotate(mol: molecule.Molecule) -> None:
 
-    for mol in molecules.xyz:
+    axis = np.random.rand(3)
 
-        axis = np.random.rand(3)
+    for angle in np.random.rand(10) * 180:
 
-        for angle in np.random.rand(10) * 180:
+        rotated = np.zeros((len(mol), 3))
+        for i, coord in enumerate(mol.coordinates):
+            rotated[i] = utils.rotate(coord, angle, axis, units="deg")
 
-            rotated = np.zeros((len(mol), 3))
-            for i, coord in enumerate(mol.coordinates):
-                rotated[i] = utils.rotate(coord, angle, axis, units="deg")
+        mol.rotate(angle, axis, units="deg")
 
-            mol.rotate(angle, axis, units="deg")
+        assert np.allclose(mol.coordinates, rotated)
 
-            assert np.allclose(mol.coordinates, rotated)
-
-            # Reset
-            mol.rotate(-angle, axis, units="deg")
+        # Reset
+        mol.rotate(-angle, axis, units="deg")
 
 
 def test_molecule_center_of_geometry_benzene() -> None:
@@ -137,12 +129,18 @@ def test_molecule_center_of_mass_HF() -> None:
     assert np.allclose(mol.center_of_mass(), np.array([0, 0, z_com]))
 
 
-def test_molecule_strip_dialanine() -> None:
+@pytest.mark.parametrize(
+    "mol, n_atoms, stripped",
+    [
+        (molecules.benzene, 12, 6),
+        (molecules.ethanol, 9, 6),
+        (molecules.dialanine, 23, 12),
+    ],
+)
+def test_molecule_strip(mol: molecule.Molecule, n_atoms: int, stripped: int) -> None:
 
-    mol = molecules.dialanine
-
-    assert len(mol) == 23
+    assert len(mol) == n_atoms
 
     mol.strip()
 
-    assert len(mol) == 11
+    assert len(mol) == n_atoms - stripped

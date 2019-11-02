@@ -33,10 +33,10 @@ obdialanine, dialanine = load("dialanine.sdf")
 obsdf = [obdialanine]
 sdf = [dialanine]
 
+allmolecules = xyz + sdf
+allobmolecules = obxyz + obsdf
+
 docking_2viz = {}
 obdocking_2viz = {}
 for i in [1, 2, 3]:
     obdocking_2viz[i], docking_2viz[i] = load(f"2viz_{i}.sdf")
-
-allobmolecules = obxyz + obsdf + list(obdocking_2viz.values())
-allmolecules = xyz + sdf
