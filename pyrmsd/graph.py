@@ -31,7 +31,8 @@ def graph_from_adjacency_matrix(adjacency_matrix: np.ndarray) -> nx.Graph:
     return nx.convert_matrix.from_numpy_array(adjacency_matrix)
 
 
-def graph_from_molecule(atomicnums, coordinates, named=False):
+# TODO: Refactor to take a molecule as input
+def graph_from_atomic_coordinates(atomicnums, coordinates, named=False):
 
     n = len(atomicnums)
 
@@ -79,7 +80,7 @@ if __name__ == "__main__":
     obmol = molecule.load(args.input)
     mol = molecule.openbabel_to_molecule(obmol)
 
-    G = graph_from_molecule(mol.atomicnums, mol.coordinates, named=True)
+    G = graph_from_atomic_coordinates(mol.atomicnums, mol.coordinates, named=True)
     labels = nx.get_node_attributes(G, "element")
 
     nx.draw_kamada_kawai(G, labels=labels)
