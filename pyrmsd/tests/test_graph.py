@@ -2,6 +2,7 @@ from pyrmsd import graph, molecule
 from pyrmsd.tests import molecules
 
 import numpy as np
+import networkx as nx
 
 try:
     from openbabel import openbabel as ob
@@ -76,3 +77,33 @@ def test_graph_from_adjacency_matrix(obmol) -> None:
 
     assert G.number_of_nodes() == natoms
     assert G.number_of_edges() == nbonds
+
+
+@pytest.mark.parametrize(
+    "G1, G2",
+    [
+        *[(nx.path_graph(n), nx.path_graph(n)) for n in range(5)],
+        *[(nx.star_graph(n), nx.star_graph(n)) for n in range(5)],
+        *[(nx.cycle_graph(n), nx.cycle_graph(n)) for n in range(1, 5)],
+    ],
+)
+def test_match_graphs_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
+
+    mapping = graph.match_graphs(G1, G2)
+
+    for old, new in mapping.items():
+        assert old == new
+
+
+@pytest.mark.parametrize(
+    "G1, G2",
+    [
+        *[(nx.path_graph(n), nx.path_graph(n + 1)) for n in range(5)],
+        *[(nx.star_graph(n), nx.star_graph(n + 1)) for n in range(5)],
+        *[(nx.cycle_graph(n), nx.cycle_graph(n + 1)) for n in range(1, 5)],
+    ],
+)
+def test_match_graphs_not_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
+
+    with pytest.raises(ValueError):
+        graph.match_graphs(G1, G2)

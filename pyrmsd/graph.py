@@ -7,7 +7,9 @@ try:
 except ImportError:
     import openbabel as ob
 
+from typing import Dict
 
+# TODO: Move elsewhere?
 covalent_bond_multiplier: float = 1.2
 
 
@@ -61,6 +63,17 @@ def graph_from_atomic_coordinates(atomicnums, coordinates, named=False):
         nx.set_node_attributes(G, mapping)
 
     return G
+
+
+def match_graphs(G1: nx.Graph, G2: nx.Graph) -> Dict[int, int]:
+
+    GM = nx.algorithms.isomorphism.GraphMatcher(G1, G2)
+
+    if not GM.is_isomorphic():
+        # TODO: Create a new exception
+        raise ValueError(f"Graphs {G1} and {G2} are not isomorphic.")
+
+    return GM.mapping
 
 
 if __name__ == "__main__":
