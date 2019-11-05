@@ -64,16 +64,19 @@ def rmsd_isomorphic(mol1, mol2, center=False):
 
     isomorphisms = graph.match_graphs(G1, G2)
 
-    min_rmsd = np.inf
+    # Minimum squared displacement
+    min_sd = np.inf
     for isomorphism in isomorphisms:
-        # Use the mapping to shuffle coordinates around
+
+        # Use the isomorphism to shuffle coordinates around (from original order)
         c1i = c1[list(isomorphism.keys()), :]
         c2i = c2[list(isomorphism.values()), :]
 
-        # Apply dummy RMSD formula on shuffled coordinates
-        rmsd = np.sqrt(np.sum((c1i - c2i) ** 2) / n)
-        print(isomorphism, rmsd)
-        if rmsd < min_rmsd:
-            min_rmsd = rmsd
+        # Compute square displacement
+        # Avoid dividing by n and an expensive sqrt() operation
+        sd = np.sum((c1i - c2i) ** 2)
 
-    return min_rmsd
+        if sd < min_sd:
+            min_sd = sd
+
+    return np.sqrt(min_sd / n)
