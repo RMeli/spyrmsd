@@ -7,7 +7,7 @@ try:
 except ImportError:
     import openbabel as ob
 
-from typing import Dict, Any
+from typing import List, Dict, Any
 
 # TODO: Move elsewhere?
 covalent_bond_multiplier: float = 1.2
@@ -65,7 +65,7 @@ def graph_from_atomic_coordinates(atomicnums, coordinates, named=False):
     return G
 
 
-def match_graphs(G1: nx.Graph, G2: nx.Graph) -> Dict[Any, Any]:
+def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
     """
     Compute RMSD using the quaternion polynomial method
 
@@ -93,7 +93,7 @@ def match_graphs(G1: nx.Graph, G2: nx.Graph) -> Dict[Any, Any]:
         # TODO: Create a new exception
         raise ValueError(f"Graphs {G1} and {G2} are not isomorphic.")
 
-    return GM.mapping
+    return [isomorphism for isomorphism in GM.isomorphisms_iter()]
 
 
 if __name__ == "__main__":

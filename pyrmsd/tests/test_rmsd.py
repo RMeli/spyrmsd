@@ -173,3 +173,16 @@ def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
 
     assert rmsd.rmsd_isomorphic(mol1, mol2) > 0
     assert rmsd.rmsd_isomorphic(mol1, mol2, center=True) == pytest.approx(0)
+
+
+def test_rmsd_isomorphic_rotated_benzene() -> None:
+
+    mol1 = copy.deepcopy(molecules.benzene)
+    mol2 = copy.deepcopy(molecules.benzene)
+
+    mol2.rotate(60, np.array([0, 0, 1]), units="deg")
+
+    assert rmsd.rmsd_dummy(mol1, mol2) > 0
+    assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
+    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(0, abs=1e-5)
+    assert rmsd.rmsd_isomorphic(mol1, mol2) == pytest.approx(0, abs=1e-5)

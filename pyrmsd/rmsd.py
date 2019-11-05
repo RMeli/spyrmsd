@@ -62,11 +62,18 @@ def rmsd_isomorphic(mol1, mol2, center=False):
     G1 = mol1.to_graph()
     G2 = mol2.to_graph()
 
-    mapping = graph.match_graphs(G1, G2)
+    isomorphisms = graph.match_graphs(G1, G2)
 
-    # Use the mapping to shuffle coordinates around
-    c1 = c1[list(mapping.keys()), :]
-    c2 = c2[list(mapping.values()), :]
+    min_rmsd = np.inf
+    for isomorphism in isomorphisms:
+        # Use the mapping to shuffle coordinates around
+        c1i = c1[list(isomorphism.keys()), :]
+        c2i = c2[list(isomorphism.values()), :]
 
-    # Apply dummy RMSD formula on shuffled coordinates
-    return np.sqrt(np.sum((c1 - c2) ** 2) / n)
+        # Apply dummy RMSD formula on shuffled coordinates
+        rmsd = np.sqrt(np.sum((c1i - c2i) ** 2) / n)
+        print(isomorphism, rmsd)
+        if rmsd < min_rmsd:
+            min_rmsd = rmsd
+
+    return min_rmsd

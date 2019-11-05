@@ -89,10 +89,9 @@ def test_graph_from_adjacency_matrix(obmol) -> None:
 )
 def test_match_graphs_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
 
-    mapping = graph.match_graphs(G1, G2)
+    isomorphisms = graph.match_graphs(G1, G2)
 
-    for old, new in mapping.items():
-        assert old == new
+    assert len(isomorphisms) != 0
 
 
 @pytest.mark.parametrize(
