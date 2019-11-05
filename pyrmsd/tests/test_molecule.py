@@ -139,8 +139,10 @@ def test_molecule_center_of_mass_HF() -> None:
 )
 def test_molecule_strip(mol: molecule.Molecule, n_atoms: int, stripped: int) -> None:
 
-    assert len(mol) == n_atoms
+    m = copy.deepcopy(mol)
 
-    mol.strip()
+    assert len(m) == n_atoms
 
-    assert len(mol) == n_atoms - stripped
+    m.strip()
+
+    assert len(m) == n_atoms - stripped
