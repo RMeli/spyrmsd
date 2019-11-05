@@ -82,9 +82,9 @@ def test_graph_from_adjacency_matrix(obmol) -> None:
 @pytest.mark.parametrize(
     "G1, G2",
     [
-        *[(nx.path_graph(n), nx.path_graph(n)) for n in range(5)],
-        *[(nx.star_graph(n), nx.star_graph(n)) for n in range(5)],
-        *[(nx.cycle_graph(n), nx.cycle_graph(n)) for n in range(1, 5)],
+        *[(nx.path_graph(n), nx.path_graph(n)) for n in range(3)],
+        *[(nx.star_graph(n), nx.star_graph(n)) for n in range(3)],
+        *[(nx.cycle_graph(n), nx.cycle_graph(n)) for n in range(1, 3)],
     ],
 )
 def test_match_graphs_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
@@ -97,9 +97,9 @@ def test_match_graphs_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
 @pytest.mark.parametrize(
     "G1, G2",
     [
-        *[(nx.path_graph(n), nx.path_graph(n + 1)) for n in range(5)],
-        *[(nx.star_graph(n), nx.star_graph(n + 1)) for n in range(5)],
-        *[(nx.cycle_graph(n), nx.cycle_graph(n + 1)) for n in range(1, 5)],
+        *[(nx.path_graph(n), nx.path_graph(n + 1)) for n in range(3)],
+        *[(nx.star_graph(n), nx.star_graph(n + 1)) for n in range(3)],
+        *[(nx.cycle_graph(n), nx.cycle_graph(n + 1)) for n in range(1, 3)],
     ],
 )
 def test_match_graphs_not_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
