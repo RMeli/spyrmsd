@@ -19,7 +19,7 @@ def load(fname: str) -> Tuple[pybel.Molecule, molecule.Molecule]:
 
     obmol = molecule.load(fname)
 
-    mol = molecule.openbabel_to_molecule(obmol)
+    mol = molecule.openbabel_to_molecule(obmol, adjacency=True)
 
     return obmol, mol
 

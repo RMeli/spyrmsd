@@ -161,3 +161,15 @@ def test_rmsd_hungarian_centred(mol: molecule.Molecule) -> None:
 
     assert rmsd.rmsd_hungarian(mol1, mol2) > 0
     assert rmsd.rmsd_hungarian(mol1, mol2, center=True) == pytest.approx(0)
+
+
+@pytest.mark.parametrize("mol", molecules.allmolecules)
+def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
+
+    mol1 = copy.deepcopy(mol)
+    mol2 = copy.deepcopy(mol)
+
+    mol2.translate(np.random.rand(3))
+
+    assert rmsd.rmsd_isomorphic(mol1, mol2) > 0
+    assert rmsd.rmsd_isomorphic(mol1, mol2, center=True) == pytest.approx(0)

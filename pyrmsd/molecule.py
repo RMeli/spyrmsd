@@ -70,7 +70,13 @@ class Molecule:
             self.stripped = True
 
     def to_graph(self):
-        raise NotImplementedError
+        if self.G is None:
+            if self.adjacency_matrix is not None:
+                self.G = graph.graph_from_adjacency_matrix(self.adjacency_matrix)
+            else:
+                raise NotImplementedError
+
+        return self.G
 
     def __len__(self):
         return self.natoms
