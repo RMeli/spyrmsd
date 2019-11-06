@@ -123,7 +123,7 @@ def rotate(v: np.array, angle: float, axis: np.array, units: str = "rad") -> np.
             f"Units {units} for angle is not supported. Use 'deg' or 'rad' instead."
         )
 
-    t1 = axis * np.dot(axis, v)
+    t1 = np.outer(axis, np.inner(axis, v)).T
     t2 = np.cos(angle) * np.cross(np.cross(axis, v), axis)
     t3 = np.sin(angle) * np.cross(axis, v)
 

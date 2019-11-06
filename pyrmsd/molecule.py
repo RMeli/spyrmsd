@@ -38,15 +38,11 @@ class Molecule:
 
     def translate(self, vector):
         assert len(vector) == 3
-        # TODO: More efficient (numpy vectorsation)
-        for i, coord in enumerate(self.coordinates):
-            self.coordinates[i] += vector
+        self.coordinates += vector
 
     def rotate(self, angle, axis, units="rad"):
         assert len(axis) == 3
-        # TODO: More efficient (numpy vectorsation)
-        for i, coord in enumerate(self.coordinates):
-            self.coordinates[i] = utils.rotate(coord, angle, axis, units)
+        self.coordinates = utils.rotate(self.coordinates, angle, axis, units)
 
     def center_of_mass(self):
         if self.masses is None:
