@@ -13,22 +13,52 @@ from typing import List, Dict, Any
 covalent_bond_multiplier: float = 1.2
 
 
-def adjacency_matrix_from_obmol(obmol):
+def adjacency_matrix_from_obmol(obmol: ob.OBMol) -> np.ndarray:
+    """
+    Adjacency matrix from OpenBabel molecule.
+
+    Parameters
+    ----------
+    openbabel.OBMol
+        OpenBabel molecule
+
+    Returns
+    -------
+    np.ndarray
+        Adjacency matrix of the molecule
+    """
 
     n = len(obmol.atoms)
 
+    # Pre-allocate memory for  the adjacency matrix
     A = np.zeros((n, n), dtype=int)
 
+    # Loop over molecular bonds
     for bond in ob.OBMolBondIter(obmol.OBMol):
-        i = bond.GetBeginAtomIdx() - 1
-        j = bond.GetEndAtomIdx() - 1
+        # Bonds are 1-indexed
+        i: int = bond.GetBeginAtomIdx() - 1
+        j: int = bond.GetEndAtomIdx() - 1
 
+        # A molecular graph is undirected
         A[i, j] = A[j, i] = 1
 
     return A
 
 
 def graph_from_adjacency_matrix(adjacency_matrix: np.ndarray) -> nx.Graph:
+    """
+    Graph from andjacency matrix.
+
+    Parameters
+    ----------
+    adjacency_matrix: np.ndarray
+        Adjacency matrix
+
+    Returns
+    -------
+    nx.Graph
+        NetworkX graph
+    """
 
     return nx.convert_matrix.from_numpy_array(adjacency_matrix)
 
@@ -78,8 +108,8 @@ def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
 
     Raturns
     -------
-    Dice[Any, Any]
-        Mapping between nodes of graph 1 and graph 2
+    List[Dict[Any, Any]]
+        All possible mappings between nodes of graph 1 and graph 2 (isomorphisms)
 
     Raises
     ------
@@ -89,10 +119,12 @@ def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
 
     GM = nx.algorithms.isomorphism.GraphMatcher(G1, G2)
 
+    # Check if graphs are actually isomorphic
     if not GM.is_isomorphic():
         # TODO: Create a new exception
         raise ValueError(f"Graphs {G1} and {G2} are not isomorphic.")
 
+    # Extract all isomorphisms in a list
     return [isomorphism for isomorphism in GM.isomorphisms_iter()]
 
 
