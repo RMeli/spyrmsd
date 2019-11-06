@@ -14,6 +14,19 @@ molpath = os.path.join(fdir, os.pardir, "data/molecules/")
 
 
 def load(fname: str) -> Tuple[pybel.Molecule, molecule.Molecule]:
+    """
+    Load molecule from file.
+
+    Parameters
+    ----------
+    fname: str
+        Input file name
+
+    Returns
+    -------
+    Tuple[pybel.Molecule, molecule.Molecule]
+        Loaded molecule as `pybel.Molecule` and `pyrmsd.molecule.Molecule`
+    """
 
     fname = os.path.join(molpath, fname)
 
