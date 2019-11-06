@@ -67,6 +67,9 @@ class Molecule:
             # Update number of atoms
             self.natoms = len(self.atomicnums)
 
+            # Update adjacency matrix
+            self.adjacency_matrix = self.adjacency_matrix[np.ix_(idx, idx)]
+
             self.stripped = True
 
     def to_graph(self):

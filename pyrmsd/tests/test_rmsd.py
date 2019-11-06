@@ -187,3 +187,20 @@ def test_rmsd_isomorphic_rotated_benzene(angle: float) -> None:
     assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
     assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(0, abs=1e-5)
     assert rmsd.rmsd_isomorphic(mol1, mol2) == pytest.approx(0, abs=1e-5)
+
+
+@pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
+def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
+
+    mol1 = copy.deepcopy(molecules.benzene)
+    mol2 = copy.deepcopy(molecules.benzene)
+
+    mol2.rotate(angle, np.array([0, 0, 1]), units="deg")
+
+    mol1.strip()
+    mol2.strip()
+
+    assert rmsd.rmsd_dummy(mol1, mol2) > 0
+    assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
+    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(0, abs=1e-5)
+    assert rmsd.rmsd_isomorphic(mol1, mol2) == pytest.approx(0, abs=1e-5)
