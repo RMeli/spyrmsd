@@ -3,6 +3,8 @@ from pyrmsd import utils, graph
 import qcelemental as qcel
 import numpy as np
 
+import networkx as nx
+
 try:
     # 3.0
     from openbabel import openbabel as ob
@@ -12,6 +14,8 @@ except ImportError:
     import openbabel as ob
     import pybel
 
+from typing import List
+
 
 class Molecule:
     def __init__(self, atomicnums, coordinates, adjacency_matrix=None):
@@ -19,7 +23,7 @@ class Molecule:
         atomicnums = np.asarray(atomicnums, dtype=int)
         coordinates = np.asarray(coordinates, dtype=float)
 
-        self.natoms = len(atomicnums)
+        self.natoms: int = len(atomicnums)
 
         assert atomicnums.shape == (self.natoms,)
         assert coordinates.shape == (self.natoms, 3)
@@ -27,33 +31,33 @@ class Molecule:
         self.atomicnums = atomicnums
         self.coordinates = coordinates
 
-        self.stripped = np.all(atomicnums != 1)
+        self.stripped: bool = np.all(atomicnums != 1)
 
         if adjacency_matrix is not None:
-            self.adjacency_matrix = adjacency_matrix
+            self.adjacency_matrix = np.asarray(adjacency_matrix, dtype=int)
 
-        self.G = None
+        self.G: nx.Graph = None
 
-        self.masses = None
+        self.masses: List[float] = None
 
-    def translate(self, vector):
+    def translate(self, vector: np.ndarray):
         assert len(vector) == 3
         self.coordinates += vector
 
-    def rotate(self, angle, axis, units="rad"):
+    def rotate(self, angle: float, axis: np.ndarray, units: str = "rad"):
         assert len(axis) == 3
         self.coordinates = utils.rotate(self.coordinates, angle, axis, units)
 
-    def center_of_mass(self):
+    def center_of_mass(self) -> np.ndarray:
         if self.masses is None:
             self.masses = [qcel.periodictable.to_mass(anum) for anum in self.atomicnums]
 
         return np.average(self.coordinates, axis=0, weights=self.masses)
 
-    def center_of_geometry(self):
+    def center_of_geometry(self) -> np.ndarray:
         return np.mean(self.coordinates, axis=0)
 
-    def strip(self):
+    def strip(self) -> None:
 
         if not self.stripped:
             idx = self.atomicnums != 1  # Hydrogen atoms
@@ -70,7 +74,7 @@ class Molecule:
 
             self.stripped = True
 
-    def to_graph(self):
+    def to_graph(self) -> nx.Graph:
         if self.G is None:
             if self.adjacency_matrix is not None:
                 self.G = graph.graph_from_adjacency_matrix(self.adjacency_matrix)
@@ -79,7 +83,7 @@ class Molecule:
 
         return self.G
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.natoms
 
 
