@@ -180,6 +180,26 @@ def load(fname: str) -> ob.OBMol:
     return obmol
 
 
+def loadall(fname: str) -> List[ob.OBMol]:
+    """
+    Load molecules from file
+
+    Parameters
+    ----------
+    fname: str
+        File name
+
+    Returns
+    -------
+    List[openbabel.OBMol]
+        List of OpenBabel molecules
+    """
+
+    fmt = utils.format_openbabel(fname)
+
+    return [obmol for obmol in pybel.readfile(fmt, fname)]
+
+
 def openbabel_to_molecule(obmol: ob.OBMol, adjacency: bool = True) -> Molecule:
     """
     Transform OpenBabel molecule to `pyrmsd` molecule
