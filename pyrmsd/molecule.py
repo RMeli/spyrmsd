@@ -34,6 +34,8 @@ class Molecule:
 
         self.G = None
 
+        self.masses = None
+
     def translate(self, vector):
         assert len(vector) == 3
         # TODO: More efficient (numpy vectorsation)
@@ -47,10 +49,10 @@ class Molecule:
             self.coordinates[i] = utils.rotate(coord, angle, axis, units)
 
     def center_of_mass(self):
-        # TODO: Cache this
-        masses = [qcel.periodictable.to_mass(anum) for anum in self.atomicnums]
+        if self.masses is None:
+            self.masses = [qcel.periodictable.to_mass(anum) for anum in self.atomicnums]
 
-        return np.average(self.coordinates, axis=0, weights=masses)
+        return np.average(self.coordinates, axis=0, weights=self.masses)
 
     def center_of_geometry(self):
         return np.mean(self.coordinates, axis=0)
