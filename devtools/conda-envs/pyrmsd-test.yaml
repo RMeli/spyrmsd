@@ -17,3 +17,7 @@ dependencies:
 
   # Plotting
   - matplotlib
+
+  # Testing
+  - pytest
+  - pytest-cov
