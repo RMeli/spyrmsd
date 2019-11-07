@@ -3,6 +3,16 @@ from pyrmsd import qcp, hungarian, graph, molecule
 import numpy as np
 
 
+def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.ndarray:
+
+    if center:
+        coords = mol.coordinates - mol.center_of_geometry()
+    else:
+        coords = mol.coordinates
+
+    return coords
+
+
 def rmsd_dummy(
     mol1: molecule.Molecule, mol2: molecule.Molecule, center: bool = False
 ) -> float:
@@ -36,12 +46,8 @@ def rmsd_dummy(
 
     n = len(mol1)
 
-    c1 = mol1.coordinates
-    c2 = mol2.coordinates
-
-    if center:
-        c1 -= mol1.center_of_geometry()
-        c2 -= mol2.center_of_geometry()
+    c1 = coords_from_molecule(mol1, center)
+    c2 = coords_from_molecule(mol2, center)
 
     return np.sqrt(np.sum((c1 - c2) ** 2) / n)
 
@@ -73,8 +79,8 @@ def rmsd_qcp(mol1, mol2) -> float:
 
     assert np.all(mol1.atomicnums == mol2.atomicnums)
 
-    c1 = mol1.coordinates - mol1.center_of_geometry()
-    c2 = mol2.coordinates - mol2.center_of_geometry()
+    c1 = coords_from_molecule(mol1, center=True)
+    c2 = coords_from_molecule(mol2, center=True)
 
     return qcp.qcp_rmsd(c1, c2)
 
@@ -110,12 +116,8 @@ def rmsd_hungarian(mol1, mol2, center=False):
     assert mol1.atomicnums.shape == mol2.atomicnums.shape
     assert mol1.coordinates.shape == mol2.coordinates.shape
 
-    c1 = mol1.coordinates
-    c2 = mol2.coordinates
-
-    if center:
-        c1 -= mol1.center_of_geometry()
-        c2 -= mol2.center_of_geometry()
+    c1 = coords_from_molecule(mol1, center)
+    c2 = coords_from_molecule(mol2, center)
 
     return hungarian.hungarian_rmsd(c1, c2, mol1.atomicnums, mol2.atomicnums)
 
@@ -142,12 +144,8 @@ def rmsd_isomorphic(mol1, mol2, center=False):
 
     n = len(mol1)
 
-    c1 = mol1.coordinates
-    c2 = mol2.coordinates
-
-    if center:
-        c1 -= mol1.center_of_geometry()
-        c2 -= mol2.center_of_geometry()
+    c1 = coords_from_molecule(mol1, center)
+    c2 = coords_from_molecule(mol2, center)
 
     # Convert molecules to graphs
     G1 = mol1.to_graph()
@@ -182,11 +180,8 @@ def rmsd_qcp_isomorphic(mol1: molecule.Molecule, mol2: molecule.Molecule) -> flo
     assert mol1.atomicnums.shape == mol2.atomicnums.shape
     assert mol1.coordinates.shape == mol2.coordinates.shape
 
-    c1 = mol1.coordinates
-    c2 = mol2.coordinates
-
-    c1 -= mol1.center_of_geometry()
-    c2 -= mol2.center_of_geometry()
+    c1 = coords_from_molecule(mol1, center=True)
+    c2 = coords_from_molecule(mol2, center=True)
 
     # Convert molecules to graphs
     G1 = mol1.to_graph()
