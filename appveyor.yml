@@ -7,7 +7,6 @@ environment:
     - PYTHON: "C:\\Miniconda37-x64"
       PYTHON_VERSION: "3.7"
       PYTHON_ARCH: "64"
-  
 
 install:
     # Make sure pip is around
@@ -24,7 +23,7 @@ install:
   - conda update --all
 
     # Create test environment for package
-  - python devtools\\scripts\\create_conda_env.py -n=test -p=%PYTHON_VERSION% devtools\\conda-envs\\pyrmsd.yaml
+  - python devtools\\scripts\\create_conda_env.py -n=test -p=%PYTHON_VERSION% devtools\\conda-envs\\pyrmsd-all.yaml
 
     # Activate the test environment
   - activate test
@@ -32,12 +31,16 @@ install:
     # Build and install package
   - python setup.py develop --no-deps
 
-  
 build: false
 
 test_script:
     # Run test and get coverage report
   - pytest -v --cov=pyrmsd tests
+
+    # Run checks
+  - black .
+  - flake8
+  - mypy
 
 on_success:
     # Upload coverage report to codecov

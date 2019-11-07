@@ -17,7 +17,6 @@ matrix:
       language: generic
       env: PYTHON_VER=3.7
 
-
 before_install:
     # Additional info about the build
   - uname -a
@@ -30,16 +29,20 @@ before_install:
 
 install:
     # Create test environment for package
-  - python devtools/scripts/create_conda_env.py -n=test -p=$PYTHON_VER devtools/conda-envs/pyrmsd.yaml
+  - python devtools/scripts/create_conda_env.py -n=test -p=$PYTHON_VER devtools/conda-envs/pyrmsd-all.yaml
     # Activate the test environment
   - conda activate test
     # Build and install package
   - python setup.py develop --no-deps
 
-
 script:
     # Run test and get coverage report
   - pytest -v --cov=pyrmsd tests/
+
+    # Run checks
+  - black .
+  - flake8
+  - mypy
 
 after_success:
     # Upload coverage report to codecov

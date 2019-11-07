@@ -50,6 +50,32 @@ optional arguments:
   -v, --verbose   Verbose output
 ```
 
+## Contributions
+
+### Formatting
+
+The code is automatically formatted using [black](https://black.readthedocs.io/en/stable/):
+
+```bash
+black .
+```
+
+### Style
+
+Code style is enforced using [Flake 8](http://flake8.pycqa.org/en/latest/)
+
+```bash
+flake8
+```
+
+### Static Checks
+
+Static checks are performed using [mypy](http://mypy-lang.org/)
+
+```bash
+mypy
+```
+
 ## References
 
 | Method    | Reference                                          | DOI |
