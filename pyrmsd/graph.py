@@ -89,30 +89,3 @@ def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
 
     # Extract all isomorphisms in a list
     return [isomorphism for isomorphism in GM.isomorphisms_iter()]
-
-
-if __name__ == "__main__":
-
-    from pyrmsd import io
-
-    import argparse as ap
-    from matplotlib import pyplot as plt
-
-    parser = ap.ArgumentParser(description="Draw molecular graph.")
-
-    parser.add_argument("input", type=str, help="Input file")
-    parser.add_argument("-o", "--output", type=str, default=None, help="Input file")
-
-    args = parser.parse_args()
-
-    obmol = io.load(args.input)
-    mol = io.openbabel_to_molecule(obmol)
-
-    G = graph_from_atomic_coordinates(mol.atomicnums, mol.coordinates, named=True)
-    labels = nx.get_node_attributes(G, "element")
-
-    nx.draw_kamada_kawai(G, labels=labels)
-    if args.output is None:
-        plt.plot()
-    else:
-        plt.savefig(args.output)
