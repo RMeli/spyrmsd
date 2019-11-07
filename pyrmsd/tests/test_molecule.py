@@ -1,15 +1,16 @@
 from pyrmsd import molecule, utils
 from pyrmsd.tests import molecules
 
-import pytest
-
 import qcelemental as qcel
 
 import numpy as np
 
+import copy
+import os
+import pytest
+
 from collections import defaultdict
 from typing import List, Tuple, DefaultDict
-import copy
 
 
 # atoms is a list of atomic numbers and atom counts
@@ -21,7 +22,7 @@ import copy
         (molecules.dialanine, [(1, 12), (6, 6), (7, 2), (8, 3)]),
     ],
 )
-def test_load_benzene(mol: molecule.Molecule, atoms: List[Tuple[int, int]]) -> None:
+def test_load(mol: molecule.Molecule, atoms: List[Tuple[int, int]]) -> None:
 
     n = sum([n_atoms for _, n_atoms in atoms])
 
@@ -38,6 +39,15 @@ def test_load_benzene(mol: molecule.Molecule, atoms: List[Tuple[int, int]]) -> N
 
     for Z, n_atoms in atoms:
         assert atomcount[Z] == n_atoms
+
+
+def test_loadall() -> None:
+
+    path = os.path.join(molecules.molpath, "1cbr_docking.sdf")
+
+    mols = molecule.loadall(path)
+
+    assert len(mols) == 10
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
