@@ -8,6 +8,7 @@ PyRMSD
 [![Documentation Status](https://readthedocs.org/projects/pyrmsd/badge/?version=latest)](https://pyrmsd.readthedocs.io/en/latest/?badge=latest)
 
 [![Docs](https://img.shields.io/badge/docs-pyrmsd.readthedocs.io-blueviolet)](https://pyrmsd.readthedocs.io)
+[![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
 
 Python RMSD tool
 
