@@ -37,7 +37,7 @@ build: false
 
 test_script:
     # Run test and get coverage report
-  - pytest -v --cov=pyrmsd pyrmsd\\tests
+  - pytest -v --cov=pyrmsd tests
 
 on_success:
     # Upload coverage report to codecov

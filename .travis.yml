@@ -39,7 +39,7 @@ install:
 
 script:
     # Run test and get coverage report
-  - pytest -v --cov=pyrmsd pyrmsd/tests/
+  - pytest -v --cov=pyrmsd tests/
 
 after_success:
     # Upload coverage report to codecov
