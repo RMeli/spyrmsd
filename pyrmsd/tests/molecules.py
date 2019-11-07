@@ -1,4 +1,4 @@
-from pyrmsd import molecule
+from pyrmsd import molecule, io
 
 import os
 
@@ -30,9 +30,9 @@ def load(fname: str) -> Tuple[pybel.Molecule, molecule.Molecule]:
 
     fname = os.path.join(molpath, fname)
 
-    obmol = molecule.load(fname)
+    obmol = io.load(fname)
 
-    mol = molecule.openbabel_to_molecule(obmol, adjacency=True)
+    mol = io.openbabel_to_molecule(obmol, adjacency=True)
 
     return obmol, mol
 

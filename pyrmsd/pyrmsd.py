@@ -4,7 +4,7 @@ Python RMSD tool
 
 if __name__ == "__main__":
 
-    from pyrmsd import molecule, rmsd
+    from pyrmsd import io, rmsd
 
     import argparse as ap
     import os
@@ -21,8 +21,8 @@ if __name__ == "__main__":
 
     output: str = ""
 
-    obref = molecule.load(args.reference)
-    ref = molecule.openbabel_to_molecule(obref, adjacency=True)
+    obref = io.load(args.reference)
+    ref = io.openbabel_to_molecule(obref, adjacency=True)
 
     if args.verbose:
         refname = os.path.basename(args.reference)
@@ -31,10 +31,8 @@ if __name__ == "__main__":
     for molfile in args.molecules:
 
         # Load all molecule within file
-        obmols = molecule.loadall(molfile)
-        mols = [
-            molecule.openbabel_to_molecule(obmol, adjacency=True) for obmol in obmols
-        ]
+        obmols = io.loadall(molfile)
+        mols = [io.openbabel_to_molecule(obmol, adjacency=True) for obmol in obmols]
 
         if args.verbose:
             molname = os.path.basename(molfile)

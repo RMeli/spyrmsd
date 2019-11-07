@@ -1,4 +1,4 @@
-from pyrmsd import graph, molecule
+from pyrmsd import graph, molecule, io
 from pyrmsd.tests import molecules
 
 import numpy as np
@@ -48,7 +48,7 @@ def test_adjacency_matrix_from_obmol(obmol) -> None:
     natoms = obmol.OBMol.NumAtoms()
     nbonds = obmol.OBMol.NumBonds()
 
-    A = graph.adjacency_matrix_from_obmol(obmol)
+    A = io.adjacency_matrix_from_obmol(obmol)
 
     assert A.shape == (natoms, natoms)
     assert np.alltrue(A == A.T)
@@ -67,7 +67,7 @@ def test_graph_from_adjacency_matrix(obmol) -> None:
     natoms = obmol.OBMol.NumAtoms()
     nbonds = obmol.OBMol.NumBonds()
 
-    A = graph.adjacency_matrix_from_obmol(obmol)
+    A = io.adjacency_matrix_from_obmol(obmol)
 
     assert A.shape == (natoms, natoms)
     assert np.alltrue(A == A.T)

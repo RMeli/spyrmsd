@@ -2,47 +2,10 @@ import networkx as nx
 import qcelemental as qcel
 import numpy as np
 
-try:
-    from openbabel import openbabel as ob
-except ImportError:
-    import openbabel as ob
-
 from typing import List, Dict, Any
 
 # TODO: Move elsewhere?
 covalent_bond_multiplier: float = 1.2
-
-
-def adjacency_matrix_from_obmol(obmol: ob.OBMol) -> np.ndarray:
-    """
-    Adjacency matrix from OpenBabel molecule.
-
-    Parameters
-    ----------
-    openbabel.OBMol
-        OpenBabel molecule
-
-    Returns
-    -------
-    np.ndarray
-        Adjacency matrix of the molecule
-    """
-
-    n = len(obmol.atoms)
-
-    # Pre-allocate memory for  the adjacency matrix
-    A = np.zeros((n, n), dtype=int)
-
-    # Loop over molecular bonds
-    for bond in ob.OBMolBondIter(obmol.OBMol):
-        # Bonds are 1-indexed
-        i: int = bond.GetBeginAtomIdx() - 1
-        j: int = bond.GetEndAtomIdx() - 1
-
-        # A molecular graph is undirected
-        A[i, j] = A[j, i] = 1
-
-    return A
 
 
 def graph_from_adjacency_matrix(adjacency_matrix: np.ndarray) -> nx.Graph:
@@ -130,7 +93,7 @@ def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
 
 if __name__ == "__main__":
 
-    from pyrmsd import molecule
+    from pyrmsd import io
 
     import argparse as ap
     from matplotlib import pyplot as plt
@@ -142,8 +105,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    obmol = molecule.load(args.input)
-    mol = molecule.openbabel_to_molecule(obmol)
+    obmol = io.load(args.input)
+    mol = io.openbabel_to_molecule(obmol)
 
     G = graph_from_atomic_coordinates(mol.atomicnums, mol.coordinates, named=True)
     labels = nx.get_node_attributes(G, "element")

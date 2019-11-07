@@ -1,4 +1,4 @@
-from pyrmsd import molecule, utils
+from pyrmsd import molecule, utils, io
 from pyrmsd.tests import molecules
 
 import qcelemental as qcel
@@ -45,7 +45,7 @@ def test_loadall() -> None:
 
     path = os.path.join(molecules.molpath, "1cbr_docking.sdf")
 
-    mols = molecule.loadall(path)
+    mols = io.loadall(path)
 
     assert len(mols) == 10
 
