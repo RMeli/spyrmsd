@@ -2,9 +2,9 @@
 Python RMSD tool
 """
 
-from pyrmsd import molecule, rmsd
-
 if __name__ == "__main__":
+
+    from pyrmsd import molecule, rmsd
 
     import argparse as ap
     import os
