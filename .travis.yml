@@ -1,12 +1,9 @@
 language: python
 
-# Run jobs on container-based infrastructure, can be overridden per job
-
 matrix:
   include:
-    # Extra includes for OSX since python language is not available by default on OSX
     - os: osx
-      language: generic
+      language: generic  # No need to set Python version since its conda
       env: PYTHON_VER=3.6
     - os: osx
       language: generic
@@ -14,7 +11,7 @@ matrix:
 
 
     - os: linux
-      language: generic  # No need to set Python version since its conda
+      language: generic  # No need to set Python version since its conda 
       env: PYTHON_VER=3.6
     - os: linux
       language: generic
@@ -27,12 +24,11 @@ before_install:
   - df -h
   - ulimit -a
 
-    # Install the Python environment
+    # Install Python environment
   - source devtools/travis-ci/before_install.sh
   - python -V
 
 install:
-
     # Create test environment for package
   - python devtools/scripts/create_conda_env.py -n=test -p=$PYTHON_VER devtools/conda-envs/pyrmsd.yaml
     # Activate the test environment
@@ -42,10 +38,12 @@ install:
 
 
 script:
+    # Run test and get coverage report
   - pytest -v --cov=pyrmsd pyrmsd/tests/
+
+after_success:
+    # Upload coverage report to codecov
+  - codecov
 
 notifications:
     email: false
-
-after_success:
-  - codecov

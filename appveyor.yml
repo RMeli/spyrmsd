@@ -1,5 +1,4 @@
 environment:
-
   matrix:
     - PYTHON: "C:\\Miniconda36-x64"
       PYTHON_VERSION: "3.6"
@@ -14,10 +13,9 @@ install:
     # Make sure pip is around
   - python -m ensurepip
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  
+
     # Add conda-forge channel
   - conda config --add channels conda-forge
-  
 
     # Always run commands without asking
   - conda config --set always_yes yes
@@ -38,7 +36,9 @@ install:
 build: false
 
 test_script:
+    # Run test and get coverage report
   - pytest -v --cov=pyrmsd pyrmsd\\tests
 
 on_success:
+    # Upload coverage report to codecov
   - codecov
