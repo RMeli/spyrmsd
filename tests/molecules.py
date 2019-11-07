@@ -10,7 +10,7 @@ except ImportError:
 from typing import Tuple
 
 fdir = os.path.dirname(os.path.abspath(__file__))
-molpath = os.path.join(fdir, os.pardir, "data/molecules/")
+molpath = os.path.join(fdir, "data/molecules/")
 
 
 def load(fname: str) -> Tuple[pybel.Molecule, molecule.Molecule]:

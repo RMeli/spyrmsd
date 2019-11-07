@@ -1,5 +1,5 @@
 from pyrmsd import graph, molecule, io
-from pyrmsd.tests import molecules
+from tests import molecules
 
 import numpy as np
 import networkx as nx

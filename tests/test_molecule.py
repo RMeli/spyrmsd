@@ -1,5 +1,5 @@
 from pyrmsd import molecule, utils, io
-from pyrmsd.tests import molecules
+from tests import molecules
 
 import qcelemental as qcel
 

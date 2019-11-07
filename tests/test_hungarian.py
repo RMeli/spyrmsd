@@ -1,5 +1,5 @@
 from pyrmsd import hungarian, molecule
-from pyrmsd.tests import molecules
+from tests import molecules
 
 import pytest
 

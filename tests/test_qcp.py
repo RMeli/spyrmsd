@@ -1,5 +1,5 @@
 from pyrmsd import qcp, molecule
-from pyrmsd.tests import molecules
+from tests import molecules
 
 import numpy as np
 import itertools
