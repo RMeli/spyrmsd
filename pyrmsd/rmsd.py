@@ -175,3 +175,39 @@ def rmsd_isomorphic(mol1, mol2, center=False):
 
     # Return the actual RMSD
     return np.sqrt(min_sd / n)
+
+
+def rmsd_qcp_isomorphic(mol1: molecule.Molecule, mol2: molecule.Molecule) -> float:
+
+    assert mol1.atomicnums.shape == mol2.atomicnums.shape
+    assert mol1.coordinates.shape == mol2.coordinates.shape
+
+    c1 = mol1.coordinates
+    c2 = mol2.coordinates
+
+    c1 -= mol1.center_of_geometry()
+    c2 -= mol2.center_of_geometry()
+
+    # Convert molecules to graphs
+    G1 = mol1.to_graph()
+    G2 = mol2.to_graph()
+
+    # Get all the possible graph isomorphisms
+    isomorphisms = graph.match_graphs(G1, G2)
+
+    # Minimum squared displacement
+    min_rmsd = np.inf
+
+    # Loop over all graph isomorphisms to find the lowest RMSD
+    for isomorphism in isomorphisms:
+
+        # Use the isomorphism to shuffle coordinates around (from original order)
+        c1i = c1[list(isomorphism.keys()), :]
+        c2i = c2[list(isomorphism.values()), :]
+
+        rmsd = qcp.qcp_rmsd(c1i, c2i)
+
+        if rmsd < min_rmsd:
+            min_rmsd = rmsd
+
+    return min_rmsd
