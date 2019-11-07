@@ -12,9 +12,9 @@ if __name__ == "__main__":
     parser = ap.ArgumentParser(description="Python RMSD tool.")
 
     parser.add_argument("reference", type=str, help="Reference file")
-    parser.add_argument("molecules", type=str, nargs="+", help="Input file")
+    parser.add_argument("molecules", type=str, nargs="+", help="Input file(s)")
     parser.add_argument("-s", "--strip", action="store_true", help="Strip H atoms")
-    parser.add_argument("-m", "--minimize", action="store_true", help="Strip H atoms")
+    parser.add_argument("-m", "--minimize", action="store_true", help="Minimize (fit)")
     parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
 
     args = parser.parse_args()
