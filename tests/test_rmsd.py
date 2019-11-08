@@ -12,7 +12,9 @@ def test_rmsd_dummy_benzene() -> None:
     mol1 = copy.deepcopy(molecules.benzene)
     mol2 = copy.deepcopy(molecules.benzene)
 
-    assert rmsd.rmsd_dummy(mol1, mol2) == pytest.approx(0)
+    assert rmsd.rmsd_dummy(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(0)
 
 
 def test_rmsd_dummy_shifted_benzene() -> None:
@@ -22,7 +24,9 @@ def test_rmsd_dummy_shifted_benzene() -> None:
 
     mol2.translate(np.array([0, 0, 1]))
 
-    assert rmsd.rmsd_dummy(mol1, mol2) == pytest.approx(1)
+    assert rmsd.rmsd_dummy(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(1)
 
 
 # Results obtained with PyTraj
@@ -35,7 +39,9 @@ def test_rmsd_dummy_2viz(i: int, j: int, result: float) -> None:
     moli = copy.deepcopy(molecules.docking_2viz[i])
     molj = copy.deepcopy(molecules.docking_2viz[j])
 
-    assert rmsd.rmsd_dummy(moli, molj) == pytest.approx(result)
+    assert rmsd.rmsd_dummy(
+        moli.coordinates, molj.coordinates, moli.atomicnums, molj.atomicnums
+    ) == pytest.approx(result)
 
 
 # Results obtained with PyTraj
@@ -51,7 +57,9 @@ def test_rmsd_dummy_2viz_stripped(i: int, j: int, result: float) -> None:
     moli.strip()
     molj.strip()
 
-    assert rmsd.rmsd_dummy(moli, molj) == pytest.approx(result)
+    assert rmsd.rmsd_dummy(
+        moli.coordinates, molj.coordinates, moli.atomicnums, molj.atomicnums
+    ) == pytest.approx(result)
 
 
 def test_rmsd_dummy_centred_benzene() -> None:
@@ -61,8 +69,16 @@ def test_rmsd_dummy_centred_benzene() -> None:
 
     mol2.translate(np.array([0, 0, 1]))
 
-    assert rmsd.rmsd_dummy(mol1, mol2) == pytest.approx(1)
-    assert rmsd.rmsd_dummy(mol1, mol2, center=True) == pytest.approx(0)
+    assert rmsd.rmsd_dummy(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(1)
+    assert rmsd.rmsd_dummy(
+        mol1.coordinates,
+        mol2.coordinates,
+        mol1.atomicnums,
+        mol2.atomicnums,
+        center=True,
+    ) == pytest.approx(0)
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
@@ -71,16 +87,27 @@ def test_rmsd_qcp(mol: molecule.Molecule) -> None:
     mol1 = copy.deepcopy(mol)
     mol2 = copy.deepcopy(mol)
 
-    assert rmsd.rmsd_dummy(mol1, mol2) == pytest.approx(0)
-    assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
+    assert rmsd.rmsd_dummy(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(0)
+    assert rmsd.rmsd_qcp(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(0)
 
     for _ in range(10):
         mol2.translate(np.random.rand(3))
         mol2.rotate(np.random.rand(1), np.random.rand(3))
 
-        assert rmsd.rmsd_dummy(mol1, mol2) > 0.0
+        assert (
+            rmsd.rmsd_dummy(
+                mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+            )
+            > 0.0
+        )
 
-        assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
+        assert rmsd.rmsd_qcp(
+            mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+        ) == pytest.approx(0)
 
 
 # Results obtained with PyTraj
@@ -93,7 +120,9 @@ def test_rmsd_qcp_2viz(i: int, j: int, result: float) -> None:
     moli = copy.deepcopy(molecules.docking_2viz[i])
     molj = copy.deepcopy(molecules.docking_2viz[j])
 
-    assert rmsd.rmsd_qcp(moli, molj) == pytest.approx(result)
+    assert rmsd.rmsd_qcp(
+        moli.coordinates, molj.coordinates, moli.atomicnums, molj.atomicnums
+    ) == pytest.approx(result)
 
 
 # Results obtained with PyTraj
@@ -110,7 +139,9 @@ def test_rmsd_qcp_2viz_stripped(i: int, j: int, result: float) -> None:
     moli.strip()
     molj.strip()
 
-    assert rmsd.rmsd_qcp(moli, molj) == pytest.approx(result)
+    assert rmsd.rmsd_qcp(
+        moli.coordinates, molj.coordinates, moli.atomicnums, molj.atomicnums
+    ) == pytest.approx(result)
 
 
 # Results obtained with MDAnalysis
@@ -137,8 +168,12 @@ def test_rmsd_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
     mol0 = copy.deepcopy(molecules.trp[0])
     mol = copy.deepcopy(molecules.trp[i])
 
-    assert rmsd.rmsd_dummy(mol, mol0) == pytest.approx(rmsd_dummy)
-    assert rmsd.rmsd_qcp(mol, mol0) == pytest.approx(rmsd_min)
+    assert rmsd.rmsd_dummy(
+        mol0.coordinates, mol.coordinates, mol0.atomicnums, mol.atomicnums
+    ) == pytest.approx(rmsd_dummy)
+    assert rmsd.rmsd_qcp(
+        mol0.coordinates, mol.coordinates, mol0.atomicnums, mol.atomicnums
+    ) == pytest.approx(rmsd_min)
 
 
 @pytest.mark.parametrize(
@@ -149,14 +184,25 @@ def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
     mol1 = copy.deepcopy(molecules.benzene)
     mol2 = copy.deepcopy(molecules.benzene)
 
-    assert rmsd.rmsd_dummy(mol1, mol2) == pytest.approx(0)
-    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(0)
+    assert rmsd.rmsd_dummy(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(0)
+    assert rmsd.rmsd_hungarian(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(0)
 
     # Rotations different than 180 degrees introduce numerical errors (~1e-6)
     mol2.rotate(angle, [0, 0, 1], units="deg")
 
-    assert rmsd.rmsd_dummy(mol1, mol2) > 0
-    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(0, abs=tol)
+    assert (
+        rmsd.rmsd_dummy(
+            mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+        )
+        > 0
+    )
+    assert rmsd.rmsd_hungarian(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(0, abs=tol)
 
 
 @pytest.mark.parametrize(
@@ -169,14 +215,25 @@ def test_rmsd_hungarian_benzene_shifted_rotated(angle: float, tol: float) -> Non
 
     mol2.translate([0, 0, 1])
 
-    assert rmsd.rmsd_dummy(mol1, mol2) == pytest.approx(1)
-    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(1)
+    assert rmsd.rmsd_dummy(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(1)
+    assert rmsd.rmsd_hungarian(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(1)
 
     # Rotations different than 180 degrees introduce numerical errors (~1e-11)
     mol2.rotate(angle, [0, 0, 1], units="deg")
 
-    assert rmsd.rmsd_dummy(mol1, mol2) > 1
-    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(1, abs=tol)
+    assert (
+        rmsd.rmsd_dummy(
+            mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+        )
+        > 1
+    )
+    assert rmsd.rmsd_hungarian(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(1, abs=tol)
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
@@ -187,8 +244,19 @@ def test_rmsd_hungarian_centred(mol: molecule.Molecule) -> None:
 
     mol2.translate(np.random.rand(3))
 
-    assert rmsd.rmsd_hungarian(mol1, mol2) > 0
-    assert rmsd.rmsd_hungarian(mol1, mol2, center=True) == pytest.approx(0)
+    assert (
+        rmsd.rmsd_hungarian(
+            mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+        )
+        > 0
+    )
+    assert rmsd.rmsd_hungarian(
+        mol1.coordinates,
+        mol2.coordinates,
+        mol1.atomicnums,
+        mol2.atomicnums,
+        center=True,
+    ) == pytest.approx(0)
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
@@ -199,8 +267,22 @@ def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
 
     mol2.translate(np.random.rand(3))
 
-    assert rmsd.rmsd_isomorphic(mol1, mol2) > 0
-    assert rmsd.rmsd_isomorphic(mol1, mol2, center=True) == pytest.approx(0)
+    assert (
+        rmsd.rmsd_isomorphic(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.adjacency_matrix,
+            mol2.adjacency_matrix,
+        )
+        > 0
+    )
+    assert rmsd.rmsd_isomorphic(
+        mol1.coordinates,
+        mol2.coordinates,
+        mol1.adjacency_matrix,
+        mol2.adjacency_matrix,
+        center=True,
+    ) == pytest.approx(0)
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
@@ -211,10 +293,21 @@ def test_rmsd_isomorphic_rotated_benzene(angle: float) -> None:
 
     mol2.rotate(angle, np.array([0, 0, 1]), units="deg")
 
-    assert rmsd.rmsd_dummy(mol1, mol2) > 0
-    assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
-    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(0, abs=1e-5)
-    assert rmsd.rmsd_isomorphic(mol1, mol2) == pytest.approx(0, abs=1e-5)
+    assert (
+        rmsd.rmsd_dummy(
+            mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+        )
+        > 0
+    )
+    assert rmsd.rmsd_qcp(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(0)
+    assert rmsd.rmsd_hungarian(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(0, abs=1e-5)
+    assert rmsd.rmsd_isomorphic(
+        mol1.coordinates, mol2.coordinates, mol1.adjacency_matrix, mol2.adjacency_matrix
+    ) == pytest.approx(0, abs=1e-5)
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
@@ -228,10 +321,21 @@ def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
     mol1.strip()
     mol2.strip()
 
-    assert rmsd.rmsd_dummy(mol1, mol2) > 0
-    assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
-    assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(0, abs=1e-5)
-    assert rmsd.rmsd_isomorphic(mol1, mol2) == pytest.approx(0, abs=1e-5)
+    assert (
+        rmsd.rmsd_dummy(
+            mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+        )
+        > 0
+    )
+    assert rmsd.rmsd_qcp(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(0)
+    assert rmsd.rmsd_hungarian(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) == pytest.approx(0, abs=1e-5)
+    assert rmsd.rmsd_isomorphic(
+        mol1.coordinates, mol2.coordinates, mol1.adjacency_matrix, mol2.adjacency_matrix
+    ) == pytest.approx(0, abs=1e-5)
 
 
 # Results obtained with OpenBabel
@@ -258,7 +362,9 @@ def test_rmsd_isomorphic(index: int, RMSD: float) -> None:
     molc.strip()
     mol.strip()
 
-    assert rmsd.rmsd_isomorphic(molc, mol) == pytest.approx(RMSD, abs=1e-5)
+    assert rmsd.rmsd_isomorphic(
+        molc.coordinates, mol.coordinates, molc.adjacency_matrix, mol.adjacency_matrix
+    ) == pytest.approx(RMSD, abs=1e-5)
 
 
 # Results obtained with OpenBabel
@@ -285,4 +391,6 @@ def test_rmsd_qcp_isomorphic(index: int, RMSD: float) -> None:
     molc.strip()
     mol.strip()
 
-    assert rmsd.rmsd_qcp_isomorphic(molc, mol) == pytest.approx(RMSD, abs=1e-5)
+    assert rmsd.rmsd_qcp_isomorphic(
+        molc.coordinates, mol.coordinates, molc.adjacency_matrix, mol.adjacency_matrix
+    ) == pytest.approx(RMSD, abs=1e-5)

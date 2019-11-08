@@ -128,3 +128,41 @@ def rotate(v: np.array, angle: float, axis: np.array, units: str = "rad") -> np.
     t3 = np.sin(angle) * np.cross(axis, v)
 
     return t1 + t2 + t3
+
+
+def center_of_geometry(coordinates: np.ndarray) -> np.ndarray:
+    """
+    Center of geometry
+
+    Parameters
+    ----------
+    coordinates: np.ndarray
+        Coordinates
+
+    Returns
+    -------
+    np.ndarray
+        Center of geometry
+    """
+
+    assert coordinates.shape[1] == 3
+
+    return np.mean(coordinates, axis=0)
+
+
+def center(coordinates: np.ndarray) -> np.ndarray:
+    """
+    Center coordinates
+
+    Parameters
+    ----------
+    coordinates: np.ndarray
+        Coordinates
+
+    Returns
+    -------
+    np.ndarray
+        Centered coordinates
+    """
+
+    return coordinates - center_of_geometry(coordinates)

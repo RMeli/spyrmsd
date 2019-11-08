@@ -86,7 +86,7 @@ class Molecule:
         np.ndarray
             Center of geometry
         """
-        return np.mean(self.coordinates, axis=0)
+        return utils.center_of_geometry(self.coordinates)
 
     def strip(self) -> None:
         """

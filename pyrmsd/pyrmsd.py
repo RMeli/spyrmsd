@@ -46,8 +46,16 @@ if __name__ == "__main__":
                 mol.strip()
 
             if args.minimize:  # QCP method
-                r = rmsd.rmsd_qcp(ref, mol)
+                r = rmsd.rmsd_qcp(
+                    ref.coordinates, mol.coordinates, ref.atomicnums, mol.atomicnums
+                )
             else:  # Exact RMSD using graph isomorphism
-                r = rmsd.rmsd_isomorphic(ref, mol, center=False)
+                r = rmsd.rmsd_isomorphic(
+                    ref.coordinates,
+                    mol.coordinates,
+                    ref.adjacency_matrix,
+                    mol.adjacency_matrix,
+                    center=False,
+                )
 
             print(f"{output}{r:.5f}")

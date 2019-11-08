@@ -1,4 +1,4 @@
-from pyrmsd import qcp, hungarian, graph, molecule
+from pyrmsd import qcp, hungarian, graph, molecule, utils
 
 import numpy as np
 
@@ -34,7 +34,11 @@ def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.nda
 
 
 def rmsd_dummy(
-    mol1: molecule.Molecule, mol2: molecule.Molecule, center: bool = False
+    coords1: np.ndarray,
+    coords2: np.ndarray,
+    atomicn1: np.ndarray,
+    atomicn2: np.ndarray,
+    center: bool = False,
 ) -> float:
     """
     Compute dummy (naïve) RMSD.
@@ -61,27 +65,34 @@ def rmsd_dummy(
     The equality between all the atomic numbers is checked for sanity.
     """
 
-    assert np.all(mol1.atomicnums == mol2.atomicnums)
-    assert mol1.coordinates.shape == mol2.coordinates.shape
+    assert np.all(atomicn1 == atomicn2)
+    assert coords1.shape == coords2.shape
 
-    n = len(mol1)
+    n = coords1.shape[0]
 
-    c1 = coords_from_molecule(mol1, center)
-    c2 = coords_from_molecule(mol2, center)
+    # Center coordinates if required
+    c1 = utils.center(coords1) if center else coords1
+    c2 = utils.center(coords2) if center else coords2
 
     return np.sqrt(np.sum((c1 - c2) ** 2) / n)
 
 
-def rmsd_qcp(mol1, mol2) -> float:
+def rmsd_qcp(
+    coords1: np.ndarray, coords2: np.ndarray, atomicn1: np.ndarray, atomicn2: np.ndarray
+) -> float:
     """
     Compute minimum RMSD using the Quaternion Characteristic Polynomial method.
 
     Parameters
     ----------
-    mol1: molecule.Molecule
-        Molecule 1
-    mol2: molecule.Molecule
-        Molecule 2
+    coords1: np.ndarray
+        Coordinate of molecule 1
+    coords2: np.ndarray
+        Coordinates of molecule 2
+    atomicn1: np.ndarray
+        Atomic numbers for molecule 1
+    atomicn2: np.ndarray
+        Atomic numbers for molecule 2
 
     Returns
     -------
@@ -97,24 +108,35 @@ def rmsd_qcp(mol1, mol2) -> float:
        characteristic polynomial*, Acta Crys. A**61**, 478-480 (2005).
     """
 
-    assert np.all(mol1.atomicnums == mol2.atomicnums)
+    assert np.all(atomicn1 == atomicn2)
 
-    c1 = coords_from_molecule(mol1, center=True)
-    c2 = coords_from_molecule(mol2, center=True)
+    # Center coordinates if required
+    c1 = utils.center(coords1)
+    c2 = utils.center(coords2)
 
     return qcp.qcp_rmsd(c1, c2)
 
 
-def rmsd_hungarian(mol1, mol2, center=False):
+def rmsd_hungarian(
+    coords1: np.ndarray,
+    coords2: np.ndarray,
+    atomicn1: np.ndarray,
+    atomicn2: np.ndarray,
+    center=False,
+):
     """
     Compute minimum RMSD using the Hungarian method.
 
     Parameters
     ----------
-    mol1: molecule.Molecule
-        Molecule 1
-    mol2: molecule.Molecule
-        Molecule 2
+    coords1: np.ndarray
+        Coordinate of molecule 1
+    coords2: np.ndarray
+        Coordinates of molecule 2
+    atomicn1: np.ndarray
+        Atomic numbers for molecule 1
+    atomicn2: np.ndarray
+        Atomic numbers for molecule 2
 
     Returns
     -------
@@ -133,25 +155,38 @@ def rmsd_hungarian(mol1, mol2, center=False):
         J. Chem. Inf. Model. **54**, 518-529 (2014)
     """
 
-    assert mol1.atomicnums.shape == mol2.atomicnums.shape
-    assert mol1.coordinates.shape == mol2.coordinates.shape
+    assert atomicn1.shape == atomicn2.shape
+    assert coords1.shape == coords2.shape
 
-    c1 = coords_from_molecule(mol1, center)
-    c2 = coords_from_molecule(mol2, center)
+    # Center coordinates if required
+    c1 = utils.center(coords1) if center else coords1
+    c2 = utils.center(coords2) if center else coords2
 
-    return hungarian.hungarian_rmsd(c1, c2, mol1.atomicnums, mol2.atomicnums)
+    return hungarian.hungarian_rmsd(c1, c2, atomicn1, atomicn2)
 
 
-def rmsd_isomorphic(mol1, mol2, center=False):
+def rmsd_isomorphic(
+    coords1: np.ndarray,
+    coords2: np.ndarray,
+    am1: np.ndarray,
+    am2: np.ndarray,
+    center=False,
+) -> float:
     """
     Compute minimum RMSD using graph isomorphism.
 
     Parameters
     ----------
-    mol1: molecule.Molecule
-        Molecule 1
-    mol2: molecule.Molecule
-        Molecule 2
+    coords1: np.ndarray
+        Coordinate of molecule 1
+    coords2: np.ndarray
+        Coordinates of molecule 2
+    am1: np.ndarray
+        Adjacency matrix for molecule 1
+    am2: np.ndarray
+        Adjacency matrix for molecule 2
+    center: boolean
+        Centering flag
 
     Returns
     -------
@@ -159,17 +194,17 @@ def rmsd_isomorphic(mol1, mol2, center=False):
         Minimum RMSD (after graph matching)
     """
 
-    assert mol1.atomicnums.shape == mol2.atomicnums.shape
-    assert mol1.coordinates.shape == mol2.coordinates.shape
+    assert coords1.shape == coords2.shape
 
-    n = len(mol1)
+    n = coords1.shape[0]
 
-    c1 = coords_from_molecule(mol1, center)
-    c2 = coords_from_molecule(mol2, center)
+    # Center coordinates if required
+    c1 = utils.center(coords1) if center else coords1
+    c2 = utils.center(coords2) if center else coords2
 
     # Convert molecules to graphs
-    G1 = mol1.to_graph()
-    G2 = mol2.to_graph()
+    G1 = graph.graph_from_adjacency_matrix(am1)
+    G2 = graph.graph_from_adjacency_matrix(am2)
 
     # Get all the possible graph isomorphisms
     isomorphisms = graph.match_graphs(G1, G2)
@@ -195,17 +230,23 @@ def rmsd_isomorphic(mol1, mol2, center=False):
     return np.sqrt(min_sd / n)
 
 
-def rmsd_qcp_isomorphic(mol1: molecule.Molecule, mol2: molecule.Molecule) -> float:
+def rmsd_qcp_isomorphic(
+    coords1: np.ndarray, coords2: np.ndarray, am1: np.ndarray, am2: np.ndarray
+) -> float:
     """
     Compute minimum RMSD using the Quaternion Characteristic Polynomial method on
     isomorphic graphs.
 
     Parameters
     ----------
-    mol1: molecule.Molecule
-        Molecule 1
-    mol2: molecule.Molecule
-        Molecule 2
+    coords1: np.ndarray
+        Coordinate of molecule 1
+    coords2: np.ndarray
+        Coordinates of molecule 2
+    am1: np.ndarray
+        Adjacency matrix for molecule 1
+    am2: np.ndarray
+        Adjacency matrix for molecule 2
 
     Returns
     -------
@@ -219,15 +260,15 @@ def rmsd_qcp_isomorphic(mol1: molecule.Molecule, mol2: molecule.Molecule) -> flo
     `rmsd_qcp` (faster).
     """
 
-    assert mol1.atomicnums.shape == mol2.atomicnums.shape
-    assert mol1.coordinates.shape == mol2.coordinates.shape
+    assert coords1.shape == coords2.shape
 
-    c1 = coords_from_molecule(mol1, center=True)
-    c2 = coords_from_molecule(mol2, center=True)
+    # Center coordinates
+    c1 = utils.center(coords1)
+    c2 = utils.center(coords2)
 
-    # Convert molecules to graphs
-    G1 = mol1.to_graph()
-    G2 = mol2.to_graph()
+    # Build graph from adjacency matrix
+    G1 = graph.graph_from_adjacency_matrix(am1)
+    G2 = graph.graph_from_adjacency_matrix(am2)
 
     # Get all the possible graph isomorphisms
     isomorphisms = graph.match_graphs(G1, G2)
