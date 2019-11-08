@@ -4,6 +4,26 @@ import numpy as np
 
 
 def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.ndarray:
+    """
+    Atomic coordinates from molecule.
+
+    Parameters
+    ----------
+    mol: molecule.Molecule
+        Molecule
+    center: bool
+        Center flag
+
+    Returns
+    -------
+    np.ndarray
+        Atomic coordinates (possibly centred)
+
+    Notes
+    -----
+    Atomic coordinates are centred according to the center of geometry, not the center
+    of mass.
+    """
 
     if center:
         coords = mol.coordinates - mol.center_of_geometry()
@@ -176,6 +196,28 @@ def rmsd_isomorphic(mol1, mol2, center=False):
 
 
 def rmsd_qcp_isomorphic(mol1: molecule.Molecule, mol2: molecule.Molecule) -> float:
+    """
+    Compute minimum RMSD using the Quaternion Characteristic Polynomial method on
+    isomorphic graphs.
+
+    Parameters
+    ----------
+    mol1: molecule.Molecule
+        Molecule 1
+    mol2: molecule.Molecule
+        Molecule 2
+
+    Returns
+    -------
+    float
+        Minimum RMSD (after graph matching and superimposition)
+
+    Notes
+    -----
+    This QCP method works in cases where the atoms in `mol1` and `mol2` are not in the
+    exact same order. If the atoms in `mol1` and `mol2` are in the same order use
+    `rmsd_qcp` (faster).
+    """
 
     assert mol1.atomicnums.shape == mol2.atomicnums.shape
     assert mol1.coordinates.shape == mol2.coordinates.shape
