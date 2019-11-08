@@ -1,36 +1,6 @@
-from pyrmsd import qcp, hungarian, graph, molecule, utils
+from pyrmsd import qcp, hungarian, graph, utils
 
 import numpy as np
-
-
-def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.ndarray:
-    """
-    Atomic coordinates from molecule.
-
-    Parameters
-    ----------
-    mol: molecule.Molecule
-        Molecule
-    center: bool
-        Center flag
-
-    Returns
-    -------
-    np.ndarray
-        Atomic coordinates (possibly centred)
-
-    Notes
-    -----
-    Atomic coordinates are centred according to the center of geometry, not the center
-    of mass.
-    """
-
-    if center:
-        coords = mol.coordinates - mol.center_of_geometry()
-    else:
-        coords = mol.coordinates
-
-    return coords
 
 
 def rmsd_dummy(

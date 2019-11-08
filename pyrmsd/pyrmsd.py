@@ -2,9 +2,70 @@
 Python RMSD tool
 """
 
+from pyrmsd import molecule, rmsd
+
+import numpy as np
+
+
+def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.ndarray:
+    """
+    Atomic coordinates from molecule.
+
+    Parameters
+    ----------
+    mol: molecule.Molecule
+        Molecule
+    center: bool
+        Center flag
+
+    Returns
+    -------
+    np.ndarray
+        Atomic coordinates (possibly centred)
+
+    Notes
+    -----
+    Atomic coordinates are centred according to the center of geometry, not the center
+    of mass.
+    """
+
+    if center:
+        coords = mol.coordinates - mol.center_of_geometry()
+    else:
+        coords = mol.coordinates
+
+    return coords
+
+
+def rmsdwrapper(mol1, mol2, symmetry=True, center=False, minimize=False):
+
+    if minimize:
+        center = True
+
+    c1 = coords_from_molecule(center)
+    c2 = coords_from_molecule(center)
+
+    RMSD = np.inf
+
+    if minimize and symmetry:
+        RMSD = rmsd.rmsd_qcp_isomorphic(
+            c1, c2, mol1.adjacency_matrix, mol2.adjacency_matrix
+        )
+    elif minimize and not symmetry:
+        RMSD = rmsd.rmsd_qcp(c1, c2, mol1.atomicnums, mol2.atomicnums)
+    elif not minimize and symmetry:
+        RMSD = rmsd.rmsd_isomorphic(
+            c1, c2, mol1.adjacency_matrix, mol2.adjacency_matrix
+        )
+    elif not minimize and not symmetry:
+        RMSD = rmsd.dummy(c1, c2, mol1.atomicnums, mol2.atomicnums)
+
+    return RMSD
+
+
 if __name__ == "__main__":
 
-    from pyrmsd import io, rmsd
+    from pyrmsd import io
 
     import argparse as ap
     import os
@@ -13,8 +74,14 @@ if __name__ == "__main__":
 
     parser.add_argument("reference", type=str, help="Reference file")
     parser.add_argument("molecules", type=str, nargs="+", help="Input file(s)")
-    parser.add_argument("-s", "--strip", action="store_true", help="Strip H atoms")
     parser.add_argument("-m", "--minimize", action="store_true", help="Minimize (fit)")
+    parser.add_argument(
+        "-c", "--center", action="store_true", help="Center molecules at origin"
+    )
+    parser.add_argument("-s", "--strip", action="store_true", help="Strip H atoms")
+    parser.add_argument(
+        "-n", "--nosymm", action="store_false", help="No graph isomorphism"
+    )
     parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
 
     args = parser.parse_args()
@@ -36,6 +103,7 @@ if __name__ == "__main__":
 
         if args.verbose:
             molname = os.path.basename(molfile)
+
             output = f"{refname}:{molname} "
 
         # Loop over molecules within file
@@ -45,17 +113,6 @@ if __name__ == "__main__":
                 ref.strip()  # Does nothing if already stripped
                 mol.strip()
 
-            if args.minimize:  # QCP method
-                r = rmsd.rmsd_qcp(
-                    ref.coordinates, mol.coordinates, ref.atomicnums, mol.atomicnums
-                )
-            else:  # Exact RMSD using graph isomorphism
-                r = rmsd.rmsd_isomorphic(
-                    ref.coordinates,
-                    mol.coordinates,
-                    ref.adjacency_matrix,
-                    mol.adjacency_matrix,
-                    center=False,
-                )
+            r = rmsdwrapper(ref, mol, args.nosymm, args.center, args.minimize)
 
             print(f"{output}{r:.5f}")
