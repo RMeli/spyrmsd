@@ -204,3 +204,30 @@ def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
     assert rmsd.rmsd_qcp(mol1, mol2) == pytest.approx(0)
     assert rmsd.rmsd_hungarian(mol1, mol2) == pytest.approx(0, abs=1e-5)
     assert rmsd.rmsd_isomorphic(mol1, mol2) == pytest.approx(0, abs=1e-5)
+
+
+# Results obtained with OpenBabel
+@pytest.mark.parametrize(
+    "index, RMSD",
+    [
+        (1, 0.476858),
+        (2, 1.68089),
+        (3, 1.50267),
+        (4, 1.90623),
+        (5, 1.01324),
+        (6, 1.31716),
+        (7, 1.11312),
+        (8, 1.06044),
+        (9, 0.965387),
+        (10, 1.37842),
+    ],
+)
+def test_rmsd_qcp_isomorphic(index: int, RMSD: float) -> None:
+
+    molc = copy.deepcopy(molecules.docking_1cbr[0])
+    mol = copy.deepcopy(molecules.docking_1cbr[index])
+
+    molc.strip()
+    mol.strip()
+
+    assert rmsd.rmsd_qcp_isomorphic(molc, mol) == pytest.approx(RMSD, abs=1e-5)
