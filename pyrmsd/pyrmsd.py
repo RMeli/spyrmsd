@@ -37,13 +37,21 @@ def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.nda
     return coords
 
 
-def rmsdwrapper(mol1, mol2, symmetry=True, center=False, minimize=False):
+def rmsdwrapper(mol1, mol2, symmetry=True, center=False, minimize=False, strip=False):
+
+    if args.strip:
+        mol1.strip()  # Does nothing if already stripped
+        mol2.strip()
 
     if minimize:
         center = True
 
-    c1 = coords_from_molecule(center)
-    c2 = coords_from_molecule(center)
+    c1 = coords_from_molecule(mol1, center)
+    c2 = coords_from_molecule(mol2, center)
+
+    if c1.shape != c2.shape:
+        # TODO: Create specific exception
+        raise ValueError("Molecules have different sizes.")
 
     RMSD = np.inf
 
@@ -58,7 +66,7 @@ def rmsdwrapper(mol1, mol2, symmetry=True, center=False, minimize=False):
             c1, c2, mol1.adjacency_matrix, mol2.adjacency_matrix
         )
     elif not minimize and not symmetry:
-        RMSD = rmsd.dummy(c1, c2, mol1.atomicnums, mol2.atomicnums)
+        RMSD = rmsd.rmsd_dummy(c1, c2, mol1.atomicnums, mol2.atomicnums)
 
     return RMSD
 
@@ -109,10 +117,8 @@ if __name__ == "__main__":
         # Loop over molecules within file
         for idx, mol in enumerate(mols):
 
-            if args.strip:
-                ref.strip()  # Does nothing if already stripped
-                mol.strip()
-
-            r = rmsdwrapper(ref, mol, args.nosymm, args.center, args.minimize)
+            r = rmsdwrapper(
+                ref, mol, args.nosymm, args.center, args.minimize, args.strip
+            )
 
             print(f"{output}{r:.5f}")
