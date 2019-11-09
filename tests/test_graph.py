@@ -18,12 +18,10 @@ import pytest
 )
 def test_graph_from_atomic_coordinates(mol: molecule.Molecule, n_bonds: int) -> None:
 
-    mol = molecules.dialanine
-
     G = graph.graph_from_atomic_coordinates(mol.atomicnums, mol.coordinates)
 
     assert G.number_of_nodes() == len(mol)
-    assert G.number_of_edges() == 22
+    assert G.number_of_edges() == n_bonds
 
 
 def test_graph_from_atomic_coordinates_named_benzene() -> None:
