@@ -39,7 +39,7 @@ def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.nda
 
 def rmsdwrapper(mol1, mol2, symmetry=True, center=False, minimize=False, strip=False):
 
-    if args.strip:
+    if strip:
         mol1.strip()  # Does nothing if already stripped
         mol2.strip()
 
