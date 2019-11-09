@@ -65,11 +65,11 @@ The function `rmsd.rmsd_qcp`computes the minimised RMSD without symmetry correct
 
 #### Symmetric RMSD
 
-The function `rmsd.rmsd_isomorphic` computes the symmetry-corrected RMSD, using molecular graph isomorphisms.
+The function `rmsd.rmsd_isomorphic` computes the symmetry-corrected RMSD, using molecular graph isomorphisms. Symmetry correction requires molecular adjacency matrices.
 
 #### Minimized Symmetric RMSD
 
-The function `rmsd.rmsd_qcp_isomorphic` computes the minimized and symmetry-corrected RMSD, using molecular graph isomorphisms and the characteristic polynomial method.
+The function `rmsd.rmsd_qcp_isomorphic` computes the minimized and symmetry-corrected RMSD, using molecular graph isomorphisms and the characteristic polynomial method. Symmetry correction requires molecular adjacency matrices.
 
 ## Contributions
 
@@ -109,5 +109,5 @@ mypy
 Copyright (c) 2019, Rocco Meli.
 
 ### Acknowledgements
- 
+
 Project based on the [Computational Molecular Science Python Cookiecutter](https://github.com/molssi/cookiecutter-cms) version `1.1`.
