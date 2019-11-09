@@ -1,6 +1,5 @@
-PyRMSD
-==============================
-[//]: # (Badges)
+# PyRMSD
+
 [![Travis Build Status](https://travis-ci.org/RMeli/pyrmsd.svg?branch=master)](https://travis-ci.org/RMeli/pyrmsd)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/rhd5wi1ce7i24hgb/branch/master?svg=true)](https://ci.appveyor.com/project/rhd5wi1ce7i24hgb/pyrmsd/branch/master)
 [![codecov](https://codecov.io/gh/RMeli/pyrmsd/branch/master/graph/badge.svg)](https://codecov.io/gh/RMeli/pyrmsd/branch/master)
@@ -49,6 +48,28 @@ optional arguments:
   -m, --minimize  Minimize (fit)
   -v, --verbose   Verbose output
 ```
+
+### Module
+
+```python
+from pyrmsd import rmsd
+```
+
+#### Dummy RMSD
+
+The function  `rmsd.rmsd_dummy` computes the standard RMSD without symmetry correction or minimization. The atoms are expected to be in the same order for both molecule being compared.
+
+#### Minimized RMSD
+
+The function `rmsd.rmsd_qcp`computes the minimised RMSD without symmetry correction, using the quaternion characteristic polynomial method. The atoms are expected to be in the same order for both molecule being compared.
+
+#### Symmetric RMSD
+
+The function `rmsd.rmsd_isomorphic` computes the symmetry-corrected RMSD, using molecular graph isomorphisms.
+
+#### Minimized Symmetric RMSD
+
+The function `rmsd.rmsd_qcp_isomorphic` computes the minimized and symmetry-corrected RMSD, using molecular graph isomorphisms and the characteristic polynomial method.
 
 ## Contributions
 
