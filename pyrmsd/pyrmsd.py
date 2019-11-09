@@ -37,7 +37,32 @@ def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.nda
     return coords
 
 
-def rmsdwrapper(mol1, mol2, symmetry=True, center=False, minimize=False, strip=False):
+def rmsdwrapper(
+    mol1, mol2, symmetry=True, center=False, minimize=False, strip=False
+) -> float:
+    """
+    Compute RMSD between two molecule.
+
+    Parameters
+    ----------
+    mol1: molecule.Molecule
+        Molecule 1
+    mol2: molecule.Molecule
+        Molecule 2
+    symmetry: bool
+        Symmetry-corrected RMSD (using graph isomorphism)
+    center:
+        Center molecules at origin
+    minimize:
+        Minimised RMSD (using the quaternion polynomial method)
+    strip:
+        Strip hydrogen atoms
+
+    Returns
+    -------
+    float
+        RMSD
+    """
 
     if strip:
         mol1.strip()  # Does nothing if already stripped
