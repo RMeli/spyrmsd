@@ -1,4 +1,4 @@
-from pyrmsd import pyrmsd
+from pyrmsd import pyrmsd, molecule
 from tests import molecules
 
 import sys
@@ -9,6 +9,18 @@ import pytest
 
 def test_pyrmsd_imported():
     assert "pyrmsd" in sys.modules
+
+
+@pytest.mark.parametrize("mol", molecules.allmolecules)
+def test_rmsdwrapper_molsize(mol: molecule.Molecule) -> None:
+
+    m = copy.deepcopy(mol)
+    ms = copy.deepcopy(mol)
+
+    ms.strip()
+
+    with pytest.raises(ValueError):
+        pyrmsd.rmsdwrapper(m, ms, symmetry=False)
 
 
 # Results obtained with MDAnalysis
@@ -30,7 +42,7 @@ def test_pyrmsd_imported():
         (5, 8.901837608843241, 2.4894805175766606),
     ],
 )
-def test_rmsd_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
+def test_rmsdwrapper_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
 
     mol0 = copy.deepcopy(molecules.trp[0])
     mol = copy.deepcopy(molecules.trp[i])
@@ -57,7 +69,7 @@ def test_rmsd_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
         (10, 9.6171),
     ],
 )
-def test_rmsd_isomorphic(index: int, RMSD: float) -> None:
+def test_rmsdwrapper_isomorphic(index: int, RMSD: float) -> None:
 
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mol = copy.deepcopy(molecules.docking_1cbr[index])
@@ -81,7 +93,7 @@ def test_rmsd_isomorphic(index: int, RMSD: float) -> None:
         (10, 1.37842),
     ],
 )
-def test_rmsd_qcp_isomorphic(index: int, RMSD: float) -> None:
+def test_rmsdwrapper_qcp_isomorphic(index: int, RMSD: float) -> None:
 
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mol = copy.deepcopy(molecules.docking_1cbr[index])
