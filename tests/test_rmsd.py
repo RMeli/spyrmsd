@@ -12,7 +12,7 @@ def test_rmsd_dummy_benzene() -> None:
     mol1 = copy.deepcopy(molecules.benzene)
     mol2 = copy.deepcopy(molecules.benzene)
 
-    assert rmsd.rmsd_dummy(
+    assert rmsd.rmsd_standard(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0)
 
@@ -24,7 +24,7 @@ def test_rmsd_dummy_shifted_benzene() -> None:
 
     mol2.translate(np.array([0, 0, 1]))
 
-    assert rmsd.rmsd_dummy(
+    assert rmsd.rmsd_standard(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(1)
 
@@ -39,7 +39,7 @@ def test_rmsd_dummy_2viz(i: int, j: int, result: float) -> None:
     moli = copy.deepcopy(molecules.docking_2viz[i])
     molj = copy.deepcopy(molecules.docking_2viz[j])
 
-    assert rmsd.rmsd_dummy(
+    assert rmsd.rmsd_standard(
         moli.coordinates, molj.coordinates, moli.atomicnums, molj.atomicnums
     ) == pytest.approx(result)
 
@@ -57,7 +57,7 @@ def test_rmsd_dummy_2viz_stripped(i: int, j: int, result: float) -> None:
     moli.strip()
     molj.strip()
 
-    assert rmsd.rmsd_dummy(
+    assert rmsd.rmsd_standard(
         moli.coordinates, molj.coordinates, moli.atomicnums, molj.atomicnums
     ) == pytest.approx(result)
 
@@ -69,10 +69,10 @@ def test_rmsd_dummy_centred_benzene() -> None:
 
     mol2.translate(np.array([0, 0, 1]))
 
-    assert rmsd.rmsd_dummy(
+    assert rmsd.rmsd_standard(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(1)
-    assert rmsd.rmsd_dummy(
+    assert rmsd.rmsd_standard(
         mol1.coordinates,
         mol2.coordinates,
         mol1.atomicnums,
@@ -87,7 +87,7 @@ def test_rmsd_qcp(mol: molecule.Molecule) -> None:
     mol1 = copy.deepcopy(mol)
     mol2 = copy.deepcopy(mol)
 
-    assert rmsd.rmsd_dummy(
+    assert rmsd.rmsd_standard(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0)
     assert rmsd.rmsd_qcp(
@@ -99,7 +99,7 @@ def test_rmsd_qcp(mol: molecule.Molecule) -> None:
         mol2.rotate(np.random.rand(1), np.random.rand(3))
 
         assert (
-            rmsd.rmsd_dummy(
+            rmsd.rmsd_standard(
                 mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
             )
             > 0.0
@@ -168,7 +168,7 @@ def test_rmsd_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
     mol0 = copy.deepcopy(molecules.trp[0])
     mol = copy.deepcopy(molecules.trp[i])
 
-    assert rmsd.rmsd_dummy(
+    assert rmsd.rmsd_standard(
         mol0.coordinates, mol.coordinates, mol0.atomicnums, mol.atomicnums
     ) == pytest.approx(rmsd_dummy)
     assert rmsd.rmsd_qcp(
@@ -184,7 +184,7 @@ def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
     mol1 = copy.deepcopy(molecules.benzene)
     mol2 = copy.deepcopy(molecules.benzene)
 
-    assert rmsd.rmsd_dummy(
+    assert rmsd.rmsd_standard(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0)
     assert rmsd.rmsd_hungarian(
@@ -195,7 +195,7 @@ def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
     mol2.rotate(angle, [0, 0, 1], units="deg")
 
     assert (
-        rmsd.rmsd_dummy(
+        rmsd.rmsd_standard(
             mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
         )
         > 0
@@ -215,7 +215,7 @@ def test_rmsd_hungarian_benzene_shifted_rotated(angle: float, tol: float) -> Non
 
     mol2.translate([0, 0, 1])
 
-    assert rmsd.rmsd_dummy(
+    assert rmsd.rmsd_standard(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(1)
     assert rmsd.rmsd_hungarian(
@@ -226,7 +226,7 @@ def test_rmsd_hungarian_benzene_shifted_rotated(angle: float, tol: float) -> Non
     mol2.rotate(angle, [0, 0, 1], units="deg")
 
     assert (
-        rmsd.rmsd_dummy(
+        rmsd.rmsd_standard(
             mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
         )
         > 1
@@ -294,7 +294,7 @@ def test_rmsd_isomorphic_rotated_benzene(angle: float) -> None:
     mol2.rotate(angle, np.array([0, 0, 1]), units="deg")
 
     assert (
-        rmsd.rmsd_dummy(
+        rmsd.rmsd_standard(
             mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
         )
         > 0
@@ -322,7 +322,7 @@ def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
     mol2.strip()
 
     assert (
-        rmsd.rmsd_dummy(
+        rmsd.rmsd_standard(
             mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
         )
         > 0

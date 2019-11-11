@@ -91,7 +91,7 @@ def rmsdwrapper(
             c1, c2, mol1.adjacency_matrix, mol2.adjacency_matrix
         )
     elif not minimize and not symmetry:
-        RMSD = rmsd.rmsd_dummy(c1, c2, mol1.atomicnums, mol2.atomicnums)
+        RMSD = rmsd.rmsd_standard(c1, c2, mol1.atomicnums, mol2.atomicnums)
 
     return RMSD
 

@@ -3,7 +3,7 @@ from pyrmsd import qcp, hungarian, graph, utils
 import numpy as np
 
 
-def rmsd_dummy(
+def rmsd_standard(
     coords1: np.ndarray,
     coords2: np.ndarray,
     atomicn1: np.ndarray,
