@@ -34,18 +34,21 @@ python -m pyrmsd.pyrmsd -h
 ```
 
 ```text
-usage: pyrmsd.py [-h] [-s] [-m] [-v] reference molecules [molecules ...]
+usage: pyrmsd.py [-h] [-m] [-c] [-s] [-n] [-v]
+                 reference molecules [molecules ...]
 
 Python RMSD tool.
 
 positional arguments:
   reference       Reference file
-  molecules       Input file
+  molecules       Input file(s)
 
 optional arguments:
   -h, --help      show this help message and exit
-  -s, --strip     Strip H atoms
   -m, --minimize  Minimize (fit)
+  -c, --center    Center molecules at origin
+  -s, --strip     Strip H atoms
+  -n, --nosymm    No graph isomorphism
   -v, --verbose   Verbose output
 ```
 
@@ -55,9 +58,9 @@ optional arguments:
 from pyrmsd import rmsd
 ```
 
-#### Dummy RMSD
+#### Standard RMSD
 
-The function  `rmsd.rmsd_dummy` computes the standard RMSD without symmetry correction or minimization. The atoms are expected to be in the same order for both molecule being compared.
+The function  `rmsd.rmsd_standard` computes the standard RMSD without symmetry correction or minimization. The atoms are expected to be in the same order for both molecule being compared.
 
 #### Minimized RMSD
 
