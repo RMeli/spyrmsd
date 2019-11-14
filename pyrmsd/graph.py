@@ -26,14 +26,13 @@ def graph_from_adjacency_matrix(adjacency_matrix: np.ndarray) -> nx.Graph:
     return nx.convert_matrix.from_numpy_array(adjacency_matrix)
 
 
-# TODO: Refactor to take a molecule as input
-def graph_from_atomic_coordinates(atomicnums, coordinates, named=False):
+def adjacency_matrix_from_atomic_coordinates(atomicnums, coordinates):
 
     n = len(atomicnums)
 
     assert coordinates.shape == (n, 3)
 
-    G = nx.Graph()
+    A = np.zeros((n, n))
 
     for i in range(n):
         r_i = qcel.covalentradii.get(atomicnums[i], units="angstrom")
@@ -44,18 +43,9 @@ def graph_from_atomic_coordinates(atomicnums, coordinates, named=False):
             distance = np.sqrt(np.sum((coordinates[i] - coordinates[j]) ** 2))
 
             if distance < (r_i + r_j) * covalent_bond_multiplier:
-                G.add_edge(i, j)
+                A[i, j] = A[j, i] = 1
 
-    assert G.number_of_nodes() == n
-
-    if named:
-        mapping = {
-            i: {"element": qcel.periodictable.to_symbol(anum)}
-            for i, anum in enumerate(atomicnums)
-        }
-        nx.set_node_attributes(G, mapping)
-
-    return G
+    return A
 
 
 def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:

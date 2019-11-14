@@ -16,28 +16,16 @@ import pytest
     "mol, n_bonds",
     [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
 )
-def test_graph_from_atomic_coordinates(mol: molecule.Molecule, n_bonds: int) -> None:
+def test_adjacency_matrix_from_atomic_coordinates(
+    mol: molecule.Molecule, n_bonds: int
+) -> None:
 
-    G = graph.graph_from_atomic_coordinates(mol.atomicnums, mol.coordinates)
+    A = graph.adjacency_matrix_from_atomic_coordinates(mol.atomicnums, mol.coordinates)
+
+    G = graph.graph_from_adjacency_matrix(A)
 
     assert G.number_of_nodes() == len(mol)
     assert G.number_of_edges() == n_bonds
-
-
-def test_graph_from_atomic_coordinates_named_benzene() -> None:
-
-    mol = molecules.benzene
-
-    G = graph.graph_from_atomic_coordinates(mol.atomicnums, mol.coordinates, named=True)
-
-    assert G.number_of_nodes() == len(mol)
-    assert G.number_of_edges() == 12
-
-    nodes = G.nodes()
-    for node in nodes:
-        element = nodes[node]["element"]
-
-        assert element == "H" or element == "C"
 
 
 @pytest.mark.parametrize("obmol", molecules.allobmolecules)
