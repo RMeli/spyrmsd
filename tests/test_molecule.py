@@ -178,8 +178,9 @@ def test_graph_from_atomic_coordinates_perception(
 
     mol.adjacency_matrix = None
 
-    # Uses automatic bond perception
     with pytest.warns(UserWarning):
+
+        # Uses automatic bond perception
         G = mol.to_graph()
 
         assert G.number_of_nodes() == len(mol)
