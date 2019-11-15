@@ -7,6 +7,8 @@ import networkx as nx
 
 from typing import List
 
+import warnings
+
 
 class Molecule:
     def __init__(self, atomicnums, coordinates, adjacency_matrix=None):
@@ -27,6 +29,7 @@ class Molecule:
         if adjacency_matrix is not None:
             self.adjacency_matrix = np.asarray(adjacency_matrix, dtype=int)
 
+        # Molecular graph
         self.G: nx.Graph = None
 
         self.masses: List[float] = None
@@ -56,7 +59,6 @@ class Molecule:
         units: {"rad", "deg"}
             Units of the angle (radians `rad` or degrees `deg`)
         """
-        assert len(axis) == 3
         self.coordinates = utils.rotate(self.coordinates, angle, axis, units)
 
     def center_of_mass(self) -> np.ndarray:
@@ -72,6 +74,8 @@ class Molecule:
         -----
         Atomic masses are cached.
         """
+
+        # Get masses and cache them
         if self.masses is None:
             self.masses = [qcel.periodictable.to_mass(anum) for anum in self.atomicnums]
 
@@ -94,7 +98,7 @@ class Molecule:
         """
 
         if not self.stripped:
-            idx = self.atomicnums != 1  # Hydrogen atoms
+            idx = self.atomicnums != 1  # Non-hydrogen atoms
 
             # Strip
             self.atomicnums = self.atomicnums[idx]
@@ -133,7 +137,17 @@ class Molecule:
             if self.adjacency_matrix is not None:
                 self.G = graph.graph_from_adjacency_matrix(self.adjacency_matrix)
             else:
-                raise NotImplementedError
+                warnings.warn(
+                    "Molecule was not initialized with an adjacency matrix. "
+                    + "Using bond perception..."
+                )
+
+                # Automatic bond perception (with very simple rule)
+                self.adjacency_matrix = graph.adjacency_matrix_from_atomic_coordinates(
+                    self.atomicnums, self.coordinates
+                )
+
+                self.G = graph.graph_from_adjacency_matrix(self.adjacency_matrix)
 
         return self.G
 

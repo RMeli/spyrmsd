@@ -10,7 +10,7 @@ covalent_bond_multiplier: float = 1.2
 
 def graph_from_adjacency_matrix(adjacency_matrix: np.ndarray) -> nx.Graph:
     """
-    Graph from andjacency matrix.
+    Graph from adjacency matrix.
 
     Parameters
     ----------
@@ -26,7 +26,30 @@ def graph_from_adjacency_matrix(adjacency_matrix: np.ndarray) -> nx.Graph:
     return nx.convert_matrix.from_numpy_array(adjacency_matrix)
 
 
-def adjacency_matrix_from_atomic_coordinates(atomicnums, coordinates):
+def adjacency_matrix_from_atomic_coordinates(
+    atomicnums: np.ndarray, coordinates: np.ndarray
+) -> np.ndarray:
+    """
+    Compute adjacency matrix from atomic coordinates.
+
+    Parameters
+    ----------
+    atomicnums: numpy.ndarray
+        Atomic numbers
+    coordinates: numpy.ndarray
+        Atomic coordinates
+
+    Returns
+    -------
+    numpy.ndarray
+        Adjacency matrix
+
+    Notes
+    -----
+    This function is based on a very simple bond perception rule: two atoms are
+    considered to be bonded when their distance is smaller than the sum of their
+    covalent radii. Use with care.
+    """
 
     n = len(atomicnums)
 
