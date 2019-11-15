@@ -5,7 +5,7 @@ import numpy as np
 import qcelemental as qcel
 
 # TODO: Move elsewhere?
-covalent_bond_multiplier: float = 1.2
+connectivity_tolerance: float = 0.4
 
 
 def graph_from_adjacency_matrix(adjacency_matrix: np.ndarray) -> nx.Graph:
@@ -48,7 +48,11 @@ def adjacency_matrix_from_atomic_coordinates(
     -----
     This function is based on a very simple bond perception rule: two atoms are
     considered to be bonded when their distance is smaller than the sum of their
-    covalent radii. Use with care.
+    covalent radii plus a tolerance value [3]_. Use with care.
+
+    .. [3] E. C. Meng and R. A. Lewis, *Determination of molecular topology and atomic
+       hybridization states from heavy atom coordinates*, J. Comp. Chem. **12**, 891-898
+       (1991).
     """
 
     n = len(atomicnums)
@@ -65,7 +69,7 @@ def adjacency_matrix_from_atomic_coordinates(
 
             distance = np.sqrt(np.sum((coordinates[i] - coordinates[j]) ** 2))
 
-            if distance < (r_i + r_j) * covalent_bond_multiplier:
+            if distance < (r_i + r_j + connectivity_tolerance):
                 A[i, j] = A[j, i] = 1
 
     return A
