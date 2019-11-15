@@ -1,10 +1,10 @@
-from pyrmsd import pyrmsd, molecule
-from tests import molecules
-
+import copy
 import sys
 
-import copy
 import pytest
+
+from pyrmsd import molecule, pyrmsd
+from tests import molecules
 
 
 def test_pyrmsd_imported():

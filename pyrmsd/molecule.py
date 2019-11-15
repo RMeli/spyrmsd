@@ -1,13 +1,11 @@
-from pyrmsd import utils, graph
-
-import qcelemental as qcel
-import numpy as np
-
-import networkx as nx
-
+import warnings
 from typing import List
 
-import warnings
+import networkx as nx
+import numpy as np
+import qcelemental as qcel
+
+from pyrmsd import graph, utils
 
 
 class Molecule:

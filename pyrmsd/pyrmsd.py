@@ -2,9 +2,9 @@
 Python RMSD tool
 """
 
-from pyrmsd import molecule, rmsd
-
 import numpy as np
+
+from pyrmsd import molecule, rmsd
 
 
 def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.ndarray:

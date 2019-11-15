@@ -1,9 +1,9 @@
-from pyrmsd import utils
-
-import pytest
+import random
 
 import numpy as np
-import random
+import pytest
+
+from pyrmsd import utils
 
 
 @pytest.mark.parametrize("ext", ["pdf", "smi", "xyz"])

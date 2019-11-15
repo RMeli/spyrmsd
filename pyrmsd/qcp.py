@@ -1,8 +1,7 @@
-import numpy as np
-
-from scipy import optimize
-
 from typing import Tuple
+
+import numpy as np
+from scipy import optimize
 
 
 def M_mtx(A: np.ndarray, B: np.ndarray) -> np.ndarray:

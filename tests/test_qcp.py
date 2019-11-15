@@ -1,13 +1,12 @@
-from pyrmsd import qcp, molecule
-from tests import molecules
+import copy
+import itertools
+from typing import Tuple
 
 import numpy as np
-import itertools
-import copy
-
 import pytest
 
-from typing import Tuple
+from pyrmsd import molecule, qcp
+from tests import molecules
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)

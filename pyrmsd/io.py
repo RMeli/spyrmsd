@@ -1,6 +1,8 @@
-from pyrmsd import molecule, utils
+from typing import List
 
 import numpy as np
+
+from pyrmsd import molecule, utils
 
 try:
     # 3.0
@@ -10,8 +12,6 @@ except ImportError:
     # 2.0
     import openbabel as ob
     import pybel
-
-from typing import List
 
 
 def load(fname: str) -> ob.OBMol:

@@ -1,8 +1,8 @@
-import networkx as nx
-import qcelemental as qcel
-import numpy as np
+from typing import Any, Dict, List
 
-from typing import List, Dict, Any
+import networkx as nx
+import numpy as np
+import qcelemental as qcel
 
 # TODO: Move elsewhere?
 covalent_bond_multiplier: float = 1.2

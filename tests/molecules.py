@@ -1,13 +1,13 @@
-from pyrmsd import molecule, io
-
 import os
+from typing import List, Tuple
+
+from pyrmsd import io, molecule
 
 try:
     from openbabel import pybel  # 3.0
 except ImportError:
     import pybel  # 2.0
 
-from typing import Tuple, List
 
 fdir = os.path.dirname(os.path.abspath(__file__))
 molpath = os.path.join(fdir, "data/molecules/")

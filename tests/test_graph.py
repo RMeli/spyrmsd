@@ -1,15 +1,14 @@
-from pyrmsd import graph, molecule, io
-from tests import molecules
-
-import numpy as np
 import networkx as nx
+import numpy as np
+import pytest
+
+from pyrmsd import graph, io, molecule
+from tests import molecules
 
 try:
     from openbabel import openbabel as ob
 except ImportError:
     import openbabel as ob
-
-import pytest
 
 
 @pytest.mark.parametrize(

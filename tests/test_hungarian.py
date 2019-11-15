@@ -1,10 +1,10 @@
-from pyrmsd import hungarian, molecule
-from tests import molecules
-
-import pytest
+import copy
 
 import numpy as np
-import copy
+import pytest
+
+from pyrmsd import hungarian, molecule
+from tests import molecules
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)

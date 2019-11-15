@@ -1,16 +1,14 @@
-from pyrmsd import molecule, utils, io
-from tests import molecules
-
-import qcelemental as qcel
-
-import numpy as np
-
 import copy
 import os
-import pytest
-
 from collections import defaultdict
-from typing import List, Tuple, DefaultDict
+from typing import DefaultDict, List, Tuple
+
+import numpy as np
+import pytest
+import qcelemental as qcel
+
+from pyrmsd import io, molecule, utils
+from tests import molecules
 
 
 # atoms is a list of atomic numbers and atom counts

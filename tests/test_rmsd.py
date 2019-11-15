@@ -1,10 +1,10 @@
-from pyrmsd import rmsd, molecule
-from tests import molecules
-
-import numpy as np
 import copy
 
+import numpy as np
 import pytest
+
+from pyrmsd import molecule, rmsd
+from tests import molecules
 
 
 def test_rmsd_dummy_benzene() -> None:
