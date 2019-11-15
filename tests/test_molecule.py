@@ -166,3 +166,21 @@ def test_graph_from_atomic_coordinates(mol: molecule.Molecule, n_bonds: int) -> 
 
     assert G.number_of_nodes() == len(mol)
     assert G.number_of_edges() == n_bonds
+
+
+@pytest.mark.parametrize(
+    "mol, n_bonds",
+    [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
+)
+def test_graph_from_atomic_coordinates_perception(
+    mol: molecule.Molecule, n_bonds: int
+) -> None:
+
+    mol.adjacency_matrix = None
+
+    # Uses automatic bond perception
+    with pytest.warns(UserWarning):
+        G = mol.to_graph()
+
+        assert G.number_of_nodes() == len(mol)
+        assert G.number_of_edges() == n_bonds
