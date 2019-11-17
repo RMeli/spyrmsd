@@ -106,7 +106,8 @@ class Molecule:
             self.natoms = len(self.atomicnums)
 
             # Update adjacency matrix
-            self.adjacency_matrix = self.adjacency_matrix[np.ix_(idx, idx)]
+            if self.adjacency_matrix is not None:
+                self.adjacency_matrix = self.adjacency_matrix[np.ix_(idx, idx)]
 
             self.stripped = True
 
