@@ -176,12 +176,15 @@ def test_graph_from_atomic_coordinates_perception(
     mol: molecule.Molecule, n_bonds: int
 ) -> None:
 
-    mol.adjacency_matrix = None
+    m = copy.deepcopy(mol)
+
+    m.adjacency_matrix = None
+    m.G = None
 
     with pytest.warns(UserWarning):
 
         # Uses automatic bond perception
-        G = mol.to_graph()
+        G = m.to_graph()
 
-        assert G.number_of_nodes() == len(mol)
+        assert G.number_of_nodes() == len(m)
         assert G.number_of_edges() == n_bonds
