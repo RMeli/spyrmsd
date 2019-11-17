@@ -7,7 +7,7 @@ pyRMSD is a Python tool for symmetry-corrected RMSD calculations.
    :maxdepth: 2
    :caption: Contents:
 
-   api/modules
+   api
 
 Indices and tables
 ==================
