@@ -3,8 +3,6 @@ channels:
 dependencies:
   # Base
   - python
-  - pip
-  - ipython
 
   # Maths
   - numpy
@@ -14,9 +12,6 @@ dependencies:
   # Chemistry
   - openbabel
   - qcelemental
-
-  # Plotting
-  - matplotlib
 
   # Testing
   - pytest
