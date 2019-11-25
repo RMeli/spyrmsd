@@ -32,7 +32,7 @@ def load(fname: str) -> Tuple[pybel.Molecule, molecule.Molecule]:
 
     obmol = io.load(fname)
 
-    mol = io.openbabel_to_molecule(obmol, adjacency=True)
+    mol = io.to_molecule(obmol, adjacency=True)
 
     return obmol, mol
 
@@ -56,7 +56,7 @@ def loadall(fname: str) -> Tuple[List[pybel.Molecule], List[molecule.Molecule]]:
 
     obmols = io.loadall(fname)
 
-    mols = [io.openbabel_to_molecule(obmol, adjacency=True) for obmol in obmols]
+    mols = [io.to_molecule(obmol, adjacency=True) for obmol in obmols]
 
     return obmols, mols
 

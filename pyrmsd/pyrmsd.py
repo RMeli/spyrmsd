@@ -122,7 +122,7 @@ if __name__ == "__main__":
     output: str = ""
 
     obref = io.load(args.reference)
-    ref = io.openbabel_to_molecule(obref, adjacency=True)
+    ref = io.to_molecule(obref, adjacency=True)
 
     if args.verbose:
         refname = os.path.basename(args.reference)
@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
         # Load all molecule within file
         obmols = io.loadall(molfile)
-        mols = [io.openbabel_to_molecule(obmol, adjacency=True) for obmol in obmols]
+        mols = [io.to_molecule(obmol, adjacency=True) for obmol in obmols]
 
         if args.verbose:
             molname = os.path.basename(molfile)

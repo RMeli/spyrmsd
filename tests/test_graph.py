@@ -33,7 +33,7 @@ def test_adjacency_matrix_from_obmol(obmol) -> None:
     natoms = obmol.OBMol.NumAtoms()
     nbonds = obmol.OBMol.NumBonds()
 
-    A = io.adjacency_matrix_from_obmol(obmol)
+    A = io.adjacency_matrix(obmol)
 
     assert A.shape == (natoms, natoms)
     assert np.alltrue(A == A.T)
@@ -52,7 +52,7 @@ def test_graph_from_adjacency_matrix(obmol) -> None:
     natoms = obmol.OBMol.NumAtoms()
     nbonds = obmol.OBMol.NumBonds()
 
-    A = io.adjacency_matrix_from_obmol(obmol)
+    A = io.adjacency_matrix(obmol)
 
     assert A.shape == (natoms, natoms)
     assert np.alltrue(A == A.T)

@@ -27,7 +27,7 @@ def format(fname: str) -> str:
     return ext[1:]  # Remove "."
 
 
-def format_openbabel(fname: str) -> str:
+def molformat(fname: str) -> str:
     """
     Extract an OpenBabel-friendly format from file name.
 
