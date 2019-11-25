@@ -1,5 +1,6 @@
 name: pyrmsd
 channels:
+  - rdkit
 dependencies:
   # Base
   - python
@@ -11,6 +12,7 @@ dependencies:
 
   # Chemistry
   - openbabel
+  - rdkit
   - qcelemental
 
   # Testing
