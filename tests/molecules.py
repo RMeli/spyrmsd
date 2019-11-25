@@ -1,19 +1,13 @@
 import os
-from typing import List, Tuple
+from typing import List, Tuple, Any
 
 from pyrmsd import io, molecule
-
-try:
-    from openbabel import pybel  # 3.0
-except ImportError:
-    import pybel  # 2.0
-
 
 fdir = os.path.dirname(os.path.abspath(__file__))
 molpath = os.path.join(fdir, "data/molecules/")
 
 
-def load(fname: str) -> Tuple[pybel.Molecule, molecule.Molecule]:
+def load(fname: str) -> Tuple[Any, molecule.Molecule]:
     """
     Load molecule from file.
 
@@ -24,20 +18,21 @@ def load(fname: str) -> Tuple[pybel.Molecule, molecule.Molecule]:
 
     Returns
     -------
-    Tuple[pybel.Molecule, molecule.Molecule]
-        Loaded molecule as `pybel.Molecule` and `pyrmsd.molecule.Molecule`
+    Tuple[Any, molecule.Molecule]
+        Loaded molecule as `pybel.Molecule` or `rdkit.Chem.rdkem.Mol` and
+        `pyrmsd.molecule.Molecule`
     """
 
     fname = os.path.join(molpath, fname)
 
-    obmol = io.load(fname)
+    m = io.load(fname)
 
-    mol = io.to_molecule(obmol, adjacency=True)
+    mol = io.to_molecule(m, adjacency=True)
 
-    return obmol, mol
+    return m, mol
 
 
-def loadall(fname: str) -> Tuple[List[pybel.Molecule], List[molecule.Molecule]]:
+def loadall(fname: str) -> Tuple[List[Any], List[molecule.Molecule]]:
     """
     Load all molecule from file.
 
@@ -48,21 +43,22 @@ def loadall(fname: str) -> Tuple[List[pybel.Molecule], List[molecule.Molecule]]:
 
     Returns
     -------
-    Tuple[List[pybel.Molecule], List[molecule.Molecule]]
-        Loaded molecule as `pybel.Molecule` and `pyrmsd.molecule.Molecule`
+    Tuple[List[Any], List[molecule.Molecule]]
+        Loaded molecule as `pybel.Molecule` or `rdkit.Chem.rdchem.Mol` and
+        `pyrmsd.molecule.Molecule`
     """
 
     fname = os.path.join(molpath, fname)
 
-    obmols = io.loadall(fname)
+    ms = io.loadall(fname)
 
-    mols = [io.to_molecule(obmol, adjacency=True) for obmol in obmols]
+    mols = [io.to_molecule(m, adjacency=True) for m in ms]
 
-    return obmols, mols
+    return ms, mols
 
 
-obbenzene, benzene = load("benzene.xyz")
-obethanol, ethanol = load("ethanol.xyz")
+obbenzene, benzene = load("benzene.sdf")
+obethanol, ethanol = load("ethanol.sdf")
 obxyz = [obbenzene, obethanol]
 xyz = [benzene, ethanol]
 

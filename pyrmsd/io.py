@@ -6,10 +6,8 @@ try:
         to_molecule,
     )
 
-    __all__ = ["load", "loadall", "adjacency_matrix", "to_molecule"]
-
 except ImportError:
 
     raise NotImplementedError
 
-    from pyrmsd.optional.rdkit import load
+__all__ = ["load", "loadall", "adjacency_matrix", "to_molecule"]
