@@ -54,11 +54,12 @@ def loadall(fname: str) -> List[Chem.rdchem.Mol]:
     fmt = utils.molformat(fname)
 
     if fmt == "mol2":
-        rdmols = Chem.Mol2MolSupplier(fname, removeHs=False)
+        raise NotImplementedError  # See RDKit Issue #415
     elif fmt == "sdf":
         rdmols = Chem.SDMolSupplier(fname, removeHs=False)
     elif fmt == "pdb":
-        rdmols = Chem.PDBMolSupplier(fname, removeHs=False)
+        # TODO: Implement
+        raise NotImplementedError
     else:
         raise NotImplementedError
 

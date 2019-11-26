@@ -53,7 +53,13 @@ def loadall(fname: str) -> List[ob.OBMol]:
 
     fmt = utils.molformat(fname)
 
-    return [obmol for obmol in pybel.readfile(fmt, fname)]
+    obmols = [obmol for obmol in pybel.readfile(fmt, fname)]
+
+    # FIXME: Special handling for multi-model PDB files; See OpenBabel Issue #2097
+    if fmt == "pdb":
+        obmols = obmols[:-1]
+
+    return obmols
 
 
 def adjacency_matrix(mol) -> np.ndarray:
