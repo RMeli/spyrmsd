@@ -1,6 +1,7 @@
 name: pyrmsd
 channels:
   - conda-forge
+  - rdkit
 dependencies:
   # Base
   - python
@@ -11,4 +12,9 @@ dependencies:
   - networkx
 
   # Chemistry
+  - rdkit
   - qcelemental
+
+  # Testing
+  - pytest
+  - pytest-cov

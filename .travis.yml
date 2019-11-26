@@ -4,7 +4,14 @@ matrix:
   include:
     - os: osx
       language: generic  # No need to set Python version since its conda
-      env: PYTHON_VER=3.6
+      env: 
+        - PYTHON_VER=3.6
+        - CHEM=obabel
+    - os: osx
+      language: generic  # No need to set Python version since its conda
+      env: 
+        - PYTHON_VER=3.6
+        - CHEM=rdkit
     - os: osx
       language: generic
       env: PYTHON_VER=3.7
@@ -29,7 +36,7 @@ before_install:
 
 install:
     # Create test environment for package
-  - python devtools/scripts/create_conda_env.py -n=test -p=$PYTHON_VER devtools/conda-envs/pyrmsd-all.yaml
+  - python devtools/scripts/create_conda_env.py -n=test -p=${PYTHON_VER} devtools/conda-envs/pyrmsd-test-${CHEM}.yaml
     # Activate the test environment
   - conda activate test
     # Build and install package

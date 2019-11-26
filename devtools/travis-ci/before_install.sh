@@ -28,9 +28,7 @@ export PIP_ARGS="-U"
 echo ". $MINICONDA_HOME/etc/profile.d/conda.sh" >> ~/.bashrc  # Source the profile.d file
 echo "conda activate" >> ~/.bashrc  # Activate conda
 source ~/.bashrc  # Source file to get new commands
-    
-conda config --add channels conda-forge # Select conda-forge channel
-    
+
 conda config --set always_yes yes
 conda install conda conda-build jinja2 anaconda-client
 conda update --quiet --all
