@@ -31,7 +31,8 @@ def test_load_mol2(molfile, natoms: int, nbonds: int) -> None:
 
 
 @pytest.mark.parametrize(
-    "molfile, natoms, nbonds", [("trp0.pdb", 217, 224)],
+    "molfile, natoms, nbonds",
+    [("trp0.pdb", 217, 224), ("trp1.pdb", 217, 224), ("trp2.pdb", 217, 224)],
 )
 def test_load_pdb(molfile, natoms: int, nbonds: int) -> None:
 
