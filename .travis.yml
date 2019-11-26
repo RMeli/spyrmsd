@@ -14,15 +14,21 @@ matrix:
         - CHEM=rdkit
     - os: osx
       language: generic
-      env: PYTHON_VER=3.7
+      env: 
+        - PYTHON_VER=3.6
+        - CHEM=obabel
 
 
     - os: linux
       language: generic  # No need to set Python version since its conda 
-      env: PYTHON_VER=3.6
+      env: 
+        - PYTHON_VER=3.6
+        - CHEM=obabel
     - os: linux
       language: generic
-      env: PYTHON_VER=3.7
+      env: 
+        - PYTHON_VER=3.6
+        - CHEM=obabel
 
 before_install:
     # Additional info about the build
