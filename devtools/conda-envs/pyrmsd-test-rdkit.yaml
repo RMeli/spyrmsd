@@ -18,3 +18,8 @@ dependencies:
   # Testing
   - pytest
   - pytest-cov
+
+  # Dev
+  - mypy
+  - flake8
+  - black
