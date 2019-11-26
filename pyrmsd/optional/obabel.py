@@ -1,6 +1,6 @@
 from pyrmsd import molecule, utils
 
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 
@@ -56,7 +56,7 @@ def loadall(fname: str) -> List[ob.OBMol]:
     return [obmol for obmol in pybel.readfile(fmt, fname)]
 
 
-def adjacency_matrix(obmol: ob.OBMol) -> np.ndarray:
+def adjacency_matrix(mol) -> np.ndarray:
     """
     Adjacency matrix from OpenBabel molecule.
 
@@ -71,13 +71,13 @@ def adjacency_matrix(obmol: ob.OBMol) -> np.ndarray:
         Adjacency matrix of the molecule
     """
 
-    n = len(obmol.atoms)
+    n = len(mol.atoms)
 
     # Pre-allocate memory for  the adjacency matrix
     A = np.zeros((n, n), dtype=int)
 
     # Loop over molecular bonds
-    for bond in ob.OBMolBondIter(obmol.OBMol):
+    for bond in ob.OBMolBondIter(mol.OBMol):
         # Bonds are 1-indexed
         i: int = bond.GetBeginAtomIdx() - 1
         j: int = bond.GetEndAtomIdx() - 1
@@ -88,7 +88,7 @@ def adjacency_matrix(obmol: ob.OBMol) -> np.ndarray:
     return A
 
 
-def to_molecule(obmol: ob.OBMol, adjacency: bool = True) -> molecule.Molecule:
+def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
     """
     Transform OpenBabel molecule to `pyrmsd` molecule
 
@@ -105,16 +105,36 @@ def to_molecule(obmol: ob.OBMol, adjacency: bool = True) -> molecule.Molecule:
         `pyrmsd` molecule
     """
 
-    n = len(obmol.atoms)
+    n = len(mol.atoms)
 
     atomicnums = np.zeros(n, dtype=int)
     coordinates = np.zeros((n, 3))
 
-    for i, atom in enumerate(obmol.atoms):
+    for i, atom in enumerate(mol.atoms):
         atomicnums[i] = atom.atomicnum
         coordinates[i] = atom.coords
 
     if adjacency:
-        A = adjacency_matrix(obmol)
+        A = adjacency_matrix(mol)
 
     return molecule.Molecule(atomicnums, coordinates, A)
+
+
+def numatoms(mol) -> int:
+    return mol.OBMol.NumAtoms()
+
+
+def numbonds(mol) -> int:
+    return mol.OBMol.NumBonds()
+
+
+def bonds(mol) -> List[Tuple[int, int]]:
+    b = []
+
+    for bond in ob.OBMolBondIter(mol.OBMol):
+        i = bond.GetBeginAtomIdx() - 1
+        j = bond.GetEndAtomIdx() - 1
+
+        b.append((i, j))
+
+    return b
