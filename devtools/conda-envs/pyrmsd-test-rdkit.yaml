@@ -1,5 +1,6 @@
 name: pyrmsd
 channels:
+  - conda-forge
   - rdkit
 dependencies:
   # Base
@@ -11,10 +12,15 @@ dependencies:
   - networkx
 
   # Chemistry
-  - openbabel
   - rdkit
   - qcelemental
 
   # Testing
   - pytest
   - pytest-cov
+
+  # Dev
+  - mypy
+  - flake8
+  - black
+  - codecov
