@@ -1,8 +1,8 @@
-from pyrmsd import molecule, utils
-
 from typing import List, Tuple
 
 import numpy as np
+
+from pyrmsd import molecule, utils
 
 try:
     # 3.0

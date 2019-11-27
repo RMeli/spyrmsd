@@ -1,10 +1,9 @@
-from pyrmsd import molecule, utils
-
-import rdkit.Chem as Chem
-
 from typing import List, Tuple
 
 import numpy as np
+import rdkit.Chem as Chem
+
+from pyrmsd import molecule, utils
 
 
 def load(fname: str) -> Chem.rdchem.Mol:

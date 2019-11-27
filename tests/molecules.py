@@ -1,5 +1,5 @@
 import os
-from typing import List, Tuple, Any
+from typing import Any, List, Tuple
 
 from pyrmsd import io, molecule
 
