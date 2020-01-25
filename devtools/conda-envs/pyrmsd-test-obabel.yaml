@@ -1,4 +1,4 @@
-name: pyrmsd
+name: spyrmsd
 channels:
   - conda-forge
 dependencies:
