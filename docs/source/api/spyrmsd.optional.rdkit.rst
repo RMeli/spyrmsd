@@ -1,7 +1,7 @@
-spyrmsd.tests.test\_qcp module
+spyrmsd.optional.rdkit module
 =============================
 
-.. automodule:: spyrmsd.tests.test_qcp
+.. automodule:: spyrmsd.optional.rdkit
    :members:
    :undoc-members:
    :show-inheritance:

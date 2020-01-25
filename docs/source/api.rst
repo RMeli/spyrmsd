@@ -5,11 +5,12 @@ API
    :maxdepth: 2
    :caption: Contents:
 
-   api/pyrmsd.graph
-   api/pyrmsd.hungarian
-   api/pyrmsd.io
-   api/pyrmsd.molecule
-   api/pyrmsd.pyrmsd
-   api/pyrmsd.qcp
-   api/pyrmsd.rmsd
-   api/pyrmsd.utils
+   api/spyrmsd.graph
+   api/spyrmsd.hungarian
+   api/spyrmsd.io
+   api/spyrmsd.molecule
+   api/spyrmsd.optional
+   api/spyrmsd.spyrmsd
+   api/spyrmsd.qcp
+   api/spyrmsd.rmsd
+   api/spyrmsd.utils
