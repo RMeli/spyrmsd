@@ -1,9 +1,9 @@
 # sPyRMSD
 
-[![Travis Build Status](https://travis-ci.org/RMeli/spyrmsd.svg?branch=master)](https://travis-ci.org/RMeli/pyrmsd)
+[![Travis Build Status](https://travis-ci.org/RMeli/spyrmsd.svg?branch=master)](https://travis-ci.org/RMeli/spyrmsd)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/rhd5wi1ce7i24hgb/branch/master?svg=true)](https://ci.appveyor.com/project/rhd5wi1ce7i24hgb/spyrmsd/branch/master)
 [![codecov](https://codecov.io/gh/RMeli/spyrmsd/branch/master/graph/badge.svg)](https://codecov.io/gh/RMeli/spyrmsd/branch/master)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/spython/g/RMeli/pyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/spython/g/RMeli/spyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
 [![Documentation Status](https://readthedocs.org/projects/pyrmsd/badge/?version=latest)](https://pyrmsd.readthedocs.io/en/latest/?badge=latest)
 
 [![Docs](https://img.shields.io/badge/docs-pyrmsd.readthedocs.io-blueviolet)](https://pyrmsd.readthedocs.io)
