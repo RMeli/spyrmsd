@@ -3,12 +3,12 @@ import sys
 
 import pytest
 
-from pyrmsd import molecule, pyrmsd
+from spyrmsd import molecule, spyrmsd
 from tests import molecules
 
 
-def test_pyrmsd_imported():
-    assert "pyrmsd" in sys.modules
+def test_spyrmsd_imported():
+    assert "spyrmsd" in sys.modules
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
@@ -20,7 +20,7 @@ def test_rmsdwrapper_molsize(mol: molecule.Molecule) -> None:
     ms.strip()
 
     with pytest.raises(ValueError):
-        pyrmsd.rmsdwrapper(m, ms, symmetry=False)
+        spyrmsd.rmsdwrapper(m, ms, symmetry=False)
 
 
 # Results obtained with MDAnalysis
@@ -47,8 +47,8 @@ def test_rmsdwrapper_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
     mol0 = copy.deepcopy(molecules.trp[0])
     mol = copy.deepcopy(molecules.trp[i])
 
-    assert pyrmsd.rmsdwrapper(mol0, mol, symmetry=False) == pytest.approx(rmsd_dummy)
-    assert pyrmsd.rmsdwrapper(
+    assert spyrmsd.rmsdwrapper(mol0, mol, symmetry=False) == pytest.approx(rmsd_dummy)
+    assert spyrmsd.rmsdwrapper(
         mol0, mol, symmetry=False, minimize=True
     ) == pytest.approx(rmsd_min)
 
@@ -74,7 +74,7 @@ def test_rmsdwrapper_isomorphic(index: int, RMSD: float) -> None:
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mol = copy.deepcopy(molecules.docking_1cbr[index])
 
-    assert pyrmsd.rmsdwrapper(mol, molc, strip=True) == pytest.approx(RMSD, abs=1e-5)
+    assert spyrmsd.rmsdwrapper(mol, molc, strip=True) == pytest.approx(RMSD, abs=1e-5)
 
 
 # Results obtained with OpenBabel
@@ -98,6 +98,6 @@ def test_rmsdwrapper_qcp_isomorphic(index: int, RMSD: float) -> None:
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mol = copy.deepcopy(molecules.docking_1cbr[index])
 
-    assert pyrmsd.rmsdwrapper(mol, molc, minimize=True, strip=True) == pytest.approx(
+    assert spyrmsd.rmsdwrapper(mol, molc, minimize=True, strip=True) == pytest.approx(
         RMSD, abs=1e-5
     )

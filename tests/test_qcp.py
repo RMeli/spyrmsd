@@ -5,7 +5,7 @@ from typing import Tuple
 import numpy as np
 import pytest
 
-from pyrmsd import molecule, qcp
+from spyrmsd import molecule, qcp
 from tests import molecules
 
 

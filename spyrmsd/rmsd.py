@@ -1,6 +1,6 @@
 import numpy as np
 
-from pyrmsd import graph, hungarian, qcp, utils
+from spyrmsd import graph, hungarian, qcp, utils
 
 
 def rmsd_standard(

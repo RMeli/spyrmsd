@@ -1,4 +1,4 @@
-# PyRMSD
+# sPyRMSD
 
 [![Travis Build Status](https://travis-ci.org/RMeli/pyrmsd.svg?branch=master)](https://travis-ci.org/RMeli/pyrmsd)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/rhd5wi1ce7i24hgb/branch/master?svg=true)](https://ci.appveyor.com/project/rhd5wi1ce7i24hgb/pyrmsd/branch/master)
@@ -9,15 +9,15 @@
 [![Docs](https://img.shields.io/badge/docs-pyrmsd.readthedocs.io-blueviolet)](https://pyrmsd.readthedocs.io)
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
 
-Python-first tool for symmetry-corrected  RMSD calculations.
+Python-first tool for symmetry-corrected RMSD calculations.
 
 ## Installation
 
 ### GitHub
 
 ```bash
-git clone https://github.com/RMeli/pyrmsd.git
-cd pyrmsd
+git clone https://github.com/RMeli/spyrmsd.git
+cd spyrmsd
 pip install .
 ```
 
@@ -30,11 +30,11 @@ pip install .
 ### Standalone
 
 ```bash
-python -m pyrmsd.pyrmsd -h
+python -m spyrmsd.spyrmsd -h
 ```
 
 ```text
-usage: pyrmsd.py [-h] [-m] [-c] [-s] [-n] [-v]
+usage: spyrmsd.py [-h] [-m] [-c] [-s] [-n] [-v]
                  reference molecules [molecules ...]
 
 Python RMSD tool.
@@ -55,7 +55,7 @@ optional arguments:
 ### Module
 
 ```python
-from pyrmsd import rmsd
+from spyrmsd import rmsd
 ```
 
 #### Standard RMSD
