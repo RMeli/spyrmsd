@@ -3,7 +3,7 @@ from typing import List, Tuple
 import numpy as np
 import rdkit.Chem as Chem
 
-from pyrmsd import molecule, utils
+from spyrmsd import molecule, utils
 
 
 def load(fname: str) -> Chem.rdchem.Mol:

@@ -1,23 +1,23 @@
-# PyRMSD
+# sPyRMSD
 
-[![Travis Build Status](https://travis-ci.org/RMeli/pyrmsd.svg?branch=master)](https://travis-ci.org/RMeli/pyrmsd)
-[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/rhd5wi1ce7i24hgb/branch/master?svg=true)](https://ci.appveyor.com/project/rhd5wi1ce7i24hgb/pyrmsd/branch/master)
-[![codecov](https://codecov.io/gh/RMeli/pyrmsd/branch/master/graph/badge.svg)](https://codecov.io/gh/RMeli/pyrmsd/branch/master)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/RMeli/pyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/pyrmsd/context:python)
+[![Travis Build Status](https://travis-ci.org/RMeli/spyrmsd.svg?branch=master)](https://travis-ci.org/RMeli/spyrmsd)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/rhd5wi1ce7i24hgb/branch/master?svg=true)](https://ci.appveyor.com/project/rhd5wi1ce7i24hgb/spyrmsd/branch/master)
+[![codecov](https://codecov.io/gh/RMeli/spyrmsd/branch/master/graph/badge.svg)](https://codecov.io/gh/RMeli/spyrmsd/branch/master)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/spython/g/RMeli/spyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
 [![Documentation Status](https://readthedocs.org/projects/pyrmsd/badge/?version=latest)](https://pyrmsd.readthedocs.io/en/latest/?badge=latest)
 
 [![Docs](https://img.shields.io/badge/docs-pyrmsd.readthedocs.io-blueviolet)](https://pyrmsd.readthedocs.io)
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
 
-Python-first tool for symmetry-corrected  RMSD calculations.
+Python-first tool for symmetry-corrected RMSD calculations.
 
 ## Installation
 
 ### GitHub
 
 ```bash
-git clone https://github.com/RMeli/pyrmsd.git
-cd pyrmsd
+git clone https://github.com/RMeli/spyrmsd.git
+cd spyrmsd
 pip install .
 ```
 
@@ -30,11 +30,11 @@ pip install .
 ### Standalone
 
 ```bash
-python -m pyrmsd.pyrmsd -h
+python -m spyrmsd.spyrmsd -h
 ```
 
 ```text
-usage: pyrmsd.py [-h] [-m] [-c] [-s] [-n] [-v]
+usage: spyrmsd.py [-h] [-m] [-c] [-s] [-n] [-v]
                  reference molecules [molecules ...]
 
 Python RMSD tool.
@@ -55,7 +55,7 @@ optional arguments:
 ### Module
 
 ```python
-from pyrmsd import rmsd
+from spyrmsd import rmsd
 ```
 
 #### Standard RMSD

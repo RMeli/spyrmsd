@@ -1,14 +1,14 @@
-.. pyrmsd documentation master file, created by
+.. spyrmsd documentation master file, created by
    sphinx-quickstart on Thu Mar 15 13:55:56 2018.
 
-`pyrmsd` documentation
+`spyrmsd` documentation
 ======================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   api/pyrmsd
+   api/spyrmsd
 
 Indices and tables
 ==================

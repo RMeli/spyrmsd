@@ -35,7 +35,7 @@ install:
   - conda update --all
 
     # Create test environment for package
-  - python devtools\\scripts\\create_conda_env.py -n=test -p=%PYTHON_VERSION% devtools\\conda-envs\\pyrmsd-test-%CHEM%.yaml
+  - python devtools\\scripts\\create_conda_env.py -n=test -p=%PYTHON_VERSION% devtools\\conda-envs\\spyrmsd-test-%CHEM%.yaml
 
     # Activate the test environment
   - activate test
@@ -47,7 +47,7 @@ build: false
 
 test_script:
     # Run test and get coverage report
-  - pytest -v --cov=pyrmsd tests
+  - pytest -v --cov=spyrmsd tests
 
     # Run checks
   - black .

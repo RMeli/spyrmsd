@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath(".."))
 
 # -- Project information -----------------------------------------------------
 
-project = "pyrmsd"
+project = "spyrmsd"
 copyright = (
     "2019, Rocco Meli. Project structure based on the "
     "Computational Molecular Science Python Cookiecutter version 1.1"
@@ -118,7 +118,7 @@ html_theme_options = {"display_version": True}
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "pyrmsddoc"
+htmlhelp_basename = "spyrmsddoc"
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -142,7 +142,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "pyrmsd.tex", "pyrmsd Documentation", "pyrmsd", "manual")
+    (master_doc, "spyrmsd.tex", "spyrmsd Documentation", "spyrmsd", "manual")
 ]
 
 
@@ -150,7 +150,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "pyrmsd", "pyrmsd Documentation", [author], 1)]
+man_pages = [(master_doc, "spyrmsd", "spyrmsd Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------------
@@ -161,10 +161,10 @@ man_pages = [(master_doc, "pyrmsd", "pyrmsd Documentation", [author], 1)]
 texinfo_documents = [
     (
         master_doc,
-        "pyrmsd",
-        "pyrmsd Documentation",
+        "spyrmsd",
+        "spyrmsd Documentation",
         author,
-        "pyrmsd",
+        "spyrmsd",
         "Python tRMSD tool",
         "Miscellaneous",
     )

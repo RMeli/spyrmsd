@@ -1,7 +1,7 @@
-pyrmsd.tests.test\_graph module
+spyrmsd.tests.test\_graph module
 ===============================
 
-.. automodule:: pyrmsd.tests.test_graph
+.. automodule:: spyrmsd.tests.test_graph
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,5 +1,11 @@
+"""
+spyrmsd
+
+Python RMSD tool
+"""
+
 # Handle versioneer
-from pyrmsd._version import get_versions
+from ._version import get_versions
 
 versions = get_versions()
 __version__ = versions["version"]

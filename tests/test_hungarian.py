@@ -3,7 +3,7 @@ import copy
 import numpy as np
 import pytest
 
-from pyrmsd import hungarian, molecule
+from spyrmsd import hungarian, molecule
 from tests import molecules
 
 

@@ -1,5 +1,5 @@
 try:
-    from pyrmsd.optional.obabel import (
+    from spyrmsd.optional.obabel import (
         load,
         loadall,
         adjacency_matrix,
@@ -10,7 +10,7 @@ try:
     )
 
 except ImportError:
-    from pyrmsd.optional.rdkit import (
+    from spyrmsd.optional.rdkit import (
         load,
         loadall,
         adjacency_matrix,

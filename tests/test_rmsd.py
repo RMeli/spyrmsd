@@ -3,7 +3,7 @@ import copy
 import numpy as np
 import pytest
 
-from pyrmsd import molecule, rmsd
+from spyrmsd import molecule, rmsd
 from tests import molecules
 
 

@@ -1,7 +1,7 @@
-pyrmsd.tests.molecules module
+spyrmsd.tests.molecules module
 =============================
 
-.. automodule:: pyrmsd.tests.molecules
+.. automodule:: spyrmsd.tests.molecules
    :members:
    :undoc-members:
    :show-inheritance:

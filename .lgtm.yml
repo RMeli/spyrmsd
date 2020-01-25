@@ -7,4 +7,4 @@ path_classifiers:
     - versioneer.py
     - devtools/*
   generated:
-    - pyrmsd/_version.py
+    - spyrmsd/_version.py

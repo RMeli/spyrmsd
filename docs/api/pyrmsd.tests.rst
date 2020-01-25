@@ -1,7 +1,7 @@
-pyrmsd.tests package
+spyrmsd.tests package
 ====================
 
-.. automodule:: pyrmsd.tests
+.. automodule:: spyrmsd.tests
    :members:
    :undoc-members:
    :show-inheritance:
@@ -11,11 +11,11 @@ Submodules
 
 .. toctree::
 
-   pyrmsd.tests.molecules
-   pyrmsd.tests.test_graph
-   pyrmsd.tests.test_hungarian
-   pyrmsd.tests.test_molecule
-   pyrmsd.tests.test_pyrmsd
-   pyrmsd.tests.test_qcp
-   pyrmsd.tests.test_rmsd
-   pyrmsd.tests.test_utils
+   spyrmsd.tests.molecules
+   spyrmsd.tests.test_graph
+   spyrmsd.tests.test_hungarian
+   spyrmsd.tests.test_molecule
+   spyrmsd.tests.test_spyrmsd
+   spyrmsd.tests.test_qcp
+   spyrmsd.tests.test_rmsd
+   spyrmsd.tests.test_utils

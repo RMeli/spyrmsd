@@ -1,7 +1,7 @@
-pyrmsd.tests.test\_rmsd module
+spyrmsd.tests.test\_rmsd module
 ==============================
 
-.. automodule:: pyrmsd.tests.test_rmsd
+.. automodule:: spyrmsd.tests.test_rmsd
    :members:
    :undoc-members:
    :show-inheritance:

@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from pyrmsd import io
+from spyrmsd import io
 
 fdir = os.path.dirname(os.path.abspath(__file__))
 molpath = os.path.join(fdir, "data/molecules/")

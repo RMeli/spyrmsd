@@ -1,7 +1,7 @@
-pyrmsd.qcp module
+spyrmsd.qcp module
 =================
 
-.. automodule:: pyrmsd.qcp
+.. automodule:: spyrmsd.qcp
    :members:
    :undoc-members:
    :show-inheritance:
