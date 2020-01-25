@@ -203,7 +203,7 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
     B: numpy.ndarray
         Coordinates of structure B
 
-    Raturns
+    Returns
     -------
     float
         RMSD between structures `A` and `B`
