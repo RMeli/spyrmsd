@@ -3,7 +3,7 @@ import random
 import numpy as np
 import pytest
 
-from pyrmsd import utils
+from spyrmsd import utils
 
 
 @pytest.mark.parametrize("ext", ["pdf", "smi", "xyz"])
@@ -16,10 +16,10 @@ def test_format(ext: str) -> None:
 @pytest.mark.parametrize(
     "extin, extout", [("smi", "smi"), ("pdb", "pdb"), ("xyz", "XYZ")]
 )
-def test_format_openbabel(extin: str, extout: str) -> None:
+def test_molformat(extin: str, extout: str) -> None:
 
     for fname in ["test", "root/test", "root/test.test"]:
-        fmt = utils.format_openbabel(f"{fname}.{extin}")
+        fmt = utils.molformat(f"{fname}.{extin}")
         assert fmt == extout
 
 

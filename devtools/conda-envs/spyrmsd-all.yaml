@@ -1,5 +1,7 @@
-name: pyrmsd
+name: spyrmsd
 channels:
+  - conda-forge
+  - rdkit
 dependencies:
   # Base
   - python
@@ -7,7 +9,7 @@ dependencies:
   - ipython
 
   # Jupyter
-  - jupyterlab # -c conda-forge
+  - jupyterlab
 
   # Maths
   - numpy
@@ -17,7 +19,8 @@ dependencies:
   - scikit-learn
 
   # Chemistry
-  - openbabel
+  - openbabel 
+  - rdkit
   - qcelemental
 
   # Plotting

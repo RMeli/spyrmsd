@@ -1,7 +1,7 @@
-pyrmsd.graph module
+spyrmsd.graph module
 ===================
 
-.. automodule:: pyrmsd.graph
+.. automodule:: spyrmsd.graph
    :members:
    :undoc-members:
    :show-inheritance:

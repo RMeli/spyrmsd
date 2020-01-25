@@ -1,8 +1,8 @@
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 
-from pyrmsd import molecule, utils
+from spyrmsd import molecule, utils
 
 try:
     # 3.0
@@ -29,7 +29,7 @@ def load(fname: str) -> ob.OBMol:
         OpenBabel molecule
     """
 
-    fmt = utils.format_openbabel(fname)
+    fmt = utils.molformat(fname)
 
     obmol = next(pybel.readfile(fmt, fname))
 
@@ -51,12 +51,18 @@ def loadall(fname: str) -> List[ob.OBMol]:
         List of OpenBabel molecules
     """
 
-    fmt = utils.format_openbabel(fname)
+    fmt = utils.molformat(fname)
 
-    return [obmol for obmol in pybel.readfile(fmt, fname)]
+    obmols = [obmol for obmol in pybel.readfile(fmt, fname)]
+
+    # FIXME: Special handling for multi-model PDB files; See OpenBabel Issue #2097
+    if fmt == "pdb":
+        obmols = obmols[:-1]
+
+    return obmols
 
 
-def adjacency_matrix_from_obmol(obmol: ob.OBMol) -> np.ndarray:
+def adjacency_matrix(mol) -> np.ndarray:
     """
     Adjacency matrix from OpenBabel molecule.
 
@@ -71,13 +77,13 @@ def adjacency_matrix_from_obmol(obmol: ob.OBMol) -> np.ndarray:
         Adjacency matrix of the molecule
     """
 
-    n = len(obmol.atoms)
+    n = len(mol.atoms)
 
     # Pre-allocate memory for  the adjacency matrix
     A = np.zeros((n, n), dtype=int)
 
     # Loop over molecular bonds
-    for bond in ob.OBMolBondIter(obmol.OBMol):
+    for bond in ob.OBMolBondIter(mol.OBMol):
         # Bonds are 1-indexed
         i: int = bond.GetBeginAtomIdx() - 1
         j: int = bond.GetEndAtomIdx() - 1
@@ -88,7 +94,7 @@ def adjacency_matrix_from_obmol(obmol: ob.OBMol) -> np.ndarray:
     return A
 
 
-def openbabel_to_molecule(obmol: ob.OBMol, adjacency: bool = True) -> molecule.Molecule:
+def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
     """
     Transform OpenBabel molecule to `pyrmsd` molecule
 
@@ -105,16 +111,36 @@ def openbabel_to_molecule(obmol: ob.OBMol, adjacency: bool = True) -> molecule.M
         `pyrmsd` molecule
     """
 
-    n = len(obmol.atoms)
+    n = len(mol.atoms)
 
     atomicnums = np.zeros(n, dtype=int)
     coordinates = np.zeros((n, 3))
 
-    for i, atom in enumerate(obmol.atoms):
+    for i, atom in enumerate(mol.atoms):
         atomicnums[i] = atom.atomicnum
         coordinates[i] = atom.coords
 
     if adjacency:
-        A = adjacency_matrix_from_obmol(obmol)
+        A = adjacency_matrix(mol)
 
     return molecule.Molecule(atomicnums, coordinates, A)
+
+
+def numatoms(mol) -> int:
+    return mol.OBMol.NumAtoms()
+
+
+def numbonds(mol) -> int:
+    return mol.OBMol.NumBonds()
+
+
+def bonds(mol) -> List[Tuple[int, int]]:
+    b = []
+
+    for bond in ob.OBMolBondIter(mol.OBMol):
+        i = bond.GetBeginAtomIdx() - 1
+        j = bond.GetEndAtomIdx() - 1
+
+        b.append((i, j))
+
+    return b

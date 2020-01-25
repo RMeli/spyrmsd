@@ -1,10 +1,9 @@
-name: pyrmsd
+name: spyrmsd
 channels:
+  - conda-forge
 dependencies:
   # Base
   - python
-  - pip
-  - ipython
 
   # Maths
   - numpy
@@ -12,8 +11,4 @@ dependencies:
   - networkx
 
   # Chemistry
-  - openbabel
   - qcelemental
-
-  # Plotting
-  - matplotlib

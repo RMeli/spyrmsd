@@ -1,10 +1,9 @@
-name: pyrmsd
+name: spyrmsd
 channels:
+  - conda-forge
 dependencies:
   # Base
   - python
-  - pip
-  - ipython
 
   # Maths
   - numpy
@@ -15,9 +14,12 @@ dependencies:
   - openbabel
   - qcelemental
 
-  # Plotting
-  - matplotlib
-
   # Testing
   - pytest
   - pytest-cov
+
+  # Dev
+  - mypy
+  - flake8
+  - black
+  - codecov

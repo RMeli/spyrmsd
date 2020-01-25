@@ -2,13 +2,8 @@ import networkx as nx
 import numpy as np
 import pytest
 
-from pyrmsd import graph, io, molecule
+from spyrmsd import graph, io, molecule
 from tests import molecules
-
-try:
-    from openbabel import openbabel as ob
-except ImportError:
-    import openbabel as ob
 
 
 @pytest.mark.parametrize(
@@ -27,32 +22,30 @@ def test_adjacency_matrix_from_atomic_coordinates(
     assert G.number_of_edges() == n_bonds
 
 
-@pytest.mark.parametrize("obmol", molecules.allobmolecules)
-def test_adjacency_matrix_from_obmol(obmol) -> None:
+@pytest.mark.parametrize("mol", molecules.allobmolecules)
+def test_adjacency_matrix_from_mol(mol) -> None:
 
-    natoms = obmol.OBMol.NumAtoms()
-    nbonds = obmol.OBMol.NumBonds()
+    natoms = io.numatoms(mol)
+    nbonds = io.numbonds(mol)
 
-    A = io.adjacency_matrix_from_obmol(obmol)
+    A = io.adjacency_matrix(mol)
 
     assert A.shape == (natoms, natoms)
     assert np.alltrue(A == A.T)
     assert np.sum(A) == nbonds * 2
 
-    for bond in ob.OBMolBondIter(obmol.OBMol):
-        i = bond.GetBeginAtomIdx() - 1
-        j = bond.GetEndAtomIdx() - 1
+    for i, j in io.bonds(mol):
 
         assert A[i, j] == 1
 
 
-@pytest.mark.parametrize("obmol", molecules.allobmolecules)
-def test_graph_from_adjacency_matrix(obmol) -> None:
+@pytest.mark.parametrize("mol", molecules.allobmolecules)
+def test_graph_from_adjacency_matrix(mol) -> None:
 
-    natoms = obmol.OBMol.NumAtoms()
-    nbonds = obmol.OBMol.NumBonds()
+    natoms = io.numatoms(mol)
+    nbonds = io.numbonds(mol)
 
-    A = io.adjacency_matrix_from_obmol(obmol)
+    A = io.adjacency_matrix(mol)
 
     assert A.shape == (natoms, natoms)
     assert np.alltrue(A == A.T)

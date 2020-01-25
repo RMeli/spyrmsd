@@ -1,7 +1,7 @@
-pyrmsd.hungarian module
+spyrmsd.hungarian module
 =======================
 
-.. automodule:: pyrmsd.hungarian
+.. automodule:: spyrmsd.hungarian
    :members:
    :undoc-members:
    :show-inheritance:

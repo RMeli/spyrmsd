@@ -1,7 +1,7 @@
-pyRMSD documentation
-====================
+`spyRMSD` documentation
+======================
 
-pyRMSD is a Python tool for symmetry-corrected RMSD calculations.
+`spyRMSD` is a Python tool for symmetry-corrected RMSD calculations.
 
 .. toctree::
    :maxdepth: 2

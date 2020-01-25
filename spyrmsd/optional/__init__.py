@@ -1,10 +1,5 @@
-"""
-pyrmsd
-Python RMSD tool
-"""
-
 # Handle versioneer
-from ._version import get_versions
+from spyrmsd._version import get_versions
 
 versions = get_versions()
 __version__ = versions["version"]

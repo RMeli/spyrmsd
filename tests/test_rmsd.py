@@ -3,7 +3,7 @@ import copy
 import numpy as np
 import pytest
 
-from pyrmsd import molecule, rmsd
+from spyrmsd import molecule, rmsd
 from tests import molecules
 
 
@@ -177,7 +177,7 @@ def test_rmsd_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
 
 
 @pytest.mark.parametrize(
-    "angle, tol", [(60, 1e-5), (120, 1e-5), (180, 1e-12), (240, 1e-5), (300, 1e-5)]
+    "angle, tol", [(60, 1e-4), (120, 1e-4), (180, 1e-4), (240, 1e-4), (300, 1e-4)]
 )
 def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
 
@@ -206,7 +206,7 @@ def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
 
 
 @pytest.mark.parametrize(
-    "angle, tol", [(60, 1e-10), (120, 1e-9), (180, 1e-12), (240, 1e-9), (300, 1e-9)]
+    "angle, tol", [(60, 1e-4), (120, 1e-4), (180, 1e-4), (240, 1e-4), (300, 1e-4)]
 )
 def test_rmsd_hungarian_benzene_shifted_rotated(angle: float, tol: float) -> None:
 
@@ -304,10 +304,10 @@ def test_rmsd_isomorphic_rotated_benzene(angle: float) -> None:
     ) == pytest.approx(0)
     assert rmsd.rmsd_hungarian(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
-    ) == pytest.approx(0, abs=1e-5)
+    ) == pytest.approx(0, abs=1e-4)
     assert rmsd.rmsd_isomorphic(
         mol1.coordinates, mol2.coordinates, mol1.adjacency_matrix, mol2.adjacency_matrix
-    ) == pytest.approx(0, abs=1e-5)
+    ) == pytest.approx(0, abs=1e-4)
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
@@ -332,10 +332,10 @@ def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
     ) == pytest.approx(0)
     assert rmsd.rmsd_hungarian(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
-    ) == pytest.approx(0, abs=1e-5)
+    ) == pytest.approx(0, abs=1e-4)
     assert rmsd.rmsd_isomorphic(
         mol1.coordinates, mol2.coordinates, mol1.adjacency_matrix, mol2.adjacency_matrix
-    ) == pytest.approx(0, abs=1e-5)
+    ) == pytest.approx(0, abs=1e-4)
 
 
 # Results obtained with OpenBabel

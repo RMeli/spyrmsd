@@ -1,7 +1,7 @@
-pyrmsd.utils module
+spyrmsd.utils module
 ===================
 
-.. automodule:: pyrmsd.utils
+.. automodule:: spyrmsd.utils
    :members:
    :undoc-members:
    :show-inheritance:

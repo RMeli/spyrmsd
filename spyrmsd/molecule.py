@@ -5,7 +5,7 @@ import networkx as nx
 import numpy as np
 import qcelemental as qcel
 
-from pyrmsd import graph, utils
+from spyrmsd import graph, utils
 
 
 class Molecule:

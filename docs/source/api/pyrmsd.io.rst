@@ -1,7 +1,7 @@
-pyrmsd.io module
-================
+spyrmsd.io module
+=================
 
-.. automodule:: pyrmsd.io
+.. automodule:: spyrmsd.io
    :members:
    :undoc-members:
    :show-inheritance:

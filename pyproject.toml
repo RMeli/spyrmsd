@@ -1,0 +1,17 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "spyrmsd"
+dist-name = "spyrmsd"
+description-file = "README.md"
+author = "Rocco Meli"
+author-email = "rocco.meli@biodtp.ox.ac.uk"
+home-page = "https://pyrmsd.readthedocs.io"
+classifiers = [
+    "License :: OSI Approved :: MIT License", 
+    "Programming Language :: Python :: 3",]
+requires-python = ">=3.6"
+requires = ["numpy", "scipy", "networkx>=2", "qcelemental"]
+
