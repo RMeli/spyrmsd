@@ -1,5 +1,5 @@
 spyrmsd.utils module
-===================
+====================
 
 .. automodule:: spyrmsd.utils
    :members:

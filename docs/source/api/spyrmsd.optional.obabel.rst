@@ -1,7 +1,7 @@
-spyrmsd.tests.test\_rmsd module
+spyrmsd.optional.obabel module
 ==============================
 
-.. automodule:: spyrmsd.tests.test_rmsd
+.. automodule:: spyrmsd.optional.obabel
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,5 +1,5 @@
 spyrmsd.molecule module
-======================
+=======================
 
 .. automodule:: spyrmsd.molecule
    :members:

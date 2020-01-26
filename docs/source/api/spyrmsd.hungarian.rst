@@ -1,5 +1,5 @@
 spyrmsd.hungarian module
-=======================
+========================
 
 .. automodule:: spyrmsd.hungarian
    :members:

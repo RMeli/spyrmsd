@@ -1,14 +1,13 @@
-.. spyrmsd documentation master file, created by
-   sphinx-quickstart on Thu Mar 15 13:55:56 2018.
-
-`spyrmsd` documentation
+`spyRMSD` documentation
 ======================
+
+`spyRMSD` is a Python tool for symmetry-corrected RMSD calculations.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   api/spyrmsd
+   api
 
 Indices and tables
 ==================

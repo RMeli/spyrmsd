@@ -86,7 +86,7 @@ def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
     G2: networkx.Graph
         Graph 2
 
-    Raturns
+    Returns
     -------
     List[Dict[Any, Any]]
         All possible mappings between nodes of graph 1 and graph 2 (isomorphisms)
