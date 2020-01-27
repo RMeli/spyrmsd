@@ -13,4 +13,4 @@ formats:
   - pdf
 
 conda:
-  environment: devtools/conda-envs/spyrmsd-all.yaml
+  environment: devtools/conda-envs/spyrmsd-docs.yaml

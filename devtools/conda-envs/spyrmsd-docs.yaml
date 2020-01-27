@@ -1,0 +1,23 @@
+name: spyrmsd
+channels:
+  - conda-forge
+  - rdkit
+dependencies:
+  # Base
+  - python
+  - pip
+  - ipython
+
+  # Maths
+  - numpy
+  - scipy
+  - networkx
+
+  # Chemistry
+  - openbabel 
+  - rdkit
+  - qcelemental
+
+  # Doc
+  - sphinx
+  - sphinx_rtd_theme
