@@ -4,7 +4,7 @@
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/rhd5wi1ce7i24hgb/branch/master?svg=true)](https://ci.appveyor.com/project/rhd5wi1ce7i24hgb/spyrmsd/branch/master)
 [![codecov](https://codecov.io/gh/RMeli/spyrmsd/branch/master/graph/badge.svg)](https://codecov.io/gh/RMeli/spyrmsd/branch/master)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/spython/g/RMeli/spyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
-[![Documentation Status](https://readthedocs.org/projects/pyrmsd/badge/?version=latest)](https://pyrmsd.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=latest)](https://spyrmsd.readthedocs.io/en/latest/?badge=latest)
 
 [![Docs](https://img.shields.io/badge/docs-pyrmsd.readthedocs.io-blueviolet)](https://pyrmsd.readthedocs.io)
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
