@@ -1,5 +1,5 @@
 `spyRMSD` documentation
-======================
+=======================
 
 `spyRMSD` is a Python tool for symmetry-corrected RMSD calculations.
 
