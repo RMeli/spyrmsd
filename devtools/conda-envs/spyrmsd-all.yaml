@@ -1,0 +1,44 @@
+name: spyrmsd
+channels:
+  - conda-forge
+  - rdkit
+dependencies:
+  # Base
+  - python
+  - pip
+  - ipython
+
+  # Jupyter
+  - jupyterlab
+
+  # Maths
+  - numpy
+  - pandas
+  - scipy
+  - networkx
+  - scikit-learn
+
+  # Chemistry
+  - openbabel 
+  - rdkit
+  - qcelemental
+
+  # Plotting
+  - matplotlib
+
+  # Testing
+  - pytest
+  - pytest-cov
+  - codecov
+
+  # Doc
+  - sphinx
+  - sphinx_rtd_theme 
+
+  # Dev
+  - mypy
+  - flake8
+  - pre-commit
+  - black
+  - rope
+  - isort

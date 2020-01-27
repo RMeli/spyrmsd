@@ -1,0 +1,14 @@
+name: spyrmsd
+channels:
+  - conda-forge
+dependencies:
+  # Base
+  - python
+
+  # Maths
+  - numpy
+  - scipy
+  - networkx
+
+  # Chemistry
+  - qcelemental

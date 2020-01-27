@@ -3,7 +3,7 @@ import random
 import numpy as np
 import pytest
 
-from pyrmsd import utils
+from spyrmsd import utils
 
 
 @pytest.mark.parametrize("ext", ["pdf", "smi", "xyz"])

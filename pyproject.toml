@@ -3,8 +3,8 @@ requires = ["flit"]
 build-backend = "flit.buildapi"
 
 [tool.flit.metadata]
-module = "pyrmsd"
-dist-name = "pyrmsd"
+module = "spyrmsd"
+dist-name = "spyrmsd"
 description-file = "README.md"
 author = "Rocco Meli"
 author-email = "rocco.meli@biodtp.ox.ac.uk"

@@ -1,7 +1,7 @@
 import os
-from typing import List, Tuple, Any
+from typing import Any, List, Tuple
 
-from pyrmsd import io, molecule
+from spyrmsd import io, molecule
 
 fdir = os.path.dirname(os.path.abspath(__file__))
 molpath = os.path.join(fdir, "data/molecules/")

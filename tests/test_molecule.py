@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 import qcelemental as qcel
 
-from pyrmsd import io, molecule, utils
+from spyrmsd import io, molecule, utils
 from tests import molecules
 
 

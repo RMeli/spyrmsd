@@ -1,0 +1,16 @@
+# .readthedocs.yml
+# Read the Docs configuration file
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+version: 2
+
+sphinx:
+  builder: html
+  configuration: docs/source/conf.py
+
+formats:
+  - epub
+  - pdf
+
+conda:
+  environment: devtools/conda-envs/spyrmsd-docs.yaml

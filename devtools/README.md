@@ -16,7 +16,7 @@ Content:
 Conda is the recommended package manager for this project.
 
 * `conda-envs`: directory containing the YAML file(s) which fully describe Conda environments
-  * `pyrmsd.yaml`: Full Conda environment for `pyrmsd`.
+  * `spyrmsd.yaml`: Full Conda environment for `spyrmsd`.
   
 Channels are usually not specified here and therefore respect global Conda configuration.
 
