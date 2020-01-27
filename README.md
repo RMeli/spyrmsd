@@ -3,7 +3,7 @@
 [![Travis Build Status](https://travis-ci.org/RMeli/spyrmsd.svg?branch=master)](https://travis-ci.org/RMeli/spyrmsd)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/31ubs980idhv1qw8?svg=true)](https://ci.appveyor.com/project/RMeli/spyrmsd)
 [![codecov](https://codecov.io/gh/RMeli/spyrmsd/branch/master/graph/badge.svg)](https://codecov.io/gh/RMeli/spyrmsd/branch/master)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/spython/g/RMeli/spyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/RMeli/spyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
 [![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=latest)](https://spyrmsd.readthedocs.io/en/latest/?badge=latest)
 
 [![Docs](https://img.shields.io/badge/docs-pyrmsd.readthedocs.io-blueviolet)](https://pyrmsd.readthedocs.io)
