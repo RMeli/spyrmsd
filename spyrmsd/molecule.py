@@ -1,5 +1,5 @@
 import warnings
-from typing import List
+from typing import List, Union
 
 import networkx as nx
 import numpy as np
@@ -9,7 +9,27 @@ from spyrmsd import graph, utils
 
 
 class Molecule:
-    def __init__(self, atomicnums, coordinates, adjacency_matrix=None):
+    def __init__(self, atomicnums: Union[np.ndarray, List[int]], 
+    coordinates: Union[np.ndarray, List[List[float]]], adjacency_matrix: Union[np.ndarray, List[List[int]]]=None) -> None:
+        """
+        Molecule initialisation.
+
+        Parameters
+        ----------
+        atomicnums: Union[np.ndarray, List[int]]
+            Atomic numbers
+        coordinates: Union[np.ndarray, List[List[float]]]
+            Atomic coordinates
+        adjacency_matrix: Union[np.ndarray, List[List[int]]], optional
+            Molecular graph adjacency matrix
+
+        Notes
+        -----
+
+        A molecule is built from atomic numbers and atomic coordinates only.
+        Optionally, a good representation of the molecular graph (obtained with
+        OpenBabel or RDKit) can be stored as adjacency matrix.
+        """
 
         atomicnums = np.asarray(atomicnums, dtype=int)
         coordinates = np.asarray(coordinates, dtype=float)
@@ -32,7 +52,7 @@ class Molecule:
 
         self.masses: List[float] = None
 
-    def translate(self, vector: np.ndarray):
+    def translate(self, vector: np.ndarray) -> None:
         """
         Translate molecule.
 
@@ -44,7 +64,7 @@ class Molecule:
         assert len(vector) == 3
         self.coordinates += vector
 
-    def rotate(self, angle: float, axis: np.ndarray, units: str = "rad"):
+    def rotate(self, angle: float, axis: np.ndarray, units: str = "rad") -> None:
         """
         Rotate molecule.
 
@@ -90,6 +110,7 @@ class Molecule:
         """
         return utils.center_of_geometry(self.coordinates)
 
+    # TODO: Changhe name (to stripH)
     def strip(self) -> None:
         """
         Strip hydrogen atoms.
@@ -119,11 +140,6 @@ class Molecule:
         -------
         networkx.Graph
             Molecular graph.
-
-        Raises
-        ------
-        NotImplementedError
-            If there is no associated adjacency matrix.
 
         Notes
         -----
