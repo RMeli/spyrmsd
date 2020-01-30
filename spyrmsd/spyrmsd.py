@@ -49,13 +49,13 @@ def rmsdwrapper(
         Molecule 1
     mol2: molecule.Molecule
         Molecule 2
-    symmetry: bool
+    symmetry: bool, optional
         Symmetry-corrected RMSD (using graph isomorphism)
-    center:
+    center: bool, optional
         Center molecules at origin
-    minimize:
+    minimize: bool, optional
         Minimised RMSD (using the quaternion polynomial method)
-    strip:
+    strip: bool, optional
         Strip hydrogen atoms
 
     Returns

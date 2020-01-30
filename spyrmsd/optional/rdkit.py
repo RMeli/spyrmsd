@@ -8,7 +8,7 @@ from spyrmsd import molecule, utils
 
 def load(fname: str) -> Chem.rdchem.Mol:
     """
-    Load molecule from file
+    Load molecule from file.
 
     Parameters
     ----------
@@ -37,7 +37,7 @@ def load(fname: str) -> Chem.rdchem.Mol:
 
 def loadall(fname: str) -> List[Chem.rdchem.Mol]:
     """
-    Load molecules from file
+    Load molecules from file.
 
     Parameters
     ----------
@@ -71,7 +71,7 @@ def adjacency_matrix(mol) -> np.ndarray:
 
     Parameters
     ----------
-    Chem.rdchem.Mol
+    mol: Chem.rdchem.Mol
         RDkit molecule
 
     Returns
@@ -85,11 +85,11 @@ def adjacency_matrix(mol) -> np.ndarray:
 
 def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
     """
-    Transform RDKit molecule to `pyrmsd` molecule
+    Transform RDKit molecule to `pyrmsd` molecule.
 
     Parameters
     ----------
-    rdmol: Chem.rdchem.Mol
+    mol: Chem.rdchem.Mol
         RDKit molecule
     adjacency: boolean, optional
         Flag to decide wether to build the adjacency matrix from the RDKit molecule
@@ -123,14 +123,57 @@ def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
 
 
 def numatoms(mol) -> int:
+    """
+    Number of atoms.
+
+    Parameters
+    ----------
+    mol: Chem.rdchem.Mol
+        RDKit molecule
+
+    Returns
+    -------
+    int
+        Number of atoms
+    """
     return mol.GetNumAtoms()
 
 
 def numbonds(mol) -> int:
+    """
+    Number of bonds.
+
+    Parameters
+    ----------
+    mol: Chem.rdchem.Mol
+        RDKit molecule
+
+    Returns
+    -------
+    int
+        Number of bonds
+    """
     return mol.GetNumBonds()
 
 
 def bonds(mol) -> List[Tuple[int, int]]:
+    """
+    List of bonds.
+
+    Parameters
+    ----------
+    mol: Chem.rdchem.Mol
+        RDKit molecule
+
+    Returns
+    -------
+    List[Tuple[int, int]]
+        List of bonds
+
+    Notes
+    -----
+    A bond is defined by a tuple of (0-based) indices of two atoms.
+    """
     b = []
 
     for bond in mol.GetBonds():

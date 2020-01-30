@@ -16,7 +16,7 @@ except ImportError:
 
 def load(fname: str) -> ob.OBMol:
     """
-    Load molecule from file
+    Load molecule from file.
 
     Parameters
     ----------
@@ -38,7 +38,7 @@ def load(fname: str) -> ob.OBMol:
 
 def loadall(fname: str) -> List[ob.OBMol]:
     """
-    Load molecules from file
+    Load molecules from file.
 
     Parameters
     ----------
@@ -68,7 +68,7 @@ def adjacency_matrix(mol) -> np.ndarray:
 
     Parameters
     ----------
-    openbabel.OBMol
+    mol: ob.OBMol
         OpenBabel molecule
 
     Returns
@@ -96,11 +96,11 @@ def adjacency_matrix(mol) -> np.ndarray:
 
 def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
     """
-    Transform OpenBabel molecule to `pyrmsd` molecule
+    Transform OpenBabel molecule to `pyrmsd` molecule.
 
     Parameters
     ----------
-    obmol: ob.OBMol
+    mol: ob.OBMol
         OpenBabel molecule
     adjacency: boolean, optional
         Flag to decide wether to build the adjacency matrix from the OpenBabel molecule
@@ -127,14 +127,57 @@ def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
 
 
 def numatoms(mol) -> int:
+    """
+    Number of atoms.
+
+    Parameters
+    ----------
+    mol: ob.OBMol
+        OpenBabel molecule
+
+    Returns
+    -------
+    int
+        Number of atoms
+    """
     return mol.OBMol.NumAtoms()
 
 
 def numbonds(mol) -> int:
+    """
+    Number of bonds.
+
+    Parameters
+    ----------
+    mol: ob.OBMol
+        OpenBabel molecule
+
+    Returns
+    -------
+    int
+        Number of bonds
+    """
     return mol.OBMol.NumBonds()
 
 
 def bonds(mol) -> List[Tuple[int, int]]:
+    """
+    List of bonds
+
+    Parameters
+    ----------
+    mol: ob.OBMol
+        OpenBabel molecule
+
+    Returns
+    -------
+    List[Tuple[int, int]]
+        List of bonds
+
+    Notes
+    -----
+    A bond is defined by a tuple of (0-based) indices of two atoms.
+    """
     b = []
 
     for bond in ob.OBMolBondIter(mol.OBMol):

@@ -72,10 +72,10 @@ def rmsd_qcp(
     Notes
     -----
     The molecules are always centred at the origin according to the center of geometry
-    and superimposed in order to minimize the RMSD. See [1]_ for details.
+    and superimposed in order to minimize the RMSD. [1]_
 
     .. [1] D. L. Theobald, *Rapid calculation of RMSDs using a quaternion-based
-       characteristic polynomial*, Acta Crys. A**61**, 478-480 (2005).
+       characteristic polynomial*, Acta Crys. A **61**, 478-480 (2005).
     """
 
     assert np.all(atomicn1 == atomicn2)
@@ -116,7 +116,7 @@ def rmsd_hungarian(
     Notes
     -----
     The Hungarian algorithm is used to solve the linear assignment problem, which is
-    a minimum weight matching of the molecular graphs (bipartite). See [2]_ for details.
+    a minimum weight matching of the molecular graphs (bipartite). [2]_
 
     The linear assignment problem is solved for every element separately.
 

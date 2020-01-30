@@ -16,7 +16,8 @@ def cost_mtx(A: np.ndarray, B: np.ndarray):
     Returns
     -------
     np.ndarray
-        Cost matrix of squared atomic distances between atoms of molecules A and B
+        Cost matrix of squared atomic distances between atoms of
+        molecules A and B
     """
 
     return scipy.spatial.distance.cdist(A, B) ** 2
@@ -24,8 +25,8 @@ def cost_mtx(A: np.ndarray, B: np.ndarray):
 
 def optimal_assignment(A: np.ndarray, B: np.ndarray):
     """
-    Solve the optimal assignement problems between atomic coordinates of molecules A and
-    B.
+    Solve the optimal assignment problems between atomic coordinates of
+    molecules A and B.
 
     Parameters
     ----------
@@ -37,8 +38,8 @@ def optimal_assignment(A: np.ndarray, B: np.ndarray):
     Returns
     -------
     Tuple[float, nd.array, nd.array]
-        Cost of the optimal assignment, together with the row and colum indices of said
-        assignment
+        Cost of the optimal assignment, together with the row and column
+        indices of said assignment
     """
 
     C = cost_mtx(A, B)
@@ -55,8 +56,8 @@ def hungarian_rmsd(
     A: np.ndarray, B: np.ndarray, atomicnumsA: np.ndarray, atomicnumsB: np.ndarray
 ) -> float:
     """
-    Solve the optimal assignement problems between atomic coordinates of molecules A and
-    B.
+    Solve the optimal assignment problems between atomic coordinates of
+    molecules A and B.
 
     Parameters
     ----------
@@ -77,9 +78,9 @@ def hungarian_rmsd(
     Notes
     -----
     The Hungarian algorithm is used to solve the linear assignment problem, which is
-    a minimum weight matching of the molecular graphs (bipartite). See [1]_ for details.
+    a minimum weight matching of the molecular graphs (bipartite).
 
-    The linear assignment problem is solved for every element separately.
+    The linear assignment problem is solved for every element separately. [1]_
 
     .. [1] W. J. Allen and R. C. Rizzo, *Implementation of the Hungarian Algorithm to
         Account for Ligand Symmetry and Similarity in Structure-Based Design*,
