@@ -81,7 +81,7 @@ class Molecule:
 
     def center_of_mass(self) -> np.ndarray:
         """
-        Center of mass
+        Center of mass.
 
         Returns
         -------
@@ -101,7 +101,7 @@ class Molecule:
 
     def center_of_geometry(self) -> np.ndarray:
         """
-        Center of geometry
+        Center of geometry.
 
         Returns
         -------
