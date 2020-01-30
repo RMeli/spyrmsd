@@ -172,7 +172,7 @@ def bonds(mol) -> List[Tuple[int, int]]:
     Returns
     -------
     List[Tuple[int, int]]
-        Returns list of bonds
+        List of bonds
         
     Notes
     -----
