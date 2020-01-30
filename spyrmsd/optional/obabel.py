@@ -16,7 +16,7 @@ except ImportError:
 
 def load(fname: str) -> ob.OBMol:
     """
-    Load molecule from file
+    Load molecule from file.
 
     Parameters
     ----------
@@ -38,7 +38,7 @@ def load(fname: str) -> ob.OBMol:
 
 def loadall(fname: str) -> List[ob.OBMol]:
     """
-    Load molecules from file
+    Load molecules from file.
 
     Parameters
     ----------
@@ -96,7 +96,7 @@ def adjacency_matrix(mol) -> np.ndarray:
 
 def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
     """
-    Transform OpenBabel molecule to `pyrmsd` molecule
+    Transform OpenBabel molecule to `pyrmsd` molecule.
 
     Parameters
     ----------
@@ -128,7 +128,7 @@ def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
 
 def numatoms(mol) -> int:
     """
-    Number of atoms
+    Number of atoms.
 
     Parameters
     ----------
@@ -145,7 +145,7 @@ def numatoms(mol) -> int:
 
 def numbonds(mol) -> int:
     """
-    Number of bonds
+    Number of bonds.
 
     Parameters
     ----------

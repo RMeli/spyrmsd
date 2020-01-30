@@ -8,7 +8,7 @@ from spyrmsd import molecule, utils
 
 def load(fname: str) -> Chem.rdchem.Mol:
     """
-    Load molecule from file
+    Load molecule from file.
 
     Parameters
     ----------
@@ -37,7 +37,7 @@ def load(fname: str) -> Chem.rdchem.Mol:
 
 def loadall(fname: str) -> List[Chem.rdchem.Mol]:
     """
-    Load molecules from file
+    Load molecules from file.
 
     Parameters
     ----------
@@ -85,7 +85,7 @@ def adjacency_matrix(mol) -> np.ndarray:
 
 def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
     """
-    Transform RDKit molecule to `pyrmsd` molecule
+    Transform RDKit molecule to `pyrmsd` molecule.
 
     Parameters
     ----------
@@ -124,7 +124,7 @@ def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
 
 def numatoms(mol) -> int:
     """
-    Number of atoms
+    Number of atoms.
 
     Parameters
     ----------
@@ -141,7 +141,7 @@ def numatoms(mol) -> int:
 
 def numbonds(mol) -> int:
     """
-    Number of bonds
+    Number of bonds.
 
     Parameters
     ----------
@@ -158,7 +158,7 @@ def numbonds(mol) -> int:
 
 def bonds(mol) -> List[Tuple[int, int]]:
     """
-    List of bonds
+    List of bonds.
 
     Parameters
     ----------

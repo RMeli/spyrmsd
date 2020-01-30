@@ -46,9 +46,15 @@ def adjacency_matrix_from_atomic_coordinates(
 
     Notes
     -----
-    This function is based on a very simple bond perception rule: two atoms are
-    considered to be bonded when their distance is smaller than the sum of their
-    covalent radii plus a tolerance value [3]_. Use with care.
+
+    This function is based on an automatic bond perception algorithm: two
+    atoms are considered to be bonded when their distance is smaller than
+    the sum of their covalent radii plus a tolerance value. [3]_
+
+    .. warning::
+        The automatic bond perceptron rule implemented in this functions
+        is very simple and only depends on atomic coordinates. Use
+        with care!
 
     .. [3] E. C. Meng and R. A. Lewis, *Determination of molecular topology and atomic
        hybridization states from heavy atom coordinates*, J. Comp. Chem. **12**, 891-898
@@ -77,7 +83,7 @@ def adjacency_matrix_from_atomic_coordinates(
 
 def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
     """
-    Compute RMSD using the quaternion polynomial method
+    Compute RMSD using the quaternion polynomial method.
 
     Parameters
     ----------
