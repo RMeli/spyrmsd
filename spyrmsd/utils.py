@@ -84,7 +84,7 @@ def deg_to_rad(angle: float) -> float:
 
 def rotate(v: np.array, angle: float, axis: np.array, units: str = "rad") -> np.array:
     """
-    Rotate vector
+    Rotate vector.
 
     Parameters
     ----------
@@ -133,7 +133,7 @@ def rotate(v: np.array, angle: float, axis: np.array, units: str = "rad") -> np.
 
 def center_of_geometry(coordinates: np.ndarray) -> np.ndarray:
     """
-    Center of geometry
+    Center of geometry.
 
     Parameters
     ----------
@@ -153,7 +153,7 @@ def center_of_geometry(coordinates: np.ndarray) -> np.ndarray:
 
 def center(coordinates: np.ndarray) -> np.ndarray:
     """
-    Center coordinates
+    Center coordinates.
 
     Parameters
     ----------

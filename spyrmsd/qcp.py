@@ -6,7 +6,7 @@ from scipy import optimize
 
 def M_mtx(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     """
-    Compute inner product between coordinate matrices
+    Compute inner product between coordinate matrices.
 
     Parameters
     ----------
@@ -23,7 +23,7 @@ def M_mtx(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     Notes
     -----
     The inner product of the coordinate matrices `A` and `B` corresponds to the matrix
-    :math:`\\mathbf{M}` in [1]_.
+    :math:`\\mathbf{M}`. [1]_
 
     If :math:`S_{xy}` is defined as
 
@@ -39,14 +39,14 @@ def M_mtx(A: np.ndarray, B: np.ndarray) -> np.ndarray:
        \\end{pmatrix}
 
     .. [1] D. L. Theobald, *Rapid calculation of RMSDs using a quaternion-based
-       characteristic polynomial*, Acta Crys. A**61**, 478-480 (2005).
+       characteristic polynomial*, Acta Crys. A **61**, 478-480 (2005).
     """
     return B.T @ A
 
 
 def K_mtx(M):
     """
-    Compute symmetric key matrix
+    Compute symmetric key matrix.
 
     Parameters
     ----------
@@ -60,24 +60,24 @@ def K_mtx(M):
 
     Notes
     -----
-    The symmetric key matrix corresponds to the matrix :math:`\\mathbf{K}` in [2]_.
+    The symmetric key matrix corresponds to the matrix :math:`\\mathbf{K}`. [2]_
 
     If :math:`S_{xy}` is defined as
 
     .. math:: S_{xy} = \\sum_i^N x_{B,i} y_{A,i}
 
-    then :math:`\\mathbf{K}` is the :math:`4\\times 4` matrix given by
+    then :math:`\\mathbf{K}` is the :math:`4\\times 4` symmetric matrix given by
 
     .. math::
        \\begin{pmatrix}
-            S_{xx} + S_{yy} + S_{zz} &  & & \\\\
-            & S_{xx} - S_{yy} - S_{zz} & & \\\\
-            & & -S_{xx} + S_{yy} - S_{zz} & \\\\
+            S_{xx} + S_{yy} + S_{zz} & S_{yz} - S_{zy} & S_{zx} - S_{xz} & S_{xy} - S_{yx} \\\\
+            & S_{xx} - S_{yy} - S_{zz} & S_{xy} + S_{yx} & S_{zx} + S_{xz}\\\\
+            & & -S_{xx} + S_{yy} - S_{zz} & S_{yz} - S_{zy} \\\\
             &  & & -S_{xx} - S_{yy} + S_{zz} \\\\
        \\end{pmatrix}
 
     .. [2] D. L. Theobald, *Rapid calculation of RMSDs using a quaternion-based
-       characteristic polynomial*, Acta Crys. A**61**, 478-480 (2005).
+       characteristic polynomial*, Acta Crys. A **61**, 478-480 (2005).
     """
 
     assert M.shape == (3, 3)
@@ -116,7 +116,7 @@ def K_mtx(M):
 
 def coefficients(M: np.ndarray, K: np.ndarray) -> Tuple[float, float, float]:
     """
-    Compute quaternion polynomial coefficients
+    Compute quaternion polynomial coefficients.
 
     Parameters
     ----------
@@ -132,10 +132,11 @@ def coefficients(M: np.ndarray, K: np.ndarray) -> Tuple[float, float, float]:
 
     Notes
     _____
-    Returns only non-zero and non-unitary coefficients (i.e. :math:`c_4=1` and
-    :math:`c_3=0` are not returned).
+    Returns only :math:`\\mathbf{M}`- and :math:`\\mathbf{K}`-dependent coefficients
+    are returned. :math:`c_4=1` and :math:`c_3=0` are not returned.
 
-    The non-zero and non-unitary quaternion polynomial coefficients are given by
+    The :math:`\\mathbf{M}`- and :math:`\\mathbf{K}`-dependent quaternion polynomial
+    coefficients are given by
 
     .. math:: c_2 = -2 \\text{ tr}\\left(\\mathbf{M}^T\\mathbf{M}\\right)
 
@@ -154,7 +155,7 @@ def coefficients(M: np.ndarray, K: np.ndarray) -> Tuple[float, float, float]:
 
 def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
     """
-    Find largest root of the quaternion polynomial
+    Find largest root of the quaternion polynomial.
 
     Parameters
     ----------
@@ -194,7 +195,7 @@ def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
 
 def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
     """
-    Compute RMSD using the quaternion polynomial method
+    Compute RMSD using the quaternion polynomial method.
 
     Parameters
     ----------
@@ -220,9 +221,10 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
 
         .. math:: G_a + G_b = 2 \\lambda_\\text{max}
 
-    This means that :math:`s = G_a + G_bb - 2 * \\lambda_\\text{max}` can become negative because of
-    numerical errors and therefore :math:`\\sqrt{s}` fails. In order to avoid this
-    problem, the final RMSD is set to :math:`0` if :math:`|s| < 10^{-12}`.
+    This means that :math:`s = G_a + G_bb - 2 * \\lambda_\\text{max}` can become
+    negative because of numerical errors and therefore :math:`\\sqrt{s}` fails.
+    In order to avoid this problem, the final RMSD is set to :math:`0`
+    if :math:`|s| < 10^{-12}`.
     """
 
     assert A.shape == B.shape
