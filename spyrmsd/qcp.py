@@ -132,10 +132,10 @@ def coefficients(M: np.ndarray, K: np.ndarray) -> Tuple[float, float, float]:
 
     Notes
     _____
-    Returns only :math:`\mathbf{M}`- and :math:`\mathbf{K}`-dependent coefficients 
+    Returns only :math:`\\mathbf{M}`- and :math:`\\mathbf{K}`-dependent coefficients
     are returned. :math:`c_4=1` and :math:`c_3=0` are not returned.
 
-    The :math:`\mathbf{M}`- and :math:`\mathbf{K}`-dependent quaternion polynomial 
+    The :math:`\\mathbf{M}`- and :math:`\\mathbf{K}`-dependent quaternion polynomial
     coefficients are given by
 
     .. math:: c_2 = -2 \\text{ tr}\\left(\\mathbf{M}^T\\mathbf{M}\\right)
@@ -221,9 +221,9 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
 
         .. math:: G_a + G_b = 2 \\lambda_\\text{max}
 
-    This means that :math:`s = G_a + G_bb - 2 * \\lambda_\\text{max}` can become 
-    negative because of numerical errors and therefore :math:`\\sqrt{s}` fails. 
-    In order to avoid this problem, the final RMSD is set to :math:`0` 
+    This means that :math:`s = G_a + G_bb - 2 * \\lambda_\\text{max}` can become
+    negative because of numerical errors and therefore :math:`\\sqrt{s}` fails.
+    In order to avoid this problem, the final RMSD is set to :math:`0`
     if :math:`|s| < 10^{-12}`.
     """
 

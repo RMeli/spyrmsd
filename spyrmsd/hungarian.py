@@ -16,7 +16,7 @@ def cost_mtx(A: np.ndarray, B: np.ndarray):
     Returns
     -------
     np.ndarray
-        Cost matrix of squared atomic distances between atoms of 
+        Cost matrix of squared atomic distances between atoms of
         molecules A and B
     """
 
@@ -25,7 +25,7 @@ def cost_mtx(A: np.ndarray, B: np.ndarray):
 
 def optimal_assignment(A: np.ndarray, B: np.ndarray):
     """
-    Solve the optimal assignment problems between atomic coordinates of 
+    Solve the optimal assignment problems between atomic coordinates of
     molecules A and B.
 
     Parameters
@@ -56,7 +56,7 @@ def hungarian_rmsd(
     A: np.ndarray, B: np.ndarray, atomicnumsA: np.ndarray, atomicnumsB: np.ndarray
 ) -> float:
     """
-    Solve the optimal assignment problems between atomic coordinates of 
+    Solve the optimal assignment problems between atomic coordinates of
     molecules A and B.
 
     Parameters

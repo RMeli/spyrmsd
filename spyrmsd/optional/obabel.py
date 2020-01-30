@@ -173,7 +173,7 @@ def bonds(mol) -> List[Tuple[int, int]]:
     -------
     List[Tuple[int, int]]
         List of bonds
-        
+
     Notes
     -----
     A bond is defined by a tuple of (0-based) indices of two atoms.

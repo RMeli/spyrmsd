@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Union
+from typing import List, Optional, Union
 
 import networkx as nx
 import numpy as np
@@ -9,8 +9,12 @@ from spyrmsd import graph, utils
 
 
 class Molecule:
-    def __init__(self, atomicnums: Union[np.ndarray, List[int]], 
-    coordinates: Union[np.ndarray, List[List[float]]], adjacency_matrix: Union[np.ndarray, List[List[int]]]=None) -> None:
+    def __init__(
+        self,
+        atomicnums: Union[np.ndarray, List[int]],
+        coordinates: Union[np.ndarray, List[List[float]]],
+        adjacency_matrix: Union[np.ndarray, List[List[int]]] = None,
+    ) -> None:
         """
         Molecule initialisation.
 
@@ -50,7 +54,7 @@ class Molecule:
         # Molecular graph
         self.G: nx.Graph = None
 
-        self.masses: List[float] = None
+        self.masses: Optional[List[float]] = None
 
     def translate(self, vector: np.ndarray) -> None:
         """
