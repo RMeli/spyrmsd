@@ -1,7 +1,5 @@
 """
-spyrmsd
-
-Python RMSD tool
+Python RMSD tool with symmetry correction.
 """
 
 # Handle versioneer
