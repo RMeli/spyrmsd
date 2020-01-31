@@ -14,6 +14,14 @@ Python-first tool for symmetry-corrected RMSD calculations.
 
 ## Installation
 
+### PyPI
+
+```bash
+pip install spyrmsd
+```
+
+This install `spyrmsd` as a library. In order to use the standalone RMSD calculation tool, you will need to install [Open Babel](http://openbabel.org/) or [RDKit](https://rdkit.org/).
+
 ### GitHub
 
 ```bash
@@ -21,8 +29,6 @@ git clone https://github.com/RMeli/spyrmsd.git
 cd spyrmsd
 pip install .
 ```
-
-### pip
 
 ### conda
 
@@ -99,6 +105,22 @@ Static checks are performed using [mypy](http://mypy-lang.org/)
 
 ```bash
 mypy
+```
+
+## Deployment
+
+### PyPI
+
+Build wheel and sdist:
+
+```bash
+flint build
+```
+
+Upload wheel and sdist on [PyPI]():
+
+```bash
+flint publish
 ```
 
 ## References
