@@ -4,6 +4,9 @@ import networkx as nx
 import numpy as np
 import qcelemental as qcel
 
+
+import warnings
+
 # TODO: Move elsewhere?
 connectivity_tolerance: float = 0.4
 
@@ -118,7 +121,23 @@ def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
         If the graphs `G1` and `G2` are not isomorphic
     """
 
-    GM = nx.algorithms.isomorphism.GraphMatcher(G1, G2)
+    def match_atomicnum(node1, node2):
+        return node1["atomicnum"] == node2["atomicnum"]
+
+    if nx.get_node_attributes(G1, "atomicnum") == {} or nx.get_node_attributes(G2, "atomicnum") == {}:
+        # Nodes without atomic number information
+        # No node-matching check
+        node_match = None
+
+        warnings.warn(
+                    "No atomic number information stored on nodes. "
+                    + "No node matching is performed..."
+                )
+
+    else:
+        node_match = match_atomicnum
+
+    GM = nx.algorithms.isomorphism.GraphMatcher(G1, G2, node_match)
 
     # Check if graphs are actually isomorphic
     if not GM.is_isomorphic():
