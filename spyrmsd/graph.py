@@ -1,11 +1,9 @@
+import warnings
 from typing import Any, Dict, List, Optional, Union
 
 import networkx as nx
 import numpy as np
 import qcelemental as qcel
-
-
-import warnings
 
 # TODO: Move elsewhere?
 connectivity_tolerance: float = 0.4
