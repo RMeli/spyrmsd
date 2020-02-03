@@ -1,4 +1,5 @@
-from typing import Any, Dict, List
+import warnings
+from typing import Any, Dict, List, Optional, Union
 
 import networkx as nx
 import numpy as np
@@ -8,22 +9,37 @@ import qcelemental as qcel
 connectivity_tolerance: float = 0.4
 
 
-def graph_from_adjacency_matrix(adjacency_matrix: np.ndarray) -> nx.Graph:
+def graph_from_adjacency_matrix(
+    adjacency_matrix: Union[np.ndarray, List[List[int]]],
+    atomicnums: Optional[Union[np.ndarray, List[int]]] = None,
+) -> nx.Graph:
     """
     Graph from adjacency matrix.
 
     Parameters
     ----------
-    adjacency_matrix: np.ndarray
+    adjacency_matrix: Union[np.ndarray, List[List[int]]]
         Adjacency matrix
+    atomicnums: Union[np.ndarray, List[int]], optional
+        Atomic numbers
 
     Returns
     -------
     nx.Graph
         NetworkX graph
+
+    Notes
+    -----
+    It the atomic numbers are passed, they are used as node attributes.
     """
 
-    return nx.convert_matrix.from_numpy_array(adjacency_matrix)
+    G = nx.Graph(adjacency_matrix)
+
+    if atomicnums is not None:
+        attributes = {idx: atomicnum for idx, atomicnum in enumerate(atomicnums)}
+        nx.set_node_attributes(G, attributes, "atomicnum")
+
+    return G
 
 
 def adjacency_matrix_from_atomic_coordinates(
@@ -103,7 +119,26 @@ def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
         If the graphs `G1` and `G2` are not isomorphic
     """
 
-    GM = nx.algorithms.isomorphism.GraphMatcher(G1, G2)
+    def match_atomicnum(node1, node2):
+        return node1["atomicnum"] == node2["atomicnum"]
+
+    if (
+        nx.get_node_attributes(G1, "atomicnum") == {}
+        or nx.get_node_attributes(G2, "atomicnum") == {}
+    ):
+        # Nodes without atomic number information
+        # No node-matching check
+        node_match = None
+
+        warnings.warn(
+            "No atomic number information stored on nodes. "
+            + "Node matching is not performed..."
+        )
+
+    else:
+        node_match = match_atomicnum
+
+    GM = nx.algorithms.isomorphism.GraphMatcher(G1, G2, node_match)
 
     # Check if graphs are actually isomorphic
     if not GM.is_isomorphic():
