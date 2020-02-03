@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union, Optional
 
 import networkx as nx
 import numpy as np
@@ -8,23 +8,36 @@ import qcelemental as qcel
 connectivity_tolerance: float = 0.4
 
 
-def graph_from_adjacency_matrix(adjacency_matrix: np.ndarray) -> nx.Graph:
+def graph_from_adjacency_matrix(
+    adjacency_matrix: Union[np.ndarray, List[List[int]]],
+    atomicnums: Optional[Union[np.ndarray, List[int]]] = None) -> nx.Graph:
     """
     Graph from adjacency matrix.
 
     Parameters
     ----------
-    adjacency_matrix: np.ndarray
+    adjacency_matrix: Union[np.ndarray, List[List[int]]]
         Adjacency matrix
+    atomicnums: Union[np.ndarray, List[int]], optional
+        Atomic numbers
 
     Returns
     -------
     nx.Graph
         NetworkX graph
+
+    Notes
+    -----
+    It the atomic numbers are passed, they are used as node attributes.
     """
 
-    return nx.convert_matrix.from_numpy_array(adjacency_matrix)
+    G = nx.Graph(adjacency_matrix)
 
+    if atomicnums is not None:
+        attributes = {idx : atomicnum for idx, atomicnum in enumerate(atomicnums)}
+        nx.set_node_attributes(G, attributes, "atomicnum")
+
+    return G
 
 def adjacency_matrix_from_atomic_coordinates(
     atomicnums: np.ndarray, coordinates: np.ndarray
