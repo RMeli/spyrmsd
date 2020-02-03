@@ -154,7 +154,9 @@ class Molecule:
         """
         if self.G is None:
             if self.adjacency_matrix is not None:
-                self.G = graph.graph_from_adjacency_matrix(self.adjacency_matrix, self.atomicnums)
+                self.G = graph.graph_from_adjacency_matrix(
+                    self.adjacency_matrix, self.atomicnums
+                )
             else:
                 warnings.warn(
                     "Molecule was not initialized with an adjacency matrix. "
@@ -166,7 +168,9 @@ class Molecule:
                     self.atomicnums, self.coordinates
                 )
 
-                self.G = graph.graph_from_adjacency_matrix(self.adjacency_matrix, self.atomicnums)
+                self.G = graph.graph_from_adjacency_matrix(
+                    self.adjacency_matrix, self.atomicnums
+                )
 
         return self.G
 

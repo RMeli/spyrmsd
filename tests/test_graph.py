@@ -56,7 +56,10 @@ def test_graph_from_adjacency_matrix(mol) -> None:
     assert G.number_of_nodes() == natoms
     assert G.number_of_edges() == nbonds
 
-@pytest.mark.parametrize("rawmol, mol", zip(molecules.allobmolecules, molecules.allmolecules))
+
+@pytest.mark.parametrize(
+    "rawmol, mol", zip(molecules.allobmolecules, molecules.allmolecules)
+)
 def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
 
     natoms = io.numatoms(rawmol)

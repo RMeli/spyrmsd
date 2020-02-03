@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import networkx as nx
 import numpy as np
@@ -10,7 +10,8 @@ connectivity_tolerance: float = 0.4
 
 def graph_from_adjacency_matrix(
     adjacency_matrix: Union[np.ndarray, List[List[int]]],
-    atomicnums: Optional[Union[np.ndarray, List[int]]] = None) -> nx.Graph:
+    atomicnums: Optional[Union[np.ndarray, List[int]]] = None,
+) -> nx.Graph:
     """
     Graph from adjacency matrix.
 
@@ -34,10 +35,11 @@ def graph_from_adjacency_matrix(
     G = nx.Graph(adjacency_matrix)
 
     if atomicnums is not None:
-        attributes = {idx : atomicnum for idx, atomicnum in enumerate(atomicnums)}
+        attributes = {idx: atomicnum for idx, atomicnum in enumerate(atomicnums)}
         nx.set_node_attributes(G, attributes, "atomicnum")
 
     return G
+
 
 def adjacency_matrix_from_atomic_coordinates(
     atomicnums: np.ndarray, coordinates: np.ndarray
