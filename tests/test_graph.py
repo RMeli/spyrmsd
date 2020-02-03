@@ -91,7 +91,8 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
 )
 def test_match_graphs_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
 
-    isomorphisms = graph.match_graphs(G1, G2)
+    with pytest.warns(UserWarning):
+        isomorphisms = graph.match_graphs(G1, G2)
 
     assert len(isomorphisms) != 0
 
@@ -106,5 +107,5 @@ def test_match_graphs_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
 )
 def test_match_graphs_not_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError), pytest.warns(UserWarning):
         graph.match_graphs(G1, G2)

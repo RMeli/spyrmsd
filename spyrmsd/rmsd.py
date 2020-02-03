@@ -2,7 +2,6 @@ import numpy as np
 
 from spyrmsd import graph, hungarian, qcp, utils
 
-
 def rmsd_standard(
     coords1: np.ndarray,
     coords2: np.ndarray,
@@ -140,6 +139,7 @@ def rmsd_isomorphic(
     coords2: np.ndarray,
     am1: np.ndarray,
     am2: np.ndarray,
+    atomicnums1: np.ndarray = None, atomicnums2: np.ndarray = None,
     center=False,
 ) -> float:
     """
@@ -155,6 +155,10 @@ def rmsd_isomorphic(
         Adjacency matrix for molecule 1
     am2: np.ndarray
         Adjacency matrix for molecule 2
+    atomicnums1: npndarray, optional
+        Atomic numbers for molecule 1
+    atomicnums2: npndarray, optional
+        Atomic numbers for molecule 2
     center: boolean
         Centering flag
 
@@ -173,8 +177,8 @@ def rmsd_isomorphic(
     c2 = utils.center(coords2) if center else coords2
 
     # Convert molecules to graphs
-    G1 = graph.graph_from_adjacency_matrix(am1)
-    G2 = graph.graph_from_adjacency_matrix(am2)
+    G1 = graph.graph_from_adjacency_matrix(am1, atomicnums1)
+    G2 = graph.graph_from_adjacency_matrix(am2, atomicnums2)
 
     # Get all the possible graph isomorphisms
     isomorphisms = graph.match_graphs(G1, G2)
@@ -201,7 +205,8 @@ def rmsd_isomorphic(
 
 
 def rmsd_qcp_isomorphic(
-    coords1: np.ndarray, coords2: np.ndarray, am1: np.ndarray, am2: np.ndarray
+    coords1: np.ndarray, coords2: np.ndarray, am1: np.ndarray, am2: np.ndarray,
+    atomicnums1: np.ndarray = None, atomicnums2: np.ndarray = None
 ) -> float:
     """
     Compute minimum RMSD using the Quaternion Characteristic Polynomial method on
@@ -217,6 +222,10 @@ def rmsd_qcp_isomorphic(
         Adjacency matrix for molecule 1
     am2: np.ndarray
         Adjacency matrix for molecule 2
+    atomicnums1: npndarray, optional
+        Atomic numbers for molecule 1
+    atomicnums2: npndarray, optional
+        Atomic numbers for molecule 2
 
     Returns
     -------
@@ -237,8 +246,8 @@ def rmsd_qcp_isomorphic(
     c2 = utils.center(coords2)
 
     # Build graph from adjacency matrix
-    G1 = graph.graph_from_adjacency_matrix(am1)
-    G2 = graph.graph_from_adjacency_matrix(am2)
+    G1 = graph.graph_from_adjacency_matrix(am1, atomicnums1)
+    G2 = graph.graph_from_adjacency_matrix(am2, atomicnums2)
 
     # Get all the possible graph isomorphisms
     isomorphisms = graph.match_graphs(G1, G2)

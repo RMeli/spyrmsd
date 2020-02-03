@@ -131,7 +131,7 @@ def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
 
         warnings.warn(
                     "No atomic number information stored on nodes. "
-                    + "No node matching is performed..."
+                    + "Node matching is not performed..."
                 )
 
     else:
