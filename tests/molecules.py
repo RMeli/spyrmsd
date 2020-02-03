@@ -58,16 +58,14 @@ def loadall(fname: str) -> Tuple[List[Any], List[molecule.Molecule]]:
 
 
 obbenzene, benzene = load("benzene.sdf")
+obpyridine, pyridine = load("pyridine.sdf")
 obethanol, ethanol = load("ethanol.sdf")
-obxyz = [obbenzene, obethanol]
-xyz = [benzene, ethanol]
-
 obdialanine, dialanine = load("dialanine.sdf")
-obsdf = [obdialanine]
-sdf = [dialanine]
+obsdf = [obbenzene, obpyridine, obethanol, obdialanine]
+sdf = [benzene, pyridine, ethanol, dialanine]
 
-allmolecules = xyz + sdf
-allobmolecules = obxyz + obsdf
+allmolecules = sdf
+allobmolecules = obsdf
 
 obdocking_2viz, docking_2viz = {}, {}
 for i in [1, 2, 3]:

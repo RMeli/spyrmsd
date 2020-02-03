@@ -58,6 +58,30 @@ def test_graph_from_adjacency_matrix(mol) -> None:
 
 
 @pytest.mark.parametrize(
+    "rawmol, mol", zip(molecules.allobmolecules, molecules.allmolecules)
+)
+def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
+
+    natoms = io.numatoms(rawmol)
+    nbonds = io.numbonds(rawmol)
+
+    A = io.adjacency_matrix(rawmol)
+
+    assert len(mol) == natoms
+    assert mol.adjacency_matrix.shape == (natoms, natoms)
+    assert np.alltrue(mol.adjacency_matrix == A)
+    assert np.sum(mol.adjacency_matrix) == nbonds * 2
+
+    G = mol.to_graph()
+
+    assert G.number_of_nodes() == natoms
+    assert G.number_of_edges() == nbonds
+
+    for idx, atomicnum in enumerate(mol.atomicnums):
+        assert G.nodes[idx]["atomicnum"] == atomicnum
+
+
+@pytest.mark.parametrize(
     "G1, G2",
     [
         *[(nx.path_graph(n), nx.path_graph(n)) for n in range(3)],
@@ -67,7 +91,8 @@ def test_graph_from_adjacency_matrix(mol) -> None:
 )
 def test_match_graphs_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
 
-    isomorphisms = graph.match_graphs(G1, G2)
+    with pytest.warns(UserWarning):
+        isomorphisms = graph.match_graphs(G1, G2)
 
     assert len(isomorphisms) != 0
 
@@ -82,5 +107,5 @@ def test_match_graphs_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
 )
 def test_match_graphs_not_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError), pytest.warns(UserWarning):
         graph.match_graphs(G1, G2)

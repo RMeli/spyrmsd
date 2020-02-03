@@ -160,12 +160,15 @@ def test_molecule_strip(mol: molecule.Molecule, n_atoms: int, stripped: int) -> 
     "mol, n_bonds",
     [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
 )
-def test_graph_from_atomic_coordinates(mol: molecule.Molecule, n_bonds: int) -> None:
+def test_graph_from_adjacency_matrix(mol: molecule.Molecule, n_bonds: int) -> None:
 
     G = mol.to_graph()
 
     assert G.number_of_nodes() == len(mol)
     assert G.number_of_edges() == n_bonds
+
+    for idx, atomicnum in enumerate(mol.atomicnums):
+        assert G.nodes[idx]["atomicnum"] == atomicnum
 
 
 @pytest.mark.parametrize(
@@ -188,3 +191,6 @@ def test_graph_from_atomic_coordinates_perception(
 
         assert G.number_of_nodes() == len(m)
         assert G.number_of_edges() == n_bonds
+
+        for idx, atomicnum in enumerate(mol.atomicnums):
+            assert G.nodes[idx]["atomicnum"] == atomicnum
