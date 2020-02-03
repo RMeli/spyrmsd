@@ -115,13 +115,13 @@ mypy
 Build wheel and sdist:
 
 ```bash
-flint build
+flit build
 ```
 
 Upload wheel and sdist on [PyPI]():
 
 ```bash
-flint publish
+flit publish
 ```
 
 ## References
