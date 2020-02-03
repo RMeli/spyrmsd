@@ -82,15 +82,23 @@ def rmsdwrapper(
 
     if minimize and symmetry:
         RMSD = rmsd.rmsd_qcp_isomorphic(
-            c1, c2, mol1.adjacency_matrix, mol2.adjacency_matrix, mol1.atomicnums,
-            mol2.atomicnums
+            c1,
+            c2,
+            mol1.adjacency_matrix,
+            mol2.adjacency_matrix,
+            mol1.atomicnums,
+            mol2.atomicnums,
         )
     elif minimize and not symmetry:
         RMSD = rmsd.rmsd_qcp(c1, c2, mol1.atomicnums, mol2.atomicnums)
     elif not minimize and symmetry:
         RMSD = rmsd.rmsd_isomorphic(
-            c1, c2, mol1.adjacency_matrix, mol2.adjacency_matrix, mol1.atomicnums,
-            mol2.atomicnums
+            c1,
+            c2,
+            mol1.adjacency_matrix,
+            mol2.adjacency_matrix,
+            mol1.atomicnums,
+            mol2.atomicnums,
         )
     elif not minimize and not symmetry:
         RMSD = rmsd.rmsd_standard(c1, c2, mol1.atomicnums, mol2.atomicnums)

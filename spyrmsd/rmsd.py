@@ -2,6 +2,7 @@ import numpy as np
 
 from spyrmsd import graph, hungarian, qcp, utils
 
+
 def rmsd_standard(
     coords1: np.ndarray,
     coords2: np.ndarray,
@@ -139,7 +140,8 @@ def rmsd_isomorphic(
     coords2: np.ndarray,
     am1: np.ndarray,
     am2: np.ndarray,
-    atomicnums1: np.ndarray = None, atomicnums2: np.ndarray = None,
+    atomicnums1: np.ndarray = None,
+    atomicnums2: np.ndarray = None,
     center=False,
 ) -> float:
     """
@@ -205,8 +207,12 @@ def rmsd_isomorphic(
 
 
 def rmsd_qcp_isomorphic(
-    coords1: np.ndarray, coords2: np.ndarray, am1: np.ndarray, am2: np.ndarray,
-    atomicnums1: np.ndarray = None, atomicnums2: np.ndarray = None
+    coords1: np.ndarray,
+    coords2: np.ndarray,
+    am1: np.ndarray,
+    am2: np.ndarray,
+    atomicnums1: np.ndarray = None,
+    atomicnums2: np.ndarray = None,
 ) -> float:
     """
     Compute minimum RMSD using the Quaternion Characteristic Polynomial method on

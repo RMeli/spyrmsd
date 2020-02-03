@@ -124,15 +124,18 @@ def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
     def match_atomicnum(node1, node2):
         return node1["atomicnum"] == node2["atomicnum"]
 
-    if nx.get_node_attributes(G1, "atomicnum") == {} or nx.get_node_attributes(G2, "atomicnum") == {}:
+    if (
+        nx.get_node_attributes(G1, "atomicnum") == {}
+        or nx.get_node_attributes(G2, "atomicnum") == {}
+    ):
         # Nodes without atomic number information
         # No node-matching check
         node_match = None
 
         warnings.warn(
-                    "No atomic number information stored on nodes. "
-                    + "Node matching is not performed..."
-                )
+            "No atomic number information stored on nodes. "
+            + "Node matching is not performed..."
+        )
 
     else:
         node_match = match_atomicnum

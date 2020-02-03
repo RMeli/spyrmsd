@@ -48,7 +48,7 @@ def test_rmsdwrapper_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
     mol = copy.deepcopy(molecules.trp[i])
 
     assert spyrmsd.rmsdwrapper(mol0, mol, symmetry=False) == pytest.approx(rmsd_dummy)
-    
+
     assert spyrmsd.rmsdwrapper(
         mol0, mol, symmetry=False, minimize=True
     ) == pytest.approx(rmsd_min)

@@ -273,7 +273,8 @@ def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
             mol2.coordinates,
             mol1.adjacency_matrix,
             mol2.adjacency_matrix,
-            mol1.atomicnums, mol2.atomicnums
+            mol1.atomicnums,
+            mol2.atomicnums,
         )
         > 0
     )
@@ -282,7 +283,8 @@ def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
         mol2.coordinates,
         mol1.adjacency_matrix,
         mol2.adjacency_matrix,
-        mol1.atomicnums, mol2.atomicnums,
+        mol1.atomicnums,
+        mol2.atomicnums,
         center=True,
     ) == pytest.approx(0)
 
@@ -308,8 +310,12 @@ def test_rmsd_isomorphic_rotated_benzene(angle: float) -> None:
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0, abs=1e-4)
     assert rmsd.rmsd_isomorphic(
-        mol1.coordinates, mol2.coordinates, mol1.adjacency_matrix, mol2.adjacency_matrix,
-        mol1.atomicnums, mol2.atomicnums
+        mol1.coordinates,
+        mol2.coordinates,
+        mol1.adjacency_matrix,
+        mol2.adjacency_matrix,
+        mol1.atomicnums,
+        mol2.atomicnums,
     ) == pytest.approx(0, abs=1e-4)
 
 
@@ -337,8 +343,12 @@ def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0, abs=1e-4)
     assert rmsd.rmsd_isomorphic(
-        mol1.coordinates, mol2.coordinates, mol1.adjacency_matrix, mol2.adjacency_matrix,
-        mol1.atomicnums, mol2.atomicnums
+        mol1.coordinates,
+        mol2.coordinates,
+        mol1.adjacency_matrix,
+        mol2.adjacency_matrix,
+        mol1.atomicnums,
+        mol2.atomicnums,
     ) == pytest.approx(0, abs=1e-4)
 
 
@@ -367,8 +377,12 @@ def test_rmsd_isomorphic(index: int, RMSD: float) -> None:
     mol.strip()
 
     assert rmsd.rmsd_isomorphic(
-        molc.coordinates, mol.coordinates, molc.adjacency_matrix, mol.adjacency_matrix,
-        molc.atomicnums, mol.atomicnums
+        molc.coordinates,
+        mol.coordinates,
+        molc.adjacency_matrix,
+        mol.adjacency_matrix,
+        molc.atomicnums,
+        mol.atomicnums,
     ) == pytest.approx(RMSD, abs=1e-5)
 
 
@@ -397,6 +411,10 @@ def test_rmsd_qcp_isomorphic(index: int, RMSD: float) -> None:
     mol.strip()
 
     assert rmsd.rmsd_qcp_isomorphic(
-        molc.coordinates, mol.coordinates, molc.adjacency_matrix, mol.adjacency_matrix,
-        molc.atomicnums, mol.atomicnums
+        molc.coordinates,
+        mol.coordinates,
+        molc.adjacency_matrix,
+        mol.adjacency_matrix,
+        molc.atomicnums,
+        mol.atomicnums,
     ) == pytest.approx(RMSD, abs=1e-5)
