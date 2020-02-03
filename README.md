@@ -4,7 +4,7 @@
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/31ubs980idhv1qw8?svg=true)](https://ci.appveyor.com/project/RMeli/spyrmsd)
 [![codecov](https://codecov.io/gh/RMeli/spyrmsd/branch/master/graph/badge.svg)](https://codecov.io/gh/RMeli/spyrmsd/branch/master)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/RMeli/spyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
-[![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=latest)](https://spyrmsd.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=develop)](https://spyrmsd.readthedocs.io/en/develop/?badge=develop)
 
 [![DOI](https://zenodo.org/badge/214157073.svg)](https://zenodo.org/badge/latestdoi/214157073)
 [![Docs](https://img.shields.io/badge/docs-pyrmsd.readthedocs.io-blueviolet)](https://pyrmsd.readthedocs.io)
