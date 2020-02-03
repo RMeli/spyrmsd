@@ -98,7 +98,7 @@ def rmsdwrapper(
 
 if __name__ == "__main__":
 
-    from pyrmsd import io
+    from spyrmsd import io
 
     import argparse as ap
     import os
