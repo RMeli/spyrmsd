@@ -134,7 +134,7 @@ flint publish
 
 ## Copyright
 
-Copyright (c) 2019, Rocco Meli.
+Copyright (c) 2019-2020, Rocco Meli.
 
 ### Acknowledgements
 
