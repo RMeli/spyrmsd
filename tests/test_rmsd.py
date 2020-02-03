@@ -351,6 +351,39 @@ def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
         mol2.atomicnums,
     ) == pytest.approx(0, abs=1e-4)
 
+def test_rmsd_isomorphic_atomicnums_matching_pyridine_stripped() -> None:
+
+    mol1 = copy.deepcopy(molecules.pyridine)
+    mol2 = copy.deepcopy(molecules.pyridine)
+
+    mol2.rotate(60, np.array([0, 0, 1]), units="deg")
+
+    mol1.strip()
+    mol2.strip()
+
+    # Standard RMSD, correct in this case
+    RMSD = rmsd.rmsd_standard(
+            mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+        )
+    
+    # Isomorphic RMSD without atomic number matching is wrong
+    assert rmsd.rmsd_isomorphic(
+        mol1.coordinates,
+        mol2.coordinates,
+        mol1.adjacency_matrix,
+        mol2.adjacency_matrix,
+    ) == pytest.approx(0, abs=1e-4)
+
+    # Isomorphic RMSD with atomic number matching is correct
+    assert rmsd.rmsd_isomorphic(
+        mol1.coordinates,
+        mol2.coordinates,
+        mol1.adjacency_matrix,
+        mol2.adjacency_matrix,
+        mol1.atomicnums,
+        mol2.atomicnums,
+    ) == pytest.approx(RMSD, abs=1e-4)
+
 
 # Results obtained with OpenBabel
 @pytest.mark.parametrize(
