@@ -47,11 +47,11 @@ def test_rmsdwrapper_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
     mol0 = copy.deepcopy(molecules.trp[0])
     mol = copy.deepcopy(molecules.trp[i])
 
-    assert spyrmsd.rmsdwrapper(mol0, mol, symmetry=False) == pytest.approx(rmsd_dummy)
+    assert spyrmsd.rmsdwrapper(mol0, mol, symmetry=False)[0] == pytest.approx(rmsd_dummy)
 
     assert spyrmsd.rmsdwrapper(
         mol0, mol, symmetry=False, minimize=True
-    ) == pytest.approx(rmsd_min)
+    )[0] == pytest.approx(rmsd_min)
 
 
 # Results obtained with OpenBabel
@@ -75,7 +75,7 @@ def test_rmsdwrapper_isomorphic(index: int, RMSD: float) -> None:
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mol = copy.deepcopy(molecules.docking_1cbr[index])
 
-    assert spyrmsd.rmsdwrapper(mol, molc, strip=True) == pytest.approx(RMSD, abs=1e-5)
+    assert spyrmsd.rmsdwrapper(mol, molc, strip=True)[0] == pytest.approx(RMSD, abs=1e-5)
 
 
 # Results obtained with OpenBabel
@@ -99,6 +99,6 @@ def test_rmsdwrapper_qcp_isomorphic(index: int, RMSD: float) -> None:
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mol = copy.deepcopy(molecules.docking_1cbr[index])
 
-    assert spyrmsd.rmsdwrapper(mol, molc, minimize=True, strip=True) == pytest.approx(
+    assert spyrmsd.rmsdwrapper(mol, molc, minimize=True, strip=True)[0] == pytest.approx(
         RMSD, abs=1e-5
     )

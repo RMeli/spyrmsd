@@ -6,6 +6,8 @@ import numpy as np
 
 from spyrmsd import molecule, rmsd
 
+from typing import Dict, Optional, List
+
 
 def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.ndarray:
     """
@@ -38,7 +40,13 @@ def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.nda
 
 
 def rmsdwrapper(
-    mol1, mol2, symmetry=True, center=False, minimize=False, strip=False
+    mol1,
+    mol2,
+    symmetry: bool = True,
+    center: bool = False,
+    minimize: bool = False,
+    strip: bool = False,
+    isomorphisms: Optional[List[Dict[int, int]]] = None,
 ) -> float:
     """
     Compute RMSD between two molecule.
@@ -57,6 +65,7 @@ def rmsdwrapper(
         Minimised RMSD (using the quaternion polynomial method)
     strip: bool, optional
         Strip hydrogen atoms
+    isomorphisms: List[Dict[int, int]], optional
 
     Returns
     -------
@@ -80,30 +89,32 @@ def rmsdwrapper(
 
     RMSD = np.inf
 
-    if minimize and symmetry:
-        RMSD = rmsd.rmsd_qcp_isomorphic(
+    if not minimize and symmetry:
+        RMSD, isomorphisms = rmsd.rmsd_isomorphic(
             c1,
             c2,
             mol1.adjacency_matrix,
             mol2.adjacency_matrix,
             mol1.atomicnums,
             mol2.atomicnums,
+            isomorphisms,
+        )
+    elif minimize and symmetry:
+        RMSD, isomorphisms = rmsd.rmsd_qcp_isomorphic(
+            c1,
+            c2,
+            mol1.adjacency_matrix,
+            mol2.adjacency_matrix,
+            mol1.atomicnums,
+            mol2.atomicnums,
+            isomorphisms,
         )
     elif minimize and not symmetry:
         RMSD = rmsd.rmsd_qcp(c1, c2, mol1.atomicnums, mol2.atomicnums)
-    elif not minimize and symmetry:
-        RMSD = rmsd.rmsd_isomorphic(
-            c1,
-            c2,
-            mol1.adjacency_matrix,
-            mol2.adjacency_matrix,
-            mol1.atomicnums,
-            mol2.atomicnums,
-        )
     elif not minimize and not symmetry:
         RMSD = rmsd.rmsd_standard(c1, c2, mol1.atomicnums, mol2.atomicnums)
 
-    return RMSD
+    return RMSD, isomorphisms
 
 
 if __name__ == "__main__":
@@ -125,6 +136,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-n", "--nosymm", action="store_false", help="No graph isomorphism"
     )
+    parser.add_argument("--cache", action="store_true", help="Cache graph isomorphism")
     parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
 
     args = parser.parse_args()
@@ -152,13 +164,17 @@ if __name__ == "__main__":
         # Loop over molecules within file
         for idx, mol in enumerate(mols):
 
-            r = rmsdwrapper(
+            if cache is False:
+                isomorphisms = None
+
+            r, isomorphisms = rmsdwrapper(
                 ref,
                 mol,
                 symmetry=args.nosymm,
                 center=args.center,
                 minimize=args.minimize,
                 strip=not args.hydrogens,
+                cache=isomorphisms,
             )
 
             print(f"{output}{r:.5f}")

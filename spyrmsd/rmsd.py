@@ -2,6 +2,8 @@ import numpy as np
 
 from spyrmsd import graph, hungarian, qcp, utils
 
+from typing import Optional, Dict, Tuple, List
+
 
 def rmsd_standard(
     coords1: np.ndarray,
@@ -142,8 +144,9 @@ def rmsd_isomorphic(
     am2: np.ndarray,
     atomicnums1: np.ndarray = None,
     atomicnums2: np.ndarray = None,
-    center=False,
-) -> float:
+    center: bool = False,
+    isomorphisms: Optional[List[Dict[int, int]]] = None,
+) -> Tuple[float, List[Dict[int, int]]]:
     """
     Compute minimum RMSD using graph isomorphism.
 
@@ -163,11 +166,13 @@ def rmsd_isomorphic(
         Atomic numbers for molecule 2
     center: boolean
         Centering flag
+    isomorphisms: Optional[List[Dict[int,int]]]
+        Previously computed graph isomorphism
 
     Returns
     -------
-    float
-        Minimum RMSD (after graph matching)
+    Tuple[float, List[Dict[int, int]]]
+        Minimum RMSD (after graph matching) and graph isomorphisms
     """
 
     assert coords1.shape == coords2.shape
@@ -178,12 +183,14 @@ def rmsd_isomorphic(
     c1 = utils.center(coords1) if center else coords1
     c2 = utils.center(coords2) if center else coords2
 
-    # Convert molecules to graphs
-    G1 = graph.graph_from_adjacency_matrix(am1, atomicnums1)
-    G2 = graph.graph_from_adjacency_matrix(am2, atomicnums2)
+    # No cached isomorphisms
+    if isomorphisms is None:
+        # Convert molecules to graphs
+        G1 = graph.graph_from_adjacency_matrix(am1, atomicnums1)
+        G2 = graph.graph_from_adjacency_matrix(am2, atomicnums2)
 
-    # Get all the possible graph isomorphisms
-    isomorphisms = graph.match_graphs(G1, G2)
+        # Get all the possible graph isomorphisms
+        isomorphisms = graph.match_graphs(G1, G2)
 
     # Minimum squared displacement
     min_sd = np.inf
@@ -203,7 +210,7 @@ def rmsd_isomorphic(
             min_sd = sd
 
     # Return the actual RMSD
-    return np.sqrt(min_sd / n)
+    return np.sqrt(min_sd / n), isomorphisms
 
 
 def rmsd_qcp_isomorphic(
@@ -213,7 +220,8 @@ def rmsd_qcp_isomorphic(
     am2: np.ndarray,
     atomicnums1: np.ndarray = None,
     atomicnums2: np.ndarray = None,
-) -> float:
+    isomorphisms: Optional[List[Dict[int, int]]] = None,
+) -> Tuple[float, List[Dict[int, int]]]:
     """
     Compute minimum RMSD using the Quaternion Characteristic Polynomial method on
     isomorphic graphs.
@@ -232,11 +240,13 @@ def rmsd_qcp_isomorphic(
         Atomic numbers for molecule 1
     atomicnums2: npndarray, optional
         Atomic numbers for molecule 2
+    isomorphisms: List[Dict[int, int]]], optional
+        Previously computed graph isomorphism
 
     Returns
     -------
-    float
-        Minimum RMSD (after graph matching and superimposition)
+    Tuple[float, List[Dict[int, int]]]]
+        Minimum RMSD (after graph matching) and graph isomorphisms
 
     Notes
     -----
@@ -251,12 +261,14 @@ def rmsd_qcp_isomorphic(
     c1 = utils.center(coords1)
     c2 = utils.center(coords2)
 
-    # Build graph from adjacency matrix
-    G1 = graph.graph_from_adjacency_matrix(am1, atomicnums1)
-    G2 = graph.graph_from_adjacency_matrix(am2, atomicnums2)
+    # No cached isomorphisms
+    if isomorphisms is None:
+        # Build graph from adjacency matrix
+        G1 = graph.graph_from_adjacency_matrix(am1, atomicnums1)
+        G2 = graph.graph_from_adjacency_matrix(am2, atomicnums2)
 
-    # Get all the possible graph isomorphisms
-    isomorphisms = graph.match_graphs(G1, G2)
+        # Get all the possible graph isomorphisms
+        isomorphisms = graph.match_graphs(G1, G2)
 
     # Minimum squared displacement
     min_rmsd = np.inf
@@ -273,4 +285,4 @@ def rmsd_qcp_isomorphic(
         if rmsd < min_rmsd:
             min_rmsd = rmsd
 
-    return min_rmsd
+    return min_rmsd, isomorphisms

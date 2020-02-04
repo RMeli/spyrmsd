@@ -275,7 +275,7 @@ def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
             mol2.adjacency_matrix,
             mol1.atomicnums,
             mol2.atomicnums,
-        )
+        )[0]
         > 0
     )
     assert rmsd.rmsd_isomorphic(
@@ -286,7 +286,7 @@ def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
         mol1.atomicnums,
         mol2.atomicnums,
         center=True,
-    ) == pytest.approx(0)
+    )[0] == pytest.approx(0)
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
@@ -316,7 +316,7 @@ def test_rmsd_isomorphic_rotated_benzene(angle: float) -> None:
         mol2.adjacency_matrix,
         mol1.atomicnums,
         mol2.atomicnums,
-    ) == pytest.approx(0, abs=1e-4)
+    )[0] == pytest.approx(0, abs=1e-4)
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
@@ -349,7 +349,7 @@ def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
         mol2.adjacency_matrix,
         mol1.atomicnums,
         mol2.atomicnums,
-    ) == pytest.approx(0, abs=1e-4)
+    )[0] == pytest.approx(0, abs=1e-4)
 
 
 def test_rmsd_isomorphic_atomicnums_matching_pyridine_stripped() -> None:
@@ -368,12 +368,13 @@ def test_rmsd_isomorphic_atomicnums_matching_pyridine_stripped() -> None:
     )
 
     # Isomorphic RMSD without atomic number matching is wrong
-    assert rmsd.rmsd_isomorphic(
-        mol1.coordinates,
-        mol2.coordinates,
-        mol1.adjacency_matrix,
-        mol2.adjacency_matrix,
-    ) == pytest.approx(0, abs=1e-4)
+    with pytest.warns(UserWarning):
+        assert rmsd.rmsd_isomorphic(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.adjacency_matrix,
+            mol2.adjacency_matrix,
+        )[0] == pytest.approx(0, abs=1e-4)
 
     # Isomorphic RMSD with atomic number matching is correct
     assert rmsd.rmsd_isomorphic(
@@ -383,7 +384,7 @@ def test_rmsd_isomorphic_atomicnums_matching_pyridine_stripped() -> None:
         mol2.adjacency_matrix,
         mol1.atomicnums,
         mol2.atomicnums,
-    ) == pytest.approx(RMSD, abs=1e-4)
+    )[0] == pytest.approx(RMSD, abs=1e-4)
 
 
 # Results obtained with OpenBabel
@@ -417,7 +418,7 @@ def test_rmsd_isomorphic(index: int, RMSD: float) -> None:
         mol.adjacency_matrix,
         molc.atomicnums,
         mol.atomicnums,
-    ) == pytest.approx(RMSD, abs=1e-5)
+    )[0] == pytest.approx(RMSD, abs=1e-5)
 
 
 # Results obtained with OpenBabel
@@ -451,4 +452,4 @@ def test_rmsd_qcp_isomorphic(index: int, RMSD: float) -> None:
         mol.adjacency_matrix,
         molc.atomicnums,
         mol.atomicnums,
-    ) == pytest.approx(RMSD, abs=1e-5)
+    )[0] == pytest.approx(RMSD, abs=1e-5)
