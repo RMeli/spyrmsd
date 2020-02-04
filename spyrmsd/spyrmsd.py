@@ -143,6 +143,8 @@ if __name__ == "__main__":
 
     output: str = ""
 
+    isomorphisms = None
+
     obref = io.load(args.reference)
     ref = io.to_molecule(obref, adjacency=True)
 
@@ -164,9 +166,6 @@ if __name__ == "__main__":
         # Loop over molecules within file
         for idx, mol in enumerate(mols):
 
-            if cache is False:
-                isomorphisms = None
-
             r, isomorphisms = rmsdwrapper(
                 ref,
                 mol,
@@ -174,7 +173,10 @@ if __name__ == "__main__":
                 center=args.center,
                 minimize=args.minimize,
                 strip=not args.hydrogens,
-                cache=isomorphisms,
+                isomorphisms=isomorphisms,
             )
+
+            if args.cache is False:
+                isomorphisms = None
 
             print(f"{output}{r:.5f}")
