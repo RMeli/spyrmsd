@@ -2,11 +2,11 @@
 Python RMSD tool
 """
 
+from typing import Dict, List, Optional, Tuple
+
 import numpy as np
 
 from spyrmsd import molecule, rmsd
-
-from typing import Dict, Optional, List
 
 
 def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.ndarray:
@@ -47,7 +47,7 @@ def rmsdwrapper(
     minimize: bool = False,
     strip: bool = False,
     isomorphisms: Optional[List[Dict[int, int]]] = None,
-) -> float:
+) -> Tuple[float, Optional[List[Dict[int, int]]]]:
     """
     Compute RMSD between two molecule.
 
@@ -97,6 +97,7 @@ def rmsdwrapper(
             mol2.adjacency_matrix,
             mol1.atomicnums,
             mol2.atomicnums,
+            center,
             isomorphisms,
         )
     elif minimize and symmetry:

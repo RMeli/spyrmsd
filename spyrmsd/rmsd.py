@@ -1,8 +1,8 @@
+from typing import Dict, List, Optional, Tuple
+
 import numpy as np
 
 from spyrmsd import graph, hungarian, qcp, utils
-
-from typing import Optional, Dict, Tuple, List
 
 
 def rmsd_standard(
@@ -220,7 +220,7 @@ def rmsd_qcp_isomorphic(
     am2: np.ndarray,
     atomicnums1: np.ndarray = None,
     atomicnums2: np.ndarray = None,
-    isomorphisms: Optional[List[Dict[int, int]]] = None,
+    isomorphisms: List[Dict[int, int]] = None,
 ) -> Tuple[float, List[Dict[int, int]]]:
     """
     Compute minimum RMSD using the Quaternion Characteristic Polynomial method on
