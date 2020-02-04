@@ -121,7 +121,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-c", "--center", action="store_true", help="Center molecules at origin"
     )
-    parser.add_argument("-s", "--strip", action="store_true", help="Strip H atoms")
+    parser.add_argument("--hydrogens", action="store_true", help="Keep hydrogen atoms")
     parser.add_argument(
         "-n", "--nosymm", action="store_false", help="No graph isomorphism"
     )
@@ -153,7 +153,12 @@ if __name__ == "__main__":
         for idx, mol in enumerate(mols):
 
             r = rmsdwrapper(
-                ref, mol, args.nosymm, args.center, args.minimize, args.strip
+                ref,
+                mol,
+                symmetry=args.nosymm,
+                center=args.center,
+                minimize=args.minimize,
+                strip=not args.hydrogens,
             )
 
             print(f"{output}{r:.5f}")
