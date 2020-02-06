@@ -94,7 +94,7 @@ def test_rmsdwrapper_isomorphic(index: int, RMSD: float) -> None:
         (10, 1.37842),
     ],
 )
-def test_rmsdwrapper_qcp_isomorphic(index: int, RMSD: float) -> None:
+def test_rmsdwrapper_isomorphic_minimized(index: int, RMSD: float) -> None:
 
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mol = copy.deepcopy(molecules.docking_1cbr[index])

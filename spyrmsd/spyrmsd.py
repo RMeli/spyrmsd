@@ -2,6 +2,8 @@
 Python RMSD tool
 """
 
+from typing import Dict, List, Optional, Tuple
+
 import numpy as np
 
 from spyrmsd import molecule, rmsd
@@ -38,8 +40,13 @@ def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.nda
 
 
 def rmsdwrapper(
-    mol1, mol2, symmetry=True, center=False, minimize=False, strip=False
-) -> float:
+    mol1,
+    mol2,
+    symmetry: bool = True,
+    center: bool = False,
+    minimize: bool = False,
+    strip: bool = False,
+) -> Tuple[float, Optional[List[Dict[int, int]]]]:
     """
     Compute RMSD between two molecule.
 
@@ -80,18 +87,7 @@ def rmsdwrapper(
 
     RMSD = np.inf
 
-    if minimize and symmetry:
-        RMSD = rmsd.rmsd_qcp_isomorphic(
-            c1,
-            c2,
-            mol1.adjacency_matrix,
-            mol2.adjacency_matrix,
-            mol1.atomicnums,
-            mol2.atomicnums,
-        )
-    elif minimize and not symmetry:
-        RMSD = rmsd.rmsd_qcp(c1, c2, mol1.atomicnums, mol2.atomicnums)
-    elif not minimize and symmetry:
+    if symmetry:
         RMSD = rmsd.rmsd_isomorphic(
             c1,
             c2,
@@ -99,7 +95,11 @@ def rmsdwrapper(
             mol2.adjacency_matrix,
             mol1.atomicnums,
             mol2.atomicnums,
+            center=center,
+            minimize=minimize,
         )
+    elif minimize and not symmetry:
+        RMSD = rmsd.rmsd_qcp(c1, c2, mol1.atomicnums, mol2.atomicnums)
     elif not minimize and not symmetry:
         RMSD = rmsd.rmsd_standard(c1, c2, mol1.atomicnums, mol2.atomicnums)
 

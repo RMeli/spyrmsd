@@ -368,12 +368,13 @@ def test_rmsd_isomorphic_atomicnums_matching_pyridine_stripped() -> None:
     )
 
     # Isomorphic RMSD without atomic number matching is wrong
-    assert rmsd.rmsd_isomorphic(
-        mol1.coordinates,
-        mol2.coordinates,
-        mol1.adjacency_matrix,
-        mol2.adjacency_matrix,
-    ) == pytest.approx(0, abs=1e-4)
+    with pytest.warns(UserWarning):
+        assert rmsd.rmsd_isomorphic(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.adjacency_matrix,
+            mol2.adjacency_matrix,
+        ) == pytest.approx(0, abs=1e-4)
 
     # Isomorphic RMSD with atomic number matching is correct
     assert rmsd.rmsd_isomorphic(
@@ -436,7 +437,7 @@ def test_rmsd_isomorphic(index: int, RMSD: float) -> None:
         (10, 1.37842),
     ],
 )
-def test_rmsd_qcp_isomorphic(index: int, RMSD: float) -> None:
+def test_rmsd_isomorphic_minimize(index: int, RMSD: float) -> None:
 
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mol = copy.deepcopy(molecules.docking_1cbr[index])
@@ -444,11 +445,12 @@ def test_rmsd_qcp_isomorphic(index: int, RMSD: float) -> None:
     molc.strip()
     mol.strip()
 
-    assert rmsd.rmsd_qcp_isomorphic(
+    assert rmsd.rmsd_isomorphic(
         molc.coordinates,
         mol.coordinates,
         molc.adjacency_matrix,
         mol.adjacency_matrix,
         molc.atomicnums,
         mol.atomicnums,
+        minimize=True,
     ) == pytest.approx(RMSD, abs=1e-5)
