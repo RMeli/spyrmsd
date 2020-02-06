@@ -211,6 +211,7 @@ def _rmsd_isomorphic_core(
             # Avoid dividing by n and an expensive sqrt() operation
             result = np.sum((c1i - c2i) ** 2)
         else:
+            # Compute minimized RMSD using QCP
             result = qcp.qcp_rmsd(c1i, c2i)
 
         min_result = result if result < min_result else min_result
@@ -256,7 +257,7 @@ def rmsd_isomorphic(
         Minimum RMSD
     Returns
     -------
-    Tuple[float, List[Dict[int, int]]]
+    float
         RMSD (after graph matching) and graph isomorphisms
 
     Notes
