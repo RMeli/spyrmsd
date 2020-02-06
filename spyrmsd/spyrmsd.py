@@ -129,20 +129,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "-n", "--nosymm", action="store_false", help="No graph isomorphism"
     )
-    parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
 
     args = parser.parse_args()
-
-    output: str = ""
 
     inref = io.load(args.reference)
     ref = io.to_molecule(inref, adjacency=True)
 
-    if args.verbose:
-        refname = os.path.basename(args.reference)
-
     # Load all molecules
-    inmols = [io.loadall(molfile) for molfile in args.molecules]
+    inmols = [inmol for molfile in args.molecules for inmol in io.loadall(molfile)]
     mols = [io.to_molecule(mol, adjacency=True) for mol in inmols]
 
     # Loop over molecules within fil
@@ -155,4 +149,5 @@ if __name__ == "__main__":
         strip=not args.hydrogens,
     )
 
-    # print(f"{output}{r:.5f}")
+    for RMSD in RMSDlist:
+        print(f"{RMSD:.5f}")
