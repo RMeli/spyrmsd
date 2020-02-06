@@ -249,8 +249,6 @@ def rmsd_isomorphic(
         Atomic numbers for molecule 2
     center: boolean
         Centering flag
-    isomorphisms: Optional[List[Dict[int,int]]]
-        Previously computed graph isomorphism
 
     Returns
     -------
@@ -299,8 +297,6 @@ def rmsd_qcp_isomorphic(
         Atomic numbers for molecule 1
     atomicnums2: npndarray, optional
         Atomic numbers for molecule 2
-    isomorphisms: List[Dict[int, int]]], optional
-        Previously computed graph isomorphism
 
     Returns
     -------
