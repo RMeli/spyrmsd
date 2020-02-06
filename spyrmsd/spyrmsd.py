@@ -46,7 +46,6 @@ def rmsdwrapper(
     center: bool = False,
     minimize: bool = False,
     strip: bool = False,
-    isomorphisms: Optional[List[Dict[int, int]]] = None,
 ) -> Tuple[float, Optional[List[Dict[int, int]]]]:
     """
     Compute RMSD between two molecule.
@@ -65,7 +64,6 @@ def rmsdwrapper(
         Minimised RMSD (using the quaternion polynomial method)
     strip: bool, optional
         Strip hydrogen atoms
-    isomorphisms: List[Dict[int, int]], optional
 
     Returns
     -------
@@ -127,14 +125,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "-n", "--nosymm", action="store_false", help="No graph isomorphism"
     )
-    parser.add_argument("--cache", action="store_true", help="Cache graph isomorphism")
     parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
 
     args = parser.parse_args()
 
     output: str = ""
-
-    isomorphisms = None
 
     obref = io.load(args.reference)
     ref = io.to_molecule(obref, adjacency=True)
@@ -164,10 +159,6 @@ if __name__ == "__main__":
                 center=args.center,
                 minimize=args.minimize,
                 strip=not args.hydrogens,
-                isomorphisms=isomorphisms,
             )
-
-            if args.cache is False:
-                isomorphisms = None
 
             print(f"{output}{r:.5f}")

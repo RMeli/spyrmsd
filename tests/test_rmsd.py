@@ -452,5 +452,5 @@ def test_rmsd_isomorphic_minimize(index: int, RMSD: float) -> None:
         mol.adjacency_matrix,
         molc.atomicnums,
         mol.atomicnums,
-        minimize=True
+        minimize=True,
     ) == pytest.approx(RMSD, abs=1e-5)

@@ -136,6 +136,7 @@ def rmsd_hungarian(
 
     return hungarian.hungarian_rmsd(c1, c2, atomicn1, atomicn2)
 
+
 def _rmsd_isomorphic_core(
     coords1: np.ndarray,
     coords2: np.ndarray,
@@ -194,7 +195,7 @@ def _rmsd_isomorphic_core(
         # Get all the possible graph isomorphisms
         isomorphisms = graph.match_graphs(G1, G2)
 
-    # Minimum result 
+    # Minimum result
     # Squared displacement (not minimize) or RMSD (minimize)
     min_result = np.inf
 
@@ -221,6 +222,7 @@ def _rmsd_isomorphic_core(
     # Return the actual RMSD
     return min_result, isomorphisms
 
+
 def rmsd_isomorphic(
     coords1: np.ndarray,
     coords2: np.ndarray,
@@ -230,7 +232,7 @@ def rmsd_isomorphic(
     atomicnums2: np.ndarray = None,
     center: bool = False,
     minimize: bool = False,
-) -> Tuple[float, List[Dict[int, int]]]:
+) -> float:
     """
     Compute RMSD using graph isomorphism.
 
@@ -260,23 +262,21 @@ def rmsd_isomorphic(
     Notes
     -----
 
-    This QCP method, activated with the keyword `minimize=True` works in cases where 
-    the atoms in `mol1` and `mol2` are not in the exact same order. If the atoms in 
+    This QCP method, activated with the keyword `minimize=True` works in cases where
+    the atoms in `mol1` and `mol2` are not in the exact same order. If the atoms in
     `mol1` and `mol2` are in the same order use `rmsd_qcp` (faster).
     """
 
     RMSD, _ = _rmsd_isomorphic_core(
-    coords1,
-    coords2,
-    am1,
-    am2,
-    atomicnums1,
-    atomicnums2,
-    center,
-    minimize,
-    isomorphisms = None)
+        coords1,
+        coords2,
+        am1,
+        am2,
+        atomicnums1,
+        atomicnums2,
+        center,
+        minimize,
+        isomorphisms=None,
+    )
 
     return RMSD
-
-def multirmsd_isomorphic():
-    
