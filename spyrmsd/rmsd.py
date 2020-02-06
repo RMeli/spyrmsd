@@ -229,9 +229,10 @@ def rmsd_isomorphic(
     atomicnums1: np.ndarray = None,
     atomicnums2: np.ndarray = None,
     center: bool = False,
+    minimize: bool = False,
 ) -> Tuple[float, List[Dict[int, int]]]:
     """
-    Compute minimum RMSD using graph isomorphism.
+    Compute RMSD using graph isomorphism.
 
     Parameters
     ----------
@@ -247,13 +248,21 @@ def rmsd_isomorphic(
         Atomic numbers for molecule 1
     atomicnums2: npndarray, optional
         Atomic numbers for molecule 2
-    center: boolean
+    center: bool
         Centering flag
-
+    minimize: bool
+        Minimum RMSD
     Returns
     -------
     Tuple[float, List[Dict[int, int]]]
         RMSD (after graph matching) and graph isomorphisms
+
+    Notes
+    -----
+
+    This QCP method, activated with the keyword `minimize=True` works in cases where 
+    the atoms in `mol1` and `mol2` are not in the exact same order. If the atoms in 
+    `mol1` and `mol2` are in the same order use `rmsd_qcp` (faster).
     """
 
     RMSD, _ = _rmsd_isomorphic_core(
@@ -264,61 +273,10 @@ def rmsd_isomorphic(
     atomicnums1,
     atomicnums2,
     center,
-    minimize = False,
+    minimize,
     isomorphisms = None)
 
     return RMSD
 
-
-def rmsd_qcp_isomorphic(
-    coords1: np.ndarray,
-    coords2: np.ndarray,
-    am1: np.ndarray,
-    am2: np.ndarray,
-    atomicnums1: np.ndarray = None,
-    atomicnums2: np.ndarray = None,
-    isomorphisms: List[Dict[int, int]] = None,
-) -> Tuple[float, List[Dict[int, int]]]:
-    """
-    Compute minimum RMSD using the Quaternion Characteristic Polynomial method on
-    isomorphic graphs.
-
-    Parameters
-    ----------
-    coords1: np.ndarray
-        Coordinate of molecule 1
-    coords2: np.ndarray
-        Coordinates of molecule 2
-    am1: np.ndarray
-        Adjacency matrix for molecule 1
-    am2: np.ndarray
-        Adjacency matrix for molecule 2
-    atomicnums1: npndarray, optional
-        Atomic numbers for molecule 1
-    atomicnums2: npndarray, optional
-        Atomic numbers for molecule 2
-
-    Returns
-    -------
-    Tuple[float, List[Dict[int, int]]]]
-        Minimum RMSD (after graph matching) and graph isomorphisms
-
-    Notes
-    -----
-    This QCP method works in cases where the atoms in `mol1` and `mol2` are not in the
-    exact same order. If the atoms in `mol1` and `mol2` are in the same order use
-    `rmsd_qcp` (faster).
-    """
-
-    RMSD, _ = _rmsd_isomorphic_core(
-    coords1,
-    coords2,
-    am1,
-    am2,
-    atomicnums1,
-    atomicnums2,
-    center=True,
-    minimize = True,
-    isomorphisms = None)
-
-    return RMSD
+def multirmsd_isomorphic():
+    
