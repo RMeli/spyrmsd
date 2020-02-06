@@ -115,7 +115,6 @@ if __name__ == "__main__":
     from spyrmsd import io
 
     import argparse as ap
-    import os
 
     parser = ap.ArgumentParser(description="Python RMSD tool.")
 
