@@ -2,7 +2,7 @@
 Python RMSD tool
 """
 
-from typing import Dict, List, Optional, Tuple
+from typing import List
 
 import numpy as np
 
@@ -40,13 +40,13 @@ def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.nda
 
 
 def rmsdwrapper(
-    mol1,
-    mol2,
+    molref,
+    mols,
     symmetry: bool = True,
     center: bool = False,
     minimize: bool = False,
     strip: bool = False,
-) -> Tuple[float, Optional[List[Dict[int, int]]]]:
+) -> List[float]:
     """
     Compute RMSD between two molecule.
 
@@ -67,43 +67,47 @@ def rmsdwrapper(
 
     Returns
     -------
-    float
-        RMSD
+    List[float]
+        RMSDs
     """
 
     if strip:
-        mol1.strip()  # Does nothing if already stripped
-        mol2.strip()
+        molref.strip()
+
+        for mol in mols:
+            mol.strip()
 
     if minimize:
         center = True
 
-    c1 = coords_from_molecule(mol1, center)
-    c2 = coords_from_molecule(mol2, center)
+    cref = coords_from_molecule(molref, center)
+    cmols = [coords_from_molecule(mol, center) for mol in mols]
 
-    if c1.shape != c2.shape:
-        # TODO: Create specific exception
-        raise ValueError("Molecules have different sizes.")
-
-    RMSD = np.inf
+    RMSDlist = []
 
     if symmetry:
-        RMSD = rmsd.rmsd_isomorphic(
-            c1,
-            c2,
-            mol1.adjacency_matrix,
-            mol2.adjacency_matrix,
-            mol1.atomicnums,
-            mol2.atomicnums,
+        RMSDlist = rmsd.multirmsd_isomorphic(
+            cref,
+            cmols,
+            molref.adjacency_matrix,
+            mols[0].adjacency_matrix,
+            molref.atomicnums,
+            mols[0].atomicnums,
             center=center,
             minimize=minimize,
         )
     elif minimize and not symmetry:
-        RMSD = rmsd.rmsd_qcp(c1, c2, mol1.atomicnums, mol2.atomicnums)
+        for c in cmols:
+            RMSDlist.append(
+                rmsd.rmsd_qcp(cref, c, molref.atomicnums, mols[0].atomicnums)
+            )
     elif not minimize and not symmetry:
-        RMSD = rmsd.rmsd_standard(c1, c2, mol1.atomicnums, mol2.atomicnums)
+        for c in cmols:
+            RMSDlist.append(
+                rmsd.rmsd_standard(cref, c, molref.atomicnums, mols[0].atomicnums)
+            )
 
-    return RMSD
+    return RMSDlist
 
 
 if __name__ == "__main__":
@@ -131,34 +135,24 @@ if __name__ == "__main__":
 
     output: str = ""
 
-    obref = io.load(args.reference)
-    ref = io.to_molecule(obref, adjacency=True)
+    inref = io.load(args.reference)
+    ref = io.to_molecule(inref, adjacency=True)
 
     if args.verbose:
         refname = os.path.basename(args.reference)
 
-    # Loop over input files
-    for molfile in args.molecules:
+    # Load all molecules
+    inmols = [io.loadall(molfile) for molfile in args.molecules]
+    mols = [io.to_molecule(mol, adjacency=True) for mol in inmols]
 
-        # Load all molecule within file
-        obmols = io.loadall(molfile)
-        mols = [io.to_molecule(obmol, adjacency=True) for obmol in obmols]
+    # Loop over molecules within fil
+    RMSDlist = rmsdwrapper(
+        ref,
+        mols,
+        symmetry=args.nosymm,
+        center=args.center,
+        minimize=args.minimize,
+        strip=not args.hydrogens,
+    )
 
-        if args.verbose:
-            molname = os.path.basename(molfile)
-
-            output = f"{refname}:{molname} "
-
-        # Loop over molecules within file
-        for idx, mol in enumerate(mols):
-
-            r = rmsdwrapper(
-                ref,
-                mol,
-                symmetry=args.nosymm,
-                center=args.center,
-                minimize=args.minimize,
-                strip=not args.hydrogens,
-            )
-
-            print(f"{output}{r:.5f}")
+    # print(f"{output}{r:.5f}")

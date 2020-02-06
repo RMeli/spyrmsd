@@ -255,6 +255,7 @@ def rmsd_isomorphic(
         Centering flag
     minimize: bool
         Minimum RMSD
+
     Returns
     -------
     float
@@ -281,3 +282,69 @@ def rmsd_isomorphic(
     )
 
     return RMSD
+
+
+def multirmsd_isomorphic(
+    coordsref: np.ndarray,
+    coords: List[np.ndarray],
+    amref: np.ndarray,
+    am: np.ndarray,
+    atomicnumsref: np.ndarray = None,
+    atomicnums: np.ndarray = None,
+    center: bool = False,
+    minimize: bool = False,
+) -> List[float]:
+    """
+    Compute RMSD using graph isomorphism for multiple coordinates.
+
+    Parameters
+    ----------
+    coordsref: np.ndarray
+        Coordinate of reference molecule
+    coords: List[np.ndarray]
+        Coordinates of other molecule
+    amref: np.ndarray
+        Adjacency matrix for reference molecule
+    am: np.ndarray
+        Adjacency matrix for other molecule
+    atomicnumsref: npndarray, optional
+        Atomic numbers for reference
+    atomicnums: npndarray, optional
+        Atomic numbers for other molecule
+    center: bool
+        Centering flag
+    minimize: bool
+        Minimum RMSD
+
+    Returns
+    -------
+    float
+        RMSD (after graph matching) and graph isomorphisms
+
+    Notes
+    -----
+
+    This QCP method, activated with the keyword `minimize=True` works in cases where
+    the atoms in `mol1` and `mol2` are not in the exact same order. If the atoms in
+    `mol1` and `mol2` are in the same order use `rmsd_qcp` (faster).
+    """
+
+    RMSDlist, isomorphism = [], None
+
+    for c in coords:
+
+        RMSD, isomorphism = _rmsd_isomorphic_core(
+            coordsref,
+            c,
+            amref,
+            am,
+            atomicnumsref,
+            atomicnums,
+            center,
+            minimize,
+            isomorphisms=isomorphism,
+        )
+
+        RMSDlist.append(RMSD)
+
+    return RMSDlist
