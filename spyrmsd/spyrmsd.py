@@ -142,7 +142,7 @@ if __name__ == "__main__":
     RMSDlist = rmsdwrapper(
         ref,
         mols,
-        symmetry=args.nosymm,
+        symmetry=args.nosymm, # args.nosymm store False
         center=args.center,
         minimize=args.minimize,
         strip=not args.hydrogens,

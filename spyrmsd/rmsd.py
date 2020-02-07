@@ -276,8 +276,8 @@ def rmsd_isomorphic(
         am2,
         atomicnums1,
         atomicnums2,
-        center,
-        minimize,
+        center=center,
+        minimize=minimize,
         isomorphisms=None,
     )
 
@@ -340,8 +340,8 @@ def multirmsd_isomorphic(
             am,
             atomicnumsref,
             atomicnums,
-            center,
-            minimize,
+            center=center,
+            minimize=minimize,
             isomorphisms=isomorphism,
         )
 
