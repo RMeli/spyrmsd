@@ -1,12 +1,11 @@
 import copy
+from typing import List
 
 import numpy as np
 import pytest
 
 from spyrmsd import molecule, rmsd
 from tests import molecules
-
-from typing import List
 
 
 def test_rmsd_dummy_benzene() -> None:
