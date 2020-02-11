@@ -74,6 +74,7 @@ for i in [1, 2, 3]:
 obdocking_1cbr = [load("1cbr_ligand.mol2")[0], *loadall("1cbr_docking.sdf")[0]]
 docking_1cbr = [load("1cbr_ligand.mol2")[1], *loadall("1cbr_docking.sdf")[1]]
 
-obtrp, trp = {}, {}
+intrp, trp = [], []
 for i in range(6):
-    obtrp[i], trp[i] = load(f"trp{i}.pdb")
+    intrp.append(load(f"trp{i}.pdb")[0])
+    trp.append(load(f"trp{i}.pdb")[1])
