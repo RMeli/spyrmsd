@@ -293,6 +293,7 @@ def multirmsd_isomorphic(
     atomicnums: np.ndarray = None,
     center: bool = False,
     minimize: bool = False,
+    cache: bool = True,
 ) -> List[float]:
     """
     Compute RMSD using graph isomorphism for multiple coordinates.
@@ -332,6 +333,10 @@ def multirmsd_isomorphic(
     RMSDlist, isomorphism = [], None
 
     for c in coords:
+
+        if not cache:
+            # Reset isomorphism
+            isomorphism = None
 
         RMSD, isomorphism = _rmsd_isomorphic_core(
             coordsref,

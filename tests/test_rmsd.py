@@ -492,3 +492,66 @@ def test_multirmsd_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> No
 
     for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
         assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
+
+
+# Results obtained with OpenBabel
+@pytest.mark.parametrize(
+    "minimize, referenceRMSDs",
+    [
+        (
+            False,
+            [
+                0.592256,
+                2.11545,
+                2.29824,
+                9.45773,
+                1.35005,
+                9.44356,
+                9.59758,
+                9.55076,
+                2.44067,
+                9.6171,
+            ],
+        ),
+        (
+            True,
+            [
+                0.476858,
+                1.68089,
+                1.50267,
+                1.90623,
+                1.01324,
+                1.31716,
+                1.11312,
+                1.06044,
+                0.965387,
+                1.37842,
+            ],
+        ),
+    ],
+)
+def test_multirmsd_isomorphic_cache(
+    minimize: bool, referenceRMSDs: List[float]
+) -> None:
+
+    molc = copy.deepcopy(molecules.docking_1cbr[0])
+    mols = [copy.deepcopy(mol) for mol in molecules.docking_1cbr[1:]]
+
+    molc.strip()
+
+    for mol in mols:
+        mol.strip()
+
+    RMSDs = rmsd.multirmsd_isomorphic(
+        molc.coordinates,
+        [mol.coordinates for mol in mols],
+        molc.adjacency_matrix,
+        mols[0].adjacency_matrix,
+        molc.atomicnums,
+        mols[0].atomicnums,
+        minimize=minimize,
+        cache=False,
+    )
+
+    for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
+        assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
