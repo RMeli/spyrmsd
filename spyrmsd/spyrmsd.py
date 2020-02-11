@@ -46,6 +46,7 @@ def rmsdwrapper(
     center: bool = False,
     minimize: bool = False,
     strip: bool = False,
+    cache: bool = True,
 ) -> List[float]:
     """
     Compute RMSD between two molecule.
@@ -95,6 +96,7 @@ def rmsdwrapper(
             mols[0].atomicnums,
             center=center,
             minimize=minimize,
+            cache=cache,
         )
     elif minimize and not symmetry:
         for c in cmols:
