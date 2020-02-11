@@ -8,7 +8,7 @@
 
 [![DOI](https://zenodo.org/badge/214157073.svg)](https://zenodo.org/badge/latestdoi/214157073)
 [![Docs](https://img.shields.io/badge/docs-pyrmsd.readthedocs.io-blueviolet)](https://pyrmsd.readthedocs.io)
-[![PyPI](https://img.shields.io/badge/PyPI-0.2.0%20-ff69b4)](https://pypi.org/project/spyrmsd/)
+[![PyPI](https://img.shields.io/badge/PyPI-0.2.1%20-ff69b4)](https://pypi.org/project/spyrmsd/)
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
 
 Python-first tool for symmetry-corrected RMSD calculations.
