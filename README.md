@@ -42,8 +42,8 @@ python -m spyrmsd.spyrmsd -h
 ```
 
 ```text
-usage: spyrmsd.py [-h] [-m] [-c] [-s] [-n] [-v]
-                 reference molecules [molecules ...]
+usage: spyrmsd.py [-h] [-m] [-c] [--hydrogens] [-n]
+                  reference molecules [molecules ...]
 
 Python RMSD tool.
 
@@ -55,9 +55,8 @@ optional arguments:
   -h, --help      show this help message and exit
   -m, --minimize  Minimize (fit)
   -c, --center    Center molecules at origin
-  -s, --strip     Strip H atoms
+  --hydrogens     Keep hydrogen atoms
   -n, --nosymm    No graph isomorphism
-  -v, --verbose   Verbose output
 ```
 
 ### Module
@@ -66,25 +65,25 @@ optional arguments:
 from spyrmsd import rmsd
 ```
 
-#### Standard RMSD
+#### RMSD
 
-The function  `rmsd.rmsd_standard` computes the standard RMSD without symmetry correction or minimization. The atoms are expected to be in the same order for both molecule being compared.
-
-#### Minimized RMSD
-
-The function `rmsd.rmsd_qcp`computes the minimised RMSD without symmetry correction, using the quaternion characteristic polynomial method. The atoms are expected to be in the same order for both molecule being compared.
+The function  `rmsd.rmsd` computes RMSD without symmetry correction. The atoms are expected to be in the same order for both molecule being compared (no atom matching is performed).
 
 #### Symmetric RMSD
 
-The function `rmsd.rmsd_isomorphic` computes the symmetry-corrected RMSD, using molecular graph isomorphisms. Symmetry correction requires molecular adjacency matrices.
-
-#### Minimized Symmetric RMSD
-
-The function `rmsd.rmsd_qcp_isomorphic` computes the minimized and symmetry-corrected RMSD, using molecular graph isomorphisms and the characteristic polynomial method. Symmetry correction requires molecular adjacency matrices.
+The function `rmsd.rmsd_isomorphic` computes symmetry-corrected RMSD, using molecular graph isomorphisms. Symmetry correction requires molecular adjacency matrices but needs not the atoms to be in the same order.
 
 ## Contributions
 
-### Formatting
+### List of Contributors
+
+| Name               | GitHub          |
+| :----------------: | :-------------: |
+| Rocco Meli         | @RMeli          | 
+
+### Tools
+
+#### Formatting
 
 The code is automatically formatted using [black](https://black.readthedocs.io/en/stable/):
 
@@ -92,7 +91,7 @@ The code is automatically formatted using [black](https://black.readthedocs.io/e
 black .
 ```
 
-### Style
+#### Style
 
 Code style is enforced using [Flake 8](http://flake8.pycqa.org/en/latest/)
 
@@ -100,7 +99,7 @@ Code style is enforced using [Flake 8](http://flake8.pycqa.org/en/latest/)
 flake8
 ```
 
-### Static Checks
+#### Static Checks
 
 Static checks are performed using [mypy](http://mypy-lang.org/)
 
@@ -118,7 +117,7 @@ Build wheel and sdist:
 flit build
 ```
 
-Upload wheel and sdist on [PyPI]():
+Upload wheel and sdist on [PyPI](https://pypi.org/):
 
 ```bash
 flit publish
