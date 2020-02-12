@@ -1,26 +1,15 @@
 import copy
 import sys
+from typing import List
 
 import pytest
 
-from spyrmsd import molecule, spyrmsd
+from spyrmsd import spyrmsd
 from tests import molecules
 
 
 def test_spyrmsd_imported():
     assert "spyrmsd" in sys.modules
-
-
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_rmsdwrapper_molsize(mol: molecule.Molecule) -> None:
-
-    m = copy.deepcopy(mol)
-    ms = copy.deepcopy(mol)
-
-    ms.strip()
-
-    with pytest.raises(ValueError):
-        spyrmsd.rmsdwrapper(m, ms, symmetry=False)
 
 
 # Results obtained with MDAnalysis
@@ -33,72 +22,83 @@ def test_rmsdwrapper_molsize(mol: molecule.Molecule) -> None:
 #       _, rmsd_min = align.rotation_matrix(tc, tc0)
 #       print(rmsd_dummy, rmsd_min)
 @pytest.mark.parametrize(
-    "i, rmsd_dummy, rmsd_min",
+    "minimize, referenceRMSDs",
     [
-        (1, 4.812480551076202, 1.6578281551053196),
-        (2, 6.772045449820714, 1.7175638492348284),
-        (3, 9.344911262612964, 1.5946081072641485),
-        (4, 9.772939589989000, 2.1234944939308220),
-        (5, 8.901837608843241, 2.4894805175766606),
+        (
+            False,  # No minimize: dummy RMSD
+            [
+                4.812480551076202,
+                6.772045449820714,
+                9.344911262612964,
+                9.772939589989000,
+                8.901837608843241,
+            ],
+        ),
+        (
+            True,  # Minimize: QCP
+            [
+                1.6578281551053196,
+                1.7175638492348284,
+                1.5946081072641485,
+                2.1234944939308220,
+                2.4894805175766606,
+            ],
+        ),
     ],
 )
-def test_rmsdwrapper_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
+def test_rmsdwrapper_nosymm_protein(minimize: bool, referenceRMSDs: List[float]):
 
     mol0 = copy.deepcopy(molecules.trp[0])
-    mol = copy.deepcopy(molecules.trp[i])
+    mols = [copy.deepcopy(mol) for mol in molecules.trp[1:]]
 
-    assert spyrmsd.rmsdwrapper(mol0, mol, symmetry=False) == pytest.approx(rmsd_dummy)
+    RMSDs = spyrmsd.rmsdwrapper(mol0, mols, symmetry=False, minimize=minimize)
 
-    assert spyrmsd.rmsdwrapper(
-        mol0, mol, symmetry=False, minimize=True
-    ) == pytest.approx(rmsd_min)
+    for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
+        assert RMSD == pytest.approx(referenceRMSD)
 
 
-# Results obtained with OpenBabel
 @pytest.mark.parametrize(
-    "index, RMSD",
+    # Reference results obtained with OpenBabel
+    "minimize, referenceRMSDs",
     [
-        (1, 0.592256),
-        (2, 2.11545),
-        (3, 2.29824),
-        (4, 9.45773),
-        (5, 1.35005),
-        (6, 9.44356),
-        (7, 9.59758),
-        (8, 9.55076),
-        (9, 2.44067),
-        (10, 9.6171),
+        (
+            True,  # Minimize: QCP + Isomorphism
+            [
+                0.476858,
+                1.68089,
+                1.50267,
+                1.90623,
+                1.01324,
+                1.31716,
+                1.11312,
+                1.06044,
+                0.965387,
+                1.37842,
+            ],
+        ),
+        (
+            False,  # No minimize: Isomorphism only
+            [
+                0.592256,
+                2.11545,
+                2.29824,
+                9.45773,
+                1.35005,
+                9.44356,
+                9.59758,
+                9.55076,
+                2.44067,
+                9.6171,
+            ],
+        ),
     ],
 )
-def test_rmsdwrapper_isomorphic(index: int, RMSD: float) -> None:
+def test_rmsdwrapper_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> None:
 
-    molc = copy.deepcopy(molecules.docking_1cbr[0])
-    mol = copy.deepcopy(molecules.docking_1cbr[index])
+    molref = copy.deepcopy(molecules.docking_1cbr[0])
+    mols = [copy.deepcopy(mol) for mol in molecules.docking_1cbr[1:]]
 
-    assert spyrmsd.rmsdwrapper(mol, molc, strip=True) == pytest.approx(RMSD, abs=1e-5)
+    RMSDs = spyrmsd.rmsdwrapper(molref, mols, minimize=minimize, strip=True)
 
-
-# Results obtained with OpenBabel
-@pytest.mark.parametrize(
-    "index, RMSD",
-    [
-        (1, 0.476858),
-        (2, 1.68089),
-        (3, 1.50267),
-        (4, 1.90623),
-        (5, 1.01324),
-        (6, 1.31716),
-        (7, 1.11312),
-        (8, 1.06044),
-        (9, 0.965387),
-        (10, 1.37842),
-    ],
-)
-def test_rmsdwrapper_qcp_isomorphic(index: int, RMSD: float) -> None:
-
-    molc = copy.deepcopy(molecules.docking_1cbr[0])
-    mol = copy.deepcopy(molecules.docking_1cbr[index])
-
-    assert spyrmsd.rmsdwrapper(mol, molc, minimize=True, strip=True) == pytest.approx(
-        RMSD, abs=1e-5
-    )
+    for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
+        assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
