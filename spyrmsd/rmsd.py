@@ -5,55 +5,16 @@ import numpy as np
 from spyrmsd import graph, hungarian, qcp, utils
 
 
-def rmsd_standard(
+def rmsd(
     coords1: np.ndarray,
     coords2: np.ndarray,
     atomicn1: np.ndarray,
     atomicn2: np.ndarray,
     center: bool = False,
+    minimize: bool = False,
 ) -> float:
     """
-    Compute dummy (naïve) RMSD.
-
-    Parameters
-    ----------
-    mol1: molecule.Molecule
-        Molecule 1
-    mol2: molecule.Molecule
-        Molecule 2
-    center: bool
-        Flag for centering the molecules at the origin
-
-    Returns
-    -------
-    float
-        Dummy (naïve) RMSD
-
-    Notes
-    -----
-    The dummy (naïve) RMSD distribution assumes a one-to-one mapping of the atoms in
-    the order they are stored.
-
-    The equality between all the atomic numbers is checked for sanity.
-    """
-
-    assert np.all(atomicn1 == atomicn2)
-    assert coords1.shape == coords2.shape
-
-    n = coords1.shape[0]
-
-    # Center coordinates if required
-    c1 = utils.center(coords1) if center else coords1
-    c2 = utils.center(coords2) if center else coords2
-
-    return np.sqrt(np.sum((c1 - c2) ** 2) / n)
-
-
-def rmsd_qcp(
-    coords1: np.ndarray, coords2: np.ndarray, atomicn1: np.ndarray, atomicn2: np.ndarray
-) -> float:
-    """
-    Compute minimum RMSD using the Quaternion Characteristic Polynomial method.
+    Compute RMSD
 
     Parameters
     ----------
@@ -65,28 +26,41 @@ def rmsd_qcp(
         Atomic numbers for molecule 1
     atomicn2: np.ndarray
         Atomic numbers for molecule 2
+    center: bool
+        Center molecules at origin
+    minimize: bool
+        Compute minimum RMSD (with QCP method)
 
     Returns
     -------
     float
-        Minimum RMSD (after superimposition)
+        RMSD
 
     Notes
     -----
-    The molecules are always centred at the origin according to the center of geometry
-    and superimposed in order to minimize the RMSD. [1]_
+    When `minimize=True`, the QCP method is used. [1]_ The molecules are
+    centred at the origin according to the center of geometry and superimposed
+    in order to minimize the RMSD.
 
     .. [1] D. L. Theobald, *Rapid calculation of RMSDs using a quaternion-based
        characteristic polynomial*, Acta Crys. A **61**, 478-480 (2005).
     """
 
     assert np.all(atomicn1 == atomicn2)
+    assert coords1.shape == coords2.shape
 
     # Center coordinates if required
-    c1 = utils.center(coords1)
-    c2 = utils.center(coords2)
+    c1 = utils.center(coords1) if center or minimize else coords1
+    c2 = utils.center(coords2) if center or minimize else coords2
 
-    return qcp.qcp_rmsd(c1, c2)
+    if minimize:
+        rmsd = qcp.qcp_rmsd(c1, c2)
+    else:
+        n = coords1.shape[0]
+
+        rmsd = np.sqrt(np.sum((c1 - c2) ** 2) / n)
+
+    return rmsd
 
 
 def rmsd_hungarian(
@@ -264,9 +238,11 @@ def rmsd_isomorphic(
     Notes
     -----
 
-    This QCP method, activated with the keyword `minimize=True` works in cases where
-    the atoms in `mol1` and `mol2` are not in the exact same order. If the atoms in
-    `mol1` and `mol2` are in the same order use `rmsd_qcp` (faster).
+    Graph isomorphism is introduced for symmetry corrections. However, it is also
+    useful when two molecules have not the atoms in the same order since atom
+    matching according to atomic numbers and the molecular connectivity is
+    performed. If atoms are in the same order and there is no symmetry, use the
+    `rmsd` function.
     """
 
     RMSD, _ = _rmsd_isomorphic_core(
@@ -319,15 +295,17 @@ def multirmsd_isomorphic(
 
     Returns
     -------
-    float
-        RMSD (after graph matching) and graph isomorphisms
+    float: List[float]
+        RMSDs (after graph matching) and graph isomorphisms
 
     Notes
     -----
 
-    This QCP method, activated with the keyword `minimize=True` works in cases where
-    the atoms in `mol1` and `mol2` are not in the exact same order. If the atoms in
-    `mol1` and `mol2` are in the same order use `rmsd_qcp` (faster).
+    Graph isomorphism is introduced for symmetry corrections. However, it is also
+    useful when two molecules have not the atoms in the same order since atom
+    matching according to atomic numbers and the molecular connectivity is
+    performed. If atoms are in the same order and there is no symmetry, use the
+    `rmsd` function.
     """
 
     RMSDlist, isomorphism = [], None

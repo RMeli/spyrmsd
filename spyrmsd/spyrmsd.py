@@ -98,15 +98,17 @@ def rmsdwrapper(
             minimize=minimize,
             cache=cache,
         )
-    elif minimize and not symmetry:
+    else:  # No symmetry
         for c in cmols:
             RMSDlist.append(
-                rmsd.rmsd_qcp(cref, c, molref.atomicnums, mols[0].atomicnums)
-            )
-    elif not minimize and not symmetry:
-        for c in cmols:
-            RMSDlist.append(
-                rmsd.rmsd_standard(cref, c, molref.atomicnums, mols[0].atomicnums)
+                rmsd.rmsd(
+                    cref,
+                    c,
+                    molref.atomicnums,
+                    mols[0].atomicnums,
+                    center=center,
+                    minimize=minimize,
+                )
             )
 
     return RMSDlist
