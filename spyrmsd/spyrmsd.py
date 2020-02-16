@@ -45,7 +45,7 @@ def rmsdwrapper(
     symmetry: bool = True,
     center: bool = False,
     minimize: bool = False,
-    strip: bool = False,
+    strip: bool = True,
     cache: bool = True,
 ) -> List[float]:
     """
