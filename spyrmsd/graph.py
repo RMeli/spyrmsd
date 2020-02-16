@@ -1,7 +1,7 @@
 import warnings
 from typing import Any, Dict, List, Optional, Union
 
-import networkx as nx
+import graph_tool as gt
 import numpy as np
 import qcelemental as qcel
 
@@ -12,7 +12,7 @@ connectivity_tolerance: float = 0.4
 def graph_from_adjacency_matrix(
     adjacency_matrix: Union[np.ndarray, List[List[int]]],
     atomicnums: Optional[Union[np.ndarray, List[int]]] = None,
-) -> nx.Graph:
+) -> gt.Graph:
     """
     Graph from adjacency matrix.
 
@@ -25,20 +25,24 @@ def graph_from_adjacency_matrix(
 
     Returns
     -------
-    nx.Graph
-        NetworkX graph
+    gt.Graph
+        graph-tool graph
 
     Notes
     -----
     It the atomic numbers are passed, they are used as node attributes.
     """
 
-    G = nx.Graph(adjacency_matrix)
+    # Get upper triangular adjacency matrix
+    adj = np.triu(adjacency_matrix)
+
+    G = gt.Graph(directed=False)
+    G.add_edge_list(np.transpose(adj.nonzero()))
 
     if atomicnums is not None:
-        attributes = {idx: atomicnum for idx, atomicnum in enumerate(atomicnums)}
-        nx.set_node_attributes(G, attributes, "atomicnum")
-
+        vprop = G.new_vertex_property("short") # Create property map
+        vprop.a = atomicnums # Assign atomic numbers to property map array
+        G.vertex_properties["atomicnum"] = vprop # Set property map
     return G
 
 
@@ -97,7 +101,7 @@ def adjacency_matrix_from_atomic_coordinates(
     return A
 
 
-def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
+def match_graphs(G1: gt.Graph, G2: gt.Graph) -> List[Dict[Any, Any]]:
     """
     Compute RMSD using the quaternion polynomial method.
 
@@ -119,31 +123,20 @@ def match_graphs(G1: nx.Graph, G2: nx.Graph) -> List[Dict[Any, Any]]:
         If the graphs `G1` and `G2` are not isomorphic
     """
 
-    def match_atomicnum(node1, node2):
-        return node1["atomicnum"] == node2["atomicnum"]
-
-    if (
-        nx.get_node_attributes(G1, "atomicnum") == {}
-        or nx.get_node_attributes(G2, "atomicnum") == {}
-    ):
-        # Nodes without atomic number information
-        # No node-matching check
-        node_match = None
-
+    try:
+        is_isomorphic, isomap = gt.topology.isomorphism(G1, G2, G1.vertex_properties["atomicnum"], G2.vertex_properties["atomicnum"], isomap=True)
+    except KeyError: # No "atomicnum" vertex property
         warnings.warn(
             "No atomic number information stored on nodes. "
             + "Node matching is not performed..."
         )
 
-    else:
-        node_match = match_atomicnum
-
-    GM = nx.algorithms.isomorphism.GraphMatcher(G1, G2, node_match)
+        is_isomorphic, isomap = gt.topology.isomorphism(G1, G2, isomap=True)
 
     # Check if graphs are actually isomorphic
-    if not GM.is_isomorphic():
+    if not is_isomorphic:
         # TODO: Create a new exception
         raise ValueError(f"Graphs {G1} and {G2} are not isomorphic.")
 
     # Extract all isomorphisms in a list
-    return [isomorphism for isomorphism in GM.isomorphisms_iter()]
+    return isomap.a
