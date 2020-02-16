@@ -12,6 +12,7 @@ dependencies:
   - numpy
   - scipy
   - networkx
+  - graph_tool
 
   # Chemistry
   - openbabel 
