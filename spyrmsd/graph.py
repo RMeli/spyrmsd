@@ -2,6 +2,7 @@ import warnings
 from typing import Any, Dict, List, Optional, Union
 
 import graph_tool as gt
+from graph_tool import topology
 import numpy as np
 import qcelemental as qcel
 
@@ -124,19 +125,21 @@ def match_graphs(G1: gt.Graph, G2: gt.Graph) -> List[Dict[Any, Any]]:
     """
 
     try:
-        is_isomorphic, isomap = gt.topology.isomorphism(G1, G2, G1.vertex_properties["atomicnum"], G2.vertex_properties["atomicnum"], isomap=True)
+        maps = topology.subgraph_isomorphism(G1, G2, vertex_label=(G1.vertex_properties["atomicnum"], G2.vertex_properties["atomicnum"]), subgraph=False)
     except KeyError: # No "atomicnum" vertex property
         warnings.warn(
             "No atomic number information stored on nodes. "
             + "Node matching is not performed..."
         )
 
-        is_isomorphic, isomap = gt.topology.isomorphism(G1, G2, isomap=True)
+        maps = topology.subgraph_isomorphism(G1, G2, subgraph=False)
+
+        print(maps)
 
     # Check if graphs are actually isomorphic
-    if not is_isomorphic:
+    if len(maps) == 0:
         # TODO: Create a new exception
         raise ValueError(f"Graphs {G1} and {G2} are not isomorphic.")
 
     # Extract all isomorphisms in a list
-    return isomap.a
+    return [m.a for m in maps]

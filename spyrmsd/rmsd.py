@@ -177,8 +177,8 @@ def _rmsd_isomorphic_core(
     for isomorphism in isomorphisms:
 
         # Use the isomorphism to shuffle coordinates around (from original order)
-        c1i = c1[list(isomorphism.keys()), :]
-        c2i = c2[list(isomorphism.values()), :]
+        c1i = c1[:, :]
+        c2i = c2[isomorphism, :]
 
         if not minimize:
             # Compute square displacement

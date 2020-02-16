@@ -1,4 +1,5 @@
 import graph_tool as gt
+from graph_tool import generation
 import numpy as np
 import pytest
 
@@ -82,8 +83,8 @@ from graph_tool.all import *
 @pytest.mark.parametrize(
     "G1, G2",
     [
-        *[(lattice((n,n)), lattice((n,n))) for n in range(2, 5)],
-        *[(circular_graph(n), circular_graph(n)) for n in range(1, 5)],
+        *[(generation.lattice((n, n)), generation.lattice((n, n))) for n in range(2, 5)],
+        *[(generation.circular_graph(n), generation.circular_graph(n)) for n in range(2, 5)],
     ],
 )
 def test_match_graphs_isomorphic(G1: gt.Graph, G2: gt.Graph) -> None:
@@ -96,8 +97,8 @@ def test_match_graphs_isomorphic(G1: gt.Graph, G2: gt.Graph) -> None:
 @pytest.mark.parametrize(
     "G1, G2",
     [
-        *[(lattice((n,n)), lattice((n+1,n))) for n in range(2, 5)],
-        *[(circular_graph(n), circular_graph(n + 1)) for n in range(1, 5)],
+        *[(generation.lattice((n,n)), generation.lattice((n+1,n))) for n in range(2, 5)],
+        *[(generation.circular_graph(n), generation.circular_graph(n + 1)) for n in range(1, 5)],
     ],
 )
 def test_match_graphs_not_isomorphic(G1, G2) -> None:
