@@ -163,7 +163,7 @@ def center(coordinates: np.ndarray) -> np.ndarray:
     Returns
     -------
     np.ndarray
-        Centered coordinates
+        Centred coordinates
     """
 
     return coordinates - center_of_geometry(coordinates)
