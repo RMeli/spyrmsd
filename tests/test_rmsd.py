@@ -272,6 +272,7 @@ def test_rmsd_hungarian_centred(mol: molecule.Molecule) -> None:
         center=True,
     ) == pytest.approx(0)
 
+
 @pytest.mark.parametrize("mol", molecules.allmolecules)
 def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
 
@@ -337,6 +338,7 @@ def test_rmsd_isomorphic_rotated_benzene(angle: float) -> None:
         mol2.atomicnums,
     ) == pytest.approx(0, abs=1e-4)
 
+
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
 def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
 
@@ -373,6 +375,7 @@ def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
         mol1.atomicnums,
         mol2.atomicnums,
     ) == pytest.approx(0, abs=1e-4)
+
 
 def test_rmsd_isomorphic_atomicnums_matching_pyridine_stripped() -> None:
 
@@ -512,6 +515,7 @@ def test_multirmsd_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> No
 
     for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
         assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
+
 
 # Results obtained with OpenBabel
 @pytest.mark.parametrize(

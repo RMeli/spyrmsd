@@ -13,7 +13,7 @@ except ImportError:
 __all__ = [
     "graph_from_adjacency_matrix",
     "match_graphs",
-    "vertex_property"
+    "vertex_property",
     "num_vertices",
     "num_edges",
     "adjacency_matrix_from_atomic_coordinates",
@@ -24,6 +24,7 @@ import qcelemental as qcel
 
 # TODO: Move elsewhere?
 connectivity_tolerance: float = 0.4
+
 
 def adjacency_matrix_from_atomic_coordinates(
     atomicnums: np.ndarray, coordinates: np.ndarray

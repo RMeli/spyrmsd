@@ -22,6 +22,7 @@ def test_adjacency_matrix_from_atomic_coordinates(
     assert graph.num_vertices(G) == len(mol)
     assert graph.num_edges(G) == n_bonds
 
+
 @pytest.mark.parametrize("mol", molecules.allobmolecules)
 def test_adjacency_matrix_from_mol(mol) -> None:
 
@@ -37,6 +38,7 @@ def test_adjacency_matrix_from_mol(mol) -> None:
     for i, j in io.bonds(mol):
 
         assert A[i, j] == 1
+
 
 @pytest.mark.parametrize("mol", molecules.allobmolecules)
 def test_graph_from_adjacency_matrix(mol) -> None:
@@ -54,6 +56,7 @@ def test_graph_from_adjacency_matrix(mol) -> None:
 
     assert graph.num_vertices(G) == natoms
     assert graph.num_edges(G) == nbonds
+
 
 @pytest.mark.parametrize(
     "rawmol, mol", zip(molecules.allobmolecules, molecules.allmolecules)
@@ -78,11 +81,18 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
     for idx, atomicnum in enumerate(mol.atomicnums):
         assert graph.vertex_property(G, "atomicnum", idx) == atomicnum
 
+
 @pytest.mark.parametrize(
     "G1, G2",
     [
-        *[(generation.lattice((n, n)), generation.lattice((n, n))) for n in range(2, 5)],
-        *[(generation.circular_graph(n), generation.circular_graph(n)) for n in range(2, 5)],
+        *[
+            (generation.lattice((n, n)), generation.lattice((n, n)))
+            for n in range(2, 5)
+        ],
+        *[
+            (generation.circular_graph(n), generation.circular_graph(n))
+            for n in range(2, 5)
+        ],
     ],
 )
 def test_match_graphs_isomorphic(G1: gt.Graph, G2: gt.Graph) -> None:
@@ -92,11 +102,18 @@ def test_match_graphs_isomorphic(G1: gt.Graph, G2: gt.Graph) -> None:
 
     assert len(isomorphisms) != 0
 
+
 @pytest.mark.parametrize(
     "G1, G2",
     [
-        *[(generation.lattice((n,n)), generation.lattice((n+1,n))) for n in range(2, 5)],
-        *[(generation.circular_graph(n), generation.circular_graph(n + 1)) for n in range(1, 5)],
+        *[
+            (generation.lattice((n, n)), generation.lattice((n + 1, n)))
+            for n in range(2, 5)
+        ],
+        *[
+            (generation.circular_graph(n), generation.circular_graph(n + 1))
+            for n in range(1, 5)
+        ],
     ],
 )
 def test_match_graphs_not_isomorphic(G1, G2) -> None:

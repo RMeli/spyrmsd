@@ -37,9 +37,9 @@ def graph_from_adjacency_matrix(
     G.add_edge_list(np.transpose(adj.nonzero()))
 
     if atomicnums is not None:
-        vprop = G.new_vertex_property("short") # Create property map
-        vprop.a = atomicnums # Assign atomic numbers to property map array
-        G.vertex_properties["atomicnum"] = vprop # Set property map
+        vprop = G.new_vertex_property("short")  # Create property map
+        vprop.a = atomicnums  # Assign atomic numbers to property map array
+        G.vertex_properties["atomicnum"] = vprop  # Set property map
 
     return G
 
@@ -67,8 +67,16 @@ def match_graphs(G1, G2):
     """
 
     try:
-        maps = topology.subgraph_isomorphism(G1, G2, vertex_label=(G1.vertex_properties["atomicnum"], G2.vertex_properties["atomicnum"]), subgraph=False)
-    except KeyError: # No "atomicnum" vertex property
+        maps = topology.subgraph_isomorphism(
+            G1,
+            G2,
+            vertex_label=(
+                G1.vertex_properties["atomicnum"],
+                G2.vertex_properties["atomicnum"],
+            ),
+            subgraph=False,
+        )
+    except KeyError:  # No "atomicnum" vertex property
         warnings.warn(
             "No atomic number information stored on nodes. "
             + "Node matching is not performed..."
@@ -85,6 +93,7 @@ def match_graphs(G1, G2):
 
     # Extract all isomorphisms in a list
     return [m.a for m in maps]
+
 
 def vertex_property(G, vproperty: str, idx: int) -> Any:
     return G.vertex_properties[vproperty][idx]
