@@ -5,6 +5,8 @@ try:
         vertex_property,
         num_vertices,
         num_edges,
+        lattice,
+        cycle,
     )
 
 except ImportError:
@@ -16,6 +18,8 @@ __all__ = [
     "vertex_property",
     "num_vertices",
     "num_edges",
+    "lattice",
+    "cycle",
     "adjacency_matrix_from_atomic_coordinates",
 ]
 

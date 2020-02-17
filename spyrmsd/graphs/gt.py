@@ -1,8 +1,8 @@
 import warnings
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, List, Optional, Union
 
 import graph_tool as gt
-from graph_tool import topology
+from graph_tool import topology, generation
 import numpy as np
 
 
@@ -105,3 +105,11 @@ def num_vertices(G) -> int:
 
 def num_edges(G) -> int:
     return G.num_edges()
+
+
+def lattice(n1, n2):
+    return generation.lattice((n1, n2))
+
+
+def cycle(n):
+    return generation.circular_graph(n)

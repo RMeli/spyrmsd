@@ -1,5 +1,3 @@
-import graph_tool as gt
-from graph_tool import generation
 import numpy as np
 import pytest
 
@@ -85,17 +83,11 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
 @pytest.mark.parametrize(
     "G1, G2",
     [
-        *[
-            (generation.lattice((n, n)), generation.lattice((n, n)))
-            for n in range(2, 5)
-        ],
-        *[
-            (generation.circular_graph(n), generation.circular_graph(n))
-            for n in range(2, 5)
-        ],
+        *[(graph.lattice(n, n), graph.lattice(n, n)) for n in range(2, 5)],
+        *[(graph.cycle(n), graph.cycle(n)) for n in range(2, 5)],
     ],
 )
-def test_match_graphs_isomorphic(G1: gt.Graph, G2: gt.Graph) -> None:
+def test_match_graphs_isomorphic(G1, G2) -> None:
 
     with pytest.warns(UserWarning):
         isomorphisms = graph.match_graphs(G1, G2)
@@ -106,14 +98,8 @@ def test_match_graphs_isomorphic(G1: gt.Graph, G2: gt.Graph) -> None:
 @pytest.mark.parametrize(
     "G1, G2",
     [
-        *[
-            (generation.lattice((n, n)), generation.lattice((n + 1, n)))
-            for n in range(2, 5)
-        ],
-        *[
-            (generation.circular_graph(n), generation.circular_graph(n + 1))
-            for n in range(1, 5)
-        ],
+        *[(graph.lattice(n, n), graph.lattice(n + 1, n)) for n in range(2, 5)],
+        *[(graph.cycle(n), graph.cycle(n + 1)) for n in range(1, 5)],
     ],
 )
 def test_match_graphs_not_isomorphic(G1, G2) -> None:
