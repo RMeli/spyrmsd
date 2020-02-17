@@ -19,8 +19,8 @@ def test_adjacency_matrix_from_atomic_coordinates(
 
     G = graph.graph_from_adjacency_matrix(A)
 
-    assert G.num_vertices() == len(mol)
-    assert G.num_edges() == n_bonds
+    assert graph.num_vertices(G) == len(mol)
+    assert graph.num_edges(G) == n_bonds
 
 @pytest.mark.parametrize("mol", molecules.allobmolecules)
 def test_adjacency_matrix_from_mol(mol) -> None:
@@ -52,8 +52,8 @@ def test_graph_from_adjacency_matrix(mol) -> None:
 
     G = graph.graph_from_adjacency_matrix(A)
 
-    assert G.num_vertices() == natoms
-    assert G.num_edges() == nbonds
+    assert graph.num_vertices(G) == natoms
+    assert graph.num_edges(G) == nbonds
 
 @pytest.mark.parametrize(
     "rawmol, mol", zip(molecules.allobmolecules, molecules.allmolecules)
@@ -72,13 +72,11 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
 
     G = mol.to_graph()
 
-    assert G.num_vertices() == natoms
-    assert G.num_edges() == nbonds
+    assert graph.num_vertices(G) == natoms
+    assert graph.num_edges(G) == nbonds
 
     for idx, atomicnum in enumerate(mol.atomicnums):
-        assert G.vertex_properties["atomicnum"][idx] == atomicnum
-
-from graph_tool.all import *
+        assert graph.vertex_property(G, "atomicnum", idx) == atomicnum
 
 @pytest.mark.parametrize(
     "G1, G2",
