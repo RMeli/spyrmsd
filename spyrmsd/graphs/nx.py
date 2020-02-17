@@ -1,10 +1,9 @@
+import collections
 import warnings
 from typing import Any, Dict, List, Optional, Union
 
 import networkx as nx
 import numpy as np
-
-import collections
 
 
 def graph_from_adjacency_matrix(

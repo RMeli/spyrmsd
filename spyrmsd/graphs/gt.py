@@ -2,8 +2,8 @@ import warnings
 from typing import Any, List, Optional, Union
 
 import graph_tool as gt
-from graph_tool import topology, generation
 import numpy as np
+from graph_tool import generation, topology
 
 
 def graph_from_adjacency_matrix(

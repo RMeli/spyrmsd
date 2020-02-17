@@ -21,7 +21,7 @@ except ImportError:
             cycle,
         )
     except ImportError:
-        raise ImportError("graph_tool or NetworkX not found.")
+        raise ImportError("graph_tool or NetworkX libraries not found.")
 
 __all__ = [
     "graph_from_adjacency_matrix",
