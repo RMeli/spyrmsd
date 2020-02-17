@@ -10,7 +10,15 @@ try:
     )
 
 except ImportError:
-    raise
+    from spyrmsd.graphs.nx import (
+        graph_from_adjacency_matrix,
+        match_graphs,
+        vertex_property,
+        num_vertices,
+        num_edges,
+        lattice,
+        cycle,
+    )
 
 __all__ = [
     "graph_from_adjacency_matrix",
