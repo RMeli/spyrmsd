@@ -23,30 +23,8 @@ environment:
       CHEM: "rdkit"
       GRAPH: "nx"
       PYTHON_ARCH: "64"
-      
-    - PYTHON: "C:\\Miniconda36-x64"
-      PYTHON_VERSION: "3.6"
-      CHEM: "obabel"
-      GRAPH: "gt"
-      PYTHON_ARCH: "64"
-
-    - PYTHON: "C:\\Miniconda36-x64"
-      PYTHON_VERSION: "3.6"
-      CHEM: "rdkit"
-      GRAPH: "gt"
-      PYTHON_ARCH: "64"
-
-    - PYTHON: "C:\\Miniconda37-x64"
-      PYTHON_VERSION: "3.7"
-      CHEM: "obabel"
-      GRAPH: "gt"
-      PYTHON_ARCH: "64"
     
-    - PYTHON: "C:\\Miniconda37-x64"
-      PYTHON_VERSION: "3.7"
-      CHEM: "rdkit"
-      GRAPH: "gt"
-      PYTHON_ARCH: "64"
+    # graph-tool not supported on Windows
 
 install:
     # Make sure pip is around
