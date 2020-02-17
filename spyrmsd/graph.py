@@ -10,15 +10,18 @@ try:
     )
 
 except ImportError:
-    from spyrmsd.graphs.nx import (
-        graph_from_adjacency_matrix,
-        match_graphs,
-        vertex_property,
-        num_vertices,
-        num_edges,
-        lattice,
-        cycle,
-    )
+    try:
+        from spyrmsd.graphs.nx import (
+            graph_from_adjacency_matrix,
+            match_graphs,
+            vertex_property,
+            num_vertices,
+            num_edges,
+            lattice,
+            cycle,
+        )
+    except ImportError:
+        raise ImportError("graph_tool or NetworkX not found.")
 
 __all__ = [
     "graph_from_adjacency_matrix",

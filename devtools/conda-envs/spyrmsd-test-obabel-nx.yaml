@@ -8,7 +8,6 @@ dependencies:
   # Maths
   - numpy
   - scipy
-  - networkx
   - graph_tool
 
   # Chemistry

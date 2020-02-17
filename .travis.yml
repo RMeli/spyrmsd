@@ -7,43 +7,98 @@ matrix:
       env: 
         - PYTHON_VER=3.6
         - CHEM=obabel
+        - GRAPH=nx
     - os: osx
       language: generic
       env: 
         - PYTHON_VER=3.6
         - CHEM=rdkit
+        - GRAPH=nx
     - os: osx
       language: generic
       env: 
         - PYTHON_VER=3.7
         - CHEM=obabel
+        - GRAPH=nx
     - os: osx
       language: generic
       env: 
         - PYTHON_VER=3.7
         - CHEM=rdkit
+        - GRAPH=nx
+    - os: osx
+      language: generic
+      env: 
+        - PYTHON_VER=3.6
+        - CHEM=obabel
+        - GRAPH=gt
+    - os: osx
+      language: generic
+      env: 
+        - PYTHON_VER=3.6
+        - CHEM=rdkit
+        - GRAPH=gt
+    - os: osx
+      language: generic
+      env: 
+        - PYTHON_VER=3.7
+        - CHEM=obabel
+        - GRAPH=gt
+    - os: osx
+      language: generic
+      env: 
+        - PYTHON_VER=3.7
+        - CHEM=rdkit
+        - GRAPH=gt
 
-
     - os: linux
       language: generic
       env: 
         - PYTHON_VER=3.6
         - CHEM=obabel
+        - GRAPH=nx
     - os: linux
       language: generic
       env: 
         - PYTHON_VER=3.6
         - CHEM=rdkit
+        - GRAPH=nx
     - os: linux
       language: generic
       env: 
         - PYTHON_VER=3.7
         - CHEM=obabel
+        - GRAPH=nx
     - os: linux
       language: generic
       env: 
         - PYTHON_VER=3.7
         - CHEM=rdkit
+        - GRAPH=nx
+    - os: linux
+      language: generic
+      env: 
+        - PYTHON_VER=3.6
+        - CHEM=obabel
+        - GRAPH=gt
+    - os: linux
+      language: generic
+      env: 
+        - PYTHON_VER=3.6
+        - CHEM=rdkit
+        - GRAPH=gt
+    - os: linux
+      language: generic
+      env: 
+        - PYTHON_VER=3.7
+        - CHEM=obabel
+        - GRAPH=gt
+    - os: linux
+      language: generic
+      env: 
+        - PYTHON_VER=3.7
+        - CHEM=rdkit
+        - GRAPH=gt
 
 before_install:
     # Additional info about the build
@@ -57,7 +112,7 @@ before_install:
 
 install:
     # Create test environment for package
-  - python devtools/scripts/create_conda_env.py -n=test -p=${PYTHON_VER} devtools/conda-envs/spyrmsd-test-${CHEM}.yaml
+  - python devtools/scripts/create_conda_env.py -n=test -p=${PYTHON_VER} devtools/conda-envs/spyrmsd-test-${CHEM}-${GRAPH}.yaml
     # Activate the test environment
   - conda activate test
     # Build and install package
@@ -68,7 +123,6 @@ script:
   - pytest -v --cov=spyrmsd tests/
 
     # Run checks
-  - black .
   - flake8
   - mypy
 
