@@ -8,7 +8,7 @@ dependencies:
   # Maths
   - numpy
   - scipy
-  - graph_tool
+  - graph-tool
 
   # Chemistry
   - qcelemental

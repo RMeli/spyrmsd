@@ -8,7 +8,7 @@ dependencies:
   # Maths
   - numpy
   - scipy
-  - networkx
+  - graph-tool
 
   # Chemistry
   - openbabel
