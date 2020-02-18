@@ -1,4 +1,3 @@
-import networkx as nx
 import numpy as np
 import pytest
 
@@ -18,8 +17,8 @@ def test_adjacency_matrix_from_atomic_coordinates(
 
     G = graph.graph_from_adjacency_matrix(A)
 
-    assert G.number_of_nodes() == len(mol)
-    assert G.number_of_edges() == n_bonds
+    assert graph.num_vertices(G) == len(mol)
+    assert graph.num_edges(G) == n_bonds
 
 
 @pytest.mark.parametrize("mol", molecules.allobmolecules)
@@ -53,8 +52,8 @@ def test_graph_from_adjacency_matrix(mol) -> None:
 
     G = graph.graph_from_adjacency_matrix(A)
 
-    assert G.number_of_nodes() == natoms
-    assert G.number_of_edges() == nbonds
+    assert graph.num_vertices(G) == natoms
+    assert graph.num_edges(G) == nbonds
 
 
 @pytest.mark.parametrize(
@@ -74,22 +73,21 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
 
     G = mol.to_graph()
 
-    assert G.number_of_nodes() == natoms
-    assert G.number_of_edges() == nbonds
+    assert graph.num_vertices(G) == natoms
+    assert graph.num_edges(G) == nbonds
 
     for idx, atomicnum in enumerate(mol.atomicnums):
-        assert G.nodes[idx]["atomicnum"] == atomicnum
+        assert graph.vertex_property(G, "atomicnum", idx) == atomicnum
 
 
 @pytest.mark.parametrize(
     "G1, G2",
     [
-        *[(nx.path_graph(n), nx.path_graph(n)) for n in range(3)],
-        *[(nx.star_graph(n), nx.star_graph(n)) for n in range(3)],
-        *[(nx.cycle_graph(n), nx.cycle_graph(n)) for n in range(1, 3)],
+        *[(graph.lattice(n, n), graph.lattice(n, n)) for n in range(2, 5)],
+        *[(graph.cycle(n), graph.cycle(n)) for n in range(2, 5)],
     ],
 )
-def test_match_graphs_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
+def test_match_graphs_isomorphic(G1, G2) -> None:
 
     with pytest.warns(UserWarning):
         isomorphisms = graph.match_graphs(G1, G2)
@@ -100,12 +98,11 @@ def test_match_graphs_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
 @pytest.mark.parametrize(
     "G1, G2",
     [
-        *[(nx.path_graph(n), nx.path_graph(n + 1)) for n in range(3)],
-        *[(nx.star_graph(n), nx.star_graph(n + 1)) for n in range(3)],
-        *[(nx.cycle_graph(n), nx.cycle_graph(n + 1)) for n in range(1, 3)],
+        *[(graph.lattice(n, n), graph.lattice(n + 1, n)) for n in range(2, 5)],
+        *[(graph.cycle(n), graph.cycle(n + 1)) for n in range(1, 5)],
     ],
 )
-def test_match_graphs_not_isomorphic(G1: nx.Graph, G2: nx.Graph) -> None:
+def test_match_graphs_not_isomorphic(G1, G2) -> None:
 
     with pytest.raises(ValueError), pytest.warns(UserWarning):
         graph.match_graphs(G1, G2)

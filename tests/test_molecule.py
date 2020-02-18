@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 import qcelemental as qcel
 
-from spyrmsd import io, molecule, utils
+from spyrmsd import graph, io, molecule, utils
 from tests import molecules
 
 
@@ -164,11 +164,11 @@ def test_graph_from_adjacency_matrix(mol: molecule.Molecule, n_bonds: int) -> No
 
     G = mol.to_graph()
 
-    assert G.number_of_nodes() == len(mol)
-    assert G.number_of_edges() == n_bonds
+    assert graph.num_vertices(G) == len(mol)
+    assert graph.num_edges(G) == n_bonds
 
     for idx, atomicnum in enumerate(mol.atomicnums):
-        assert G.nodes[idx]["atomicnum"] == atomicnum
+        assert graph.vertex_property(G, "atomicnum", idx) == atomicnum
 
 
 @pytest.mark.parametrize(
@@ -189,8 +189,8 @@ def test_graph_from_atomic_coordinates_perception(
         # Uses automatic bond perception
         G = m.to_graph()
 
-        assert G.number_of_nodes() == len(m)
-        assert G.number_of_edges() == n_bonds
+        assert graph.num_vertices(G) == len(m)
+        assert graph.num_edges(G) == n_bonds
 
         for idx, atomicnum in enumerate(mol.atomicnums):
-            assert G.nodes[idx]["atomicnum"] == atomicnum
+            assert graph.vertex_property(G, "atomicnum", idx) == atomicnum

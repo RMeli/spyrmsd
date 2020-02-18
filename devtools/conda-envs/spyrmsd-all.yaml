@@ -16,6 +16,7 @@ dependencies:
   - pandas
   - scipy
   - networkx
+  - graph-tool
   - scikit-learn
 
   # Chemistry

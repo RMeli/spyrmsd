@@ -5,20 +5,22 @@ channels:
 dependencies:
   # Base
   - python
-  - pip
-  - ipython
 
   # Maths
   - numpy
   - scipy
-  - networkx
   - graph-tool
 
   # Chemistry
-  - openbabel 
   - rdkit
   - qcelemental
 
-  # Doc
-  - sphinx
-  - sphinx_rtd_theme
+  # Testing
+  - pytest
+  - pytest-cov
+
+  # Dev
+  - mypy
+  - flake8
+  - black
+  - codecov
