@@ -99,20 +99,91 @@ def match_graphs(G1, G2) -> List[Dict[Any, Any]]:
 
 
 def vertex_property(G, vproperty: str, idx: int) -> Any:
+    """
+    Get vertex (node) property from graph
+
+    Parameters
+    ----------
+    G: nx.Graph
+        Graph
+    vproperty: str
+        Vertex property name
+    idx: int
+        Vertex index
+
+    Returns
+    -------
+    Any
+        Vertex property value
+    """
     return G.nodes[idx][vproperty]
 
 
 def num_vertices(G) -> int:
+    """
+    Number of vertices
+
+    Parameters
+    ----------
+    G: nx.Graph
+        Graph
+
+    Returns
+    -------
+    int
+        Number of vertices (nodes)
+    """
     return G.number_of_nodes()
 
 
 def num_edges(G) -> int:
+    """
+    Number of edges
+
+    Parameters
+    ----------
+    G: nx.Graph
+        Graph
+
+    Returns
+    -------
+    int
+        Number of edges
+    """
     return G.number_of_edges()
 
 
 def lattice(n1, n2):
+    """
+    Build 2D lattice graph
+
+    Parameters
+    ----------
+    n1: int
+        Number of nodes in dimension 1
+    n2: int
+        Number of nodes in dimension 2
+
+    Returns
+    -------
+    nx.Graph
+        Lattice graph
+    """
     return nx.generators.lattice.grid_2d_graph(n1, n2)
 
 
 def cycle(n):
+    """
+    Build cycle graph
+
+    Parameters
+    ----------
+    n: int
+        Number of nodes
+
+    Returns
+    -------
+    nx.Graph
+        Cycle graph
+    """
     return nx.cycle_graph(n)

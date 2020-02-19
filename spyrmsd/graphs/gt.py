@@ -96,20 +96,91 @@ def match_graphs(G1, G2):
 
 
 def vertex_property(G, vproperty: str, idx: int) -> Any:
+    """
+    Get vertex (node) property from graph
+
+    Parameters
+    ----------
+    G: gt.Graph
+        Graph
+    vproperty: str
+        Vertex property name
+    idx: int
+        Vertex index
+
+    Returns
+    -------
+    Any
+        Vertex property value
+    """
     return G.vertex_properties[vproperty][idx]
 
 
 def num_vertices(G) -> int:
+    """
+    Number of vertices
+
+    Parameters
+    ----------
+    G: gt.Graph
+        Graph
+
+    Returns
+    -------
+    int
+        Number of vertices (nodes)
+    """
     return G.num_vertices()
 
 
 def num_edges(G) -> int:
+    """
+    Number of edges
+
+    Parameters
+    ----------
+    G: gt.Graph
+        Graph
+
+    Returns
+    -------
+    int
+        Number of edges
+    """
     return G.num_edges()
 
 
-def lattice(n1, n2):
+def lattice(n1: int, n2: int):
+    """
+    Build 2D lattice graph
+
+    Parameters
+    ----------
+    n1: int
+        Number of nodes in dimension 1
+    n2: int
+        Number of nodes in dimension 2
+
+    Returns
+    -------
+    gt.Graph
+        Lattice graph
+    """
     return generation.lattice((n1, n2))
 
 
 def cycle(n):
+    """
+    Build cycle graph
+
+    Parameters
+    ----------
+    n: int
+        Number of nodes
+
+    Returns
+    -------
+    gt.Graph
+        Cycle graph
+    """
     return generation.circular_graph(n)

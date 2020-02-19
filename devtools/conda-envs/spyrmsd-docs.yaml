@@ -5,8 +5,6 @@ channels:
 dependencies:
   # Base
   - python
-  - pip
-  - ipython
 
   # Maths
   - numpy
