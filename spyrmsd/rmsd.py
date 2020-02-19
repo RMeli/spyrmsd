@@ -174,11 +174,11 @@ def _rmsd_isomorphic_core(
     min_result = np.inf
 
     # Loop over all graph isomorphisms to find the lowest RMSD
-    for isomorphism in isomorphisms:
+    for idx1, idx2 in isomorphisms:
 
         # Use the isomorphism to shuffle coordinates around (from original order)
-        c1i = c1[:, :]
-        c2i = c2[isomorphism, :]
+        c1i = c1[idx1, :]
+        c2i = c2[idx2, :]
 
         if not minimize:
             # Compute square displacement

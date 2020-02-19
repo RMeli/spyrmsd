@@ -87,15 +87,7 @@ def match_graphs(G1, G2) -> List[Dict[Any, Any]]:
         # TODO: Create a new exception
         raise ValueError(f"Graphs {G1} and {G2} are not isomorphic.")
 
-    # Extract all isomorphisms in a list of ordered dicts
-    # OrderedDict is necessary to conform with the graph_tool implementation
-    # TODO: Improve performance
-    isomorphisms = [
-        collections.OrderedDict(sorted(isomorphism.items()))
-        for isomorphism in GM.isomorphisms_iter()
-    ]
-
-    return [np.array(list(isomorphism.values())) for isomorphism in isomorphisms]
+    return [(list(isomorphism.keys()), list(isomorphism.values())) for isomorphism in GM.isomorphisms_iter()]
 
 
 def vertex_property(G, vproperty: str, idx: int) -> Any:

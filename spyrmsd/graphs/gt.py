@@ -91,8 +91,10 @@ def match_graphs(G1, G2):
         # TODO: Create a new exception
         raise ValueError(f"Graphs {G1} and {G2} are not isomorphic.")
 
+    n = num_vertices(G1)
+
     # Extract all isomorphisms in a list
-    return [m.a for m in maps]
+    return [(np.arange(0, n, dtype=int), m.a) for m in maps]
 
 
 def vertex_property(G, vproperty: str, idx: int) -> Any:
