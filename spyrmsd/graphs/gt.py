@@ -37,7 +37,7 @@ def graph_from_adjacency_matrix(
     G.add_edge_list(np.transpose(adj.nonzero()))
 
     if atomicnums is not None:
-        vprop = G.new_vertex_property("short")  # Create property map
+        vprop = G.new_vertex_property("short")  # Create property map (of C type short)
         vprop.a = atomicnums  # Assign atomic numbers to property map array
         G.vertex_properties["atomicnum"] = vprop  # Set property map
 
@@ -83,8 +83,6 @@ def match_graphs(G1, G2):
         )
 
         maps = topology.subgraph_isomorphism(G1, G2, subgraph=False)
-
-        print(maps)
 
     # Check if graphs are actually isomorphic
     if len(maps) == 0:

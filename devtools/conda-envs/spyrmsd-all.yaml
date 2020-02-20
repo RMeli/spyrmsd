@@ -30,6 +30,7 @@ dependencies:
   # Testing
   - pytest
   - pytest-cov
+  - pytest-benchmark
   - codecov
 
   # Doc
