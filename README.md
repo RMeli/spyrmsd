@@ -75,11 +75,7 @@ The function `rmsd.rmsd_isomorphic` computes symmetry-corrected RMSD, using mole
 
 ## Contributions
 
-### List of Contributors
-
-| Name               | GitHub          |
-| :----------------: | :-------------: |
-| Rocco Meli         | @RMeli          | 
+[List of contributors](https://github.com/RMeli/spyrmsd/graphs/contributors).
 
 ### Tools
 
