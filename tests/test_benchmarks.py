@@ -4,13 +4,19 @@ import pytest
 
 import numpy as np
 import os
+import re
 
 fdir = os.path.dirname(os.path.abspath(__file__))
 molpath = os.path.join(fdir, "data", "docking")
 
 
 def systems():
-    return os.listdir(molpath)
+    dirs = os.listdir(molpath)
+
+    # Match 4-character strings starting with a number
+    systems = [d for d in dirs if re.match("[1-9]...", d)]
+
+    return systems
 
 
 @pytest.mark.slow

@@ -1,0 +1,106 @@
+1AI7_IPH_B_559
+  RCSB PDB12061701593D
+Coordinates from PDB:1AI7:B:559 Model:1 without hydrogens
+  7  7  0  0  0  0            999 V2000
+   10.0120   35.4330   32.6350   C 0  0  0  0  0  0  0  0  0  0  0  0
+   10.5500   36.4840   31.8960   C 0  0  0  0  0  0  0  0  0  0  0  0
+   11.6400   37.0940   32.4870   C 0  0  0  0  0  0  0  0  0  0  0  0
+   12.1260   36.7140   33.7230   C 0  0  0  0  0  0  0  0  0  0  0  0
+   11.5350   35.6690   34.4060   C 0  0  0  0  0  0  0  0  0  0  0  0
+   10.4420   35.0130   33.9000   C 0  0  0  0  0  0  0  0  0  0  0  0
+    8.9550   34.7450   32.0780   O 0  0  0  0  0  0  0  0  0  0  0  0
+  1  2  2  0  0  0  0
+  1  6  1  0  0  0  0
+  1  7  1  0  0  0  0
+  2  3  1  0  0  0  0
+  3  4  2  0  0  0  0
+  4  5  1  0  0  0  0
+  5  6  2  0  0  0  0
+A    1
+C1
+A    2
+C2
+A    3
+C3
+A    4
+C4
+A    5
+C5
+A    6
+C6
+A    7
+O1
+M  END
+>  <InstanceId>
+1AI7_IPH_B_559
+
+>  <ChemCompId>
+IPH
+
+>  <PdbId>
+1AI7
+
+>  <ChainId>
+B
+
+>  <ResidueNumber>
+559
+
+>  <InsertionCode>
+
+
+>  <Model>
+1
+
+>  <AltIds>
+
+
+>  <MissingHeavyAtoms>
+0
+
+>  <ObservedFormula>
+C6 O
+
+>  <Name>
+PHENOL
+
+>  <SystematicName>
+phenol
+
+>  <Synonyms>
+
+
+>  <Type>
+NON-POLYMER
+
+>  <Formula>
+C6 H6 O
+
+>  <MolecularWeight>
+94.111
+
+>  <ModifiedDate>
+2011-06-04
+
+>  <Parent>
+
+
+>  <OneLetterCode>
+
+
+>  <SubcomponentList>
+
+
+>  <AmbiguousFlag>
+N
+
+>  <InChI>
+InChI=1S/C6H6O/c7-6-4-2-1-3-5-6/h1-5,7H
+
+>  <InChIKey>
+ISWSIDIOOBJBQZ-UHFFFAOYSA-N
+
+>  <SMILES>
+c1ccc(cc1)O
+
+$$$$
