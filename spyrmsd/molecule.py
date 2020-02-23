@@ -133,6 +133,9 @@ class Molecule:
             if self.adjacency_matrix is not None:
                 self.adjacency_matrix = self.adjacency_matrix[np.ix_(idx, idx)]
 
+            # Reset molecular graph when stripping
+            self.G = None
+
             self.stripped = True
 
     def to_graph(self):
