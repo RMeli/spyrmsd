@@ -11,7 +11,7 @@
 [![PyPI](https://img.shields.io/badge/PyPI-0.2.1%20-ff69b4)](https://pypi.org/project/spyrmsd/)
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
 
-Python-first tool for symmetry-corrected RMSD calculations.
+Python tool for symmetry-corrected RMSD calculations.
 
 ## Installation
 
@@ -20,8 +20,6 @@ Python-first tool for symmetry-corrected RMSD calculations.
 ```bash
 pip install spyrmsd
 ```
-
-This install `spyrmsd` as a library. In order to use the standalone RMSD calculation tool, you will need to install [Open Babel](http://openbabel.org/) or [RDKit](https://rdkit.org/).
 
 ### GitHub
 
@@ -32,6 +30,10 @@ pip install .
 ```
 
 ### conda
+
+### Dependencies
+
+`spyrmsd` can be used both as a library or a standalone tool. In order to use the standalone RMSD calculation tool, you will need to install [Open Babel](http://openbabel.org/) or [RDKit](https://rdkit.org/).
 
 ## Usage
 
@@ -67,41 +69,21 @@ from spyrmsd import rmsd
 
 #### RMSD
 
-The function  `rmsd.rmsd` computes RMSD without symmetry correction. The atoms are expected to be in the same order for both molecule being compared (no atom matching is performed).
+The function  `rmsd.rmsd` computes RMSD without symmetry correction. The atoms are expected to be in the same order for both molecules being compared (no atom matching is performed).
 
-#### Symmetric RMSD
+#### Symmetry-Corrected RMSD
 
-The function `rmsd.rmsd_isomorphic` computes symmetry-corrected RMSD, using molecular graph isomorphisms. Symmetry correction requires molecular adjacency matrices but needs not the atoms to be in the same order.
+The function `rmsd.symmrmsd` computes symmetry-corrected RMSD using molecular graph isomorphisms. Symmetry correction requires molecular adjacency matrices describing the connectivity but needs not the atoms to be in the same order.
 
-## Contributions
+Atom matching is performed according to the molecular graph. Therefore, this function should be used when atoms in the molecules being compared are not in the same order (even if there is not symmetry).
 
-[List of contributors](https://github.com/RMeli/spyrmsd/graphs/contributors).
+## Development
 
-### Tools
+To ensure code quality and consistency the following tools are used during development:
 
-#### Formatting
-
-The code is automatically formatted using [black](https://black.readthedocs.io/en/stable/):
-
-```bash
-black .
-```
-
-#### Style
-
-Code style is enforced using [Flake 8](http://flake8.pycqa.org/en/latest/)
-
-```bash
-flake8
-```
-
-#### Static Checks
-
-Static checks are performed using [mypy](http://mypy-lang.org/)
-
-```bash
-mypy
-```
+* [black](https://black.readthedocs.io/en/stable/)
+* [Flake 8](http://flake8.pycqa.org/en/latest/) (CI)
+* [mypy](http://mypy-lang.org/) (CI)
 
 ## Deployment
 
