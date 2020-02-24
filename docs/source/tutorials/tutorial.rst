@@ -5,17 +5,14 @@ Tutorial
 
     from spyrmsd import io, rmsd
 
-Loading Molecules
------------------
-
-OpenBabel and RDKit
-~~~~~~~~~~~~~~~~~~~
+OpenBabel or RDKit
+~~~~~~~~~~~~~~~~~~
 
 ``spyrmsd`` natively supports
 `OpenBabel <http://openbabel.org/wiki/Main_Page>`__ and
-`RDKit <http://rdkit.org/>`__ to load molecules. However, the API for
-RMSD calculations is extremely minimal and only needs the following
-information:
+`RDKit <http://rdkit.org/>`__ to load molecules in order to work as a
+standalone tool. However, the API for RMSD calculations is extremely
+minimal and only needs the following information:
 
 -  Atomic coordinates
 -  Atomic numbers
@@ -24,8 +21,8 @@ information:
 This means that ``spyrmsd`` can be used in combination with any library
 that can provide such information.
 
-I/O
-~~~
+Loading Molecules
+~~~~~~~~~~~~~~~~~
 
 The ``spyrmsd.io`` module provides functions to easily load molecules
 from a file and to transform them into a ``spyrmsd.molecule.Molecule``
@@ -84,10 +81,10 @@ reference molecule and all other molecules:
     RMSD = rmsd.symmrmsd(
         coords_ref, 
         coords,
-        adj_ref,
-        adj,
         anum_ref,
         anum,
+        adj_ref,
+        adj,
     )
         
     print(RMSD)
@@ -109,10 +106,10 @@ molecular structures:
     RMSD = rmsd.symmrmsd(
         coords_ref, 
         coords,
-        adj_ref,
-        adj,
         anum_ref,
         anum,
+        adj_ref,
+        adj,
         minimize=True,
     )
         
