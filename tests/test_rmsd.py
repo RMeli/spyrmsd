@@ -285,10 +285,10 @@ def test_symmrmsd_centred(mol: molecule.Molecule) -> None:
         rmsd.symmrmsd(
             mol1.coordinates,
             mol2.coordinates,
-            mol1.adjacency_matrix,
-            mol2.adjacency_matrix,
             mol1.atomicnums,
             mol2.atomicnums,
+            mol1.adjacency_matrix,
+            mol2.adjacency_matrix,
         )
         > 0
     )
@@ -296,10 +296,10 @@ def test_symmrmsd_centred(mol: molecule.Molecule) -> None:
     assert rmsd.symmrmsd(
         mol1.coordinates,
         mol2.coordinates,
-        mol1.adjacency_matrix,
-        mol2.adjacency_matrix,
         mol1.atomicnums,
         mol2.atomicnums,
+        mol1.adjacency_matrix,
+        mol2.adjacency_matrix,
         center=True,
     ) == pytest.approx(0)
 
@@ -332,10 +332,10 @@ def test_symmrmsd_rotated_benzene(angle: float) -> None:
     assert rmsd.symmrmsd(
         mol1.coordinates,
         mol2.coordinates,
-        mol1.adjacency_matrix,
-        mol2.adjacency_matrix,
         mol1.atomicnums,
         mol2.atomicnums,
+        mol1.adjacency_matrix,
+        mol2.adjacency_matrix,
     ) == pytest.approx(0, abs=1e-4)
 
 
@@ -370,10 +370,10 @@ def test_symmrmsd_rotated_benzene_stripped(angle: float) -> None:
     assert rmsd.symmrmsd(
         mol1.coordinates,
         mol2.coordinates,
-        mol1.adjacency_matrix,
-        mol2.adjacency_matrix,
         mol1.atomicnums,
         mol2.atomicnums,
+        mol1.adjacency_matrix,
+        mol2.adjacency_matrix,
     ) == pytest.approx(0, abs=1e-4)
 
 
@@ -392,23 +392,15 @@ def test_symmrmsd_atomicnums_matching_pyridine_stripped() -> None:
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     )
 
-    # Isomorphic RMSD without atomic number matching is wrong
-    with pytest.warns(UserWarning):
-        assert rmsd.symmrmsd(
-            mol1.coordinates,
-            mol2.coordinates,
-            mol1.adjacency_matrix,
-            mol2.adjacency_matrix,
-        ) == pytest.approx(0, abs=1e-4)
-
     # Isomorphic RMSD with atomic number matching is correct
+    # Without atomic number matching this would be wrong because of higher symmetry
     assert rmsd.symmrmsd(
         mol1.coordinates,
         mol2.coordinates,
-        mol1.adjacency_matrix,
-        mol2.adjacency_matrix,
         mol1.atomicnums,
         mol2.atomicnums,
+        mol1.adjacency_matrix,
+        mol2.adjacency_matrix,
     ) == pytest.approx(RMSD, abs=1e-4)
 
 
@@ -449,10 +441,10 @@ def test_rmsd_symmrmsd(index: int, RMSD: float, minimize: bool) -> None:
     assert rmsd.symmrmsd(
         molc.coordinates,
         mol.coordinates,
-        molc.adjacency_matrix,
-        mol.adjacency_matrix,
         molc.atomicnums,
         mol.atomicnums,
+        molc.adjacency_matrix,
+        mol.adjacency_matrix,
         minimize=minimize,
     ) == pytest.approx(RMSD, abs=1e-5)
 
@@ -506,10 +498,10 @@ def test_multirmsd_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> No
     RMSDs = rmsd.symmrmsd(
         molc.coordinates,
         [mol.coordinates for mol in mols],
-        molc.adjacency_matrix,
-        mols[0].adjacency_matrix,
         molc.atomicnums,
         mols[0].atomicnums,
+        molc.adjacency_matrix,
+        mols[0].adjacency_matrix,
         minimize=minimize,
     )
 
@@ -566,10 +558,10 @@ def test_symmrmsd_cache(minimize: bool, referenceRMSDs: List[float]) -> None:
     RMSDs = rmsd.symmrmsd(
         molc.coordinates,
         [mol.coordinates for mol in mols],
-        molc.adjacency_matrix,
-        mols[0].adjacency_matrix,
         molc.atomicnums,
         mols[0].atomicnums,
+        molc.adjacency_matrix,
+        mols[0].adjacency_matrix,
         minimize=minimize,
         cache=False,
     )

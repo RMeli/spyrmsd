@@ -90,10 +90,10 @@ def rmsdwrapper(
         RMSDlist = rmsd.symmrmsd(
             cref,
             cmols,
-            molref.adjacency_matrix,
-            mols[0].adjacency_matrix,
             molref.atomicnums,
             mols[0].atomicnums,
+            molref.adjacency_matrix,
+            mols[0].adjacency_matrix,
             center=center,
             minimize=minimize,
             cache=cache,

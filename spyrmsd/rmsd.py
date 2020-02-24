@@ -114,10 +114,10 @@ def rmsd_hungarian(
 def _rmsd_isomorphic_core(
     coords1: np.ndarray,
     coords2: np.ndarray,
+    atomicnums1: np.ndarray,
+    atomicnums2: np.ndarray,
     am1: np.ndarray,
     am2: np.ndarray,
-    atomicnums1: np.ndarray = None,
-    atomicnums2: np.ndarray = None,
     center: bool = False,
     minimize: bool = False,
     isomorphisms: Optional[List[Tuple[List[int], List[int]]]] = None,
@@ -131,14 +131,14 @@ def _rmsd_isomorphic_core(
         Coordinate of molecule 1
     coords2: np.ndarray
         Coordinates of molecule 2
-    am1: np.ndarray
-        Adjacency matrix for molecule 1
-    am2: np.ndarray
-        Adjacency matrix for molecule 2
     atomicnums1: npndarray, optional
         Atomic numbers for molecule 1
     atomicnums2: npndarray, optional
         Atomic numbers for molecule 2
+    am1: np.ndarray
+        Adjacency matrix for molecule 1
+    am2: np.ndarray
+        Adjacency matrix for molecule 2
     center: bool
         Centering flag
     minimize: bool
@@ -201,10 +201,10 @@ def _rmsd_isomorphic_core(
 def symmrmsd(
     coordsref: np.ndarray,
     coords: Union[np.ndarray, List[np.ndarray]],
+    atomicnumsref: np.ndarray,
+    atomicnums: np.ndarray,
     amref: np.ndarray,
     am: np.ndarray,
-    atomicnumsref: np.ndarray = None,
-    atomicnums: np.ndarray = None,
     center: bool = False,
     minimize: bool = False,
     cache: bool = True,
@@ -218,14 +218,14 @@ def symmrmsd(
         Coordinate of reference molecule
     coords: List[np.ndarray]
         Coordinates of other molecule
-    amref: np.ndarray
-        Adjacency matrix for reference molecule
-    am: np.ndarray
-        Adjacency matrix for other molecule
     atomicnumsref: npndarray, optional
         Atomic numbers for reference
     atomicnums: npndarray, optional
         Atomic numbers for other molecule
+    amref: np.ndarray
+        Adjacency matrix for reference molecule
+    am: np.ndarray
+        Adjacency matrix for other molecule
     center: bool
         Centering flag
     minimize: bool
@@ -260,10 +260,10 @@ def symmrmsd(
             srmsd, isomorphism = _rmsd_isomorphic_core(
                 coordsref,
                 c,
-                amref,
-                am,
                 atomicnumsref,
                 atomicnums,
+                amref,
+                am,
                 center=center,
                 minimize=minimize,
                 isomorphisms=isomorphism,
@@ -276,10 +276,10 @@ def symmrmsd(
         RMSD, isomorphism = _rmsd_isomorphic_core(
             coordsref,
             coords,
-            amref,
-            am,
             atomicnumsref,
             atomicnums,
+            amref,
+            am,
             center=center,
             minimize=minimize,
             isomorphisms=None,

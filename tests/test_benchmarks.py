@@ -52,10 +52,10 @@ def test_benchmark_symmrmsd(cache, molecules, benchmark):
         rmsd.symmrmsd,
         ref.coordinates,
         coords,
-        ref.adjacency_matrix,
-        mols[0].adjacency_matrix,
         ref.atomicnums,
         mols[0].atomicnums,
+        ref.adjacency_matrix,
+        mols[0].adjacency_matrix,
         cache=cache,
     )
 
