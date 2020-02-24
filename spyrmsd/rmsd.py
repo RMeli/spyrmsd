@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, List, Optional, Tuple, Union
 
 import numpy as np
 
@@ -120,8 +120,8 @@ def _rmsd_isomorphic_core(
     atomicnums2: np.ndarray = None,
     center: bool = False,
     minimize: bool = False,
-    isomorphisms: Optional[List[Dict[int, int]]] = None,
-) -> Tuple[float, List[Dict[int, int]]]:
+    isomorphisms: Optional[List[Tuple[List[int], List[int]]]] = None,
+) -> Tuple[float, List[Tuple[List[int], List[int]]]]:
     """
     Compute RMSD using graph isomorphism.
 
