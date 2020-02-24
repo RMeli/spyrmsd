@@ -11,6 +11,7 @@ Subpackages
 
 .. toctree::
 
+   spyrmsd.graphs
    spyrmsd.optional
 
 Submodules
