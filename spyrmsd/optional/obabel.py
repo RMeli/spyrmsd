@@ -14,7 +14,7 @@ except ImportError:
     import pybel
 
 
-def load(fname: str) -> ob.OBMol:
+def load(fname: str):
     """
     Load molecule from file.
 
@@ -25,8 +25,7 @@ def load(fname: str) -> ob.OBMol:
 
     Returns
     -------
-    openbabel.OBMol
-        OpenBabel molecule
+    Molecule
     """
 
     fmt = utils.molformat(fname)
@@ -36,7 +35,7 @@ def load(fname: str) -> ob.OBMol:
     return obmol
 
 
-def loadall(fname: str) -> List[ob.OBMol]:
+def loadall(fname: str):
     """
     Load molecules from file.
 
@@ -47,15 +46,15 @@ def loadall(fname: str) -> List[ob.OBMol]:
 
     Returns
     -------
-    List[openbabel.OBMol]
-        List of OpenBabel molecules
+    List of molecules
     """
 
     fmt = utils.molformat(fname)
 
     obmols = [obmol for obmol in pybel.readfile(fmt, fname)]
 
-    # FIXME: Special handling for multi-model PDB files; See OpenBabel Issue #2097
+    # FIXME: Special handling for multi-model PDB files
+    # See OpenBabel Issue #2097
     if fmt == "pdb":
         obmols = obmols[:-1]
 
@@ -68,8 +67,8 @@ def adjacency_matrix(mol) -> np.ndarray:
 
     Parameters
     ----------
-    mol: ob.OBMol
-        OpenBabel molecule
+    mol:
+        Molecule
 
     Returns
     -------
@@ -96,14 +95,14 @@ def adjacency_matrix(mol) -> np.ndarray:
 
 def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
     """
-    Transform OpenBabel molecule to `pyrmsd` molecule.
+    Transform molecule to `pyrmsd` molecule.
 
     Parameters
     ----------
-    mol: ob.OBMol
-        OpenBabel molecule
+    mol:
+        Molecule
     adjacency: boolean, optional
-        Flag to decide wether to build the adjacency matrix from the OpenBabel molecule
+        Flag to decide wether to build the adjacency matrix from molecule
 
     Returns
     -------
@@ -132,8 +131,8 @@ def numatoms(mol) -> int:
 
     Parameters
     ----------
-    mol: ob.OBMol
-        OpenBabel molecule
+    mol:
+        Molecule
 
     Returns
     -------
@@ -149,8 +148,8 @@ def numbonds(mol) -> int:
 
     Parameters
     ----------
-    mol: ob.OBMol
-        OpenBabel molecule
+    mol:
+        Molecule
 
     Returns
     -------
@@ -166,8 +165,8 @@ def bonds(mol) -> List[Tuple[int, int]]:
 
     Parameters
     ----------
-    mol: ob.OBMol
-        OpenBabel molecule
+    mol:
+        Molecule
 
     Returns
     -------

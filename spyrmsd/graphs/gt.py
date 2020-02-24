@@ -22,8 +22,8 @@ def graph_from_adjacency_matrix(
 
     Returns
     -------
-    graph_tool
-        graph-tool graph
+    Graph
+        Molecular graph
 
     Notes
     -----
@@ -44,20 +44,20 @@ def graph_from_adjacency_matrix(
     return G
 
 
-def match_graphs(G1, G2):
+def match_graphs(G1, G2) -> List[Tuple[List[int],List[int]]]:
     """
-    Compute RMSD using the quaternion polynomial method.
+    Compute graph isomorphisms.
 
     Parameters
     ----------
-    G1: graph_tool.Graph
+    G1:
         Graph 1
-    G2: graph_tool.Graph
+    G2:
         Graph 2
 
     Returns
     -------
-    List[Dict[Any, Any]]
+    List[Tuple[List[int],List[int]]]
         All possible mappings between nodes of graph 1 and graph 2 (isomorphisms)
 
     Raises
@@ -101,7 +101,7 @@ def vertex_property(G, vproperty: str, idx: int) -> Any:
 
     Parameters
     ----------
-    G: gt.Graph
+    G:
         Graph
     vproperty: str
         Vertex property name
@@ -122,7 +122,7 @@ def num_vertices(G) -> int:
 
     Parameters
     ----------
-    G: gt.Graph
+    G:
         Graph
 
     Returns
@@ -139,7 +139,7 @@ def num_edges(G) -> int:
 
     Parameters
     ----------
-    G: gt.Graph
+    G:
         Graph
 
     Returns
@@ -163,7 +163,7 @@ def lattice(n1: int, n2: int):
 
     Returns
     -------
-    gt.Graph
+    Graph
         Lattice graph
     """
     return generation.lattice((n1, n2))
@@ -180,7 +180,7 @@ def cycle(n):
 
     Returns
     -------
-    gt.Graph
+    Graph
         Cycle graph
     """
     return generation.circular_graph(n)
