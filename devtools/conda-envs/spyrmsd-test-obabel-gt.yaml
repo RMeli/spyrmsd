@@ -17,6 +17,7 @@ dependencies:
   # Testing
   - pytest
   - pytest-cov
+  - pytest-benchmark
 
   # Dev
   - mypy
