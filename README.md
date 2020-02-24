@@ -33,7 +33,23 @@ pip install .
 
 ### Dependencies
 
-`spyrmsd` can be used both as a library or a standalone tool. In order to use the standalone RMSD calculation tool, you will need to install [Open Babel](http://openbabel.org/) or [RDKit](https://rdkit.org/).
+`spyrmsd` can be used both as a module or a standalone tool.
+
+#### Module
+
+The following packages are required to use `spyrmsd` as a module:
+
+* [graph-tool](https://graph-tool.skewed.de/) or [NetworkX](https://networkx.github.io/)
+* [numpy](https://numpy.org/)
+* [scipy](https://www.scipy.org/)
+* [qcelemental](http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/)
+
+#### Standalone Tool
+
+Additionally, one of the following packages are required to use `spyrmsd` as a standalone tool:
+
+* [Open Babel](http://openbabel.org/)
+* [RDKit](https://rdkit.org/)
 
 ## Usage
 

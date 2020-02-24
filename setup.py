@@ -1,6 +1,7 @@
 """
 spyrmsd
-Python RMSD tool
+
+Python tool for symmetry-corrected RMSD
 """
 import sys
 
@@ -32,9 +33,6 @@ setup(
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     license="MIT",
-    # Which Python importable modules should be included when your package is installed
-    # Handled automatically by setuptools. Use 'exclude' to prevent some specific
-    # subpackage(s) from being added, if needed
     packages=find_packages(),
     # Optional include package data to ship with your package
     # Customize MANIFEST.in if the general case does not suit your needs
@@ -42,14 +40,14 @@ setup(
     include_package_data=True,
     # Allows `setup.py test` to work correctly with pytest
     setup_requires=[] + pytest_runner,
-    # Additional entries you may want simply uncomment the lines you want and fill in the data
-    url="https://spyrmsd.readthedocs.io",  # Website
-    # install_requires=[],              # Required packages, pulls from pip if needed; do not use for Conda deployment
-    # platforms=['Linux',
-    #            'Mac OS-X',
-    #            'Unix',
-    #            'Windows'],            # Valid platforms your code works on, adjust to your flavor
-    python_requires=">=3.6",  # Python version restrictions
-    # Manual control if final package is compressible or not, set False to prevent the .egg from being made
+    url="https://spyrmsd.readthedocs.io",
+    # install_requires=[], # Required packages, pulls from pip if needed; do not use for Conda deployment
+    platforms=[
+        "Linux",
+        "Mac OS-X",
+        "Unix",
+        "Windows",
+    ],
+    python_requires=">=3.6",
     # zip_safe=False,
 )
