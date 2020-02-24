@@ -49,7 +49,7 @@ def test_benchmark_symmrmsd(cache, molecules, benchmark):
     coords = [mol.coordinates for mol in mols]
 
     RMSDs = benchmark(
-        rmsd.multirmsd_isomorphic,
+        rmsd.symmrmsd,
         ref.coordinates,
         coords,
         ref.adjacency_matrix,

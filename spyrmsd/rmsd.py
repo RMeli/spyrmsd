@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 
@@ -198,71 +198,9 @@ def _rmsd_isomorphic_core(
     return min_result, isomorphisms
 
 
-def rmsd_isomorphic(
-    coords1: np.ndarray,
-    coords2: np.ndarray,
-    am1: np.ndarray,
-    am2: np.ndarray,
-    atomicnums1: np.ndarray = None,
-    atomicnums2: np.ndarray = None,
-    center: bool = False,
-    minimize: bool = False,
-) -> float:
-    """
-    Compute RMSD using graph isomorphism.
-
-    Parameters
-    ----------
-    coords1: np.ndarray
-        Coordinate of molecule 1
-    coords2: np.ndarray
-        Coordinates of molecule 2
-    am1: np.ndarray
-        Adjacency matrix for molecule 1
-    am2: np.ndarray
-        Adjacency matrix for molecule 2
-    atomicnums1: npndarray, optional
-        Atomic numbers for molecule 1
-    atomicnums2: npndarray, optional
-        Atomic numbers for molecule 2
-    center: bool
-        Centering flag
-    minimize: bool
-        Minimum RMSD
-
-    Returns
-    -------
-    float
-        RMSD (after graph matching) and graph isomorphisms
-
-    Notes
-    -----
-
-    Graph isomorphism is introduced for symmetry corrections. However, it is also
-    useful when two molecules have not the atoms in the same order since atom
-    matching according to atomic numbers and the molecular connectivity is
-    performed. If atoms are in the same order and there is no symmetry, use the
-    `rmsd` function.
-    """
-
-    RMSD, _ = _rmsd_isomorphic_core(
-        coords1,
-        coords2,
-        am1,
-        am2,
-        atomicnums1,
-        atomicnums2,
-        center=center,
-        minimize=minimize,
-        isomorphisms=None,
-    )
-
-    return RMSD
-
-
-def multirmsd_isomorphic(
+def symmrmsd(
     coordsref: np.ndarray,
-    coords: List[np.ndarray],
+    coords: Union[np.ndarray, List[np.ndarray]],
     amref: np.ndarray,
     am: np.ndarray,
     atomicnumsref: np.ndarray = None,
@@ -270,7 +208,7 @@ def multirmsd_isomorphic(
     center: bool = False,
     minimize: bool = False,
     cache: bool = True,
-) -> List[float]:
+) -> Any:
     """
     Compute RMSD using graph isomorphism for multiple coordinates.
 
@@ -295,39 +233,56 @@ def multirmsd_isomorphic(
 
     Returns
     -------
-    float: List[float]
-        RMSDs (after graph matching) and graph isomorphisms
+    float: Union[float, List[float]]
+        Symmetry-corrected RMSD(s) and graph isomorphisms
 
     Notes
     -----
 
     Graph isomorphism is introduced for symmetry corrections. However, it is also
-    useful when two molecules have not the atoms in the same order since atom
+    useful when two molecules do not have the atoms in the same order since atom
     matching according to atomic numbers and the molecular connectivity is
     performed. If atoms are in the same order and there is no symmetry, use the
     `rmsd` function.
     """
 
-    RMSDlist, isomorphism = [], None
+    if isinstance(coords, list):  # Multiple RMSD calculations
 
-    for c in coords:
+        RMSD: Any = []
+        isomorphism = None
 
-        if not cache:
-            # Reset isomorphism
-            isomorphism = None
+        for c in coords:
+
+            if not cache:
+                # Reset isomorphism
+                isomorphism = None
+
+            srmsd, isomorphism = _rmsd_isomorphic_core(
+                coordsref,
+                c,
+                amref,
+                am,
+                atomicnumsref,
+                atomicnums,
+                center=center,
+                minimize=minimize,
+                isomorphisms=isomorphism,
+            )
+
+            RMSD.append(srmsd)
+
+    else:  # Single RMSD calculation
 
         RMSD, isomorphism = _rmsd_isomorphic_core(
             coordsref,
-            c,
+            coords,
             amref,
             am,
             atomicnumsref,
             atomicnums,
             center=center,
             minimize=minimize,
-            isomorphisms=isomorphism,
+            isomorphisms=None,
         )
 
-        RMSDlist.append(RMSD)
-
-    return RMSDlist
+    return RMSD

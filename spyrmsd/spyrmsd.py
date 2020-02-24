@@ -2,7 +2,7 @@
 Python RMSD tool
 """
 
-from typing import List
+from typing import Any
 
 import numpy as np
 
@@ -47,7 +47,7 @@ def rmsdwrapper(
     minimize: bool = False,
     strip: bool = True,
     cache: bool = True,
-) -> List[float]:
+) -> Any:
     """
     Compute RMSD between two molecule.
 
@@ -87,7 +87,7 @@ def rmsdwrapper(
     RMSDlist = []
 
     if symmetry:
-        RMSDlist = rmsd.multirmsd_isomorphic(
+        RMSDlist = rmsd.symmrmsd(
             cref,
             cmols,
             molref.adjacency_matrix,
