@@ -274,7 +274,7 @@ def test_rmsd_hungarian_centred(mol: molecule.Molecule) -> None:
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
+def test_symmrmsd_centred(mol: molecule.Molecule) -> None:
 
     mol1 = copy.deepcopy(mol)
     mol2 = copy.deepcopy(mol)
@@ -282,7 +282,7 @@ def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
     mol2.translate(np.random.rand(3))
 
     assert (
-        rmsd.rmsd_isomorphic(
+        rmsd.symmrmsd(
             mol1.coordinates,
             mol2.coordinates,
             mol1.adjacency_matrix,
@@ -293,7 +293,7 @@ def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
         > 0
     )
 
-    assert rmsd.rmsd_isomorphic(
+    assert rmsd.symmrmsd(
         mol1.coordinates,
         mol2.coordinates,
         mol1.adjacency_matrix,
@@ -305,7 +305,7 @@ def test_rmsd_isomorphic_centred(mol: molecule.Molecule) -> None:
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
-def test_rmsd_isomorphic_rotated_benzene(angle: float) -> None:
+def test_symmrmsd_rotated_benzene(angle: float) -> None:
 
     mol1 = copy.deepcopy(molecules.benzene)
     mol2 = copy.deepcopy(molecules.benzene)
@@ -329,7 +329,7 @@ def test_rmsd_isomorphic_rotated_benzene(angle: float) -> None:
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0, abs=1e-4)
 
-    assert rmsd.rmsd_isomorphic(
+    assert rmsd.symmrmsd(
         mol1.coordinates,
         mol2.coordinates,
         mol1.adjacency_matrix,
@@ -340,7 +340,7 @@ def test_rmsd_isomorphic_rotated_benzene(angle: float) -> None:
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
-def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
+def test_symmrmsd_rotated_benzene_stripped(angle: float) -> None:
 
     mol1 = copy.deepcopy(molecules.benzene)
     mol2 = copy.deepcopy(molecules.benzene)
@@ -367,7 +367,7 @@ def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0, abs=1e-4)
 
-    assert rmsd.rmsd_isomorphic(
+    assert rmsd.symmrmsd(
         mol1.coordinates,
         mol2.coordinates,
         mol1.adjacency_matrix,
@@ -377,7 +377,7 @@ def test_rmsd_isomorphic_rotated_benzene_stripped(angle: float) -> None:
     ) == pytest.approx(0, abs=1e-4)
 
 
-def test_rmsd_isomorphic_atomicnums_matching_pyridine_stripped() -> None:
+def test_symmrmsd_atomicnums_matching_pyridine_stripped() -> None:
 
     mol1 = copy.deepcopy(molecules.pyridine)
     mol2 = copy.deepcopy(molecules.pyridine)
@@ -394,7 +394,7 @@ def test_rmsd_isomorphic_atomicnums_matching_pyridine_stripped() -> None:
 
     # Isomorphic RMSD without atomic number matching is wrong
     with pytest.warns(UserWarning):
-        assert rmsd.rmsd_isomorphic(
+        assert rmsd.symmrmsd(
             mol1.coordinates,
             mol2.coordinates,
             mol1.adjacency_matrix,
@@ -402,7 +402,7 @@ def test_rmsd_isomorphic_atomicnums_matching_pyridine_stripped() -> None:
         ) == pytest.approx(0, abs=1e-4)
 
     # Isomorphic RMSD with atomic number matching is correct
-    assert rmsd.rmsd_isomorphic(
+    assert rmsd.symmrmsd(
         mol1.coordinates,
         mol2.coordinates,
         mol1.adjacency_matrix,
@@ -438,7 +438,7 @@ def test_rmsd_isomorphic_atomicnums_matching_pyridine_stripped() -> None:
         (10, 1.37842, True),
     ],
 )
-def test_rmsd_isomorphic(index: int, RMSD: float, minimize: bool) -> None:
+def test_rmsd_symmrmsd(index: int, RMSD: float, minimize: bool) -> None:
 
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mol = copy.deepcopy(molecules.docking_1cbr[index])
@@ -446,7 +446,7 @@ def test_rmsd_isomorphic(index: int, RMSD: float, minimize: bool) -> None:
     molc.strip()
     mol.strip()
 
-    assert rmsd.rmsd_isomorphic(
+    assert rmsd.symmrmsd(
         molc.coordinates,
         mol.coordinates,
         molc.adjacency_matrix,
@@ -503,7 +503,7 @@ def test_multirmsd_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> No
     for mol in mols:
         mol.strip()
 
-    RMSDs = rmsd.multirmsd_isomorphic(
+    RMSDs = rmsd.symmrmsd(
         molc.coordinates,
         [mol.coordinates for mol in mols],
         molc.adjacency_matrix,
@@ -553,9 +553,7 @@ def test_multirmsd_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> No
         ),
     ],
 )
-def test_multirmsd_isomorphic_cache(
-    minimize: bool, referenceRMSDs: List[float]
-) -> None:
+def test_symmrmsd_cache(minimize: bool, referenceRMSDs: List[float]) -> None:
 
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mols = [copy.deepcopy(mol) for mol in molecules.docking_1cbr[1:]]
@@ -565,7 +563,7 @@ def test_multirmsd_isomorphic_cache(
     for mol in mols:
         mol.strip()
 
-    RMSDs = rmsd.multirmsd_isomorphic(
+    RMSDs = rmsd.symmrmsd(
         molc.coordinates,
         [mol.coordinates for mol in mols],
         molc.adjacency_matrix,
