@@ -42,12 +42,7 @@ setup(
     setup_requires=[] + pytest_runner,
     url="https://spyrmsd.readthedocs.io",
     # install_requires=[], # Required packages, pulls from pip if needed; do not use for Conda deployment
-    platforms=[
-        "Linux",
-        "Mac OS-X",
-        "Unix",
-        "Windows",
-    ],
+    platforms=["Linux", "Mac OS-X", "Unix", "Windows"],
     python_requires=">=3.6",
     # zip_safe=False,
 )

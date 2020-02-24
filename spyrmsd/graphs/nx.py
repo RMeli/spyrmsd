@@ -1,5 +1,5 @@
 import warnings
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, List, Optional, Union
 
 import networkx as nx
 import numpy as np
@@ -38,7 +38,7 @@ def graph_from_adjacency_matrix(
     return G
 
 
-def match_graphs(G1, G2) -> List[Dict[Any, Any]]:
+def match_graphs(G1, G2):
     """
     Compute RMSD using the quaternion polynomial method.
 
