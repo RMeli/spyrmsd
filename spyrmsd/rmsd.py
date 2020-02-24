@@ -131,9 +131,9 @@ def _rmsd_isomorphic_core(
         Coordinate of molecule 1
     coords2: np.ndarray
         Coordinates of molecule 2
-    atomicnums1: npndarray, optional
+    atomicnums1: npndarray
         Atomic numbers for molecule 1
-    atomicnums2: npndarray, optional
+    atomicnums2: npndarray
         Atomic numbers for molecule 2
     am1: np.ndarray
         Adjacency matrix for molecule 1
@@ -218,9 +218,9 @@ def symmrmsd(
         Coordinate of reference molecule
     coords: List[np.ndarray]
         Coordinates of other molecule
-    atomicnumsref: npndarray, optional
+    atomicnumsref: npndarray
         Atomic numbers for reference
-    atomicnums: npndarray, optional
+    atomicnums: npndarray
         Atomic numbers for other molecule
     amref: np.ndarray
         Adjacency matrix for reference molecule
