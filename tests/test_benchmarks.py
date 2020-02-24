@@ -1,10 +1,10 @@
-from spyrmsd import io, rmsd
-
-import pytest
-
-import numpy as np
 import os
 import re
+
+import numpy as np
+import pytest
+
+from spyrmsd import io, rmsd
 
 fdir = os.path.dirname(os.path.abspath(__file__))
 molpath = os.path.join(fdir, "data", "docking")
