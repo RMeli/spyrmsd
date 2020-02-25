@@ -1,0 +1,26 @@
+name: spyrmsd
+channels:
+  - conda-forge
+dependencies:
+  # Base
+  - python
+
+  # Maths
+  - numpy
+  - scipy
+  - graph-tool
+
+  # Chemistry
+  - openbabel
+  - qcelemental
+
+  # Testing
+  - pytest
+  - pytest-cov
+  - pytest-benchmark
+
+  # Dev
+  - mypy
+  - flake8
+  - black
+  - codecov

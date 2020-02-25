@@ -51,7 +51,9 @@ def test_rmsdwrapper_nosymm_protein(minimize: bool, referenceRMSDs: List[float])
     mol0 = copy.deepcopy(molecules.trp[0])
     mols = [copy.deepcopy(mol) for mol in molecules.trp[1:]]
 
-    RMSDs = spyrmsd.rmsdwrapper(mol0, mols, symmetry=False, minimize=minimize)
+    RMSDs = spyrmsd.rmsdwrapper(
+        mol0, mols, symmetry=False, minimize=minimize, strip=False
+    )
 
     for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
         assert RMSD == pytest.approx(referenceRMSD)

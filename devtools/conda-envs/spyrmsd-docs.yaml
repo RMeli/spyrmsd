@@ -5,13 +5,12 @@ channels:
 dependencies:
   # Base
   - python
-  - pip
-  - ipython
 
   # Maths
   - numpy
   - scipy
   - networkx
+  - graph-tool
 
   # Chemistry
   - openbabel 

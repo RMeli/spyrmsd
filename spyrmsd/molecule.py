@@ -1,7 +1,6 @@
 import warnings
 from typing import List, Optional, Union
 
-import networkx as nx
 import numpy as np
 import qcelemental as qcel
 
@@ -52,7 +51,7 @@ class Molecule:
             self.adjacency_matrix = np.asarray(adjacency_matrix, dtype=int)
 
         # Molecular graph
-        self.G: nx.Graph = None
+        self.G = None
 
         self.masses: Optional[List[float]] = None
 
@@ -114,7 +113,7 @@ class Molecule:
         """
         return utils.center_of_geometry(self.coordinates)
 
-    # TODO: Changhe name (to stripH)
+    # TODO: Change name (to stripH)
     def strip(self) -> None:
         """
         Strip hydrogen atoms.
@@ -134,15 +133,18 @@ class Molecule:
             if self.adjacency_matrix is not None:
                 self.adjacency_matrix = self.adjacency_matrix[np.ix_(idx, idx)]
 
+            # Reset molecular graph when stripping
+            self.G = None
+
             self.stripped = True
 
-    def to_graph(self) -> nx.Graph:
+    def to_graph(self):
         """
         Convert molecule to graph.
 
         Returns
         -------
-        networkx.Graph
+        Graph
             Molecular graph.
 
         Notes

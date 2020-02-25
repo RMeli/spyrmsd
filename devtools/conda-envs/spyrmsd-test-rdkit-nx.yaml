@@ -1,6 +1,7 @@
 name: spyrmsd
 channels:
   - conda-forge
+  - rdkit
 dependencies:
   # Base
   - python
@@ -11,12 +12,13 @@ dependencies:
   - networkx
 
   # Chemistry
-  - openbabel
+  - rdkit
   - qcelemental
 
   # Testing
   - pytest
   - pytest-cov
+  - pytest-benchmark
 
   # Dev
   - mypy

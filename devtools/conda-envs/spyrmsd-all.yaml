@@ -16,6 +16,7 @@ dependencies:
   - pandas
   - scipy
   - networkx
+  - graph-tool
   - scikit-learn
 
   # Chemistry
@@ -29,6 +30,7 @@ dependencies:
   # Testing
   - pytest
   - pytest-cov
+  - pytest-benchmark
   - codecov
 
   # Doc

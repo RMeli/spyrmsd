@@ -6,7 +6,7 @@ import rdkit.Chem as Chem
 from spyrmsd import molecule, utils
 
 
-def load(fname: str) -> Chem.rdchem.Mol:
+def load(fname: str):
     """
     Load molecule from file.
 
@@ -17,8 +17,7 @@ def load(fname: str) -> Chem.rdchem.Mol:
 
     Returns
     -------
-    Chem.rdchem.Mol
-        RDkit molecule
+    Molecule
     """
 
     fmt = utils.molformat(fname)
@@ -35,7 +34,7 @@ def load(fname: str) -> Chem.rdchem.Mol:
     return rdmol
 
 
-def loadall(fname: str) -> List[Chem.rdchem.Mol]:
+def loadall(fname: str):
     """
     Load molecules from file.
 
@@ -46,8 +45,7 @@ def loadall(fname: str) -> List[Chem.rdchem.Mol]:
 
     Returns
     -------
-    List[Chem.rdchem.Mol]
-        List of RDkit molecules
+    List of molecules
     """
 
     fmt = utils.molformat(fname)
@@ -71,8 +69,8 @@ def adjacency_matrix(mol) -> np.ndarray:
 
     Parameters
     ----------
-    mol: Chem.rdchem.Mol
-        RDkit molecule
+    mol:
+        Molecule
 
     Returns
     -------
@@ -85,19 +83,19 @@ def adjacency_matrix(mol) -> np.ndarray:
 
 def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
     """
-    Transform RDKit molecule to `pyrmsd` molecule.
+    Transform molecule to `pyrmsd` molecule.
 
     Parameters
     ----------
-    mol: Chem.rdchem.Mol
-        RDKit molecule
+    mol:
+        Molecule
     adjacency: boolean, optional
-        Flag to decide wether to build the adjacency matrix from the RDKit molecule
+        Flag to decide wether to build the adjacency matrix from molecule
 
     Returns
     -------
-    pyrmsd.molecule.Molecule
-        `pyrmsd` molecule
+    spyrmsd.molecule.Molecule
+        `spyrmsd` molecule
     """
 
     atoms = mol.GetAtoms()
@@ -128,8 +126,8 @@ def numatoms(mol) -> int:
 
     Parameters
     ----------
-    mol: Chem.rdchem.Mol
-        RDKit molecule
+    mol:
+        Molecule
 
     Returns
     -------
@@ -145,8 +143,8 @@ def numbonds(mol) -> int:
 
     Parameters
     ----------
-    mol: Chem.rdchem.Mol
-        RDKit molecule
+    mol:
+        Molecule
 
     Returns
     -------
@@ -162,8 +160,8 @@ def bonds(mol) -> List[Tuple[int, int]]:
 
     Parameters
     ----------
-    mol: Chem.rdchem.Mol
-        RDKit molecule
+    mol:
+        Molecule
 
     Returns
     -------

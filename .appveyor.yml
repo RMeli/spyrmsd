@@ -3,22 +3,28 @@ environment:
     - PYTHON: "C:\\Miniconda36-x64"
       PYTHON_VERSION: "3.6"
       CHEM: "obabel"
+      GRAPH: "nx"
       PYTHON_ARCH: "64"
 
     - PYTHON: "C:\\Miniconda36-x64"
       PYTHON_VERSION: "3.6"
       CHEM: "rdkit"
+      GRAPH: "nx"
       PYTHON_ARCH: "64"
 
     - PYTHON: "C:\\Miniconda37-x64"
       PYTHON_VERSION: "3.7"
       CHEM: "obabel"
+      GRAPH: "nx"
       PYTHON_ARCH: "64"
     
     - PYTHON: "C:\\Miniconda37-x64"
       PYTHON_VERSION: "3.7"
       CHEM: "rdkit"
+      GRAPH: "nx"
       PYTHON_ARCH: "64"
+    
+    # graph-tool not supported on Windows
 
 install:
     # Make sure pip is around
@@ -35,7 +41,7 @@ install:
   - conda update --all
 
     # Create test environment for package
-  - python devtools\\scripts\\create_conda_env.py -n=test -p=%PYTHON_VERSION% devtools\\conda-envs\\spyrmsd-test-%CHEM%.yaml
+  - python devtools\\scripts\\create_conda_env.py -n=test -p=%PYTHON_VERSION% devtools\\conda-envs\\spyrmsd-test-%CHEM%-%GRAPH%.yaml
 
     # Activate the test environment
   - activate test
@@ -47,10 +53,9 @@ build: false
 
 test_script:
     # Run test and get coverage report
-  - pytest -v --cov=spyrmsd tests
+  - pytest -v --cov=spyrmsd tests --runslow
 
     # Run checks
-  - black .
   - flake8
   - mypy
 
