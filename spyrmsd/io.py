@@ -46,3 +46,47 @@ else:
         "numbonds",
         "bonds",
     ]
+
+from typing import List
+
+from spyrmsd import molecule
+
+
+def loadmol(fname: str) -> molecule.Molecule:
+    """
+    Load molecule from file.
+
+    Parameters
+    ----------
+    fname: str
+        File name
+
+    Returns
+    -------
+    molecule.Molecule
+        `spyrmsd` molecule
+    """
+
+    mol = load(fname)
+
+    return to_molecule(mol)
+
+
+def loadallmols(fname: str) -> List[molecule.Molecule]:
+    """
+    Load molecules from file.
+
+    Parameters
+    ----------
+    fname: str
+        File name
+
+    Returns
+    -------
+    List[molecule.Molecule]
+        `spyrmsd` molecules
+    """
+
+    mols = loadall(fname)
+
+    return [to_molecule(mol) for mol in mols]
