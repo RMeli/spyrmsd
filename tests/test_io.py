@@ -91,9 +91,9 @@ def test_loadall_pdb(molfile, natoms: int, nbonds: int) -> None:
     except NotImplementedError:  # PDBMolSupplier in RDkit is not supported
         pass  # TODO: Warning
 
+
 @pytest.mark.parametrize(
-    "molfile, natoms",
-    [("benzene.sdf", 12), ("ethanol.sdf", 9), ("dialanine.sdf", 23)],
+    "molfile, natoms", [("benzene.sdf", 12), ("ethanol.sdf", 9), ("dialanine.sdf", 23)],
 )
 def test_loadmol_sdf(molfile, natoms: int) -> None:
 
@@ -101,21 +101,25 @@ def test_loadmol_sdf(molfile, natoms: int) -> None:
 
     assert len(m) == natoms
 
+
 @pytest.mark.parametrize(
     "molfile, natoms", [("1cbr_ligand.mol2", 49)],
 )
-def test_load_mol2(molfile, natoms: int) -> None:
+def test_loadmol_mol2(molfile, natoms: int) -> None:
 
     m = io.loadmol(os.path.join(molpath, molfile))
 
     assert len(m) == natoms
 
-def test_loadall_sdf(molfile, natoms: int, nbonds: int) -> None:
+
+@pytest.mark.parametrize(
+    "molfile, natoms", [("1cbr_docking.sdf", 22)],
+)
+def test_loadallmols_sdf(molfile, natoms: int) -> None:
 
     ms = io.loadallmols(os.path.join(molpath, molfile))
 
     assert len(ms) == 10
 
     for m in ms:
-        assert io.numatoms(m) == natoms
-        assert io.numbonds(m) == nbonds
+        assert len(m) == natoms
