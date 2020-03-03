@@ -90,6 +90,8 @@ def test_loadall_pdb(molfile, natoms: int, nbonds: int) -> None:
 
     except NotImplementedError:  # PDBMolSupplier in RDkit is not supported
         pass  # TODO: Warning
+
+
 def test_loadall_pdb_single_model() -> None:
     """
     Test load_all function for PDB files when only a single model is present.

@@ -56,7 +56,7 @@ def loadall(fname: str):
     # FIXME: Special handling for multi-model PDB files
     # See OpenBabel Issue #2097
     if fmt == "pdb":
-        if len(obmols) > 1: # Multi-model PDB file
+        if len(obmols) > 1:  # Multi-model PDB file
             obmols = obmols[:-1]
 
     return obmols
