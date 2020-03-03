@@ -30,14 +30,14 @@ object:
 
 .. code:: ipython3
 
-    ref = io.to_molecule(io.load("molecules/1a4k_ligand.sdf"))
+    ref = io.loadmol("molecules/1a4k_ligand.sdf")
 
-``io.load`` load a single molecule from a file. In order to load all
-molecules we need to use ``io.loadall``:
+``io.loadmol`` load a single molecule from a file. In order to load all
+molecules we need to use ``io.loadallmols``:
 
 .. code:: ipython3
 
-    mols = [io.to_molecule(mol) for mol in io.loadall("molecules/1a4k_dock.sdf")]
+    mols = io.loadallmols("molecules/1a4k_dock.sdf")
 
 Removing Hydrogen Atoms
 ~~~~~~~~~~~~~~~~~~~~~~~
