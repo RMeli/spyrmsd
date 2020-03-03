@@ -139,8 +139,7 @@ if __name__ == "__main__":
     ref = io.to_molecule(inref, adjacency=True)
 
     # Load all molecules
-    inmols = [inmol for molfile in args.molecules for inmol in io.loadall(molfile)]
-    mols = [io.to_molecule(mol, adjacency=True) for mol in inmols]
+    mols = [mol for molfile in args.molecules for mol in io.loadallmols(molfile)]
 
     # Loop over molecules within fil
     RMSDlist = rmsdwrapper(
