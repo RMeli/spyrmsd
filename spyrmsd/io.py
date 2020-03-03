@@ -52,7 +52,7 @@ from typing import List
 from spyrmsd import molecule
 
 
-def loadmol(fname: str) -> molecule.Molecule:
+def loadmol(fname: str, adjacency: bool = True) -> molecule.Molecule:
     """
     Load molecule from file.
 
@@ -69,10 +69,10 @@ def loadmol(fname: str) -> molecule.Molecule:
 
     mol = load(fname)
 
-    return to_molecule(mol)
+    return to_molecule(mol, adjacency=adjacency)
 
 
-def loadallmols(fname: str) -> List[molecule.Molecule]:
+def loadallmols(fname: str, adjacency: bool = True) -> List[molecule.Molecule]:
     """
     Load molecules from file.
 
@@ -89,4 +89,4 @@ def loadallmols(fname: str) -> List[molecule.Molecule]:
 
     mols = loadall(fname)
 
-    return [to_molecule(mol) for mol in mols]
+    return [to_molecule(mol, adjacency=adjacency) for mol in mols]
