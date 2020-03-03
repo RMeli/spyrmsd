@@ -89,4 +89,54 @@ def test_loadall_pdb(molfile, natoms: int, nbonds: int) -> None:
             assert io.numbonds(m) == nbonds
 
     except NotImplementedError:  # PDBMolSupplier in RDkit is not supported
-        pass  # Warning
+        pass  # TODO: Warning
+
+
+def test_loadall_pdb_single_model() -> None:
+    """
+    Test load_all function for PDB files when only a single model is present.
+    """
+
+    try:
+        ms = io.loadall(os.path.join(molpath, "1a99_ligand.pdb"))
+
+        assert len(ms) == 1
+
+        assert io.numatoms(ms[0]) == 20
+        assert io.numbonds(ms[0]) == 19
+
+    except NotImplementedError:  # PDBMolSupplier in RDkit is not supported
+        pass  # TODO: Warning
+
+
+@pytest.mark.parametrize(
+    "molfile, natoms", [("benzene.sdf", 12), ("ethanol.sdf", 9), ("dialanine.sdf", 23)],
+)
+def test_loadmol_sdf(molfile, natoms: int) -> None:
+
+    m = io.loadmol(os.path.join(molpath, molfile))
+
+    assert len(m) == natoms
+
+
+@pytest.mark.parametrize(
+    "molfile, natoms", [("1cbr_ligand.mol2", 49)],
+)
+def test_loadmol_mol2(molfile, natoms: int) -> None:
+
+    m = io.loadmol(os.path.join(molpath, molfile))
+
+    assert len(m) == natoms
+
+
+@pytest.mark.parametrize(
+    "molfile, natoms", [("1cbr_docking.sdf", 22)],
+)
+def test_loadallmols_sdf(molfile, natoms: int) -> None:
+
+    ms = io.loadallmols(os.path.join(molpath, molfile))
+
+    assert len(ms) == 10
+
+    for m in ms:
+        assert len(m) == natoms

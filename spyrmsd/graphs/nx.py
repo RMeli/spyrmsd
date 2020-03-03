@@ -1,5 +1,5 @@
 import warnings
-from typing import Any, List, Optional, Union, Tuple
+from typing import Any, List, Optional, Tuple, Union
 
 import networkx as nx
 import numpy as np

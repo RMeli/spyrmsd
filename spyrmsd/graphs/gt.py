@@ -1,5 +1,5 @@
 import warnings
-from typing import Any, List, Optional, Union, Tuple
+from typing import Any, List, Optional, Tuple, Union
 
 import graph_tool as gt
 import numpy as np
