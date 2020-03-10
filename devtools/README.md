@@ -24,3 +24,19 @@ Channels are usually not specified here and therefore respect global Conda confi
 
 * `scripts`
   * `create_conda_env.py`: Helper program for spinning up new Conda environments based on a starter file with Python Version and Env.
+
+## Deployment
+
+### PyPI
+
+Build wheel and sdist:
+
+```bash
+flit build
+```
+
+Upload wheel and sdist on [PyPI](https://pypi.org/):
+
+```bash
+flit publish
+```

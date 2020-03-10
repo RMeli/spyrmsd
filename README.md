@@ -15,6 +15,10 @@ Python tool for symmetry-corrected RMSD calculations.
 
 ## Installation
 
+`spyrmsd` is available on [PyPI](https://pypi.org/project/spyrmsd/) and can be easily installed from source. See [Dependencies](###Dependencies) for a description of all the dependencies.
+
+_Note_: `spyrmsd` will install [NetworkX](https://networkx.github.io/) (multi-platform). You can install [graph-tool](https://graph-tool.skewed.de/) on macOS and Linux for higher performance.
+
 ### PyPI
 
 ```bash
@@ -31,6 +35,8 @@ pip install .
 
 ### conda
 
+Coming soon.
+
 ### Dependencies
 
 `spyrmsd` can be used both as a module or a standalone tool.
@@ -44,12 +50,16 @@ The following packages are required to use `spyrmsd` as a module:
 * [scipy](https://www.scipy.org/)
 * [qcelemental](http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/)
 
+_Note_: `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will  fall back  to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows).
+
 #### Standalone Tool
 
 Additionally, one of the following packages are required to use `spyrmsd` as a standalone tool:
 
 * [Open Babel](http://openbabel.org/)
 * [RDKit](https://rdkit.org/)
+
+_Note_: [RDKit](https://rdkit.org/) has to be installed using `conda` ([Why the RDKit isn't available on PyPi](https://rdkit.blogspot.com/2019/11/why-rdkit-isnt-available-on-pypi.html)).
 
 ## Usage
 
@@ -100,22 +110,6 @@ To ensure code quality and consistency the following tools are used during devel
 * [black](https://black.readthedocs.io/en/stable/)
 * [Flake 8](http://flake8.pycqa.org/en/latest/) (CI)
 * [mypy](http://mypy-lang.org/) (CI)
-
-## Deployment
-
-### PyPI
-
-Build wheel and sdist:
-
-```bash
-flit build
-```
-
-Upload wheel and sdist on [PyPI](https://pypi.org/):
-
-```bash
-flit publish
-```
 
 ## References
 
