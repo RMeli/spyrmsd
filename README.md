@@ -25,6 +25,12 @@ _Note_: `spyrmsd` will install [NetworkX](https://networkx.github.io/) (multi-pl
 pip install spyrmsd
 ```
 
+### conda
+
+```bash
+conda install spyrmsd -c conda-forge
+```
+
 ### GitHub
 
 ```bash
@@ -32,10 +38,6 @@ git clone https://github.com/RMeli/spyrmsd.git
 cd spyrmsd
 pip install .
 ```
-
-### conda
-
-Coming soon.
 
 ### Dependencies
 
