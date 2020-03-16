@@ -24,7 +24,7 @@ jobs:
       run: |
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
         bash Miniconda3-latest-Linux-x86_64.sh
-        conda create -f devtools/conda-envs/spyrmsd-test-obabel-nx.yaml
+        conda create -f devtools/conda-envs/spyrmsd-test-obabel-nx.yaml --yes
     - name: Lint with flake8 and mypy
       run: |
         flake8 . --count --show-source --statistics
