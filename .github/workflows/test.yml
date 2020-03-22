@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        bash Miniconda3-latest-Linux-x86_64.sh
+        bash Miniconda3-latest-Linux-x86_64.sh -b
         conda env create -f devtools/conda-envs/spyrmsd-test-obabel-nx.yaml
     - name: Lint with flake8 and mypy
       run: |
