@@ -118,6 +118,8 @@ if __name__ == "__main__":
 
     from spyrmsd import io
 
+    import sys
+
     import argparse as ap
 
     parser = ap.ArgumentParser(description="Python RMSD tool.")
@@ -135,11 +137,18 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    inref = io.load(args.reference)
-    ref = io.to_molecule(inref, adjacency=True)
+    try:
+        ref = io.loadmol(args.reference)
+    except OSError:
+        print("ERROR: Reference file not found.", file=sys.stderr)
+        exit(-1)
 
     # Load all molecules
-    mols = [mol for molfile in args.molecules for mol in io.loadallmols(molfile)]
+    try:
+        mols = [mol for molfile in args.molecules for mol in io.loadallmols(molfile)]
+    except OSError:
+        print("ERROR: Molecule file(s) not found.", file=sys.stderr)
+        exit(-1)
 
     # Loop over molecules within fil
     RMSDlist = rmsdwrapper(
