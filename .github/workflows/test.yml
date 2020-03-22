@@ -23,8 +23,13 @@ jobs:
     - name: Install dependencies
       run: |
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        bash Miniconda3-latest-Linux-x86_64.sh -b
-        conda init bash
+        bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
+        echo ". $MINICONDA_HOME/etc/profile.d/conda.sh" >> ~/.bashrc
+        echo "conda activate" >> ~/.bashrc
+        source ~/.bashrc
+        conda config --set always_yes yes
+        conda install conda conda-build
+        conda update --quiet --all
         conda env create -f devtools/conda-envs/spyrmsd-test-obabel-nx.yaml
         conda activate spyrmsd
     - name: Install  package
