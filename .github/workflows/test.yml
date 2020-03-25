@@ -22,8 +22,7 @@ jobs:
       run: |
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
         bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
-        echo ". $HOME/miniconda/etc/profile.d/conda.sh" >> ~/.bashrc
-        echo "conda activate" >> ~/.bashrc
+        conda init bash
         source ~/.bashrc
         conda config --set always_yes yes
         conda install conda conda-build
