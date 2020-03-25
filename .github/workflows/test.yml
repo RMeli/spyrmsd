@@ -18,18 +18,12 @@ jobs:
     - uses: actions/checkout@v2
     - name: Set up Python
       uses: actions/setup-python@v1
-    - name: Install dependencies
-      run: |
-        wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
-        conda init bash
-        source ~/.bashrc
-        conda config --set always_yes yes
-        conda install conda conda-build
-        conda update --quiet --all
-        conda env create -f devtools/conda-envs/spyrmsd-test-obabel-nx.yaml
-        conda activate spyrmsd
-    - name: Install  package
+    - name: Set up conda
+      uses: goanpeca/setup-miniconda@v1
+        with:
+           activate-environment: spyrmsd
+           environment-file: devtools/conda-envs/spyrmsd-test-obabel-nx.yaml
+    - name: Install package
       run: |
         python setup.py develop --no-deps
     - name: Lint with flake8 and mypy
