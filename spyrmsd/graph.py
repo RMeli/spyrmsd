@@ -9,7 +9,7 @@ try:
         cycle,
     )
 
-except ImpotError:
+except ImportError:
     try:
         from spyrmsd.graphs.nx import (
             graph_from_adjacency_matrix,
