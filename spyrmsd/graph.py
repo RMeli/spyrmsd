@@ -11,7 +11,7 @@ try:
 
 except ImportError:
     try:
-        from spyrmsd.graphs.nx import (
+         from spyrmsd.graphs.nx import (
             graph_from_adjacency_matrix,
             match_graphs,
             vertex_property,
