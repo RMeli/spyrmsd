@@ -18,7 +18,7 @@ Python tool for symmetry-corrected RMSD calculations.
 
 ## Installation
 
-`spyrmsd` is available on [PyPI](https://pypi.org/project/spyrmsd/) and can be easily installed from source. See [Dependencies](###Dependencies) for a description of all the dependencies.
+`spyrmsd` is available on [PyPI](https://pypi.org/project/spyrmsd/) and [conda-forge](https://github.com/conda-forge/spyrmsd-feedstock) and can be easily installed from source. See [Dependencies](###Dependencies) for a description of all the dependencies.
 
 _Note_: `spyrmsd` will install [NetworkX](https://networkx.github.io/) (multi-platform). You can install [graph-tool](https://graph-tool.skewed.de/) on macOS and Linux for higher performance.
 
@@ -44,7 +44,7 @@ pip install .
 
 ### Dependencies
 
-`spyrmsd` can be used both as a module or a standalone tool.
+`spyrmsd` can be used both as a module or as a standalone tool.
 
 #### Module
 
@@ -59,7 +59,7 @@ _Note_: `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default bu
 
 #### Standalone Tool
 
-Additionally, one of the following packages are required to use `spyrmsd` as a standalone tool:
+Additionally, one of the following packages is required to use `spyrmsd` as a standalone tool:
 
 * [Open Babel](http://openbabel.org/)
 * [RDKit](https://rdkit.org/)
