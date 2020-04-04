@@ -22,7 +22,7 @@ jobs:
     - name: Build and publish
       env:
         FLIT_USERNAME: ${{ secrets.FLIT_USERNAME }}
-        FLIT_PASSWORD: ${{ secrets.FLITT_PASSWORD }}
+        FLIT_PASSWORD: ${{ secrets.FLIT_PASSWORD }}
       run: |
         flit build
         flit publish
