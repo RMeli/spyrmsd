@@ -6,6 +6,9 @@
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/RMeli/spyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
 [![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=develop)](https://spyrmsd.readthedocs.io/en/develop/?badge=develop)
 
+![flake8](https://github.com/RMeli/spyrmsd/workflows/flake8/badge.svg)
+![mypy](https://github.com/RMeli/spyrmsd/workflows/mypy/badge.svg)
+
 [![DOI](https://zenodo.org/badge/214157073.svg)](https://zenodo.org/badge/latestdoi/214157073)
 [![Docs](https://img.shields.io/badge/docs-spyrmsd.readthedocs.io-blueviolet)](https://spyrmsd.readthedocs.io)
 [![PyPI](https://img.shields.io/badge/PyPI-0.3.0%20-ff69b4)](https://pypi.org/project/spyrmsd/)
