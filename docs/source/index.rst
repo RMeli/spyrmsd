@@ -7,6 +7,7 @@ sPyRMSD documentation
    :maxdepth: 2
    :caption: Contents:
 
+   installation
    tutorials/tutorial
    api
 

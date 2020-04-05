@@ -63,7 +63,7 @@ def rmsd(
     return rmsd
 
 
-def rmsd_hungarian(
+def hrmsd(
     coords1: np.ndarray,
     coords2: np.ndarray,
     atomicn1: np.ndarray,

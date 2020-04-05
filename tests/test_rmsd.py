@@ -203,7 +203,7 @@ def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0)
 
-    assert rmsd.rmsd_hungarian(
+    assert rmsd.hrmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0)
 
@@ -214,7 +214,7 @@ def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
         rmsd.rmsd(mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums)
         > 0
     )
-    assert rmsd.rmsd_hungarian(
+    assert rmsd.hrmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0, abs=tol)
 
@@ -233,7 +233,7 @@ def test_rmsd_hungarian_benzene_shifted_rotated(angle: float, tol: float) -> Non
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(1)
 
-    assert rmsd.rmsd_hungarian(
+    assert rmsd.hrmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(1)
 
@@ -244,7 +244,7 @@ def test_rmsd_hungarian_benzene_shifted_rotated(angle: float, tol: float) -> Non
         rmsd.rmsd(mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums)
         > 1
     )
-    assert rmsd.rmsd_hungarian(
+    assert rmsd.hrmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(1, abs=tol)
 
@@ -258,13 +258,11 @@ def test_rmsd_hungarian_centred(mol: molecule.Molecule) -> None:
     mol2.translate(np.random.rand(3))
 
     assert (
-        rmsd.rmsd_hungarian(
-            mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
-        )
+        rmsd.hrmsd(mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums)
         > 0
     )
 
-    assert rmsd.rmsd_hungarian(
+    assert rmsd.hrmsd(
         mol1.coordinates,
         mol2.coordinates,
         mol1.atomicnums,
@@ -325,7 +323,7 @@ def test_symmrmsd_rotated_benzene(angle: float) -> None:
         minimize=True,
     ) == pytest.approx(0)
 
-    assert rmsd.rmsd_hungarian(
+    assert rmsd.hrmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0, abs=1e-4)
 
@@ -363,7 +361,7 @@ def test_symmrmsd_rotated_benzene_stripped(angle: float) -> None:
         minimize=True,
     ) == pytest.approx(0)
 
-    assert rmsd.rmsd_hungarian(
+    assert rmsd.hrmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0, abs=1e-4)
 

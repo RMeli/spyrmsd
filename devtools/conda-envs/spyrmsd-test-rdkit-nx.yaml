@@ -9,7 +9,7 @@ dependencies:
   # Maths
   - numpy
   - scipy
-  - networkx
+  - networkx>=2
 
   # Chemistry
   - rdkit

@@ -149,8 +149,8 @@ class Molecule:
 
         Notes
         -----
-        The molecule needs to have an associated adjacency matrix. Bond perception
-        will be implemented in later versions.
+        If the molecule does not have an associated adjacency matrix, a simple
+        bond perception is used.
 
         The molecular graph is cached.
         """
