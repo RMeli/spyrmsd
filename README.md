@@ -2,20 +2,18 @@
 
 [![Travis Build Status](https://travis-ci.org/RMeli/spyrmsd.svg?branch=develop)](https://travis-ci.org/RMeli/spyrmsd)
 [![Build status](https://ci.appveyor.com/api/projects/status/31ubs980idhv1qw8/branch/develop?svg=true)](https://ci.appveyor.com/project/RMeli/spyrmsd/branch/master)
+![flake8](https://github.com/RMeli/spyrmsd/workflows/flake8/badge.svg)
+![mypy](https://github.com/RMeli/spyrmsd/workflows/mypy/badge.svg)
 [![codecov](https://codecov.io/gh/RMeli/spyrmsd/branch/develop/graph/badge.svg)](https://codecov.io/gh/RMeli/spyrmsd/branch/master)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/RMeli/spyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
 
 [![Docs](https://img.shields.io/badge/docs-spyrmsd.readthedocs.io-blueviolet)](https://spyrmsd.readthedocs.io)
 [![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=develop)](https://spyrmsd.readthedocs.io/en/develop/?badge=develop)
 
-![flake8](https://github.com/RMeli/spyrmsd/workflows/flake8/badge.svg)
-![mypy](https://github.com/RMeli/spyrmsd/workflows/mypy/badge.svg)
-
-[![PyPI](https://img.shields.io/badge/PyPI-v0.3.2%20-ff69b4)](https://pypi.org/project/spyrmsd/)
-[![Conda Version](https://img.shields.io/conda/vn/conda-forge/spyrmsd.svg)](https://anaconda.org/conda-forge/spyrmsd)
-
 [![DOI](https://zenodo.org/badge/214157073.svg)](https://zenodo.org/badge/latestdoi/214157073)
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
+[![PyPI](https://img.shields.io/badge/PyPI-v0.3.2%20-ff69b4)](https://pypi.org/project/spyrmsd/)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/spyrmsd.svg)](https://anaconda.org/conda-forge/spyrmsd)
 
 Python tool for symmetry-corrected RMSD calculations.
 
