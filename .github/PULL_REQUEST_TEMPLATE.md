@@ -1,12 +1,8 @@
 ## Description
-Provide a brief description of the PR's purpose here.
 
-## Todos
-Notable points that this PR has either accomplished or will accomplish.
-  - [ ] TODO 1
+<!-- Provide a brief description of the PR's purpose here. -->
 
-## Questions
-- [ ] Question1
+## Checklist
 
-## Status
-- [ ] Ready to go
+- [ ] Tests
+- [ ] Documentation

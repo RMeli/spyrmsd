@@ -2,17 +2,18 @@
 
 [![Travis Build Status](https://travis-ci.org/RMeli/spyrmsd.svg?branch=develop)](https://travis-ci.org/RMeli/spyrmsd)
 [![Build status](https://ci.appveyor.com/api/projects/status/31ubs980idhv1qw8/branch/develop?svg=true)](https://ci.appveyor.com/project/RMeli/spyrmsd/branch/master)
-[![codecov](https://codecov.io/gh/RMeli/spyrmsd/branch/develop/graph/badge.svg)](https://codecov.io/gh/RMeli/spyrmsd/branch/master)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/RMeli/spyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
-[![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=develop)](https://spyrmsd.readthedocs.io/en/develop/?badge=develop)
-
 ![flake8](https://github.com/RMeli/spyrmsd/workflows/flake8/badge.svg)
 ![mypy](https://github.com/RMeli/spyrmsd/workflows/mypy/badge.svg)
+[![codecov](https://codecov.io/gh/RMeli/spyrmsd/branch/develop/graph/badge.svg)](https://codecov.io/gh/RMeli/spyrmsd/branch/master)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/RMeli/spyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
+
+[![Docs](https://img.shields.io/badge/docs-spyrmsd.readthedocs.io-blueviolet)](https://spyrmsd.readthedocs.io)
+[![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=develop)](https://spyrmsd.readthedocs.io/en/develop/?badge=develop)
 
 [![DOI](https://zenodo.org/badge/214157073.svg)](https://zenodo.org/badge/latestdoi/214157073)
-[![Docs](https://img.shields.io/badge/docs-spyrmsd.readthedocs.io-blueviolet)](https://spyrmsd.readthedocs.io)
-[![PyPI](https://img.shields.io/badge/PyPI-0.3.1%20-ff69b4)](https://pypi.org/project/spyrmsd/)
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
+[![PyPI](https://img.shields.io/badge/PyPI-v0.3.3%20-ff69b4)](https://pypi.org/project/spyrmsd/)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/spyrmsd.svg)](https://anaconda.org/conda-forge/spyrmsd)
 
 Python tool for symmetry-corrected RMSD calculations.
 
@@ -115,14 +116,6 @@ To ensure code quality and consistency the following tools are used during devel
 * [black](https://black.readthedocs.io/en/stable/)
 * [Flake 8](http://flake8.pycqa.org/en/latest/) (CI)
 * [mypy](http://mypy-lang.org/) (CI)
-
-## References
-
-| Method    | Reference                                          | DOI |
-| :-------: | -------------------------------------------------- | :--: |
-| QCP       | D. L. Theobald, Acta Crys. A**61**, 478-480 (2005) | [![doi](https://img.shields.io/badge/doi-10.1107%2FS0108767305015266-blue)](https://doi.org/10.1107/S0108767305015266) |
-| Hungarian | W. J. Allen and R. C. Rizzo, J. Chem. Inf. Model. **54**, 518-529 (2014) | [![doi](https://img.shields.io/badge/doi-10.1021%2Fci400534h-blue)](https://doi.org/10.1021/ci400534h) |
-| Connectivity | E. C. Meng and R. A. Lewis, J. Comp. Chem. **12**, 891-898 (1991) | [![doi](https://img.shields.io/badge/doi-10.1002%2Fjcc.540120716-blue)](https://doi.org/10.1002/jcc.540120716) |
 
 ## Copyright
 
