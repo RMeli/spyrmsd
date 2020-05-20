@@ -1,6 +1,8 @@
 [run]
 source = spyrmsd
-omit = spyrmsd/_version.py
+omit = 
+    spyrmsd/_version.py
+    spyrmsd/due.py
 
 [report]
 exclude_lines =
