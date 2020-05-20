@@ -12,7 +12,7 @@ del get_versions, versions
 
 # This will print latest Zenodo version
 due.cite(
-    Doi("10.5281/zenodo.3631876"),  # lgtm [py/procedure-return-value-used]
+    Doi("10.5281/zenodo.3631876"),  # lgtm[py/procedure-return-value-used]
     path="spyrmsd",
     description="spyRMSD: Symmetry-Corrected RMSD in Python",
 )
