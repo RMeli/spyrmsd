@@ -4,9 +4,7 @@ import scipy
 from .due import due, Doi
 
 due.cite(
-    Doi("10.1021/ci400534h"),
-    path="spyrmsd.hungarian",
-    description="Hungarian method",
+    Doi("10.1021/ci400534h"), path="spyrmsd.hungarian", description="Hungarian method",
 )
 
 
