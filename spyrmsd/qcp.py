@@ -6,8 +6,8 @@ from scipy import optimize
 from .due import due, Doi
 
 due.cite(
-    Doi("10.1107/S0108767305015266"), # lgtm [py/procedure-return-value-used]
-    path="spyrmsd.qcp", 
+    Doi("10.1107/S0108767305015266"),  # lgtm [py/procedure-return-value-used]
+    path="spyrmsd.qcp",
     description="QCP method",
 )
 
