@@ -35,7 +35,9 @@ dependencies:
 
   # Doc
   - sphinx
-  - sphinx_rtd_theme 
+  - sphinx_rtd_theme
+  - pip:
+    - duecredit
 
   # Dev
   - mypy

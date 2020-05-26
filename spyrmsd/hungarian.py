@@ -1,6 +1,14 @@
 import numpy as np
 import scipy
 
+from .due import due, Doi
+
+due.cite(
+    Doi("10.1021/ci400534h"),  # lgtm[py/procedure-return-value-used]
+    path="spyrmsd.hungarian",
+    description="Hungarian method",
+)
+
 
 def cost_mtx(A: np.ndarray, B: np.ndarray):
     """
