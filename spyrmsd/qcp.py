@@ -3,6 +3,14 @@ from typing import Tuple
 import numpy as np
 from scipy import optimize
 
+from .due import due, Doi
+
+due.cite(
+    Doi("10.1107/S0108767305015266"),  # lgtm[py/procedure-return-value-used]
+    path="spyrmsd.qcp",
+    description="QCP method",
+)
+
 
 def M_mtx(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     """

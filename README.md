@@ -121,6 +121,10 @@ To ensure code quality and consistency the following tools are used during devel
 
 Copyright (c) 2019-2020, Rocco Meli.
 
+## References
+
+References are tracked with [duecredit](https://github.com/duecredit/duecredit/). Run the `credits.sh` script in order to print up-to-date references.
+
 ### Acknowledgements
 
 Project based on the [Computational Molecular Science Python Cookiecutter](https://github.com/molssi/cookiecutter-cms) version `1.1`.
