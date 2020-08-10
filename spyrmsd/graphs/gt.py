@@ -87,7 +87,10 @@ def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
     # Check if graphs are actually isomorphic
     if len(maps) == 0:
         # TODO: Create a new exception
-        raise ValueError(f"Graphs {G1} and {G2} are not isomorphic.")
+        raise ValueError(
+            f"Graphs are not isomorphic."
+            "\nMake sure graphs have the same connectivity."
+        )
 
     n = num_vertices(G1)
 
