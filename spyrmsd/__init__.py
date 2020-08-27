@@ -2,8 +2,8 @@
 Python RMSD tool with symmetry correction.
 """
 
-from .due import due, Doi
 from ._version import get_versions
+from .due import Doi, due
 
 versions = get_versions()
 __version__ = versions["version"]

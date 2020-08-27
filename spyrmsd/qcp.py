@@ -3,7 +3,7 @@ from typing import Tuple
 import numpy as np
 from scipy import optimize
 
-from .due import due, Doi
+from .due import Doi, due
 
 due.cite(
     Doi("10.1107/S0108767305015266"),  # lgtm[py/procedure-return-value-used]
