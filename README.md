@@ -10,12 +10,28 @@
 [![Docs](https://img.shields.io/badge/docs-spyrmsd.readthedocs.io-blueviolet)](https://spyrmsd.readthedocs.io)
 [![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=develop)](https://spyrmsd.readthedocs.io/en/develop/?badge=develop)
 
-[![DOI](https://zenodo.org/badge/214157073.svg)](https://zenodo.org/badge/latestdoi/214157073)
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
 [![PyPI](https://img.shields.io/badge/PyPI-v0.3.4%20-ff69b4)](https://pypi.org/project/spyrmsd/)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/spyrmsd.svg)](https://anaconda.org/conda-forge/spyrmsd)
 
+[![J. Cheminform.](https://img.shields.io/badge/J.%20Cheminform.-10.1186%2Fs13321--020--00455--2-blue)](https://doi.org/10.1186/s13321-020-00455-2)
+[![Zenodo](https://zenodo.org/badge/214157073.svg)](https://zenodo.org/badge/latestdoi/214157073)
+
 Python tool for symmetry-corrected RMSD calculations.
+
+---
+
+If you find `spyrmsd` useful, please consider citing the following paper:
+
+> @article{spyrmsd,
+>	    Author = {Meli, Rocco and Biggin, Philip C.},
+>	    Journal = {Journal of Cheminformatics},
+>	    Number = {1},
+>	    Pages = {49},
+>	    Title = {spyrmsd: symmetry-corrected RMSD calculations in Python},
+>	    Volume = {12},
+>	    Year = {2020}
+> }
 
 ## Installation
 
