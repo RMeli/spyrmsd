@@ -72,7 +72,7 @@ The following packages are required to use `spyrmsd` as a module:
 * [scipy](https://www.scipy.org/)
 * [qcelemental](http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/)
 
-_Note_: `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will  fall back  to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows).
+_Note_: `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will fall back to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows). However, in order to support cross-platform installation [NetworkX](https://networkx.github.io/) is installed by default.
 
 #### Standalone Tool
 
@@ -81,7 +81,7 @@ Additionally, one of the following packages is required to use `spyrmsd` as a st
 * [Open Babel](http://openbabel.org/)
 * [RDKit](https://rdkit.org/)
 
-_Note_: [RDKit](https://rdkit.org/) has to be installed using `conda` ([Why the RDKit isn't available on PyPi](https://rdkit.blogspot.com/2019/11/why-rdkit-isnt-available-on-pypi.html)).
+_Note_: [RDKit](https://rdkit.org/) is not available on PyPI ([Why the RDKit isn't available on PyPi](https://rdkit.blogspot.com/2019/11/why-rdkit-isnt-available-on-pypi.html)). See [RDKit Installation](http://www.rdkit.org/docs/Install.html) for installation instructions.
 
 ## Usage
 
@@ -92,8 +92,7 @@ python -m spyrmsd.spyrmsd -h
 ```
 
 ```text
-usage: spyrmsd.py [-h] [-m] [-c] [--hydrogens] [-n]
-                  reference molecules [molecules ...]
+usage: spyrmsd.py [-h] [-m] [-c] [--hydrogens] [-n] reference molecules [molecules ...]
 
 Python RMSD tool.
 
