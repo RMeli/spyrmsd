@@ -23,15 +23,17 @@ Python tool for symmetry-corrected RMSD calculations.
 
 If you find `spyrmsd` useful, please consider citing the following paper:
 
-> @article{spyrmsd,
->	    Author = {Meli, Rocco and Biggin, Philip C.},
->	    Journal = {Journal of Cheminformatics},
->	    Number = {1},
->	    Pages = {49},
->	    Title = {spyrmsd: symmetry-corrected RMSD calculations in Python},
->	    Volume = {12},
->	    Year = {2020}
-> }
+```
+@article{spyrmsd2020,
+  Author = {Meli, Rocco and Biggin, Philip C.},
+  Journal = {Journal of Cheminformatics},
+  Number = {1},
+  Pages = {49},
+  Title = {spyrmsd: symmetry-corrected RMSD calculations in Python},
+  Volume = {12},
+  Year = {2020}
+}
+```
 
 ## Installation
 
