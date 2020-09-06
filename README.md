@@ -10,12 +10,30 @@
 [![Docs](https://img.shields.io/badge/docs-spyrmsd.readthedocs.io-blueviolet)](https://spyrmsd.readthedocs.io)
 [![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=develop)](https://spyrmsd.readthedocs.io/en/develop/?badge=develop)
 
-[![DOI](https://zenodo.org/badge/214157073.svg)](https://zenodo.org/badge/latestdoi/214157073)
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
-[![PyPI](https://img.shields.io/badge/PyPI-v0.3.3%20-ff69b4)](https://pypi.org/project/spyrmsd/)
+[![PyPI](https://img.shields.io/badge/PyPI-v0.3.5%20-ff69b4)](https://pypi.org/project/spyrmsd/)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/spyrmsd.svg)](https://anaconda.org/conda-forge/spyrmsd)
 
+[![J. Cheminform.](https://img.shields.io/badge/J.%20Cheminform.-10.1186%2Fs13321--020--00455--2-blue)](https://doi.org/10.1186/s13321-020-00455-2)
+[![Zenodo](https://zenodo.org/badge/214157073.svg)](https://zenodo.org/badge/latestdoi/214157073)
+
 Python tool for symmetry-corrected RMSD calculations.
+
+---
+
+If you find `spyrmsd` useful, please consider citing the following paper:
+
+```
+@article{spyrmsd2020,
+  Author = {Meli, Rocco and Biggin, Philip C.},
+  Journal = {Journal of Cheminformatics},
+  Number = {1},
+  Pages = {49},
+  Title = {spyrmsd: symmetry-corrected RMSD calculations in Python},
+  Volume = {12},
+  Year = {2020}
+}
+```
 
 ## Installation
 
@@ -56,7 +74,7 @@ The following packages are required to use `spyrmsd` as a module:
 * [scipy](https://www.scipy.org/)
 * [qcelemental](http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/)
 
-_Note_: `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will  fall back  to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows).
+_Note_: `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will fall back to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows). However, in order to support cross-platform installation [NetworkX](https://networkx.github.io/) is installed by default.
 
 #### Standalone Tool
 
@@ -65,7 +83,7 @@ Additionally, one of the following packages is required to use `spyrmsd` as a st
 * [Open Babel](http://openbabel.org/)
 * [RDKit](https://rdkit.org/)
 
-_Note_: [RDKit](https://rdkit.org/) has to be installed using `conda` ([Why the RDKit isn't available on PyPi](https://rdkit.blogspot.com/2019/11/why-rdkit-isnt-available-on-pypi.html)).
+_Note_: [RDKit](https://rdkit.org/) is not available on PyPI ([Why the RDKit isn't available on PyPi](https://rdkit.blogspot.com/2019/11/why-rdkit-isnt-available-on-pypi.html)). See [RDKit Installation](http://www.rdkit.org/docs/Install.html) for installation instructions.
 
 ## Usage
 
@@ -76,8 +94,7 @@ python -m spyrmsd.spyrmsd -h
 ```
 
 ```text
-usage: spyrmsd.py [-h] [-m] [-c] [--hydrogens] [-n]
-                  reference molecules [molecules ...]
+usage: spyrmsd.py [-h] [-m] [-c] [--hydrogens] [-n] reference molecules [molecules ...]
 
 Python RMSD tool.
 

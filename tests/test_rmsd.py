@@ -219,34 +219,36 @@ def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
     ) == pytest.approx(0, abs=tol)
 
 
+@pytest.mark.parametrize("d", [-0.5, 0.0, 0.5, 1.0, 1.5])
 @pytest.mark.parametrize(
     "angle, tol", [(60, 1e-4), (120, 1e-4), (180, 1e-4), (240, 1e-4), (300, 1e-4)]
 )
-def test_rmsd_hungarian_benzene_shifted_rotated(angle: float, tol: float) -> None:
+def test_rmsd_hungarian_benzene_shifted_rotated(
+    d: float, angle: float, tol: float
+) -> None:
 
     mol1 = copy.deepcopy(molecules.benzene)
     mol2 = copy.deepcopy(molecules.benzene)
 
-    mol2.translate([0, 0, 1])
+    mol2.translate([0, 0, d])
 
     assert rmsd.rmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
-    ) == pytest.approx(1)
+    ) == pytest.approx(abs(d))
 
     assert rmsd.hrmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
-    ) == pytest.approx(1)
+    ) == pytest.approx(abs(d))
 
     # Rotations different than 180 degrees introduce numerical errors (~1e-11)
     mol2.rotate(angle, [0, 0, 1], units="deg")
 
-    assert (
-        rmsd.rmsd(mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums)
-        > 1
-    )
+    assert rmsd.rmsd(
+        mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
+    ) > abs(d)
     assert rmsd.hrmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
-    ) == pytest.approx(1, abs=tol)
+    ) == pytest.approx(abs(d), abs=tol)
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)

@@ -1,7 +1,7 @@
 import numpy as np
 import scipy
 
-from .due import due, Doi
+from .due import Doi, due
 
 due.cite(
     Doi("10.1021/ci400534h"),  # lgtm[py/procedure-return-value-used]

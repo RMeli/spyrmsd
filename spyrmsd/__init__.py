@@ -2,8 +2,8 @@
 Python RMSD tool with symmetry correction.
 """
 
-from .due import due, Doi
 from ._version import get_versions
+from .due import Doi, due
 
 versions = get_versions()
 __version__ = versions["version"]
@@ -14,5 +14,11 @@ del get_versions, versions
 due.cite(
     Doi("10.5281/zenodo.3631876"),  # lgtm[py/procedure-return-value-used]
     path="spyrmsd",
-    description="spyRMSD: Symmetry-Corrected RMSD in Python",
+    description="spyrmsd",
+)
+
+due.cite(
+    Doi("10.1186/s13321-020-00455-2"),  # lgtm[py/procedure-return-value-used]
+    path="spyrmsd",
+    description="spyrmsd",
 )

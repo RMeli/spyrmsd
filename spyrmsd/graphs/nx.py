@@ -84,7 +84,10 @@ def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
     # Check if graphs are actually isomorphic
     if not GM.is_isomorphic():
         # TODO: Create a new exception
-        raise ValueError(f"Graphs {G1} and {G2} are not isomorphic.")
+        raise ValueError(
+            "Graphs are not isomorphic."
+            "\nMake sure graphs have the same connectivity."
+        )
 
     return [
         (list(isomorphism.keys()), list(isomorphism.values()))
