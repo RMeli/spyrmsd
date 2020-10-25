@@ -568,3 +568,56 @@ def test_symmrmsd_cache(minimize: bool, referenceRMSDs: List[float]) -> None:
 
     for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
         assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
+
+
+def test_issue_35():
+    """
+    GitHub Issue #35 from @kjelljorner
+
+    https://github.com/RMeli/spyrmsd/issues/35
+    """
+
+    elements = np.array([6, 1, 1, 1, 1])
+
+    connectivity_matrix = np.array(
+        [
+            [0, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+        ]
+    )
+
+    coordinates_1 = np.array(
+        [
+            [2.416690358222e-09, -2.979634307864e-08, -9.782357562900e-09],
+            [-6.669665490935e-01, -6.162099127861e-01, -6.069106091317e-01],
+            [-4.258088724928e-01, 9.999808728518e-01, 1.078170393201e-01],
+            [1.178459756093e-01, -4.538168967035e-01, 9.864390766805e-01],
+            [9.749294435604e-01, 7.004596643409e-02, -4.873454970866e-01],
+        ]
+    )
+
+    coordinates_2 = np.array(
+        [
+            [-2.118450971480e-07, 2.238951108509e-07, 1.839989120690e-07],
+            [-5.297519571039e-01, -4.011375110922e-01, 8.668054003529e-01],
+            [-5.107749001064e-01, 8.975573096842e-01, -3.555275589573e-01],
+            [1.644944812511e-02, -7.486078704316e-01, -7.951194721576e-01],
+            [1.024077620930e00, 2.521878479445e-01, 2.838414467631e-01],
+        ]
+    )
+
+    r = rmsd.symmrmsd(
+        coordinates_1,
+        coordinates_2,
+        elements,
+        elements,
+        connectivity_matrix,
+        connectivity_matrix,
+        center=True,
+        minimize=True,
+    )
+
+    assert r == pytest.approx(0.0)
