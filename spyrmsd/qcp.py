@@ -196,11 +196,22 @@ def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
         """
         return 4 * x ** 3 + 2 * c2 * x + c1
 
-    # Shift is added to avoid numerical errors
-    # See Github Issue #35
-    x0 = (Ga + Gb) * 0.5 - 1e-6
+    x0 = (Ga + Gb) * 0.5
 
-    return optimize.newton(P, x0, fprime=dP)
+    try:
+        lmax = optimize.newton(P, x0, fprime=dP)
+    except RuntimeError:
+        # Use Halley’s method
+        # See Github Issue #35
+        def ddP(x):
+            """
+            Second derivative of the quaternion polynomial
+            """
+            return 12 * x ** 2 + 2 * c2
+
+        lmax = optimize.newton(P, x0, fprime=dP, fprime2=ddP)
+
+    return lmax
 
 
 def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
