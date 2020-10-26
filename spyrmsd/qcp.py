@@ -198,7 +198,7 @@ def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
 
     # Shift is added to avoid numerical errors
     # See Github Issue #35
-    x0 = (Ga + Gb) / 2.0 - 1e-12
+    x0 = (Ga + Gb) / 2.0 + 1e-9
 
     return optimize.newton(P, x0, fprime=dP)
 
