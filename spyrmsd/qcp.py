@@ -203,6 +203,7 @@ def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
     except RuntimeError:
         # Use Halley’s method
         # See Github Issue #35
+
         def ddP(x):
             """
             Second derivative of the quaternion polynomial
