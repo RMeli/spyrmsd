@@ -198,19 +198,21 @@ def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
 
     x0 = (Ga + Gb) * 0.5
 
-    try:
-        lmax = optimize.newton(P, x0, fprime=dP)
-    except RuntimeError:
-        # Use Halley’s method
-        # See Github Issue #35
+    lmax = optimize.fsolve(P, x0, fprime=dP)
 
-        def ddP(x):
-            """
-            Second derivative of the quaternion polynomial
-            """
-            return 12 * x ** 2 + 2 * c2
+    # try:
+    #     lmax = optimize.newton(P, x0, fprime=dP)
+    # except RuntimeError:
+    #     # Use Halley’s method
+    #     # See Github Issue #35
 
-        lmax = optimize.newton(P, x0, fprime=dP, fprime2=ddP)
+    #     def ddP(x):
+    #         """
+    #         Second derivative of the quaternion polynomial
+    #         """
+    #         return 12 * x ** 2 + 2 * c2
+
+    #     lmax = optimize.newton(P, x0, fprime=dP, fprime2=ddP)
 
     return lmax
 
