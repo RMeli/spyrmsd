@@ -253,9 +253,9 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray, atol: float = 1e-9) -> float:
 
     try:
         # Fast calculation of the largest eigenvalue of K as root of the characteristic
-        # polynomial. 
+        # polynomial.
         l_max = lambda_max(Ga, Gb, c2, c1, c0)
-    except RuntimeError: # Numerical instabilities; see GitHub Issue #35
+    except RuntimeError:  # Numerical instabilities; see GitHub Issue #35
         # Fallback to slower explicit calculation of the largest eigenvalue of K
         e, _ = np.linalg.eig(K)
         l_max = max(e)
