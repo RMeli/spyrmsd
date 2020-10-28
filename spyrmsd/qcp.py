@@ -203,7 +203,7 @@ def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
     return lmax
 
 
-def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
+def qcp_rmsd(A: np.ndarray, B: np.ndarray, atol: float = 1e-9) -> float:
     """
     Compute RMSD using the quaternion polynomial method.
 
@@ -213,6 +213,8 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
         Coordinates of structure A
     B: numpy.ndarray
         Coordinates of structure B
+    atol: float
+        Absolute tolerance parameter (see notes)
 
     Returns
     -------
@@ -234,7 +236,7 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
     This means that :math:`s = G_a + G_bb - 2 * \\lambda_\\text{max}` can become
     negative because of numerical errors and therefore :math:`\\sqrt{s}` fails.
     In order to avoid this problem, the final RMSD is set to :math:`0`
-    if :math:`|s| < 10^{-12}`.
+    if :math:`|s| < atol`.
     """
 
     assert A.shape == B.shape
@@ -252,8 +254,9 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
     l_max = lambda_max(Ga, Gb, c2, c1, c0)
 
     s = Ga + Gb - 2 * l_max
-    if abs(s) < 1e-12:  # Avoid numerical errors when Ga + Gb = 2 * l_max
-        rmsd = 0
+
+    if abs(s) < atol:  # Avoid numerical errors when Ga + Gb = 2 * l_max
+        rmsd = 0.0
     else:
         rmsd = np.sqrt(s / N)
 

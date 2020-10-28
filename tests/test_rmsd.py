@@ -485,7 +485,7 @@ def test_rmsd_symmrmsd(index: int, RMSD: float, minimize: bool) -> None:
         ),
     ],
 )
-def test_multirmsd_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> None:
+def test_multi_spyrmsd(minimize: bool, referenceRMSDs: List[float]) -> None:
 
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mols = [copy.deepcopy(mol) for mol in molecules.docking_1cbr[1:]]
@@ -684,3 +684,116 @@ def test_issue_35_2():
     )
 
     assert r == pytest.approx(0.0)
+
+
+@pytest.mark.parametrize(
+    "i, j, result", [(1, 2, 1.95277757), (1, 3, 3.11801105), (2, 3, 2.98609758)]
+)
+def test_rmsd_atol(i: int, j: int, result: float):
+    """
+    Test usage of the :code:`atol` parameter for the QCP method.
+
+    This parameter has been exposed to users following Issue 35 from @kjelljorner
+    (https://github.com/RMeli/spyrmsd/issues/35)
+    """
+
+    moli = copy.deepcopy(molecules.docking_2viz[i])
+    molj = copy.deepcopy(molecules.docking_2viz[j])
+
+    # Check results are different from 0.0
+    assert not result == pytest.approx(0.0)
+
+    assert rmsd.rmsd(
+        moli.coordinates,
+        molj.coordinates,
+        moli.atomicnums,
+        molj.atomicnums,
+        minimize=True,
+    ) == pytest.approx(result)
+
+    assert rmsd.rmsd(
+        moli.coordinates,
+        molj.coordinates,
+        moli.atomicnums,
+        molj.atomicnums,
+        minimize=True,
+        atol=1e9,
+    ) == pytest.approx(0.0)
+
+
+# Results obtained with OpenBabel
+@pytest.mark.parametrize("i, reference", [(1, 0.476858), (2, 1.68089), (3, 1.50267)])
+def test_symmrmsd_atol(i: bool, reference: float) -> None:
+
+    moli = copy.deepcopy(molecules.docking_1cbr[0])
+    molj = copy.deepcopy(molecules.docking_1cbr[i])
+
+    moli.strip()
+    molj.strip()
+
+    # Check results are different from 0.0
+    assert not reference == pytest.approx(0.0)
+
+    assert rmsd.symmrmsd(
+        moli.coordinates,
+        molj.coordinates,
+        moli.atomicnums,
+        molj.atomicnums,
+        moli.adjacency_matrix,
+        molj.adjacency_matrix,
+        minimize=True,
+    ) == pytest.approx(reference, abs=1e-5)
+
+    assert rmsd.symmrmsd(
+        moli.coordinates,
+        molj.coordinates,
+        moli.atomicnums,
+        molj.atomicnums,
+        moli.adjacency_matrix,
+        molj.adjacency_matrix,
+        minimize=True,
+        atol=1e9,
+    ) == pytest.approx(0.0)
+
+
+def test_symmrmsd_atol_multi() -> None:
+
+    references = [0.476858, 1.68089, 1.50267]
+
+    molc = copy.deepcopy(molecules.docking_1cbr[0])
+    mols = [copy.deepcopy(mol) for mol in molecules.docking_1cbr[1:4]]
+
+    molc.strip()
+
+    for mol in mols:
+        mol.strip()
+
+    # Check results are different from 0.0
+    assert not np.allclose(references, 0.0)
+
+    RMSDs = rmsd.symmrmsd(
+        molc.coordinates,
+        [mol.coordinates for mol in mols],
+        molc.atomicnums,
+        mols[0].atomicnums,
+        molc.adjacency_matrix,
+        mols[0].adjacency_matrix,
+        minimize=True,
+    )
+
+    for r, ref in zip(RMSDs, references):
+        assert r == pytest.approx(ref, abs=1e-5)
+
+    RMSDs = rmsd.symmrmsd(
+        molc.coordinates,
+        [mol.coordinates for mol in mols],
+        molc.atomicnums,
+        mols[0].atomicnums,
+        molc.adjacency_matrix,
+        mols[0].adjacency_matrix,
+        minimize=True,
+        atol=1e9,
+    )
+
+    for r in RMSDs:
+        assert r == pytest.approx(0.0)

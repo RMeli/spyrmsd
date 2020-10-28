@@ -12,6 +12,7 @@ def rmsd(
     atomicn2: np.ndarray,
     center: bool = False,
     minimize: bool = False,
+    atol: float = 1e-9,
 ) -> float:
     """
     Compute RMSD
@@ -30,6 +31,8 @@ def rmsd(
         Center molecules at origin
     minimize: bool
         Compute minimum RMSD (with QCP method)
+    atol: float
+        Absolute tolerance parameter for QCP method (see :func:`qcp_rmsd`)
 
     Returns
     -------
@@ -54,7 +57,7 @@ def rmsd(
     c2 = utils.center(coords2) if center or minimize else coords2
 
     if minimize:
-        rmsd = qcp.qcp_rmsd(c1, c2)
+        rmsd = qcp.qcp_rmsd(c1, c2, atol)
     else:
         n = coords1.shape[0]
 
@@ -121,6 +124,7 @@ def _rmsd_isomorphic_core(
     center: bool = False,
     minimize: bool = False,
     isomorphisms: Optional[List[Tuple[List[int], List[int]]]] = None,
+    atol: float = 1e-9,
 ) -> Tuple[float, List[Tuple[List[int], List[int]]]]:
     """
     Compute RMSD using graph isomorphism.
@@ -145,6 +149,8 @@ def _rmsd_isomorphic_core(
         Compute minized RMSD
     isomorphisms: Optional[List[Dict[int,int]]]
         Previously computed graph isomorphism
+    atol: float
+        Absolute tolerance parameter for QCP (see :func:`qcp_rmsd`)
 
     Returns
     -------
@@ -186,7 +192,7 @@ def _rmsd_isomorphic_core(
             result = np.sum((c1i - c2i) ** 2)
         else:
             # Compute minimized RMSD using QCP
-            result = qcp.qcp_rmsd(c1i, c2i)
+            result = qcp.qcp_rmsd(c1i, c2i, atol)
 
         min_result = result if result < min_result else min_result
 
@@ -208,6 +214,7 @@ def symmrmsd(
     center: bool = False,
     minimize: bool = False,
     cache: bool = True,
+    atol: float = 1e-9,
 ) -> Any:
     """
     Compute RMSD using graph isomorphism for multiple coordinates.
@@ -230,6 +237,10 @@ def symmrmsd(
         Centering flag
     minimize: bool
         Minimum RMSD
+    cache: bool
+        Cache graph isomorphisms
+    atol: float
+        Absolute tolerance parameter for QCP (see :func:`qcp_rmsd`)
 
     Returns
     -------
@@ -267,6 +278,7 @@ def symmrmsd(
                 center=center,
                 minimize=minimize,
                 isomorphisms=isomorphism,
+                atol=atol,
             )
 
             RMSD.append(srmsd)
@@ -283,6 +295,7 @@ def symmrmsd(
             center=center,
             minimize=minimize,
             isomorphisms=None,
+            atol=atol,
         )
 
     return RMSD
