@@ -198,7 +198,7 @@ def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
 
     x0 = (Ga + Gb) * 0.5
 
-    lmax = optimize.fsolve(P, x0, fprime=dP)
+    lmax = optimize.newton(P, x0, fprime=dP)
 
     return lmax
 
@@ -251,7 +251,14 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray, atol: float = 1e-9) -> float:
 
     c2, c1, c0 = coefficients(M, K)
 
-    l_max = lambda_max(Ga, Gb, c2, c1, c0)
+    try:
+        # Fast calculation of the largest eigenvalue of K as root of the characteristic
+        # polynomial. 
+        l_max = lambda_max(Ga, Gb, c2, c1, c0)
+    except RuntimeError: # Numerical instabilities; see GitHub Issue #35
+        # Fallback to slower explicit calculation of the largest eigenvalue of K
+        e, _ = np.linalg.eig(K)
+        l_max = max(e)
 
     s = Ga + Gb - 2 * l_max
 
