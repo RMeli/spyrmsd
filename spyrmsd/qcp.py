@@ -203,6 +203,25 @@ def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
     return lmax
 
 
+def _lambda_max_eig(K: np.ndarray) -> float:
+    """
+    Find largest eigenvalue of :math:`K`.
+
+    Parameters
+    ----------
+    K: np.ndarray
+        Symmetric key matrix
+
+    Returns
+    -------
+    float
+        Largest eigenvalue of :math:`K`, :math:`\\lambda_\\text{max}`
+    """
+    e, _ = np.linalg.eig(K)
+
+    return max(e)
+
+
 def qcp_rmsd(A: np.ndarray, B: np.ndarray, atol: float = 1e-9) -> float:
     """
     Compute RMSD using the quaternion polynomial method.
@@ -257,8 +276,7 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray, atol: float = 1e-9) -> float:
         l_max = lambda_max(Ga, Gb, c2, c1, c0)
     except RuntimeError:  # Numerical instabilities; see GitHub Issue #35
         # Fallback to slower explicit calculation of the largest eigenvalue of K
-        e, _ = np.linalg.eig(K)
-        l_max = max(e)
+        l_max = _lambda_max_eig(K)
 
     s = Ga + Gb - 2 * l_max
 
