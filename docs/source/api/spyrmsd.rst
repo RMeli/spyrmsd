@@ -10,6 +10,7 @@ Subpackages
 -----------
 
 .. toctree::
+   :maxdepth: 4
 
    spyrmsd.graphs
    spyrmsd.optional
@@ -18,6 +19,7 @@ Submodules
 ----------
 
 .. toctree::
+   :maxdepth: 4
 
    spyrmsd.graph
    spyrmsd.hungarian

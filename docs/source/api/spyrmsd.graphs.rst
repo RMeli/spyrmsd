@@ -10,6 +10,7 @@ Submodules
 ----------
 
 .. toctree::
+   :maxdepth: 4
 
    spyrmsd.graphs.gt
    spyrmsd.graphs.nx
