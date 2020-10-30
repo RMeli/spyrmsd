@@ -4,8 +4,37 @@ from typing import List
 import numpy as np
 import pytest
 
-from spyrmsd import molecule, rmsd
+from spyrmsd import molecule, rmsd, qcp
 from tests import molecules
+
+
+@pytest.fixture(autouse=True, params=[True, False])
+def lambda_max_failure(monkeypatch, request):
+    """
+    Monkey patch fixture for :code:`lambda_max` function to simulate convergence
+    failures.
+
+    Notes
+    -----
+    The :fun:`lambda_max` function can sometimes fail to converge and raises a
+    :code:`RuntimeError` (see GitHub Issue #35 by @kjelljorner). If this occours,
+    there is an automatic fallback to the explicit calculation of the highest
+    eigenvalue. This is not easy to reproduce but need to be tested.
+
+    Using monkey patching we run all tests with the original :fun:`lambda_max` function
+    and again with a patched :fun:`lambda_max` function that always raise the
+    :code:`RuntimeError`, so that the fallback is tested instead.
+
+    https://github.com/RMeli/spyrmsd/issues/35
+    """
+    if request.param:
+        # Patch lambda_max to always raise an exception
+        # This enforces _lambda_max_eig to be used instead
+        def lambda_max_failure(Ga, Gb, c2, c1, c0):
+            # Simulate Newton method convergence failure
+            raise RuntimeError
+
+        monkeypatch.setattr(qcp, "lambda_max", lambda_max_failure)
 
 
 @pytest.mark.parametrize("t, RMSD", [(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)])
@@ -485,7 +514,7 @@ def test_rmsd_symmrmsd(index: int, RMSD: float, minimize: bool) -> None:
         ),
     ],
 )
-def test_multirmsd_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> None:
+def test_multi_spyrmsd(minimize: bool, referenceRMSDs: List[float]) -> None:
 
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mols = [copy.deepcopy(mol) for mol in molecules.docking_1cbr[1:]]
@@ -568,3 +597,232 @@ def test_symmrmsd_cache(minimize: bool, referenceRMSDs: List[float]) -> None:
 
     for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
         assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
+
+
+def test_issue_35_1():
+    """
+    GitHub Issue #35 from @kjelljorner
+
+    https://github.com/RMeli/spyrmsd/issues/35
+    """
+
+    elements = np.array([6, 1, 1, 1, 1])
+
+    connectivity_matrix = np.array(
+        [
+            [0, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+        ]
+    )
+
+    coordinates_1 = np.array(
+        [
+            [2.416690358222e-09, -2.979634307864e-08, -9.782357562900e-09],
+            [-6.669665490935e-01, -6.162099127861e-01, -6.069106091317e-01],
+            [-4.258088724928e-01, 9.999808728518e-01, 1.078170393201e-01],
+            [1.178459756093e-01, -4.538168967035e-01, 9.864390766805e-01],
+            [9.749294435604e-01, 7.004596643409e-02, -4.873454970866e-01],
+        ]
+    )
+
+    coordinates_2 = np.array(
+        [
+            [-2.118450971480e-07, 2.238951108509e-07, 1.839989120690e-07],
+            [-5.297519571039e-01, -4.011375110922e-01, 8.668054003529e-01],
+            [-5.107749001064e-01, 8.975573096842e-01, -3.555275589573e-01],
+            [1.644944812511e-02, -7.486078704316e-01, -7.951194721576e-01],
+            [1.024077620930e00, 2.521878479445e-01, 2.838414467631e-01],
+        ]
+    )
+
+    r = rmsd.symmrmsd(
+        coordinates_1,
+        coordinates_2,
+        elements,
+        elements,
+        connectivity_matrix,
+        connectivity_matrix,
+        center=True,
+        minimize=True,
+    )
+
+    assert r == pytest.approx(0.0)
+
+
+def test_issue_35_2():
+    """
+    GitHub Issue #35 from @kjelljorner
+
+    https://github.com/RMeli/spyrmsd/issues/35
+    """
+    elements = np.array([6, 6, 1, 1, 1, 1, 1, 1])
+
+    connectivity_matrix = np.array(
+        [
+            [0, 1, 1, 1, 1, 0, 0, 0],
+            [1, 0, 0, 0, 0, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 1, 0, 0, 0, 0, 0, 0],
+        ]
+    )
+
+    coordinates_1 = np.array(
+        [
+            [-0.7513646148641476, 0.0212153090068301, 0.0811236469164399],
+            [0.7513646329421021, -0.0212139873589844, -0.0811234544788992],
+            [-1.1912097695762844, -0.9520810297276773, -0.1560519813078418],
+            [-1.0197601491429782, 0.2790338755490671, 1.1099648032811764],
+            [-1.1891251185534542, 0.769045487934088, -0.5868099187409093],
+            [1.1891224079259752, -0.7690462686978631, 0.5868095572711365],
+            [1.0197615786233758, -0.2790344505405097, -1.1099636171164908],
+            [1.191211032645396, 0.9520810638350493, 0.1560509641753798],
+        ]
+    )
+
+    coordinates_2 = np.array(
+        [
+            [0.752989230839992, 0.0675001892809206, -0.0055472904918074],
+            [-0.7529892426611152, -0.0675008847728476, 0.0055489067798057],
+            [1.0506759954349485, 1.0138756198991818, -0.4668239152871582],
+            [1.2080371182091196, -0.7501873566674166, -0.5724157781772267],
+            [1.148732484392816, 0.0417675099494674, 1.0141322717252037],
+            [-1.050678518706957, -1.0138763219763327, 0.4668256362472835],
+            [-1.148731454954795, -0.0417698443724041, -1.0141315673229787],
+            [-1.208035612554004, 0.7501910886594293, 0.5724117365268774],
+        ],
+    )
+
+    mask = elements != 1
+
+    r = rmsd.symmrmsd(
+        coordinates_1[mask],
+        coordinates_2[mask],
+        elements[mask],
+        elements[mask],
+        connectivity_matrix[mask, :][:, mask],
+        connectivity_matrix[mask, :][:, mask],
+        center=True,
+        minimize=True,
+    )
+
+    assert r == pytest.approx(0.0)
+
+
+@pytest.mark.parametrize(
+    "i, j, result", [(1, 2, 1.95277757), (1, 3, 3.11801105), (2, 3, 2.98609758)]
+)
+def test_rmsd_atol(i: int, j: int, result: float):
+    """
+    Test usage of the :code:`atol` parameter for the QCP method.
+
+    This parameter has been exposed to users following Issue 35 from @kjelljorner
+    (https://github.com/RMeli/spyrmsd/issues/35)
+    """
+
+    moli = copy.deepcopy(molecules.docking_2viz[i])
+    molj = copy.deepcopy(molecules.docking_2viz[j])
+
+    # Check results are different from 0.0
+    assert not result == pytest.approx(0.0)
+
+    assert rmsd.rmsd(
+        moli.coordinates,
+        molj.coordinates,
+        moli.atomicnums,
+        molj.atomicnums,
+        minimize=True,
+    ) == pytest.approx(result)
+
+    assert rmsd.rmsd(
+        moli.coordinates,
+        molj.coordinates,
+        moli.atomicnums,
+        molj.atomicnums,
+        minimize=True,
+        atol=1e9,
+    ) == pytest.approx(0.0)
+
+
+# Results obtained with OpenBabel
+@pytest.mark.parametrize("i, reference", [(1, 0.476858), (2, 1.68089), (3, 1.50267)])
+def test_symmrmsd_atol(i: bool, reference: float) -> None:
+
+    moli = copy.deepcopy(molecules.docking_1cbr[0])
+    molj = copy.deepcopy(molecules.docking_1cbr[i])
+
+    moli.strip()
+    molj.strip()
+
+    # Check results are different from 0.0
+    assert not reference == pytest.approx(0.0)
+
+    assert rmsd.symmrmsd(
+        moli.coordinates,
+        molj.coordinates,
+        moli.atomicnums,
+        molj.atomicnums,
+        moli.adjacency_matrix,
+        molj.adjacency_matrix,
+        minimize=True,
+    ) == pytest.approx(reference, abs=1e-5)
+
+    assert rmsd.symmrmsd(
+        moli.coordinates,
+        molj.coordinates,
+        moli.atomicnums,
+        molj.atomicnums,
+        moli.adjacency_matrix,
+        molj.adjacency_matrix,
+        minimize=True,
+        atol=1e9,
+    ) == pytest.approx(0.0)
+
+
+def test_symmrmsd_atol_multi() -> None:
+
+    references = [0.476858, 1.68089, 1.50267]
+
+    molc = copy.deepcopy(molecules.docking_1cbr[0])
+    mols = [copy.deepcopy(mol) for mol in molecules.docking_1cbr[1:4]]
+
+    molc.strip()
+
+    for mol in mols:
+        mol.strip()
+
+    # Check results are different from 0.0
+    assert not np.allclose(references, 0.0)
+
+    RMSDs = rmsd.symmrmsd(
+        molc.coordinates,
+        [mol.coordinates for mol in mols],
+        molc.atomicnums,
+        mols[0].atomicnums,
+        molc.adjacency_matrix,
+        mols[0].adjacency_matrix,
+        minimize=True,
+    )
+
+    for r, ref in zip(RMSDs, references):
+        assert r == pytest.approx(ref, abs=1e-5)
+
+    RMSDs = rmsd.symmrmsd(
+        molc.coordinates,
+        [mol.coordinates for mol in mols],
+        molc.atomicnums,
+        mols[0].atomicnums,
+        molc.adjacency_matrix,
+        mols[0].adjacency_matrix,
+        minimize=True,
+        atol=1e9,
+    )
+
+    for r in RMSDs:
+        assert r == pytest.approx(0.0)
