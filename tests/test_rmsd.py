@@ -8,6 +8,35 @@ from spyrmsd import molecule, rmsd, qcp
 from tests import molecules
 
 
+@pytest.fixture(autouse=True, params=[True, False])
+def lambda_max_failure(monkeypatch, request):
+    """
+    Monkey patch fixture for :code:`lambda_max` function to simulate convergence
+    failures.
+
+    Notes
+    -----
+    The :fun:`lambda_max` function can sometimes fail to converge and raises a
+    :code:`RuntimeError` (see GitHub Issue #35 by @kjelljorner). If this occours,
+    there is an automatic fallback to the explicit calculation of the highest
+    eigenvalue. This is not easy to reproduce but need to be tested.
+
+    Using monkey patching we run all tests with the original :fun:`lambda_max` function
+    and again with a patched :fun:`lambda_max` function that always raise the
+    :code:`RuntimeError`, so that the fallback is tested instead.
+
+    https://github.com/RMeli/spyrmsd/issues/35
+    """
+    if request.param:
+        # Patch lambda_max to always raise an exception
+        # This enforces _lambda_max_eig to be used instead
+        def lambda_max_failure(Ga, Gb, c2, c1, c0):
+            # Simulate Newton method convergence failure
+            raise RuntimeError
+
+        monkeypatch.setattr(qcp, "lambda_max", lambda_max_failure)
+
+
 @pytest.mark.parametrize("t, RMSD", [(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)])
 def test_rmsd_benzene(t: float, RMSD: float) -> None:
 
@@ -405,7 +434,6 @@ def test_symmrmsd_atomicnums_matching_pyridine_stripped() -> None:
 
 
 # Results obtained with OpenBabel
-@pytest.mark.parametrize("eig", [False, True])  # Test lambda_max and _lambda_max_eig
 @pytest.mark.parametrize(
     "index, RMSD, minimize",
     [
@@ -431,24 +459,13 @@ def test_symmrmsd_atomicnums_matching_pyridine_stripped() -> None:
         (10, 1.37842, True),
     ],
 )
-def test_rmsd_symmrmsd(
-    index: int, RMSD: float, minimize: bool, eig: bool, monkeypatch
-) -> None:
+def test_rmsd_symmrmsd(index: int, RMSD: float, minimize: bool) -> None:
 
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mol = copy.deepcopy(molecules.docking_1cbr[index])
 
     molc.strip()
     mol.strip()
-
-    if minimize and eig:
-        # Patch lambda_max to always raise an exception
-        # This enforces _lambda_max_eig to be used instead
-        def lambda_max_failure(Ga, Gb, c2, c1, c0):
-            # Simulate Newton method convergence failure
-            raise RuntimeError
-
-        monkeypatch.setattr(qcp, "lambda_max", lambda_max_failure)
 
     assert rmsd.symmrmsd(
         molc.coordinates,
