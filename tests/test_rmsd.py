@@ -4,7 +4,7 @@ from typing import List
 import numpy as np
 import pytest
 
-from spyrmsd import molecule, rmsd
+from spyrmsd import molecule, rmsd, qcp
 from tests import molecules
 
 
@@ -405,6 +405,7 @@ def test_symmrmsd_atomicnums_matching_pyridine_stripped() -> None:
 
 
 # Results obtained with OpenBabel
+@pytest.mark.parametrize("eig", [False, True])  # Test lambda_max and _lambda_max_eig
 @pytest.mark.parametrize(
     "index, RMSD, minimize",
     [
@@ -430,13 +431,24 @@ def test_symmrmsd_atomicnums_matching_pyridine_stripped() -> None:
         (10, 1.37842, True),
     ],
 )
-def test_rmsd_symmrmsd(index: int, RMSD: float, minimize: bool) -> None:
+def test_rmsd_symmrmsd(
+    index: int, RMSD: float, minimize: bool, eig: bool, monkeypatch
+) -> None:
 
     molc = copy.deepcopy(molecules.docking_1cbr[0])
     mol = copy.deepcopy(molecules.docking_1cbr[index])
 
     molc.strip()
     mol.strip()
+
+    if minimize and eig:
+        # Patch lambda_max to always raise an exception
+        # This enforces _lambda_max_eig to be used instead
+        def lambda_max_failure(Ga, Gb, c2, c1, c0):
+            # Simulate Newton method convergence failure
+            raise RuntimeError
+
+        monkeypatch.setattr(qcp, "lambda_max", lambda_max_failure)
 
     assert rmsd.symmrmsd(
         molc.coordinates,
