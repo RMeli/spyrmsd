@@ -3,7 +3,6 @@ from spyrmsd import io, spyrmsd, qcp
 import requests
 import os
 import zipfile
-import warnings
 
 import numpy as np
 
