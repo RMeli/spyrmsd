@@ -1,5 +1,4 @@
 try:
-    raise ImportError
     from spyrmsd.optional.obabel import (
         load,
         loadall,
