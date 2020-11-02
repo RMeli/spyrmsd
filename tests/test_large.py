@@ -115,8 +115,11 @@ def test_rmsd(idx, download, path, minimize):
         )
 
     except OSError:  # Docking didn't find any configuration for some systems
-        warnings.warn(f"Problems loading PDB ID {id}.", RuntimeWarning)
-        return
+        pytest.xfail("Problems loading PDB ID {id}.")
+
+    # Some molecules in the dataset give errors when parsed with RDKit
+    if ref is None or None in mols:
+        pytest.xfail("Problems loading PDB ID {id}.")
 
     rmsds = spyrmsd.rmsdwrapper(ref, mols, minimize=minimize, strip=True)
 
