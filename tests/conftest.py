@@ -13,7 +13,10 @@ def pytest_addoption(parser):
     )
 
     parser.addoption(
-        "--large", action="store_true", default=False, help="run large number of randomly selected tests"
+        "--large",
+        action="store_true",
+        default=False,
+        help="run large number of randomly selected tests",
     )
 
 
