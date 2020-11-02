@@ -120,7 +120,7 @@ install:
 
 script:
     # Run test and get coverage report
-  - pytest -v --cov=spyrmsd tests/  --benchmark --long
+  - pytest -v --cov=spyrmsd tests/  --benchmark --large
 
     # Run checks
   - flake8
