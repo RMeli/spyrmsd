@@ -98,6 +98,10 @@ def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
         `spyrmsd` molecule
     """
 
+    if mol is None:
+        # Propagate RDKit parsing failure
+        return None
+
     atoms = mol.GetAtoms()
 
     n = len(atoms)
