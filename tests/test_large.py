@@ -40,6 +40,7 @@ def lambda_max_failure(monkeypatch, request):
 
         monkeypatch.setattr(qcp, "lambda_max", lambda_max_failure)
 
+
 @pytest.fixture
 def tlpath():
     """
@@ -109,7 +110,9 @@ def test_rmsd(idx, download, path, minimize):
         mols = io.loadallmols(os.path.join(p, f"{id}_dock.sdf"))
 
         # Load results obtained with OpenBabel
-        results = np.loadtxt(os.path.join(p, "obrms-min.dat" if minimize else "obrms.dat"))
+        results = np.loadtxt(
+            os.path.join(p, "obrms-min.dat" if minimize else "obrms.dat")
+        )
 
     except OSError:  # Docking didn't find any configuration for some systems
         warnings.warn(f"Problems loading PDB ID {id}.", RuntimeWarning)
