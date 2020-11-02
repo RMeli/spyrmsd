@@ -1,12 +1,11 @@
-from spyrmsd import io, spyrmsd, qcp
-
-import requests
 import os
 import zipfile
 
 import numpy as np
-
 import pytest
+import requests
+
+from spyrmsd import io, qcp, spyrmsd
 
 n_systems = 4554
 

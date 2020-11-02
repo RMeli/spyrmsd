@@ -4,7 +4,7 @@ from typing import List
 import numpy as np
 import pytest
 
-from spyrmsd import molecule, rmsd, qcp
+from spyrmsd import molecule, qcp, rmsd
 from tests import molecules
 
 
