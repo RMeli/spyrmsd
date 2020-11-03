@@ -19,7 +19,7 @@ def systems():
     return systems
 
 
-@pytest.mark.slow
+@pytest.mark.benchmark
 @pytest.fixture(scope="module", params=systems())
 def molecules(request):
     system = request.param
@@ -40,7 +40,7 @@ def molecules(request):
     return ref, mols, system
 
 
-@pytest.mark.slow
+@pytest.mark.benchmark
 @pytest.mark.parametrize("cache", [True, False])
 def test_benchmark_symmrmsd(cache, molecules, benchmark):
 

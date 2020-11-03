@@ -62,3 +62,33 @@ def test_lambda_max(
 ) -> None:
 
     assert qcp.lambda_max(*input) == pytest.approx(result)
+
+
+@pytest.mark.parametrize("mol", molecules.allmolecules)
+def test_lambda_max_eig(mol: molecule.Molecule) -> None:
+
+    mol1 = copy.deepcopy(mol)
+    mol2 = copy.deepcopy(mol)
+
+    # Build rotated coordinate set
+    mol2.rotate(10, np.random.rand(3))
+
+    A = mol1.coordinates
+    B = mol2.coordinates
+
+    Ga = np.trace(A.T @ A)
+    Gb = np.trace(B.T @ B)
+
+    M = qcp.M_mtx(A, B)
+    K = qcp.K_mtx(M)
+
+    assert K.shape == (4, 4)
+    assert np.allclose(K.T, K)
+    assert np.trace(K) == pytest.approx(0)
+
+    c2, c1, c0 = qcp.coefficients(M, K)
+
+    lm = qcp.lambda_max(Ga, Gb, c2, c1, c0)
+    lm_eig = qcp._lambda_max_eig(K)
+
+    assert lm_eig == pytest.approx(lm)

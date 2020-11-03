@@ -70,6 +70,10 @@ ENV/
 # mypy
 .mypy_cache/
 
+# tests
+tests/docking.zip
+tests/docking
+
 # duecredit
 .duecredit.p
 

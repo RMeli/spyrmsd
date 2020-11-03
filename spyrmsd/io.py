@@ -47,12 +47,8 @@ else:
         "bonds",
     ]
 
-from typing import List
 
-from spyrmsd import molecule
-
-
-def loadmol(fname: str, adjacency: bool = True) -> molecule.Molecule:
+def loadmol(fname: str, adjacency: bool = True):
     """
     Load molecule from file.
 
@@ -72,7 +68,7 @@ def loadmol(fname: str, adjacency: bool = True) -> molecule.Molecule:
     return to_molecule(mol, adjacency=adjacency)
 
 
-def loadallmols(fname: str, adjacency: bool = True) -> List[molecule.Molecule]:
+def loadallmols(fname: str, adjacency: bool = True):
     """
     Load molecules from file.
 
