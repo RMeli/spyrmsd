@@ -10,6 +10,7 @@ Submodules
 ----------
 
 .. toctree::
+   :maxdepth: 4
 
    spyrmsd.optional.obabel
    spyrmsd.optional.rdkit

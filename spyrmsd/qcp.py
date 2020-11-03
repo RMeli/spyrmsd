@@ -196,12 +196,33 @@ def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
         """
         return 4 * x ** 3 + 2 * c2 * x + c1
 
-    x0 = (Ga + Gb) / 2.0
+    x0 = (Ga + Gb) * 0.5
 
-    return optimize.newton(P, x0, fprime=dP)
+    lmax = optimize.newton(P, x0, fprime=dP)
+
+    return lmax
 
 
-def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
+def _lambda_max_eig(K: np.ndarray) -> float:
+    """
+    Find largest eigenvalue of :math:`K`.
+
+    Parameters
+    ----------
+    K: np.ndarray
+        Symmetric key matrix
+
+    Returns
+    -------
+    float
+        Largest eigenvalue of :math:`K`, :math:`\\lambda_\\text{max}`
+    """
+    e, _ = np.linalg.eig(K)
+
+    return max(e)
+
+
+def qcp_rmsd(A: np.ndarray, B: np.ndarray, atol: float = 1e-9) -> float:
     """
     Compute RMSD using the quaternion polynomial method.
 
@@ -211,6 +232,8 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
         Coordinates of structure A
     B: numpy.ndarray
         Coordinates of structure B
+    atol: float
+        Absolute tolerance parameter (see notes)
 
     Returns
     -------
@@ -232,7 +255,7 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
     This means that :math:`s = G_a + G_bb - 2 * \\lambda_\\text{max}` can become
     negative because of numerical errors and therefore :math:`\\sqrt{s}` fails.
     In order to avoid this problem, the final RMSD is set to :math:`0`
-    if :math:`|s| < 10^{-12}`.
+    if :math:`|s| < atol`.
     """
 
     assert A.shape == B.shape
@@ -247,11 +270,18 @@ def qcp_rmsd(A: np.ndarray, B: np.ndarray) -> float:
 
     c2, c1, c0 = coefficients(M, K)
 
-    l_max = lambda_max(Ga, Gb, c2, c1, c0)
+    try:
+        # Fast calculation of the largest eigenvalue of K as root of the characteristic
+        # polynomial.
+        l_max = lambda_max(Ga, Gb, c2, c1, c0)
+    except RuntimeError:  # Newton method fails to converge; see GitHub Issue #35
+        # Fallback to (slower) explicit calculation of the largest eigenvalue of K
+        l_max = _lambda_max_eig(K)
 
     s = Ga + Gb - 2 * l_max
-    if abs(s) < 1e-12:  # Avoid numerical errors when Ga + Gb = 2 * l_max
-        rmsd = 0
+
+    if abs(s) < atol:  # Avoid numerical errors when Ga + Gb = 2 * l_max
+        rmsd = 0.0
     else:
         rmsd = np.sqrt(s / N)
 
