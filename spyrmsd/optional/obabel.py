@@ -94,7 +94,7 @@ def adjacency_matrix(mol) -> np.ndarray:
     return A
 
 
-def to_molecule(mol, adjacency: bool = True) -> molecule.Molecule:
+def to_molecule(mol, adjacency: bool = True):
     """
     Transform molecule to `pyrmsd` molecule.
 
