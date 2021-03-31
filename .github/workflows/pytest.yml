@@ -20,7 +20,7 @@ defaults:
 jobs:
   test:
     name: Test {{ '${{ matrix.os }}' }}-{{ '${{ matrix.python-version }}' }}-{{ '${{ matrix.chemlib }}' }}-{{ '${{ matrix.graphlib }}' }}
-    runs-on: {{ '${{ matrix.os }}' }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macOS-latest, ubuntu-latest, windows-latest]
