@@ -4,9 +4,8 @@ Control skipping of tests according to command line option.
 Soource:
     https://docs.pytest.org/en/latest/example/simple.html
 """
-import pytest
-
 import numpy as np
+import pytest
 
 
 def pytest_addoption(parser):
