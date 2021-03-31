@@ -1,7 +1,6 @@
 # sPyRMSD
 
-[![Travis Build Status](https://travis-ci.org/RMeli/spyrmsd.svg?branch=develop)](https://travis-ci.org/RMeli/spyrmsd)
-[![Build status](https://ci.appveyor.com/api/projects/status/31ubs980idhv1qw8/branch/develop?svg=true)](https://ci.appveyor.com/project/RMeli/spyrmsd/branch/master)
+[![pytest](https://github.com/RMeli/spyrmsd/actions/workflows/pytest.yml/badge.svg?branch=develop)](https://github.com/RMeli/spyrmsd/actions/workflows/pytest.yml)
 ![flake8](https://github.com/RMeli/spyrmsd/workflows/flake8/badge.svg)
 ![mypy](https://github.com/RMeli/spyrmsd/workflows/mypy/badge.svg)
 [![codecov](https://codecov.io/gh/RMeli/spyrmsd/branch/develop/graph/badge.svg)](https://codecov.io/gh/RMeli/spyrmsd/branch/master)
