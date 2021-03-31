@@ -57,7 +57,7 @@ jobs:
 
     - name: Test
       run: |
-        pytest -v --cov=spyrmsd --cov-report=xml --color=yes tests/
+        pytest -v --benchmark --cov=spyrmsd --cov-report=xml --color=yes tests/
 
     - name: CodeCov
       uses: codecov/codecov-action@v1
