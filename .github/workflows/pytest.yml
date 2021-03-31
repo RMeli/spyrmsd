@@ -19,7 +19,7 @@ defaults:
 
 jobs:
   test:
-    name: Test {{ '${{ matrix.os }}' }}-{{ '${{ matrix.python-version }}' }}-{{ '${{ matrix.chemlib }}' }}-{{ '${{ matrix.graphlib }}' }}
+    name: Test ${{ matrix.os }}-${{ matrix.python-version }}-${{ matrix.chemlib }}-${{ matrix.graphlib }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -40,8 +40,8 @@ jobs:
 
     - uses: conda-incubator/setup-miniconda@v2
       with:
-        python-version: {{ '${{ matrix.python-version }}' }}
-        environment-file: devtools/conda-envs/spyrmsd-test-{{ '${{ matrix.chemlib }}' }}-{{ '${{ matrix.graphlib }}' }}.yaml
+        python-version: ${{ matrix.python-version }}
+        environment-file: devtools/conda-envs/spyrmsd-test-${{ matrix.chemlib }}-${{ matrix.graphlib }}.yaml
         channels: conda-forge,defaults
         activate-environment: spyrmsd
         auto-update-conda: true
@@ -62,4 +62,4 @@ jobs:
       with:
         file: ./coverage.xml
         flags: unittests
-        name: codecov-{{ '${{ matrix.os }}' }}-py{{ '${{ matrix.python-version }}' }}-{{ '${{ matrix.chemlib }}' }}-{{ '${{ matrix.graphlib }}' }}
+        name: codecov-${{ matrix.os }}-py${{ matrix.python-version }}-${{ matrix.chemlib }}-${{ matrix.graphlib }}
