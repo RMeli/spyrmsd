@@ -6,6 +6,8 @@ Soource:
 """
 import pytest
 
+import numpy as np
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -13,16 +15,26 @@ def pytest_addoption(parser):
     )
 
     parser.addoption(
-        "--large",
-        action="store_true",
-        default=False,
-        help="run large number of randomly selected tests",
+        "--n-tests",
+        default=0,
+        type=int,
+        help="run n randomly selected tests from large dataset",
     )
 
 
 def pytest_configure(config):
+    """
+    Register new markers programmatically:
+    - :code:`benchmark`
+    - :code:`large`
+
+    Use :code:`pytest -markers` to list all markers.
+    """
     config.addinivalue_line("markers", "benchmark: mark test as benchmark")
-    config.addinivalue_line("markers", "large: mark test as large")
+    config.addinivalue_line("markers", "large: run additional randomly selected tests")
+
+    # Number of system in large test dataset
+    pytest.n_systems = 4554
 
 
 def pytest_collection_modifyitems(config, items):
@@ -33,9 +45,27 @@ def pytest_collection_modifyitems(config, items):
             if "benchmark" in item.keywords:
                 item.add_marker(skip_benchmark)
 
-    if not config.getoption("--large"):
-        skip_large = pytest.mark.skip(reason="need --large option to run")
+    if not config.getoption("--n-tests"):
+        skip_large = pytest.mark.skip(reason="need --n-tests option to run")
 
         for item in items:
             if "large" in item.keywords:
                 item.add_marker(skip_large)
+
+
+def pytest_generate_tests(metafunc):
+    """
+    Parametrise functions based on command line arguments.
+
+    https://docs.pytest.org/en/stable/example/parametrize.html#parametrizing-tests
+
+    Notes
+    -----
+
+    The function :code:`test_large/test_rmsd` takes :code:`idx` as argument, which
+    need to be parametrised using :code:`--n-tests` from the command line argument.
+    """
+    if "idx" in metafunc.fixturenames:  # idx is a parameter of test_large/test_rmsd
+        n = metafunc.config.getoption("--n-tests")
+
+        metafunc.parametrize("idx", np.random.randint(0, pytest.n_systems, size=n))
