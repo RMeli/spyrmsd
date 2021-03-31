@@ -28,7 +28,7 @@ jobs:
         chemlib: [obabel, rdkit]
         graphlib: [nx, gt]
         exclude:
-        - {os: "windows-latest", graphlib: "nx"}
+        - {os: "windows-latest", graphlib: "gt"}
 
     steps:
     - uses: actions/checkout@v1
