@@ -122,10 +122,6 @@ script:
     # Run test and get coverage report
   - pytest -v --cov=spyrmsd tests/  --benchmark --large
 
-    # Run checks
-  - flake8
-  - mypy
-
 after_success:
     # Upload coverage report to codecov
   - codecov
