@@ -115,7 +115,7 @@ def test_molecule_center_of_mass_benzene() -> None:
 def test_molecule_center_of_mass_H2() -> None:
 
     atomicnums = [1, 1]
-    coordinates = [[0, 0, -1], [0, 0, 1]]
+    coordinates = [[0., 0., -1.], [0., 0., 1.]]
 
     mol = molecule.Molecule(atomicnums, coordinates)
 
@@ -125,7 +125,7 @@ def test_molecule_center_of_mass_H2() -> None:
 def test_molecule_center_of_mass_HF() -> None:
 
     atomicnums = [1, 9]
-    coordinates = [[0, 0, -1], [0, 0, 1]]
+    coordinates = [[0., 0., -1.], [0., 0., 1.]]
 
     H_mass = qcel.periodictable.to_mass(1)
     F_mass = qcel.periodictable.to_mass(9)
@@ -181,7 +181,7 @@ def test_graph_from_atomic_coordinates_perception(
 
     m = copy.deepcopy(mol)
 
-    m.adjacency_matrix = None
+    delattr(m, "adjacency_matrix")
     m.G = None
 
     with pytest.warns(UserWarning):

@@ -12,7 +12,7 @@ class Molecule:
         self,
         atomicnums: Union[np.ndarray, List[int]],
         coordinates: Union[np.ndarray, List[List[float]]],
-        adjacency_matrix: Union[np.ndarray, List[List[int]]] = None,
+        adjacency_matrix: Optional[Union[np.ndarray, List[List[int]]]] = None,
     ) -> None:
         """
         Molecule initialisation.
@@ -45,10 +45,10 @@ class Molecule:
         self.atomicnums = atomicnums
         self.coordinates = coordinates
 
-        self.stripped: bool = np.all(atomicnums != 1)
+        self.stripped: bool = bool(np.all(atomicnums != 1))
 
         if adjacency_matrix is not None:
-            self.adjacency_matrix = np.asarray(adjacency_matrix, dtype=int)
+            self.adjacency_matrix: np.ndarray = np.asarray(adjacency_matrix, dtype=int)
 
         # Molecular graph
         self.G = None
@@ -100,7 +100,7 @@ class Molecule:
 
         return rd.to_molecule(rdmol, adjacency=adjacency)
 
-    def translate(self, vector: np.ndarray) -> None:
+    def translate(self, vector: Union[np.ndarray, List[float]]) -> None:
         """
         Translate molecule.
 
@@ -110,9 +110,10 @@ class Molecule:
             Translation vector (in 3D)
         """
         assert len(vector) == 3
+        vector = np.asarray(vector)
         self.coordinates += vector
 
-    def rotate(self, angle: float, axis: np.ndarray, units: str = "rad") -> None:
+    def rotate(self, angle: float, axis: Union[np.ndarray, List[float]], units: str = "rad") -> None:
         """
         Rotate molecule.
 
@@ -125,6 +126,7 @@ class Molecule:
         units: {"rad", "deg"}
             Units of the angle (radians `rad` or degrees `deg`)
         """
+        axis = np.asarray(axis)
         self.coordinates = utils.rotate(self.coordinates, angle, axis, units)
 
     def center_of_mass(self) -> np.ndarray:
@@ -200,11 +202,11 @@ class Molecule:
         The molecular graph is cached.
         """
         if self.G is None:
-            if self.adjacency_matrix is not None:
+            try:
                 self.G = graph.graph_from_adjacency_matrix(
                     self.adjacency_matrix, self.atomicnums
                 )
-            else:
+            except AttributeError:
                 warnings.warn(
                     "Molecule was not initialized with an adjacency matrix. "
                     + "Using bond perception..."

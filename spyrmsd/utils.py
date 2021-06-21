@@ -82,7 +82,7 @@ def deg_to_rad(angle: float) -> float:
     return angle * np.pi / 180.0
 
 
-def rotate(v: np.array, angle: float, axis: np.array, units: str = "rad") -> np.array:
+def rotate(v: np.ndarray, angle: float, axis: np.ndarray, units: str = "rad") -> np.ndarray:
     """
     Rotate vector.
 

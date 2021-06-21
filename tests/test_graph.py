@@ -30,7 +30,7 @@ def test_adjacency_matrix_from_mol(mol) -> None:
     A = io.adjacency_matrix(mol)
 
     assert A.shape == (natoms, natoms)
-    assert np.alltrue(A == A.T)
+    assert np.all(A == A.T)
     assert np.sum(A) == nbonds * 2
 
     for i, j in io.bonds(mol):
@@ -47,7 +47,7 @@ def test_graph_from_adjacency_matrix(mol) -> None:
     A = io.adjacency_matrix(mol)
 
     assert A.shape == (natoms, natoms)
-    assert np.alltrue(A == A.T)
+    assert np.all(A == A.T)
     assert np.sum(A) == nbonds * 2
 
     G = graph.graph_from_adjacency_matrix(A)
@@ -68,7 +68,7 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
 
     assert len(mol) == natoms
     assert mol.adjacency_matrix.shape == (natoms, natoms)
-    assert np.alltrue(mol.adjacency_matrix == A)
+    assert np.all(mol.adjacency_matrix == A)
     assert np.sum(mol.adjacency_matrix) == nbonds * 2
 
     G = mol.to_graph()
