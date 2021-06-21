@@ -119,11 +119,38 @@ from spyrmsd import rmsd
 
 The function  `rmsd.rmsd` computes RMSD without symmetry correction. The atoms are expected to be in the same order for both molecules being compared (no atom matching is performed).
 
+```python
+def rmsd(
+    coords1: np.ndarray, # Coordinates of molecule 1
+    coords2: np.ndarray, # Coordinates of molecule 2
+    atomicn1: np.ndarray, # Atomic number of molecule 1
+    atomicn2: np.ndarray, # Atomic number of molecule 2
+    center: bool = False, # Flag to center molecules at origin
+    minimize: bool = False, # Flag to compute minimum RMSD
+    atol: float = 1e-9, # Numerical tolerance for QCP method
+) -> float:
+```
+
 #### Symmetry-Corrected RMSD
 
 The function `rmsd.symmrmsd` computes symmetry-corrected RMSD using molecular graph isomorphisms. Symmetry correction requires molecular adjacency matrices describing the connectivity but needs not the atoms to be in the same order.
 
-Atom matching is performed according to the molecular graph. Therefore, this function should be used when atoms in the molecules being compared are not in the same order (even if there is not symmetry).
+Atom matching is performed according to the molecular graph. This function should also be used when atoms in the molecules being compared are not in the same order (even if there is not symmetry to be accounted for).
+
+```python
+def symmrmsd(
+    coordsref: np.ndarray, # Reference coordinated
+    coords: Union[np.ndarray, List[np.ndarray]], # Coordinates (one set or multiple sets)
+    atomicnumsref: np.ndarray, # Reference atomic numbers
+    atomicnums: np.ndarray, # Atomic numbers
+    amref: np.ndarray, # Reference adjacency matrix
+    am: np.ndarray, # Adjacency matrix
+    center: bool = False, # Flag to center molecules at origin
+    minimize: bool = False, # Flag to compute minimum RMSD
+    cache: bool = True, # Cache graph isomorphisms
+    atol: float = 1e-9, # Numerical tolerance for QCP method
+):
+```
 
 ## Development
 
