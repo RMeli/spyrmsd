@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 import requests
 
-from spyrmsd import io, qcp, spyrmsd
+from spyrmsd import io, qcp, rmsd
 
 
 @pytest.fixture(autouse=True, params=[True, False])
@@ -117,6 +117,6 @@ def test_rmsd(idx, download, path, minimize):
     if ref is None or None in mols:
         pytest.xfail("Problems loading PDB ID {id}.")
 
-    rmsds = spyrmsd.rmsdwrapper(ref, mols, minimize=minimize, strip=True)
+    rmsds = rmsd.rmsdwrapper(ref, mols, minimize=minimize, strip=True)
 
     assert np.allclose(rmsds, results)

@@ -197,7 +197,8 @@ def test_graph_from_atomic_coordinates_perception(
 
 
 @pytest.mark.parametrize(
-    "adjacency", [True, False],
+    "adjacency",
+    [True, False],
 )
 def test_from_obmol(adjacency):
     pytest.importorskip("openbabel")
@@ -225,7 +226,8 @@ def test_from_obmol(adjacency):
 
 
 @pytest.mark.parametrize(
-    "adjacency", [True, False],
+    "adjacency",
+    [True, False],
 )
 def test_from_rdmol(adjacency):
     pytest.importorskip("rdkit")

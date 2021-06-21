@@ -13,7 +13,8 @@ import sys
 
 import pytest
 
-from spyrmsd import graph, hungarian, io, molecule, qcp, rmsd, spyrmsd, utils
+import spyrmsd
+from spyrmsd import graph, hungarian, io, molecule, qcp, rmsd, utils
 
 
 @pytest.mark.parametrize(
@@ -28,7 +29,6 @@ from spyrmsd import graph, hungarian, io, molecule, qcp, rmsd, spyrmsd, utils
         molecule.__name__,
         qcp.__name__,
         rmsd.__name__,
-        spyrmsd.__name__,
         utils.__name__,
     ],
 )

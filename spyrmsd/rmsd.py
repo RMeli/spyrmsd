@@ -2,7 +2,7 @@ from typing import Any, List, Optional, Tuple, Union
 
 import numpy as np
 
-from spyrmsd import graph, hungarian, qcp, utils
+from spyrmsd import graph, hungarian, qcp, utils, molecule
 
 
 def rmsd(
@@ -299,3 +299,81 @@ def symmrmsd(
         )
 
     return RMSD
+
+
+def rmsdwrapper(
+    molref: molecule.Molecule,
+    mols: Union[molecule.Molecule, List[molecule.Molecule]],
+    symmetry: bool = True,
+    center: bool = False,
+    minimize: bool = False,
+    strip: bool = True,
+    cache: bool = True,
+) -> Any:
+    """
+    Compute RMSD between two molecule.
+
+    Parameters
+    ----------
+    molref: molecule.Molecule
+        Reference molecule
+    mols: Union[molecule.Molecule, List[molecule.Molecule]]
+        Molecules to compare to reference molecule
+    symmetry: bool, optional
+        Symmetry-corrected RMSD (using graph isomorphism)
+    center: bool, optional
+        Center molecules at origin
+    minimize: bool, optional
+        Minimised RMSD (using the quaternion polynomial method)
+    strip: bool, optional
+        Strip hydrogen atoms
+
+    Returns
+    -------
+    List[float]
+        RMSDs
+    """
+
+    if not isinstance(mols, list):
+        mols = [mols]
+
+    if strip:
+        molref.strip()
+
+        for mol in mols:
+            mol.strip()
+
+    if minimize:
+        center = True
+
+    cref = molecule.coords_from_molecule(molref, center)
+    cmols = [molecule.coords_from_molecule(mol, center) for mol in mols]
+
+    RMSDlist = []
+
+    if symmetry:
+        RMSDlist = symmrmsd(
+            cref,
+            cmols,
+            molref.atomicnums,
+            mols[0].atomicnums,
+            molref.adjacency_matrix,
+            mols[0].adjacency_matrix,
+            center=center,
+            minimize=minimize,
+            cache=cache,
+        )
+    else:  # No symmetry
+        for c in cmols:
+            RMSDlist.append(
+                rmsd(
+                    cref,
+                    c,
+                    molref.atomicnums,
+                    mols[0].atomicnums,
+                    center=center,
+                    minimize=minimize,
+                )
+            )
+
+    return RMSDlist
