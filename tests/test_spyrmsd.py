@@ -109,7 +109,7 @@ def test_rmsdwrapper_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> 
 @pytest.mark.parametrize(
     # Reference results obtained with OpenBabel
     "minimize, referenceRMSD",
-    [(True, 0.476858,), (False, 0.592256,),],
+    [(True, 0.476858), (False, 0.592256)],
 )
 def test_rmsdwrapper_single_molecule(minimize: bool, referenceRMSD: float) -> None:
 
