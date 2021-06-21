@@ -22,7 +22,7 @@ Python tool for symmetry-corrected RMSD calculations.
 
 If you find `spyrmsd` useful, please consider citing the following paper:
 
-```
+```text
 @article{spyrmsd2020,
   Author = {Meli, Rocco and Biggin, Philip C.},
   Journal = {Journal of Cheminformatics},
@@ -86,7 +86,7 @@ _Note_: [RDKit](https://rdkit.org/) is not available on PyPI ([Why the RDKit isn
 
 ## Usage
 
-### Standalone
+### Standalone Tool
 
 ```bash
 python -m spyrmsd -h
