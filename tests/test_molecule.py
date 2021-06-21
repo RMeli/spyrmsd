@@ -194,3 +194,37 @@ def test_graph_from_atomic_coordinates_perception(
 
         for idx, atomicnum in enumerate(mol.atomicnums):
             assert graph.vertex_property(G, "atomicnum", idx) == atomicnum
+
+
+def test_from_obmol():
+    pytest.importorskip("openbabel")
+
+    from spyrmsd.optional import obabel as ob
+
+    # Load molecules with OpenBabel
+    path = os.path.join(molecules.molpath, "1cbr_docking.sdf")
+    mols = ob.loadall(path)
+
+    # Convert OpenBabel molecules to spyrmsd molecules
+    mols = [molecule.Molecule.from_obabel(mol) for mol in mols]
+
+    assert len(mols) == 10
+    for mol in mols:
+        assert isinstance(mol, molecule.Molecule)
+
+
+def test_from_rdmol():
+    pytest.importorskip("rdkit")
+
+    from spyrmsd.optional import rdkit as rd
+
+    # Load molecules with RDKit
+    path = os.path.join(molecules.molpath, "1cbr_docking.sdf")
+    mols = rd.loadall(path)
+
+    # Convert OpenBabel molecules to spyrmsd molecules
+    mols = [molecule.Molecule.from_rdkit(mol) for mol in mols]
+
+    assert len(mols) == 10
+    for mol in mols:
+        assert isinstance(mol, molecule.Molecule)

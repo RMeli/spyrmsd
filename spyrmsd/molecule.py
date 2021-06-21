@@ -55,6 +55,20 @@ class Molecule:
 
         self.masses: Optional[List[float]] = None
 
+    @classmethod
+    def from_obabel(cls, obmol, adjacency=True):
+        # TODO: Check if OpenBabel is available?
+        from spyrmsd.optional import obabel as ob
+
+        return ob.to_molecule(obmol, adjacency=adjacency)
+
+    @classmethod
+    def from_rdkit(cls, rdmol, adjacency=True):
+        # TODO: Check if OpenBabel is available?
+        from spyrmsd.optional import rdkit as rd
+
+        return rd.to_molecule(rdmol, adjacency=adjacency)
+
     def translate(self, vector: np.ndarray) -> None:
         """
         Translate molecule.
