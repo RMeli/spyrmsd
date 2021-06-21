@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 import numpy as np
 
@@ -120,8 +120,7 @@ def to_molecule(mol, adjacency: bool = True):
         atomicnums[i] = atom.atomicnum
         coordinates[i] = atom.coords
 
-    if adjacency:
-        A = adjacency_matrix(mol)
+    A: Optional[np.ndarray] = adjacency_matrix(mol) if adjacency else None
 
     return molecule.Molecule(atomicnums, coordinates, A)
 
