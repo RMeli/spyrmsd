@@ -6,3 +6,4 @@
 
 - [ ] Tests
 - [ ] Documentation
+- [ ] Changelog
