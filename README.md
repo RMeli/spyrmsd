@@ -128,7 +128,7 @@ def rmsd(
     center: bool = False,   # Flag to center molecules at origin
     minimize: bool = False, # Flag to compute minimum RMSD
     atol: float = 1e-9,     # Numerical tolerance for QCP method
-) -> float:
+)
 ```
 
 #### Symmetry-Corrected RMSD
@@ -149,7 +149,7 @@ def symmrmsd(
     minimize: bool = False,                      # Flag to compute minimum RMSD
     cache: bool = True,                          # Cache graph isomorphisms
     atol: float = 1e-9,                          # Numerical tolerance for QCP method
-):
+)
 ```
 
 ## Development
