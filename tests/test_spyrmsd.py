@@ -104,3 +104,18 @@ def test_rmsdwrapper_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> 
 
     for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
         assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
+
+
+@pytest.mark.parametrize(
+    # Reference results obtained with OpenBabel
+    "minimize, referenceRMSD",
+    [(True, 0.476858), (False, 0.592256)],
+)
+def test_rmsdwrapper_single_molecule(minimize: bool, referenceRMSD: float) -> None:
+
+    molref = copy.deepcopy(molecules.docking_1cbr[0])
+    mols = copy.deepcopy(molecules.docking_1cbr[1])
+
+    rmsd = spyrmsd.rmsdwrapper(molref, mols, minimize=minimize, strip=True)
+
+    assert rmsd[0] == pytest.approx(referenceRMSD, abs=1e-5)

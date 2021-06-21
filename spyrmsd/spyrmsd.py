@@ -2,7 +2,7 @@
 Python RMSD tool
 """
 
-from typing import Any
+from typing import Any, List, Union
 
 import numpy as np
 
@@ -40,8 +40,8 @@ def coords_from_molecule(mol: molecule.Molecule, center: bool = False) -> np.nda
 
 
 def rmsdwrapper(
-    molref,
-    mols,
+    molref: molecule.Molecule,
+    mols: Union[molecule.Molecule, List[molecule.Molecule]],
     symmetry: bool = True,
     center: bool = False,
     minimize: bool = False,
@@ -53,10 +53,10 @@ def rmsdwrapper(
 
     Parameters
     ----------
-    mol1: molecule.Molecule
-        Molecule 1
-    mol2: molecule.Molecule
-        Molecule 2
+    molref: molecule.Molecule
+        Reference molecule
+    mols: Union[molecule.Molecule, List[molecule.Molecule]]
+        Molecules to compare to reference molecule
     symmetry: bool, optional
         Symmetry-corrected RMSD (using graph isomorphism)
     center: bool, optional
@@ -71,6 +71,9 @@ def rmsdwrapper(
     List[float]
         RMSDs
     """
+
+    if not isinstance(mols, list):
+        mols = [mols]
 
     if strip:
         molref.strip()
