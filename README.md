@@ -93,9 +93,9 @@ python -m spyrmsd -h
 ```
 
 ```text
-usage: __main__.py [-h] [-m] [-c] [--hydrogens] [-n] reference molecules [molecules ...]
+usage: python -m spyrmsd [-h] [-m] [-c] [--hydrogens] [-n] reference molecules [molecules ...]
 
-Python RMSD tool.
+Symmetry-corrected RMSD calculations in Python.
 
 positional arguments:
   reference       Reference file

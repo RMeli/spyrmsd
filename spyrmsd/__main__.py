@@ -11,7 +11,10 @@ if __name__ == "__main__":
 
     import argparse as ap
 
-    parser = ap.ArgumentParser(description="Python RMSD tool.")
+    parser = ap.ArgumentParser(
+        prog="python -m spyrmsd",
+        description="Symmetry-corrected RMSD calculations in Python.",
+    )
 
     parser.add_argument("reference", type=str, help="Reference file")
     parser.add_argument("molecules", type=str, nargs="+", help="Input file(s)")
