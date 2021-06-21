@@ -27,5 +27,4 @@ Submodules
    spyrmsd.molecule
    spyrmsd.qcp
    spyrmsd.rmsd
-   spyrmsd.spyrmsd
    spyrmsd.utils

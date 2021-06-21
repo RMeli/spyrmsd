@@ -121,13 +121,13 @@ The function  `rmsd.rmsd` computes RMSD without symmetry correction. The atoms a
 
 ```python
 def rmsd(
-    coords1: np.ndarray, # Coordinates of molecule 1
-    coords2: np.ndarray, # Coordinates of molecule 2
-    atomicn1: np.ndarray, # Atomic number of molecule 1
-    atomicn2: np.ndarray, # Atomic number of molecule 2
-    center: bool = False, # Flag to center molecules at origin
+    coords1: np.ndarray,    # Coordinates of molecule 1
+    coords2: np.ndarray,    # Coordinates of molecule 2
+    atomicn1: np.ndarray,   # Atomic number of molecule 1
+    atomicn2: np.ndarray,   # Atomic number of molecule 2
+    center: bool = False,   # Flag to center molecules at origin
     minimize: bool = False, # Flag to compute minimum RMSD
-    atol: float = 1e-9, # Numerical tolerance for QCP method
+    atol: float = 1e-9,     # Numerical tolerance for QCP method
 ) -> float:
 ```
 
@@ -139,16 +139,16 @@ Atom matching is performed according to the molecular graph. This function shoul
 
 ```python
 def symmrmsd(
-    coordsref: np.ndarray, # Reference coordinated
+    coordsref: np.ndarray,                       # Reference coordinated
     coords: Union[np.ndarray, List[np.ndarray]], # Coordinates (one set or multiple sets)
-    atomicnumsref: np.ndarray, # Reference atomic numbers
-    atomicnums: np.ndarray, # Atomic numbers
-    amref: np.ndarray, # Reference adjacency matrix
-    am: np.ndarray, # Adjacency matrix
-    center: bool = False, # Flag to center molecules at origin
-    minimize: bool = False, # Flag to compute minimum RMSD
-    cache: bool = True, # Cache graph isomorphisms
-    atol: float = 1e-9, # Numerical tolerance for QCP method
+    atomicnumsref: np.ndarray,                   # Reference atomic numbers
+    atomicnums: np.ndarray,                      # Atomic numbers
+    amref: np.ndarray,                           # Reference adjacency matrix
+    am: np.ndarray,                              # Adjacency matrix
+    center: bool = False,                        # Flag to center molecules at origin
+    minimize: bool = False,                      # Flag to compute minimum RMSD
+    cache: bool = True,                          # Cache graph isomorphisms
+    atol: float = 1e-9,                          # Numerical tolerance for QCP method
 ):
 ```
 
@@ -162,7 +162,7 @@ To ensure code quality and consistency the following tools are used during devel
 
 ## Copyright
 
-Copyright (c) 2019-2020, Rocco Meli.
+Copyright (c) 2019-2021, Rocco Meli.
 
 ## References
 

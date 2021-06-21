@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 
 project = "spyrmsd"
 copyright = (
-    "2019-2020, Rocco Meli. Project structure based on the "
+    "2019-2021, Rocco Meli. Project structure based on the "
     "Computational Molecular Science Python Cookiecutter version 1.1"
 )
 author = "Rocco Meli"
