@@ -196,7 +196,10 @@ def test_graph_from_atomic_coordinates_perception(
             assert graph.vertex_property(G, "atomicnum", idx) == atomicnum
 
 
-def test_from_obmol():
+@pytest.mark.parametrize(
+    "adjacency", [True, False],
+)
+def test_from_obmol(adjacency):
     pytest.importorskip("openbabel")
 
     from spyrmsd.optional import obabel as ob
@@ -206,14 +209,25 @@ def test_from_obmol():
     mols = ob.loadall(path)
 
     # Convert OpenBabel molecules to spyrmsd molecules
-    mols = [molecule.Molecule.from_obabel(mol) for mol in mols]
+    mols = [molecule.Molecule.from_obabel(mol, adjacency) for mol in mols]
 
     assert len(mols) == 10
+
     for mol in mols:
         assert isinstance(mol, molecule.Molecule)
 
+        if adjacency:
+            assert mol.adjacency_matrix is not None
+        else:
+            with pytest.raises(AttributeError):
+                # No adjacency_matrix attribute
+                mol.adjacency_matrix
 
-def test_from_rdmol():
+
+@pytest.mark.parametrize(
+    "adjacency", [True, False],
+)
+def test_from_rdmol(adjacency):
     pytest.importorskip("rdkit")
 
     from spyrmsd.optional import rdkit as rd
@@ -223,8 +237,16 @@ def test_from_rdmol():
     mols = rd.loadall(path)
 
     # Convert OpenBabel molecules to spyrmsd molecules
-    mols = [molecule.Molecule.from_rdkit(mol) for mol in mols]
+    mols = [molecule.Molecule.from_rdkit(mol, adjacency) for mol in mols]
 
     assert len(mols) == 10
+
     for mol in mols:
         assert isinstance(mol, molecule.Molecule)
+
+        if adjacency:
+            assert mol.adjacency_matrix is not None
+        else:
+            with pytest.raises(AttributeError):
+                # No adjacency_matrix attribute
+                mol.adjacency_matrix

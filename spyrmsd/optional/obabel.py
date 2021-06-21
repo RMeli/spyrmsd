@@ -122,6 +122,8 @@ def to_molecule(mol, adjacency: bool = True):
 
     if adjacency:
         A = adjacency_matrix(mol)
+    else:
+        A = None
 
     return molecule.Molecule(atomicnums, coordinates, A)
 
