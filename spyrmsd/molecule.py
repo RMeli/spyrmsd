@@ -113,7 +113,9 @@ class Molecule:
         vector = np.asarray(vector)
         self.coordinates += vector
 
-    def rotate(self, angle: float, axis: Union[np.ndarray, List[float]], units: str = "rad") -> None:
+    def rotate(
+        self, angle: float, axis: Union[np.ndarray, List[float]], units: str = "rad"
+    ) -> None:
         """
         Rotate molecule.
 

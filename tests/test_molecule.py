@@ -115,7 +115,7 @@ def test_molecule_center_of_mass_benzene() -> None:
 def test_molecule_center_of_mass_H2() -> None:
 
     atomicnums = [1, 1]
-    coordinates = [[0., 0., -1.], [0., 0., 1.]]
+    coordinates = [[0.0, 0.0, -1.0], [0.0, 0.0, 1.0]]
 
     mol = molecule.Molecule(atomicnums, coordinates)
 
@@ -125,7 +125,7 @@ def test_molecule_center_of_mass_H2() -> None:
 def test_molecule_center_of_mass_HF() -> None:
 
     atomicnums = [1, 9]
-    coordinates = [[0., 0., -1.], [0., 0., 1.]]
+    coordinates = [[0.0, 0.0, -1.0], [0.0, 0.0, 1.0]]
 
     H_mass = qcel.periodictable.to_mass(1)
     F_mass = qcel.periodictable.to_mass(9)
