@@ -21,7 +21,8 @@ def test_load_sdf(molfile, natoms: int, nbonds: int) -> None:
 
 
 @pytest.mark.parametrize(
-    "molfile, natoms, nbonds", [("1cbr_ligand.mol2", 49, 49)],
+    "molfile, natoms, nbonds",
+    [("1cbr_ligand.mol2", 49, 49)],
 )
 def test_load_mol2(molfile, natoms: int, nbonds: int) -> None:
 
@@ -44,7 +45,8 @@ def test_load_pdb(molfile, natoms: int, nbonds: int) -> None:
 
 
 @pytest.mark.parametrize(
-    "molfile, natoms, nbonds", [("1cbr_docking.sdf", 22, 22)],
+    "molfile, natoms, nbonds",
+    [("1cbr_docking.sdf", 22, 22)],
 )
 def test_loadall_sdf(molfile, natoms: int, nbonds: int) -> None:
 
@@ -58,7 +60,8 @@ def test_loadall_sdf(molfile, natoms: int, nbonds: int) -> None:
 
 
 @pytest.mark.parametrize(
-    "molfile, natoms, nbonds", [("1cbr_docking.mol2", 22, 22)],
+    "molfile, natoms, nbonds",
+    [("1cbr_docking.mol2", 22, 22)],
 )
 def test_loadall_mol2(molfile, natoms: int, nbonds: int) -> None:
 
@@ -75,7 +78,8 @@ def test_loadall_mol2(molfile, natoms: int, nbonds: int) -> None:
 
 
 @pytest.mark.parametrize(
-    "molfile, natoms, nbonds", [("1cbr_docking.pdb", 22, 22)],
+    "molfile, natoms, nbonds",
+    [("1cbr_docking.pdb", 22, 22)],
 )
 def test_loadall_pdb(molfile, natoms: int, nbonds: int) -> None:
 
@@ -110,7 +114,8 @@ def test_loadall_pdb_single_model() -> None:
 
 
 @pytest.mark.parametrize(
-    "molfile, natoms", [("benzene.sdf", 12), ("ethanol.sdf", 9), ("dialanine.sdf", 23)],
+    "molfile, natoms",
+    [("benzene.sdf", 12), ("ethanol.sdf", 9), ("dialanine.sdf", 23)],
 )
 def test_loadmol_sdf(molfile, natoms: int) -> None:
 
@@ -120,7 +125,8 @@ def test_loadmol_sdf(molfile, natoms: int) -> None:
 
 
 @pytest.mark.parametrize(
-    "molfile, natoms", [("1cbr_ligand.mol2", 49)],
+    "molfile, natoms",
+    [("1cbr_ligand.mol2", 49)],
 )
 def test_loadmol_mol2(molfile, natoms: int) -> None:
 
@@ -130,7 +136,8 @@ def test_loadmol_mol2(molfile, natoms: int) -> None:
 
 
 @pytest.mark.parametrize(
-    "molfile, natoms", [("1cbr_docking.sdf", 22)],
+    "molfile, natoms",
+    [("1cbr_docking.sdf", 22)],
 )
 def test_loadallmols_sdf(molfile, natoms: int) -> None:
 
