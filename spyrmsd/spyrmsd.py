@@ -55,7 +55,7 @@ def rmsdwrapper(
     ----------
     molref: molecule.Molecule
         Reference molecule
-    mols: molecule.Molecule
+    mols: Union[molecule.Molecule, List[molecule.Molecule]]
         Molecules to compare to reference molecule
     symmetry: bool, optional
         Symmetry-corrected RMSD (using graph isomorphism)
