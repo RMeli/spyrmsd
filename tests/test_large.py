@@ -5,9 +5,7 @@ import numpy as np
 import pytest
 import requests
 
-from spyrmsd import io, qcp, spyrmsd
-
-n_systems = 4554
+from spyrmsd import io, qcp, rmsd
 
 
 @pytest.fixture(autouse=True, params=[True, False])
@@ -69,6 +67,7 @@ def download(tlpath, path):
     elif os.path.isfile(ofname):
         unzip()
     else:
+        # TODO: Change to Zenodo archive
         url = "https://github.com/RMeli/PDBbind-docking/archive/master.zip"
 
         r = requests.get(url)
@@ -89,7 +88,7 @@ def path_from_id(id: str, path: str):
 @pytest.mark.large
 def test_dowload(download, path):
     assert os.path.isdir(path)
-    assert len(download) == n_systems
+    assert len(download) == pytest.n_systems
 
     for id in download:
         assert os.path.isdir(path_from_id(id, path))
@@ -97,7 +96,6 @@ def test_dowload(download, path):
 
 @pytest.mark.large
 @pytest.mark.parametrize("minimize", [True, False])
-@pytest.mark.parametrize("idx", np.random.randint(0, n_systems, size=100))
 def test_rmsd(idx, download, path, minimize):
     id = download[idx]
 
@@ -119,6 +117,6 @@ def test_rmsd(idx, download, path, minimize):
     if ref is None or None in mols:
         pytest.xfail("Problems loading PDB ID {id}.")
 
-    rmsds = spyrmsd.rmsdwrapper(ref, mols, minimize=minimize, strip=True)
+    rmsds = rmsd.rmsdwrapper(ref, mols, minimize=minimize, strip=True)
 
     assert np.allclose(rmsds, results)

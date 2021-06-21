@@ -94,13 +94,16 @@ def test_rmsd_centred_benzene() -> None:
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(1)
 
-    assert rmsd.rmsd(
-        mol1.coordinates,
-        mol2.coordinates,
-        mol1.atomicnums,
-        mol2.atomicnums,
-        center=True,
-    ) == pytest.approx(0)
+    assert (
+        rmsd.rmsd(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.atomicnums,
+            mol2.atomicnums,
+            center=True,
+        )
+        == pytest.approx(0)
+    )
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
@@ -113,13 +116,16 @@ def test_rmsd_minimize(mol: molecule.Molecule) -> None:
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0)
 
-    assert rmsd.rmsd(
-        mol1.coordinates,
-        mol2.coordinates,
-        mol1.atomicnums,
-        mol2.atomicnums,
-        minimize=True,
-    ) == pytest.approx(0)
+    assert (
+        rmsd.rmsd(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.atomicnums,
+            mol2.atomicnums,
+            minimize=True,
+        )
+        == pytest.approx(0)
+    )
 
     for _ in range(10):
         mol2.translate(np.random.rand(3))
@@ -132,13 +138,16 @@ def test_rmsd_minimize(mol: molecule.Molecule) -> None:
             > 0.0
         )
 
-        assert rmsd.rmsd(
-            mol1.coordinates,
-            mol2.coordinates,
-            mol1.atomicnums,
-            mol2.atomicnums,
-            minimize=True,
-        ) == pytest.approx(0)
+        assert (
+            rmsd.rmsd(
+                mol1.coordinates,
+                mol2.coordinates,
+                mol1.atomicnums,
+                mol2.atomicnums,
+                minimize=True,
+            )
+            == pytest.approx(0)
+        )
 
 
 # Results obtained with PyTraj
@@ -151,13 +160,16 @@ def test_rmsd_qcp_2viz(i: int, j: int, result: float) -> None:
     moli = copy.deepcopy(molecules.docking_2viz[i])
     molj = copy.deepcopy(molecules.docking_2viz[j])
 
-    assert rmsd.rmsd(
-        moli.coordinates,
-        molj.coordinates,
-        moli.atomicnums,
-        molj.atomicnums,
-        minimize=True,
-    ) == pytest.approx(result)
+    assert (
+        rmsd.rmsd(
+            moli.coordinates,
+            molj.coordinates,
+            moli.atomicnums,
+            molj.atomicnums,
+            minimize=True,
+        )
+        == pytest.approx(result)
+    )
 
 
 # Results obtained with PyTraj
@@ -174,13 +186,16 @@ def test_rmsd_qcp_2viz_stripped(i: int, j: int, result: float) -> None:
     moli.strip()
     molj.strip()
 
-    assert rmsd.rmsd(
-        moli.coordinates,
-        molj.coordinates,
-        moli.atomicnums,
-        molj.atomicnums,
-        minimize=True,
-    ) == pytest.approx(result)
+    assert (
+        rmsd.rmsd(
+            moli.coordinates,
+            molj.coordinates,
+            moli.atomicnums,
+            molj.atomicnums,
+            minimize=True,
+        )
+        == pytest.approx(result)
+    )
 
 
 # Results obtained with MDAnalysis
@@ -211,13 +226,16 @@ def test_rmsd_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
         mol0.coordinates, mol.coordinates, mol0.atomicnums, mol.atomicnums
     ) == pytest.approx(rmsd_dummy)
 
-    assert rmsd.rmsd(
-        mol0.coordinates,
-        mol.coordinates,
-        mol0.atomicnums,
-        mol.atomicnums,
-        minimize=True,
-    ) == pytest.approx(rmsd_min)
+    assert (
+        rmsd.rmsd(
+            mol0.coordinates,
+            mol.coordinates,
+            mol0.atomicnums,
+            mol.atomicnums,
+            minimize=True,
+        )
+        == pytest.approx(rmsd_min)
+    )
 
 
 @pytest.mark.parametrize(
@@ -293,13 +311,16 @@ def test_rmsd_hungarian_centred(mol: molecule.Molecule) -> None:
         > 0
     )
 
-    assert rmsd.hrmsd(
-        mol1.coordinates,
-        mol2.coordinates,
-        mol1.atomicnums,
-        mol2.atomicnums,
-        center=True,
-    ) == pytest.approx(0)
+    assert (
+        rmsd.hrmsd(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.atomicnums,
+            mol2.atomicnums,
+            center=True,
+        )
+        == pytest.approx(0)
+    )
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
@@ -322,15 +343,18 @@ def test_symmrmsd_centred(mol: molecule.Molecule) -> None:
         > 0
     )
 
-    assert rmsd.symmrmsd(
-        mol1.coordinates,
-        mol2.coordinates,
-        mol1.atomicnums,
-        mol2.atomicnums,
-        mol1.adjacency_matrix,
-        mol2.adjacency_matrix,
-        center=True,
-    ) == pytest.approx(0)
+    assert (
+        rmsd.symmrmsd(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.atomicnums,
+            mol2.atomicnums,
+            mol1.adjacency_matrix,
+            mol2.adjacency_matrix,
+            center=True,
+        )
+        == pytest.approx(0)
+    )
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
@@ -346,26 +370,32 @@ def test_symmrmsd_rotated_benzene(angle: float) -> None:
         > 0
     )
 
-    assert rmsd.rmsd(
-        mol1.coordinates,
-        mol2.coordinates,
-        mol1.atomicnums,
-        mol2.atomicnums,
-        minimize=True,
-    ) == pytest.approx(0)
+    assert (
+        rmsd.rmsd(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.atomicnums,
+            mol2.atomicnums,
+            minimize=True,
+        )
+        == pytest.approx(0)
+    )
 
     assert rmsd.hrmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0, abs=1e-4)
 
-    assert rmsd.symmrmsd(
-        mol1.coordinates,
-        mol2.coordinates,
-        mol1.atomicnums,
-        mol2.atomicnums,
-        mol1.adjacency_matrix,
-        mol2.adjacency_matrix,
-    ) == pytest.approx(0, abs=1e-4)
+    assert (
+        rmsd.symmrmsd(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.atomicnums,
+            mol2.atomicnums,
+            mol1.adjacency_matrix,
+            mol2.adjacency_matrix,
+        )
+        == pytest.approx(0, abs=1e-4)
+    )
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
@@ -384,26 +414,32 @@ def test_symmrmsd_rotated_benzene_stripped(angle: float) -> None:
         > 0
     )
 
-    assert rmsd.rmsd(
-        mol1.coordinates,
-        mol2.coordinates,
-        mol1.atomicnums,
-        mol2.atomicnums,
-        minimize=True,
-    ) == pytest.approx(0)
+    assert (
+        rmsd.rmsd(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.atomicnums,
+            mol2.atomicnums,
+            minimize=True,
+        )
+        == pytest.approx(0)
+    )
 
     assert rmsd.hrmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
     ) == pytest.approx(0, abs=1e-4)
 
-    assert rmsd.symmrmsd(
-        mol1.coordinates,
-        mol2.coordinates,
-        mol1.atomicnums,
-        mol2.atomicnums,
-        mol1.adjacency_matrix,
-        mol2.adjacency_matrix,
-    ) == pytest.approx(0, abs=1e-4)
+    assert (
+        rmsd.symmrmsd(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.atomicnums,
+            mol2.atomicnums,
+            mol1.adjacency_matrix,
+            mol2.adjacency_matrix,
+        )
+        == pytest.approx(0, abs=1e-4)
+    )
 
 
 def test_symmrmsd_atomicnums_matching_pyridine_stripped() -> None:
@@ -423,14 +459,17 @@ def test_symmrmsd_atomicnums_matching_pyridine_stripped() -> None:
 
     # Isomorphic RMSD with atomic number matching is correct
     # Without atomic number matching this would be wrong because of higher symmetry
-    assert rmsd.symmrmsd(
-        mol1.coordinates,
-        mol2.coordinates,
-        mol1.atomicnums,
-        mol2.atomicnums,
-        mol1.adjacency_matrix,
-        mol2.adjacency_matrix,
-    ) == pytest.approx(RMSD, abs=1e-4)
+    assert (
+        rmsd.symmrmsd(
+            mol1.coordinates,
+            mol2.coordinates,
+            mol1.atomicnums,
+            mol2.atomicnums,
+            mol1.adjacency_matrix,
+            mol2.adjacency_matrix,
+        )
+        == pytest.approx(RMSD, abs=1e-4)
+    )
 
 
 # Results obtained with OpenBabel
@@ -467,15 +506,18 @@ def test_rmsd_symmrmsd(index: int, RMSD: float, minimize: bool) -> None:
     molc.strip()
     mol.strip()
 
-    assert rmsd.symmrmsd(
-        molc.coordinates,
-        mol.coordinates,
-        molc.atomicnums,
-        mol.atomicnums,
-        molc.adjacency_matrix,
-        mol.adjacency_matrix,
-        minimize=minimize,
-    ) == pytest.approx(RMSD, abs=1e-5)
+    assert (
+        rmsd.symmrmsd(
+            molc.coordinates,
+            mol.coordinates,
+            molc.atomicnums,
+            mol.atomicnums,
+            molc.adjacency_matrix,
+            mol.adjacency_matrix,
+            minimize=minimize,
+        )
+        == pytest.approx(RMSD, abs=1e-5)
+    )
 
 
 # Results obtained with OpenBabel
@@ -732,22 +774,28 @@ def test_rmsd_atol(i: int, j: int, result: float):
     # Check results are different from 0.0
     assert not result == pytest.approx(0.0)
 
-    assert rmsd.rmsd(
-        moli.coordinates,
-        molj.coordinates,
-        moli.atomicnums,
-        molj.atomicnums,
-        minimize=True,
-    ) == pytest.approx(result)
+    assert (
+        rmsd.rmsd(
+            moli.coordinates,
+            molj.coordinates,
+            moli.atomicnums,
+            molj.atomicnums,
+            minimize=True,
+        )
+        == pytest.approx(result)
+    )
 
-    assert rmsd.rmsd(
-        moli.coordinates,
-        molj.coordinates,
-        moli.atomicnums,
-        molj.atomicnums,
-        minimize=True,
-        atol=1e9,
-    ) == pytest.approx(0.0)
+    assert (
+        rmsd.rmsd(
+            moli.coordinates,
+            molj.coordinates,
+            moli.atomicnums,
+            molj.atomicnums,
+            minimize=True,
+            atol=1e9,
+        )
+        == pytest.approx(0.0)
+    )
 
 
 # Results obtained with OpenBabel
@@ -763,26 +811,32 @@ def test_symmrmsd_atol(i: bool, reference: float) -> None:
     # Check results are different from 0.0
     assert not reference == pytest.approx(0.0)
 
-    assert rmsd.symmrmsd(
-        moli.coordinates,
-        molj.coordinates,
-        moli.atomicnums,
-        molj.atomicnums,
-        moli.adjacency_matrix,
-        molj.adjacency_matrix,
-        minimize=True,
-    ) == pytest.approx(reference, abs=1e-5)
+    assert (
+        rmsd.symmrmsd(
+            moli.coordinates,
+            molj.coordinates,
+            moli.atomicnums,
+            molj.atomicnums,
+            moli.adjacency_matrix,
+            molj.adjacency_matrix,
+            minimize=True,
+        )
+        == pytest.approx(reference, abs=1e-5)
+    )
 
-    assert rmsd.symmrmsd(
-        moli.coordinates,
-        molj.coordinates,
-        moli.atomicnums,
-        molj.atomicnums,
-        moli.adjacency_matrix,
-        molj.adjacency_matrix,
-        minimize=True,
-        atol=1e9,
-    ) == pytest.approx(0.0)
+    assert (
+        rmsd.symmrmsd(
+            moli.coordinates,
+            molj.coordinates,
+            moli.atomicnums,
+            molj.atomicnums,
+            moli.adjacency_matrix,
+            molj.adjacency_matrix,
+            minimize=True,
+            atol=1e9,
+        )
+        == pytest.approx(0.0)
+    )
 
 
 def test_symmrmsd_atol_multi() -> None:
@@ -826,3 +880,110 @@ def test_symmrmsd_atol_multi() -> None:
 
     for r in RMSDs:
         assert r == pytest.approx(0.0)
+
+
+# Results obtained with MDAnalysis
+#   trp0 = mda.Universe("trp0.pdb")
+#   c0 = trp0.coord -trp0.select_atoms("protein").center_of_geometry()
+#   for i in [1,2,3,4,5]:
+#       trp = mda.Universe(f"trp{i}.pdb")
+#       rmsd_dummy = mda.analysis.rms.rmsd(trp.coord, trp0.coord)
+#       c = trp.coord - trp.select_atoms("protein").center_of_geometry()
+#       _, rmsd_min = align.rotation_matrix(tc, tc0)
+#       print(rmsd_dummy, rmsd_min)
+@pytest.mark.parametrize(
+    "minimize, referenceRMSDs",
+    [
+        (
+            False,  # No minimize: dummy RMSD
+            [
+                4.812480551076202,
+                6.772045449820714,
+                9.344911262612964,
+                9.772939589989000,
+                8.901837608843241,
+            ],
+        ),
+        (
+            True,  # Minimize: QCP
+            [
+                1.6578281551053196,
+                1.7175638492348284,
+                1.5946081072641485,
+                2.1234944939308220,
+                2.4894805175766606,
+            ],
+        ),
+    ],
+)
+def test_rmsdwrapper_nosymm_protein(minimize: bool, referenceRMSDs: List[float]):
+
+    mol0 = copy.deepcopy(molecules.trp[0])
+    mols = [copy.deepcopy(mol) for mol in molecules.trp[1:]]
+
+    RMSDs = rmsd.rmsdwrapper(mol0, mols, symmetry=False, minimize=minimize, strip=False)
+
+    for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
+        assert RMSD == pytest.approx(referenceRMSD)
+
+
+@pytest.mark.parametrize(
+    # Reference results obtained with OpenBabel
+    "minimize, referenceRMSDs",
+    [
+        (
+            True,  # Minimize: QCP + Isomorphism
+            [
+                0.476858,
+                1.68089,
+                1.50267,
+                1.90623,
+                1.01324,
+                1.31716,
+                1.11312,
+                1.06044,
+                0.965387,
+                1.37842,
+            ],
+        ),
+        (
+            False,  # No minimize: Isomorphism only
+            [
+                0.592256,
+                2.11545,
+                2.29824,
+                9.45773,
+                1.35005,
+                9.44356,
+                9.59758,
+                9.55076,
+                2.44067,
+                9.6171,
+            ],
+        ),
+    ],
+)
+def test_rmsdwrapper_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> None:
+
+    molref = copy.deepcopy(molecules.docking_1cbr[0])
+    mols = [copy.deepcopy(mol) for mol in molecules.docking_1cbr[1:]]
+
+    RMSDs = rmsd.rmsdwrapper(molref, mols, minimize=minimize, strip=True)
+
+    for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
+        assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
+
+
+@pytest.mark.parametrize(
+    # Reference results obtained with OpenBabel
+    "minimize, referenceRMSD",
+    [(True, 0.476858), (False, 0.592256)],
+)
+def test_rmsdwrapper_single_molecule(minimize: bool, referenceRMSD: float) -> None:
+
+    molref = copy.deepcopy(molecules.docking_1cbr[0])
+    mols = copy.deepcopy(molecules.docking_1cbr[1])
+
+    RMSD = rmsd.rmsdwrapper(molref, mols, minimize=minimize, strip=True)
+
+    assert RMSD[0] == pytest.approx(referenceRMSD, abs=1e-5)

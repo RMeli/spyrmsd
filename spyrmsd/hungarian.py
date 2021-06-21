@@ -28,7 +28,7 @@ def cost_mtx(A: np.ndarray, B: np.ndarray):
         molecules A and B
     """
 
-    return scipy.spatial.distance.cdist(A, B) ** 2
+    return scipy.spatial.distance.cdist(A, B, metric="sqeuclidean")
 
 
 def optimal_assignment(A: np.ndarray, B: np.ndarray):

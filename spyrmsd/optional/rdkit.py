@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import numpy as np
 import rdkit.Chem as Chem
@@ -118,8 +118,7 @@ def to_molecule(mol, adjacency: bool = True):
 
         coordinates[i] = np.array([pos.x, pos.y, pos.z])
 
-    if adjacency:
-        A = adjacency_matrix(mol)
+    A: Optional[np.ndarray] = adjacency_matrix(mol) if adjacency else None
 
     return molecule.Molecule(atomicnums, coordinates, A)
 

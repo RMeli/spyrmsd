@@ -1,7 +1,6 @@
 # sPyRMSD
 
-[![Travis Build Status](https://travis-ci.org/RMeli/spyrmsd.svg?branch=develop)](https://travis-ci.org/RMeli/spyrmsd)
-[![Build status](https://ci.appveyor.com/api/projects/status/31ubs980idhv1qw8/branch/develop?svg=true)](https://ci.appveyor.com/project/RMeli/spyrmsd/branch/master)
+[![pytest](https://github.com/RMeli/spyrmsd/actions/workflows/pytest.yml/badge.svg?branch=develop)](https://github.com/RMeli/spyrmsd/actions/workflows/pytest.yml)
 ![flake8](https://github.com/RMeli/spyrmsd/workflows/flake8/badge.svg)
 ![mypy](https://github.com/RMeli/spyrmsd/workflows/mypy/badge.svg)
 [![codecov](https://codecov.io/gh/RMeli/spyrmsd/branch/develop/graph/badge.svg)](https://codecov.io/gh/RMeli/spyrmsd/branch/master)
@@ -11,7 +10,7 @@
 [![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=develop)](https://spyrmsd.readthedocs.io/en/develop/?badge=develop)
 
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
-[![PyPI](https://img.shields.io/badge/PyPI-v0.4.0%20-ff69b4)](https://pypi.org/project/spyrmsd/)
+[![PyPI](https://img.shields.io/badge/PyPI-v0.5.0%20-ff69b4)](https://pypi.org/project/spyrmsd/)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/spyrmsd.svg)](https://anaconda.org/conda-forge/spyrmsd)
 
 [![J. Cheminform.](https://img.shields.io/badge/J.%20Cheminform.-10.1186%2Fs13321--020--00455--2-blue)](https://doi.org/10.1186/s13321-020-00455-2)
@@ -23,7 +22,7 @@ Python tool for symmetry-corrected RMSD calculations.
 
 If you find `spyrmsd` useful, please consider citing the following paper:
 
-```
+```text
 @article{spyrmsd2020,
   Author = {Meli, Rocco and Biggin, Philip C.},
   Journal = {Journal of Cheminformatics},
@@ -74,7 +73,7 @@ The following packages are required to use `spyrmsd` as a module:
 * [scipy](https://www.scipy.org/)
 * [qcelemental](http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/)
 
-_Note_: `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will fall back to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows). However, in order to support cross-platform installation [NetworkX](https://networkx.github.io/) is installed by default.
+_Note_: `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will fall back to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows). However, in order to support cross-platform installation [NetworkX](https://networkx.github.io/) is installed by default, and [graph-tool](https://graph-tool.skewed.de/) needs to be installed manually.
 
 #### Standalone Tool
 
@@ -87,16 +86,16 @@ _Note_: [RDKit](https://rdkit.org/) is not available on PyPI ([Why the RDKit isn
 
 ## Usage
 
-### Standalone
+### Standalone Tool
 
 ```bash
-python -m spyrmsd.spyrmsd -h
+python -m spyrmsd -h
 ```
 
 ```text
-usage: spyrmsd.py [-h] [-m] [-c] [--hydrogens] [-n] reference molecules [molecules ...]
+usage: python -m spyrmsd [-h] [-m] [-c] [--hydrogens] [-n] reference molecules [molecules ...]
 
-Python RMSD tool.
+Symmetry-corrected RMSD calculations in Python.
 
 positional arguments:
   reference       Reference file
@@ -120,11 +119,38 @@ from spyrmsd import rmsd
 
 The function  `rmsd.rmsd` computes RMSD without symmetry correction. The atoms are expected to be in the same order for both molecules being compared (no atom matching is performed).
 
+```python
+def rmsd(
+    coords1: np.ndarray,    # Coordinates of molecule 1
+    coords2: np.ndarray,    # Coordinates of molecule 2
+    atomicn1: np.ndarray,   # Atomic number of molecule 1
+    atomicn2: np.ndarray,   # Atomic number of molecule 2
+    center: bool = False,   # Flag to center molecules at origin
+    minimize: bool = False, # Flag to compute minimum RMSD
+    atol: float = 1e-9,     # Numerical tolerance for QCP method
+)
+```
+
 #### Symmetry-Corrected RMSD
 
 The function `rmsd.symmrmsd` computes symmetry-corrected RMSD using molecular graph isomorphisms. Symmetry correction requires molecular adjacency matrices describing the connectivity but needs not the atoms to be in the same order.
 
-Atom matching is performed according to the molecular graph. Therefore, this function should be used when atoms in the molecules being compared are not in the same order (even if there is not symmetry).
+Atom matching is performed according to the molecular graph. This function should also be used when atoms in the molecules being compared are not in the same order (even if there is not symmetry to be accounted for).
+
+```python
+def symmrmsd(
+    coordsref: np.ndarray,                       # Reference coordinated
+    coords: Union[np.ndarray, List[np.ndarray]], # Coordinates (one set or multiple sets)
+    atomicnumsref: np.ndarray,                   # Reference atomic numbers
+    atomicnums: np.ndarray,                      # Atomic numbers
+    amref: np.ndarray,                           # Reference adjacency matrix
+    am: np.ndarray,                              # Adjacency matrix
+    center: bool = False,                        # Flag to center molecules at origin
+    minimize: bool = False,                      # Flag to compute minimum RMSD
+    cache: bool = True,                          # Cache graph isomorphisms
+    atol: float = 1e-9,                          # Numerical tolerance for QCP method
+)
+```
 
 ## Development
 
@@ -136,7 +162,7 @@ To ensure code quality and consistency the following tools are used during devel
 
 ## Copyright
 
-Copyright (c) 2019-2020, Rocco Meli.
+Copyright (c) 2019-2021, Rocco Meli.
 
 ## References
 

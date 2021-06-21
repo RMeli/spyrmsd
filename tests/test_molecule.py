@@ -115,7 +115,7 @@ def test_molecule_center_of_mass_benzene() -> None:
 def test_molecule_center_of_mass_H2() -> None:
 
     atomicnums = [1, 1]
-    coordinates = [[0, 0, -1], [0, 0, 1]]
+    coordinates = [[0.0, 0.0, -1.0], [0.0, 0.0, 1.0]]
 
     mol = molecule.Molecule(atomicnums, coordinates)
 
@@ -125,7 +125,7 @@ def test_molecule_center_of_mass_H2() -> None:
 def test_molecule_center_of_mass_HF() -> None:
 
     atomicnums = [1, 9]
-    coordinates = [[0, 0, -1], [0, 0, 1]]
+    coordinates = [[0.0, 0.0, -1.0], [0.0, 0.0, 1.0]]
 
     H_mass = qcel.periodictable.to_mass(1)
     F_mass = qcel.periodictable.to_mass(9)
@@ -181,7 +181,7 @@ def test_graph_from_atomic_coordinates_perception(
 
     m = copy.deepcopy(mol)
 
-    m.adjacency_matrix = None
+    delattr(m, "adjacency_matrix")
     m.G = None
 
     with pytest.warns(UserWarning):
@@ -194,3 +194,61 @@ def test_graph_from_atomic_coordinates_perception(
 
         for idx, atomicnum in enumerate(mol.atomicnums):
             assert graph.vertex_property(G, "atomicnum", idx) == atomicnum
+
+
+@pytest.mark.parametrize(
+    "adjacency",
+    [True, False],
+)
+def test_from_obmol(adjacency):
+    pytest.importorskip("openbabel")
+
+    from spyrmsd.optional import obabel as ob
+
+    # Load molecules with OpenBabel
+    path = os.path.join(molecules.molpath, "1cbr_docking.sdf")
+    mols = ob.loadall(path)
+
+    # Convert OpenBabel molecules to spyrmsd molecules
+    mols = [molecule.Molecule.from_obabel(mol, adjacency) for mol in mols]
+
+    assert len(mols) == 10
+
+    for mol in mols:
+        assert isinstance(mol, molecule.Molecule)
+
+        if adjacency:
+            assert mol.adjacency_matrix is not None
+        else:
+            with pytest.raises(AttributeError):
+                # No adjacency_matrix attribute
+                mol.adjacency_matrix
+
+
+@pytest.mark.parametrize(
+    "adjacency",
+    [True, False],
+)
+def test_from_rdmol(adjacency):
+    pytest.importorskip("rdkit")
+
+    from spyrmsd.optional import rdkit as rd
+
+    # Load molecules with RDKit
+    path = os.path.join(molecules.molpath, "1cbr_docking.sdf")
+    mols = rd.loadall(path)
+
+    # Convert OpenBabel molecules to spyrmsd molecules
+    mols = [molecule.Molecule.from_rdkit(mol, adjacency) for mol in mols]
+
+    assert len(mols) == 10
+
+    for mol in mols:
+        assert isinstance(mol, molecule.Molecule)
+
+        if adjacency:
+            assert mol.adjacency_matrix is not None
+        else:
+            with pytest.raises(AttributeError):
+                # No adjacency_matrix attribute
+                mol.adjacency_matrix
