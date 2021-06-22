@@ -23,7 +23,7 @@ Contributors:    @RMeli
 ### Changed
 
 * `spyrmsd` standalone tool now invoked with `python -m spyrmsd -h` [PR #52 | @RMeli]
-* Moved `spyrmsd.coords_to_molecule` to `molecule` module [PR #52 | @RMeli]
+* Moved `spyrmsd.coords_from_molecule` to `molecule` module [PR #52 | @RMeli]
 * Moved `spyrmsd.rmsdwrapper` to `rmsd` module [PR #52 | @RMeli]
 * Long tests no longer run in CI [PR #44 | @RMeli]
 
