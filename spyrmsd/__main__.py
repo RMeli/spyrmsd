@@ -4,12 +4,11 @@ Symmetry-corrected RMSD calculations in Python
 
 if __name__ == "__main__":
 
-    from spyrmsd import io
-    from spyrmsd.rmsd import rmsdwrapper
-
+    import argparse as ap
     import sys
 
-    import argparse as ap
+    from spyrmsd import io
+    from spyrmsd.rmsd import rmsdwrapper
 
     parser = ap.ArgumentParser(
         prog="python -m spyrmsd",

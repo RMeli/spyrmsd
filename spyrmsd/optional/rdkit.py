@@ -1,14 +1,28 @@
-from typing import List, Optional, Tuple
-
 import gzip
 import os
+from typing import List, Optional, Tuple
 
 import numpy as np
 import rdkit.Chem as Chem
 
 from spyrmsd import molecule, utils
 
+
 def _load_block_gzipped(loader, fname: str):
+    """
+    Load gzipped files using MolBlocks.
+
+    Parameters
+    ----------
+    loader:
+        RDKit MolBlock loader (MolFromMol2Block, MolFromPDBBlock, ...)
+    fname: str
+        File name
+
+    Returns
+    -------
+    Molecule
+    """
     with gzip.open(fname, "r") as fgz:
         content = fgz.read()
         rdmol = loader(content, removeHs=False)
