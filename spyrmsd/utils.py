@@ -64,7 +64,7 @@ def molformat(fname: str) -> str:
 
     if ext == "xyz":
         # xyz files in OpenBabel are called XYZ
-        ext = ext.upper()
+        ext = "XYZ"
 
     return ext
 
