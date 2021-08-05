@@ -1,24 +1,24 @@
 try:
     from spyrmsd.graphs.gt import (
-        graph_from_adjacency_matrix,
-        match_graphs,
-        vertex_property,
-        num_vertices,
-        num_edges,
-        lattice,
         cycle,
+        graph_from_adjacency_matrix,
+        lattice,
+        match_graphs,
+        num_edges,
+        num_vertices,
+        vertex_property,
     )
 
 except ImportError:
     try:
         from spyrmsd.graphs.nx import (
-            graph_from_adjacency_matrix,
-            match_graphs,
-            vertex_property,
-            num_vertices,
-            num_edges,
-            lattice,
             cycle,
+            graph_from_adjacency_matrix,
+            lattice,
+            match_graphs,
+            num_edges,
+            num_vertices,
+            vertex_property,
         )
     except ImportError:
         raise ImportError("graph_tool or NetworkX libraries not found.")

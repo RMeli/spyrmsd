@@ -1,25 +1,25 @@
 try:
     from spyrmsd.optional.obabel import (
+        adjacency_matrix,
+        bonds,
         load,
         loadall,
-        adjacency_matrix,
-        to_molecule,
         numatoms,
         numbonds,
-        bonds,
+        to_molecule,
     )
 
 except ImportError:
 
     try:
         from spyrmsd.optional.rdkit import (
+            adjacency_matrix,
+            bonds,
             load,
             loadall,
-            adjacency_matrix,
-            to_molecule,
             numatoms,
             numbonds,
-            bonds,
+            to_molecule,
         )
     except ImportError:
         # Use sPyRMSD as standalone library

@@ -2,7 +2,7 @@ from typing import Any, List, Optional, Tuple, Union
 
 import numpy as np
 
-from spyrmsd import graph, hungarian, qcp, utils, molecule
+from spyrmsd import graph, hungarian, molecule, qcp, utils
 
 
 def rmsd(

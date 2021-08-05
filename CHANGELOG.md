@@ -3,6 +3,15 @@
 
 ------------------------------------------------------------------------------
 
+## Version X.Y.Z
+
+Date:            DD/MM/YYYY
+Contributors:    @RMeli
+
+### Added
+
+* Added support for gzip-compressed files (`.gz`) [PR #56 | @RMeli]
+
 ## Version 0.5.0
 
 Date:            21/06/2021
