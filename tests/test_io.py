@@ -126,7 +126,7 @@ def test_loadmol_sdf(molfile, natoms: int) -> None:
 
 @pytest.mark.parametrize(
     "molfile, natoms",
-    [("1cbr_ligand.mol2", 49)],
+    [("benzene.mol2", 12), ("1cbr_ligand.mol2", 49)],
 )
 def test_loadmol_mol2(molfile, natoms: int) -> None:
 
@@ -147,3 +147,14 @@ def test_loadallmols_sdf(molfile, natoms: int) -> None:
 
     for m in ms:
         assert len(m) == natoms
+
+
+@pytest.mark.parametrize(
+    "molfile, natoms",
+    [("benzene.sdf.gz", 12), ("benzene.mol2.gz", 12)],
+)
+def test_loadmol_sdf(molfile, natoms: int) -> None:
+
+    m = io.loadmol(os.path.join(molpath, molfile))
+
+    assert len(m) == natoms

@@ -21,8 +21,13 @@ def format(fname: str) -> str:
     -----
     The file extension is returned without the `.` character, i.e. for the file
     `path/filename.ext` the string `ext` is returned.
+
+    If a file is compressed, the `.gz` extension is ignored.
     """
     name, ext = os.path.splitext(fname)
+
+    if ext == ".gz":
+        _, ext = os.path.splitext(name)
 
     return ext[1:]  # Remove "."
 
