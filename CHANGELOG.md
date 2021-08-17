@@ -10,6 +10,7 @@ Contributors:    @RMeli
 
 ### Added
 
+* Added [pre-commit](https://pre-commit.com/) configuration file [PR #57 | @RMeli]
 * Added support for gzip-compressed files (`.gz`) [PR #56 | @RMeli]
 
 ## Version 0.5.0
