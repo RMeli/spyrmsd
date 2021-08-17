@@ -158,7 +158,10 @@ To ensure code quality and consistency the following tools are used during devel
 
 * [black](https://black.readthedocs.io/en/stable/)
 * [Flake 8](http://flake8.pycqa.org/en/latest/) (CI)
+* [isort]()
 * [mypy](http://mypy-lang.org/) (CI)
+
+Pre-commit `git` hooks can be installed with [pre-commit](https://pre-commit.com/).
 
 ## Copyright
 
