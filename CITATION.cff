@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Rocco"
+  given-names: "Meli"
+  orcid: "https://orcid.org/0000-0002-2845-3410"
+title: "spyrmsd"
+version: 0.5.0
+doi: 10.5281/zenodo.3631876
+date-released: 2021-06-21
+url: "https://github.com/RMeli/spyrmsd"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Rocco"
+    given-names: "Meli"
+    orcid: "https://orcid.org/0000-0002-2845-3410"
+  - family-names: "Philip C."
+    given-names: "Biggin"
+    orcid: "https://orcid.org/0000-0001-5100-8836"
+  doi: "10.1186/s13321-020-00455-2"
+  journal: "J. Cheminform."
+  month: 9
+  start: 1
+  end: 7
+  title: "spyrmsd: symmetry-corrected RMSD calculations in Python"
+  issue: 49
+  volume: 12
+  year: 2020
