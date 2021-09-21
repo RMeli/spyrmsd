@@ -284,10 +284,11 @@ import re
 import subprocess
 import sys
 
+# For mypy issues see https://github.com/python/mypy/issues/1153
 try:
-    import configparser
+    import configparser  # type: ignore
 except ImportError:
-    import ConfigParser as configparser
+    import ConfigParser as configparser  # type: ignore
 
 
 class VersioneerConfig:

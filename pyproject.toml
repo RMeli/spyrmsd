@@ -10,8 +10,7 @@ author = "Rocco Meli"
 author-email = "rocco.meli@biodtp.ox.ac.uk"
 home-page = "https://spyrmsd.readthedocs.io"
 classifiers = [
-    "License :: OSI Approved :: MIT License", 
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",]
 requires-python = ">=3.6"
-requires = ["numpy", "scipy", "networkx>=2", "qcelemental"]
-
+requires = ["numpy", "scipy", "networkx>=2"]

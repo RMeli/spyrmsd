@@ -31,7 +31,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     url="https://spyrmsd.readthedocs.io",
-    install_requires=["numpy", "scipy", "qcelemental", "networkx>=2"],
+    install_requires=["numpy", "scipy", "networkx>=2"],
     extras_require={"bib": ["duecredit"]},
     platforms=["Linux", "Mac OS-X", "Unix", "Windows"],
     python_requires=">=3.6",

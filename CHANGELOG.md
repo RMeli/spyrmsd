@@ -8,10 +8,18 @@
 Date:            DD/MM/YYYY
 Contributors:    @RMeli
 
+### Fixed
+
+* Fixed wrong covalent radius in `graph.adjacency_matrix_from_atomic_coordinates()` [PR #58 | @RMeli]
+
 ### Added
 
 * Added [pre-commit](https://pre-commit.com/) configuration file [PR #57 | @RMeli]
 * Added support for gzip-compressed files (`.gz`) [PR #56 | @RMeli]
+
+### Removed
+
+* Removed dependency `QCElemental` [PR #58 | @RMeli]
 
 ## Version 0.5.0
 
