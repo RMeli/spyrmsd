@@ -3,9 +3,9 @@
 
 ------------------------------------------------------------------------------
 
-## Version X.Y.Z
+## Version 0.5.1
 
-Date:            DD/MM/YYYY
+Date:            21/09/2021
 Contributors:    @RMeli
 
 ### Fixed
