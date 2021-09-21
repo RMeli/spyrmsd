@@ -71,7 +71,6 @@ The following packages are required to use `spyrmsd` as a module:
 * [graph-tool](https://graph-tool.skewed.de/) or [NetworkX](https://networkx.github.io/)
 * [numpy](https://numpy.org/)
 * [scipy](https://www.scipy.org/)
-* [qcelemental](http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/)
 
 _Note_: `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will fall back to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows). However, in order to support cross-platform installation [NetworkX](https://networkx.github.io/) is installed by default, and [graph-tool](https://graph-tool.skewed.de/) needs to be installed manually.
 

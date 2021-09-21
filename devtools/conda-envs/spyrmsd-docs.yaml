@@ -13,9 +13,8 @@ dependencies:
   - graph-tool
 
   # Chemistry
-  - openbabel 
+  - openbabel
   - rdkit
-  - qcelemental
 
   # Doc
   - sphinx
