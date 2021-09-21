@@ -10,7 +10,7 @@
 [![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=develop)](https://spyrmsd.readthedocs.io/en/develop/?badge=develop)
 
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
-[![PyPI](https://img.shields.io/badge/PyPI-v0.5.0%20-ff69b4)](https://pypi.org/project/spyrmsd/)
+[![PyPI](https://img.shields.io/badge/PyPI-v0.5.1%20-ff69b4)](https://pypi.org/project/spyrmsd/)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/spyrmsd.svg)](https://anaconda.org/conda-forge/spyrmsd)
 
 [![J. Cheminform.](https://img.shields.io/badge/J.%20Cheminform.-10.1186%2Fs13321--020--00455--2-blue)](https://doi.org/10.1186/s13321-020-00455-2)
@@ -71,7 +71,6 @@ The following packages are required to use `spyrmsd` as a module:
 * [graph-tool](https://graph-tool.skewed.de/) or [NetworkX](https://networkx.github.io/)
 * [numpy](https://numpy.org/)
 * [scipy](https://www.scipy.org/)
-* [qcelemental](http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/)
 
 _Note_: `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will fall back to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows). However, in order to support cross-platform installation [NetworkX](https://networkx.github.io/) is installed by default, and [graph-tool](https://graph-tool.skewed.de/) needs to be installed manually.
 
@@ -158,7 +157,10 @@ To ensure code quality and consistency the following tools are used during devel
 
 * [black](https://black.readthedocs.io/en/stable/)
 * [Flake 8](http://flake8.pycqa.org/en/latest/) (CI)
+* [isort]()
 * [mypy](http://mypy-lang.org/) (CI)
+
+Pre-commit `git` hooks can be installed with [pre-commit](https://pre-commit.com/).
 
 ## Copyright
 

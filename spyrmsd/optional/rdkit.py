@@ -1,9 +1,33 @@
+import gzip
+import os
 from typing import List, Optional, Tuple
 
 import numpy as np
 import rdkit.Chem as Chem
 
 from spyrmsd import molecule, utils
+
+
+def _load_block_gzipped(loader, fname: str):
+    """
+    Load gzipped files using MolBlocks.
+
+    Parameters
+    ----------
+    loader:
+        RDKit MolBlock loader (MolFromMol2Block, MolFromPDBBlock, ...)
+    fname: str
+        File name
+
+    Returns
+    -------
+    Molecule
+    """
+    with gzip.open(fname, "r") as fgz:
+        content = fgz.read()
+        rdmol = loader(content, removeHs=False)
+
+    return rdmol
 
 
 def load(fname: str):
@@ -20,14 +44,25 @@ def load(fname: str):
     Molecule
     """
 
+    gzipped = os.path.splitext(fname)[-1] == ".gz"
     fmt = utils.molformat(fname)
 
     if fmt == "mol2":
-        rdmol = Chem.MolFromMol2File(fname, removeHs=False)
+        if not gzipped:
+            rdmol = Chem.MolFromMol2File(fname, removeHs=False)
+        else:
+            rdmol = _load_block_gzipped(Chem.MolFromMol2Block, fname)
     elif fmt == "sdf":
-        rdmol = Chem.SDMolSupplier(fname, removeHs=False)[0]
+        if not gzipped:
+            rdmol = next(Chem.SDMolSupplier(fname, removeHs=False))
+        else:
+            with gzip.open(fname, "r") as fgz:
+                rdmol = next(Chem.ForwardSDMolSupplier(fgz, removeHs=False))
     elif fmt == "pdb":
-        rdmol = Chem.MolFromPDBFile(fname, removeHs=False)
+        if not gzipped:
+            rdmol = Chem.MolFromPDBFile(fname, removeHs=False)
+        else:
+            rdmol = _load_block_gzipped(Chem.MolFromPDBBlock, fname)
     else:
         raise NotImplementedError
 
@@ -48,19 +83,28 @@ def loadall(fname: str):
     List of molecules
     """
 
+    gzipped = os.path.splitext(fname)[-1] == ".gz"
     fmt = utils.molformat(fname)
 
     if fmt == "mol2":
         raise NotImplementedError  # See RDKit Issue #415
     elif fmt == "sdf":
-        rdmols = Chem.SDMolSupplier(fname, removeHs=False)
+        if not gzipped:
+            rdmols = Chem.SDMolSupplier(fname, removeHs=False)
+            mols = [rdmol for rdmol in rdmols]
+        else:
+            with gzip.open(fname, "r") as fgz:
+                rdmols = Chem.ForwardSDMolSupplier(fgz, removeHs=False)
+
+                # Load all molecules before closing file
+                mols = [rdmol for rdmol in rdmols]
     elif fmt == "pdb":
         # TODO: Implement
         raise NotImplementedError
     else:
         raise NotImplementedError
 
-    return [rdmol for rdmol in rdmols]
+    return mols
 
 
 def adjacency_matrix(mol) -> np.ndarray:

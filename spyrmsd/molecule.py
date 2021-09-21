@@ -2,9 +2,8 @@ import warnings
 from typing import List, Optional, Union
 
 import numpy as np
-import qcelemental as qcel
 
-from spyrmsd import graph, utils
+from spyrmsd import constants, graph, utils
 
 
 class Molecule:
@@ -147,7 +146,7 @@ class Molecule:
 
         # Get masses and cache them
         if self.masses is None:
-            self.masses = [qcel.periodictable.to_mass(anum) for anum in self.atomicnums]
+            self.masses = [constants.anum_to_mass[anum] for anum in self.atomicnums]
 
         return np.average(self.coordinates, axis=0, weights=self.masses)
 

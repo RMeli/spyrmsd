@@ -3,9 +3,30 @@
 
 ------------------------------------------------------------------------------
 
+## Version 0.5.1
+
+Date:            21/09/2021
+Contributors:    @RMeli
+
+### Fixed
+
+* Fixed wrong covalent radius in `graph.adjacency_matrix_from_atomic_coordinates()` [PR #58 | @RMeli]
+
+### Added
+
+* Added [pre-commit](https://pre-commit.com/) configuration file [PR #57 | @RMeli]
+* Added support for gzip-compressed files (`.gz`) [PR #56 | @RMeli]
+
+### Removed
+
+* Removed dependency `QCElemental` [PR #58 | @RMeli]
+
+------------------------------------------------------------------------------
+
 ## Version 0.5.0
 
 Date:            21/06/2021
+
 Contributors:    @RMeli
 
 ### Added
@@ -23,7 +44,7 @@ Contributors:    @RMeli
 ### Changed
 
 * `spyrmsd` standalone tool now invoked with `python -m spyrmsd -h` [PR #52 | @RMeli]
-* Moved `spyrmsd.coords_to_molecule` to `molecule` module [PR #52 | @RMeli]
+* Moved `spyrmsd.coords_from_molecule` to `molecule` module [PR #52 | @RMeli]
 * Moved `spyrmsd.rmsdwrapper` to `rmsd` module [PR #52 | @RMeli]
 * Long tests no longer run in CI [PR #44 | @RMeli]
 

@@ -20,9 +20,8 @@ dependencies:
   - scikit-learn
 
   # Chemistry
-  - openbabel 
+  - openbabel
   - rdkit
-  - qcelemental
 
   # Plotting
   - matplotlib

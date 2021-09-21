@@ -1,8 +1,28 @@
 import numpy as np
 import pytest
 
-from spyrmsd import graph, io, molecule
+from spyrmsd import constants, graph, io, molecule
 from tests import molecules
+
+
+def test_adjacency_matrix_from_atomic_coordinates_distance() -> None:
+    # Lithium hydride (LiH)
+    # H and Li have very different covalent radii
+    atomicnums = np.array([1, 3])
+
+    # Distance is the sum of covalent radii
+    d = sum([constants.anum_to_covalentradius[anum] for anum in atomicnums])
+
+    # Distance between two atoms is barely enough to create a bond
+    # If the covalent radii are not correct, no bond will be created
+    coordinates = np.array(
+        [[0, 0, 0], [0, 0, d + constants.connectivity_tolerance - 0.01]]
+    )
+
+    A = graph.adjacency_matrix_from_atomic_coordinates(atomicnums, coordinates)
+    G = graph.graph_from_adjacency_matrix(A)
+
+    assert graph.num_edges(G) == 1
 
 
 @pytest.mark.parametrize(
