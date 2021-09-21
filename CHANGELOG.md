@@ -21,6 +21,8 @@ Contributors:    @RMeli
 
 * Removed dependency `QCElemental` [PR #58 | @RMeli]
 
+------------------------------------------------------------------------------
+
 ## Version 0.5.0
 
 Date:            21/06/2021
