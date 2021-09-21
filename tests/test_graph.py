@@ -20,10 +20,8 @@ def test_adjacency_matrix_from_atomic_coordinates_distance() -> None:
     )
 
     A = graph.adjacency_matrix_from_atomic_coordinates(atomicnums, coordinates)
-
     G = graph.graph_from_adjacency_matrix(A)
 
-    assert graph.num_vertices(G) == 2
     assert graph.num_edges(G) == 1
 
 
