@@ -1,16 +1,23 @@
-[build-system]
-requires = ["flit"]
-build-backend = "flit.buildapi"
+[tool.poetry]
+name = "spyrmsd"
+version = "0.5.1"
+description = "symmetry-corrected RMSD in Python"
+authors = ["Rocco Meli <rocco.meli@biodtp.ox.ac.uk>"]
+license = "MIT"
 
-[tool.flit.metadata]
-module = "spyrmsd"
-dist-name = "spyrmsd"
-description-file = "README.md"
-author = "Rocco Meli"
-author-email = "rocco.meli@biodtp.ox.ac.uk"
-home-page = "https://spyrmsd.readthedocs.io"
-classifiers = [
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",]
-requires-python = ">=3.6"
-requires = ["numpy", "scipy", "networkx>=2"]
+[tool.poetry.dependencies]
+python = ">=3.6"
+numpy = "^1.19.2"
+scipy = "^1.7.1"
+networkx = ">=2"
+
+[tool.poetry.dev-dependencies]
+black = "^21.9b0"
+pytest = "^6.2.5"
+mypy = "^0.790"
+isort = "^5.9.3"
+flake8 = "^3.9.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
