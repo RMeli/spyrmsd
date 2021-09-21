@@ -1,3 +1,14 @@
+"""
+Useful constants.
+
+Notes
+-----
+Periodic table data (atomic masses and covalent radii) are extracted from
+QCElemental_
+
+.. _QCElemental: http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/
+"""
+
 from typing import Dict
 
 connectivity_tolerance: float = 0.4
