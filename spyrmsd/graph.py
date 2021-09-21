@@ -38,7 +38,7 @@ import numpy as np
 import qcelemental as qcel
 
 # TODO: Move elsewhere?
-connectivity_tolerance: float = 0.4
+from spyrmsd import constants
 
 
 def adjacency_matrix_from_atomic_coordinates(
@@ -90,7 +90,7 @@ def adjacency_matrix_from_atomic_coordinates(
 
             distance = np.sqrt(np.sum((coordinates[i] - coordinates[j]) ** 2))
 
-            if distance < (r_i + r_j + connectivity_tolerance):
+            if distance < (r_i + r_j + constants.connectivity_tolerance):
                 A[i, j] = A[j, i] = 1
 
     return A

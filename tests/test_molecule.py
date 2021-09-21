@@ -5,9 +5,8 @@ from typing import DefaultDict, List, Tuple
 
 import numpy as np
 import pytest
-import qcelemental as qcel
 
-from spyrmsd import graph, io, molecule, utils
+from spyrmsd import constants, graph, io, molecule, utils
 from tests import molecules
 
 
@@ -127,8 +126,8 @@ def test_molecule_center_of_mass_HF() -> None:
     atomicnums = [1, 9]
     coordinates = [[0.0, 0.0, -1.0], [0.0, 0.0, 1.0]]
 
-    H_mass = qcel.periodictable.to_mass(1)
-    F_mass = qcel.periodictable.to_mass(9)
+    H_mass = constants.anum_to_mass[1]
+    F_mass = constants.anum_to_mass[9]
 
     z_com = (-H_mass + F_mass) / (H_mass + F_mass)
 
