@@ -10,11 +10,11 @@ Contributors:    @RMeli
 
 ### Fixed
 
-* Fixed inconsistent number of nodes with `graph-tool` for disconnected graphs [ | @RMeli]
+* Fixed inconsistent number of nodes with `graph-tool` for disconnected graphs [PR #61 | @RMeli]
 
 ### Added
 
-* Warning for disconnected graphs [ | @RMeli]
+* Warning for disconnected graphs [PR #61| @RMeli]
 
 ------------------------------------------------------------------------------
 
