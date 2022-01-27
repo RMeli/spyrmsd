@@ -31,6 +31,9 @@ def graph_from_adjacency_matrix(
 
     G = nx.Graph(adjacency_matrix)
 
+    if not nx.is_connected(G):
+        warnings.warn("Disconnected graph detected. Is this expected?")
+
     if atomicnums is not None:
         attributes = {idx: atomicnum for idx, atomicnum in enumerate(atomicnums)}
         nx.set_node_attributes(G, attributes, "atomicnum")

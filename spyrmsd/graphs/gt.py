@@ -33,10 +33,20 @@ def graph_from_adjacency_matrix(
     # Get upper triangular adjacency matrix
     adj = np.triu(adjacency_matrix)
 
+    assert adj.shape[0] == adj.shape[1]
+    num_vertices = adj.shape[0]
+
     G = gt.Graph(directed=False)
+    G.add_vertex(n=num_vertices)
     G.add_edge_list(np.transpose(adj.nonzero()))
 
+    # Check if graph is connected, for warning
+    cc, _ = topology.label_components(G)
+    if set(cc.a) != {0}:
+        warnings.warn("Disconnected graph detected. Is this expected?")
+
     if atomicnums is not None:
+        # TODO: Support more Python types
         vprop = G.new_vertex_property("short")  # Create property map (of C type short)
         vprop.a = atomicnums  # Assign atomic numbers to property map array
         G.vertex_properties["atomicnum"] = vprop  # Set property map

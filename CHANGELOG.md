@@ -3,6 +3,21 @@
 
 ------------------------------------------------------------------------------
 
+## Version 0.5.x
+
+Date:            XX/YY/20ZZ
+Contributors:    @RMeli
+
+### Fixed
+
+* Fixed inconsistent number of nodes with `graph-tool` for disconnected graphs [PR #61 | @RMeli]
+
+### Added
+
+* Warning for disconnected graphs [PR #61| @RMeli]
+
+------------------------------------------------------------------------------
+
 ## Version 0.5.1
 
 Date:            21/09/2021
