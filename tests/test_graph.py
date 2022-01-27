@@ -138,8 +138,8 @@ def test_match_graphs_not_isomorphic(G1, G2) -> None:
         np.array([0, 1, 2], dtype=int),
         np.array([0.1, 1.2, 2.3], dtype=float),
         np.array(["H", "H", "H"], dtype=str),
-        np.array(["He", "He", "He"], dtype=str),
         np.array(["Csp3", "Csp3", "Csp3"], dtype=str),
+        ["LongProperty", "LongPropertyProperty", "LongPropertyProperty"],
     ],
 )
 def test_build_graph_node_features(property) -> None:
