@@ -10,7 +10,11 @@ Contributors:    @RMeli
 
 ### Fixed
 
-* Fixed inconsistent number of nodes with `graph-tool` for disconnected graphs [PR #61 | @RMeli]
+* Inconsistent number of nodes with `graph-tool` for disconnected graphs [PR #61 | @RMeli]
+
+### Improved
+
+* Support for more types of node properties (including strings) with `graph-tool` [PR # | @RMeli]
 
 ### Added
 
