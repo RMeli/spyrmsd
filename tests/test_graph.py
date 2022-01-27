@@ -147,3 +147,16 @@ def test_build_graph_node_features(property) -> None:
     G = graph.graph_from_adjacency_matrix(A, property)
 
     assert graph.num_edges(G) == 3
+
+
+def test_build_graph_node_features_unsupported() -> None:
+    pytest.importorskip(
+        "graph_tool", reason="NetworkX supports all Python objects as node properties."
+    )
+
+    A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
+
+    property = [True, False, True]
+
+    with pytest.raises(ValueError, match="Unsupported property type:"):
+        _ = graph.graph_from_adjacency_matrix(A, property)
