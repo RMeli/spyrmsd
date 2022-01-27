@@ -528,7 +528,8 @@ def test_rmsd_symmrmsd_disconnected_node() -> None:
     # Adjacency matrix with disconnected node
     A = np.array([[0, 1, 0], [1, 0, 0], [0, 0, 0]])
 
-    assert rmsd.symmrmsd(c, c, a, a, A, A) == pytest.approx(0.0, abs=1e-5)
+    with pytest.warns(UserWarning, match="Disconnected graph detected."):
+        assert rmsd.symmrmsd(c, c, a, a, A, A) == pytest.approx(0.0, abs=1e-5)
 
 
 # Results obtained with OpenBabel

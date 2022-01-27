@@ -40,6 +40,11 @@ def graph_from_adjacency_matrix(
     G.add_vertex(n=num_vertices)
     G.add_edge_list(np.transpose(adj.nonzero()))
 
+    # Check if graph is connected, for warning
+    cc, _ = topology.label_components(G)
+    if set(cc.a) != {0}:
+        warnings.warn("Disconnected graph detected. Is this expected?")
+
     if atomicnums is not None:
         # TODO: Support more Python types
         vprop = G.new_vertex_property("short")  # Create property map (of C type short)

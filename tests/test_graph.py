@@ -109,7 +109,9 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
 )
 def test_match_graphs_isomorphic(G1, G2) -> None:
 
-    with pytest.warns(UserWarning):
+    with pytest.warns(
+        UserWarning, match="No atomic number information stored on nodes."
+    ):
         isomorphisms = graph.match_graphs(G1, G2)
 
     assert len(isomorphisms) != 0
@@ -124,5 +126,7 @@ def test_match_graphs_isomorphic(G1, G2) -> None:
 )
 def test_match_graphs_not_isomorphic(G1, G2) -> None:
 
-    with pytest.raises(ValueError), pytest.warns(UserWarning):
+    with pytest.raises(ValueError, match="Graphs are not isomorphic."), pytest.warns(
+        UserWarning, match="No atomic number information stored on nodes."
+    ):
         graph.match_graphs(G1, G2)
