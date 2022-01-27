@@ -25,16 +25,16 @@ Contributors:    @RMeli
 
 ### Fixed
 
-* Fixed wrong covalent radius in `graph.adjacency_matrix_from_atomic_coordinates()` [PR #58 | @RMeli]
+* Wrong covalent radius in `graph.adjacency_matrix_from_atomic_coordinates()` [PR #58 | @RMeli]
 
 ### Added
 
-* Added [pre-commit](https://pre-commit.com/) configuration file [PR #57 | @RMeli]
-* Added support for gzip-compressed files (`.gz`) [PR #56 | @RMeli]
+* [pre-commit](https://pre-commit.com/) configuration file [PR #57 | @RMeli]
+* Support for gzip-compressed files (`.gz`) [PR #56 | @RMeli]
 
 ### Removed
 
-* Removed dependency `QCElemental` [PR #58 | @RMeli]
+* Dependency `QCElemental` [PR #58 | @RMeli]
 
 ------------------------------------------------------------------------------
 
@@ -46,15 +46,15 @@ Contributors:    @RMeli
 
 ### Added
 
-* Added `molecule.Molecule` constructor from RDKit molecule [PR #50 | @RMeli]
-* Added `molecule.Molecule` constructor from Open Babel molecule [PR #50 | @RMeli]
-* Added `--n-tests` option for `pytest` [PR #44 | @RMeli]
+* `molecule.Molecule` constructor from RDKit molecule [PR #50 | @RMeli]
+* `molecule.Molecule` constructor from Open Babel molecule [PR #50 | @RMeli]
+* `--n-tests` option for `pytest` [PR #44 | @RMeli]
 
 ### Improved
 
-* Improved `spyrmsd.rmsdwrapper` to deal with single molecule [PR #51 | @RMeli]
-* Improved issue template [PR #46 | @RMeli]
-* Improved speed of computation of squared pairwise distances [PR #45 | @RMeli]
+* `spyrmsd.rmsdwrapper` to deal with single molecule [PR #51 | @RMeli]
+* Issue template [PR #46 | @RMeli]
+* Speed of computation of squared pairwise distances [PR #45 | @RMeli]
 
 ### Changed
 
@@ -65,8 +65,8 @@ Contributors:    @RMeli
 
 ### Removed
 
-* Removed `spyrmsd` module [PR #52 | @RMeli]
-* Removed Travis CI and AppVeyor bindings [PR #44 | @RMeli]
-* Removed `--long` option for `pytest` [PR #44 | @RMeli]
+* `spyrmsd` module [PR #52 | @RMeli]
+* Travis CI and AppVeyor bindings [PR #44 | @RMeli]
+* `--long` option for `pytest` [PR #44 | @RMeli]
 
 ------------------------------------------------------------------------------
