@@ -6,6 +6,37 @@ import numpy as np
 from graph_tool import generation, topology
 
 
+# TODO: Implement all graph-tool supported types
+def _c_type(numpy_dtype):
+    """
+    Get C type compatible with graph-tool from numpy dtype
+
+    Parameters
+    ----------
+    numpy_dtype: np.dtype
+        Numpy dtype
+
+    Returns
+    -------
+    str
+        C type
+
+    Notes
+    -----
+    https://graph-tool.skewed.de/static/doc/quickstart.html#sec-property-maps
+    """
+    name: str = numpy_dtype.name
+
+    if "int" in name:
+        return "int"
+    elif "float" in name:
+        return "double"
+    elif "str" in name:
+        return "string"
+    else:
+        raise ValueError(f"Unsupported property type: {name}")
+
+
 def graph_from_adjacency_matrix(
     adjacency_matrix: Union[np.ndarray, List[List[int]]],
     atomicnums: Optional[Union[np.ndarray, List[int]]] = None,
@@ -46,9 +77,13 @@ def graph_from_adjacency_matrix(
         warnings.warn("Disconnected graph detected. Is this expected?")
 
     if atomicnums is not None:
-        # TODO: Support more Python types
-        vprop = G.new_vertex_property("short")  # Create property map (of C type short)
-        vprop.a = atomicnums  # Assign atomic numbers to property map array
+        if not isinstance(atomicnums, np.ndarray):
+            atomicnums = np.array(atomicnums)
+
+        assert atomicnums.shape[0] == num_vertices
+
+        ptype: str = _c_type(atomicnums.dtype)  # Get C type
+        vprop = G.new_vertex_property(ptype, vals=atomicnums)  # Create property map
         G.vertex_properties["atomicnum"] = vprop  # Set property map
 
     return G

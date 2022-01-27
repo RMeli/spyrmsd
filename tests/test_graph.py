@@ -130,3 +130,20 @@ def test_match_graphs_not_isomorphic(G1, G2) -> None:
         UserWarning, match="No atomic number information stored on nodes."
     ):
         graph.match_graphs(G1, G2)
+
+
+@pytest.mark.parametrize(
+    "property",
+    [
+        np.array([0, 1, 2], dtype=int),
+        np.array([0.1, 1.2, 2.3], dtype=float),
+        np.array(["H", "H", "H"], dtype=str),
+        np.array(["He", "He", "He"], dtype=str),
+        np.array(["Csp3", "Csp3", "Csp3"], dtype=str),
+    ],
+)
+def test_build_graph_node_features(property) -> None:
+    A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
+    G = graph.graph_from_adjacency_matrix(A, property)
+
+    assert graph.num_edges(G) == 3
