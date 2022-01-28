@@ -40,15 +40,15 @@ from spyrmsd import constants
 
 
 def adjacency_matrix_from_atomic_coordinates(
-    atomicnums: np.ndarray, coordinates: np.ndarray
+    aprops: np.ndarray, coordinates: np.ndarray
 ) -> np.ndarray:
     """
     Compute adjacency matrix from atomic coordinates.
 
     Parameters
     ----------
-    atomicnums: numpy.ndarray
-        Atomic numbers
+    aprops: numpy.ndarray
+        Atomic properties
     coordinates: numpy.ndarray
         Atomic coordinates
 
@@ -74,17 +74,17 @@ def adjacency_matrix_from_atomic_coordinates(
        (1991).
     """
 
-    n = len(atomicnums)
+    n = len(aprops)
 
     assert coordinates.shape == (n, 3)
 
     A = np.zeros((n, n))
 
     for i in range(n):
-        r_i = constants.anum_to_covalentradius[atomicnums[i]]
+        r_i = constants.anum_to_covalentradius[aprops[i]]
 
         for j in range(i + 1, n):
-            r_j = constants.anum_to_covalentradius[atomicnums[j]]
+            r_j = constants.anum_to_covalentradius[aprops[j]]
 
             distance = np.sqrt(np.sum((coordinates[i] - coordinates[j]) ** 2))
 

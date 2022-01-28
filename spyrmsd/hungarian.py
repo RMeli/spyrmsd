@@ -61,7 +61,7 @@ def optimal_assignment(A: np.ndarray, B: np.ndarray):
 
 
 def hungarian_rmsd(
-    A: np.ndarray, B: np.ndarray, atomicnumsA: np.ndarray, atomicnumsB: np.ndarray
+    A: np.ndarray, B: np.ndarray, apropsA: np.ndarray, apropsB: np.ndarray
 ) -> float:
     """
     Solve the optimal assignment problems between atomic coordinates of
@@ -73,10 +73,10 @@ def hungarian_rmsd(
         Atomic coordinates of molecule A
     B: numpy.ndarray
         Atomic coordinates of molecule B
-    atomicnumsA: numpy.ndarray
-        Atomic numbers of molecule A
-    atomicnumsB: numpy.ndarray
-        Atomic numbers of molecule B
+    apropsA: numpy.ndarray
+        Atomic properties of molecule A
+    apropsB: numpy.ndarray
+        Atomic properties of molecule B
 
     Returns
     -------
@@ -96,19 +96,19 @@ def hungarian_rmsd(
     """
 
     assert A.shape == B.shape
-    assert atomicnumsA.shape == atomicnumsB.shape
+    assert apropsA.shape == apropsB.shape
 
-    elements = set(atomicnumsA)
+    elements = set(apropsA)
 
     total_cost: float = 0.0
     for t in elements:
-        atomicnumsA_idx = atomicnumsA == t
-        atomicnumsB_idx = atomicnumsB == t
+        apropsA_idx = apropsA == t
+        apropsB_idx = apropsB == t
 
-        assert atomicnumsA_idx.shape == atomicnumsB_idx.shape
+        assert apropsA_idx.shape == apropsB_idx.shape
 
         cost, row_idx, col_idx = optimal_assignment(
-            A[atomicnumsA_idx, :], B[atomicnumsB_idx, :]
+            A[apropsA_idx, :], B[apropsB_idx, :]
         )
 
         total_cost += cost

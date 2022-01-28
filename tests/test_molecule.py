@@ -167,7 +167,7 @@ def test_graph_from_adjacency_matrix(mol: molecule.Molecule, n_bonds: int) -> No
     assert graph.num_edges(G) == n_bonds
 
     for idx, atomicnum in enumerate(mol.atomicnums):
-        assert graph.vertex_property(G, "atomicnum", idx) == atomicnum
+        assert graph.vertex_property(G, "aprops", idx) == atomicnum
 
 
 @pytest.mark.parametrize(
@@ -192,7 +192,7 @@ def test_graph_from_atomic_coordinates_perception(
         assert graph.num_edges(G) == n_bonds
 
         for idx, atomicnum in enumerate(mol.atomicnums):
-            assert graph.vertex_property(G, "atomicnum", idx) == atomicnum
+            assert graph.vertex_property(G, "aprops", idx) == atomicnum
 
 
 @pytest.mark.parametrize(

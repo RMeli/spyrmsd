@@ -5,10 +5,47 @@ import graph_tool as gt
 import numpy as np
 from graph_tool import generation, topology
 
+from spyrmsd.graphs._common import (
+    error_non_isomorphic_graphs,
+    warn_disconnected_graph,
+    warn_no_atomic_properties,
+)
+
+
+# TODO: Implement all graph-tool supported types
+def _c_type(numpy_dtype):
+    """
+    Get C type compatible with graph-tool from numpy dtype
+
+    Parameters
+    ----------
+    numpy_dtype: np.dtype
+        Numpy dtype
+
+    Returns
+    -------
+    str
+        C type
+
+    Notes
+    -----
+    https://graph-tool.skewed.de/static/doc/quickstart.html#sec-property-maps
+    """
+    name: str = numpy_dtype.name
+
+    if "int" in name:
+        return "int"
+    elif "float" in name:
+        return "double"
+    elif "str" in name:
+        return "string"
+    else:
+        raise ValueError(f"Unsupported property type: {name}")
+
 
 def graph_from_adjacency_matrix(
     adjacency_matrix: Union[np.ndarray, List[List[int]]],
-    atomicnums: Optional[Union[np.ndarray, List[int]]] = None,
+    aprops: Optional[Union[np.ndarray, List[Any]]] = None,
 ):
     """
     Graph from adjacency matrix.
@@ -17,8 +54,8 @@ def graph_from_adjacency_matrix(
     ----------
     adjacency_matrix: Union[np.ndarray, List[List[int]]]
         Adjacency matrix
-    atomicnums: Union[np.ndarray, List[int]], optional
-        Atomic numbers
+    aprops: Union[np.ndarray, List[Any]], optional
+        Atomic properties
 
     Returns
     -------
@@ -43,13 +80,17 @@ def graph_from_adjacency_matrix(
     # Check if graph is connected, for warning
     cc, _ = topology.label_components(G)
     if set(cc.a) != {0}:
-        warnings.warn("Disconnected graph detected. Is this expected?")
+        warnings.warn(warn_disconnected_graph)
 
-    if atomicnums is not None:
-        # TODO: Support more Python types
-        vprop = G.new_vertex_property("short")  # Create property map (of C type short)
-        vprop.a = atomicnums  # Assign atomic numbers to property map array
-        G.vertex_properties["atomicnum"] = vprop  # Set property map
+    if aprops is not None:
+        if not isinstance(aprops, np.ndarray):
+            aprops = np.array(aprops)
+
+        assert aprops.shape[0] == num_vertices
+
+        ptype: str = _c_type(aprops.dtype)  # Get C type
+        vprop = G.new_vertex_property(ptype, vals=aprops)  # Create property map
+        G.vertex_properties["aprops"] = vprop  # Set property map
 
     return G
 
@@ -81,26 +122,20 @@ def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
             G1,
             G2,
             vertex_label=(
-                G1.vertex_properties["atomicnum"],
-                G2.vertex_properties["atomicnum"],
+                G1.vertex_properties["aprops"],
+                G2.vertex_properties["aprops"],
             ),
             subgraph=False,
         )
-    except KeyError:  # No "atomicnum" vertex property
-        warnings.warn(
-            "No atomic number information stored on nodes. "
-            + "Node matching is not performed..."
-        )
+    except KeyError:
+        warnings.warn(warn_no_atomic_properties)
 
         maps = topology.subgraph_isomorphism(G1, G2, subgraph=False)
 
     # Check if graphs are actually isomorphic
     if len(maps) == 0:
         # TODO: Create a new exception
-        raise ValueError(
-            "Graphs are not isomorphic."
-            "\nMake sure graphs have the same connectivity."
-        )
+        raise ValueError(error_non_isomorphic_graphs)
 
     n = num_vertices(G1)
 
