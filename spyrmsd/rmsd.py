@@ -117,8 +117,8 @@ def hrmsd(
 def _rmsd_isomorphic_core(
     coords1: np.ndarray,
     coords2: np.ndarray,
-    atomicnums1: np.ndarray,
-    atomicnums2: np.ndarray,
+    aprops1: np.ndarray,
+    aprops2: np.ndarray,
     am1: np.ndarray,
     am2: np.ndarray,
     center: bool = False,
@@ -135,10 +135,10 @@ def _rmsd_isomorphic_core(
         Coordinate of molecule 1
     coords2: np.ndarray
         Coordinates of molecule 2
-    atomicnums1: npndarray
-        Atomic numbers for molecule 1
-    atomicnums2: npndarray
-        Atomic numbers for molecule 2
+    aprops1: np.ndarray
+        Atomic properties for molecule 1
+    aprops2: np.ndarray
+        Atomic properties for molecule 2
     am1: np.ndarray
         Adjacency matrix for molecule 1
     am2: np.ndarray
@@ -169,8 +169,8 @@ def _rmsd_isomorphic_core(
     # No cached isomorphisms
     if isomorphisms is None:
         # Convert molecules to graphs
-        G1 = graph.graph_from_adjacency_matrix(am1, atomicnums1)
-        G2 = graph.graph_from_adjacency_matrix(am2, atomicnums2)
+        G1 = graph.graph_from_adjacency_matrix(am1, aprops1)
+        G2 = graph.graph_from_adjacency_matrix(am2, aprops2)
 
         # Get all the possible graph isomorphisms
         isomorphisms = graph.match_graphs(G1, G2)
@@ -207,8 +207,8 @@ def _rmsd_isomorphic_core(
 def symmrmsd(
     coordsref: np.ndarray,
     coords: Union[np.ndarray, List[np.ndarray]],
-    atomicnumsref: np.ndarray,
-    atomicnums: np.ndarray,
+    apropsref: np.ndarray,
+    aprops: np.ndarray,
     amref: np.ndarray,
     am: np.ndarray,
     center: bool = False,
@@ -225,10 +225,10 @@ def symmrmsd(
         Coordinate of reference molecule
     coords: List[np.ndarray]
         Coordinates of other molecule
-    atomicnumsref: npndarray
-        Atomic numbers for reference
-    atomicnums: npndarray
-        Atomic numbers for other molecule
+    apropsref: np.ndarray
+        Atomic properties for reference
+    aprops: np.ndarray
+        Atomic properties for other molecule
     amref: np.ndarray
         Adjacency matrix for reference molecule
     am: np.ndarray
@@ -271,8 +271,8 @@ def symmrmsd(
             srmsd, isomorphism = _rmsd_isomorphic_core(
                 coordsref,
                 c,
-                atomicnumsref,
-                atomicnums,
+                apropsref,
+                aprops,
                 amref,
                 am,
                 center=center,
@@ -288,8 +288,8 @@ def symmrmsd(
         RMSD, isomorphism = _rmsd_isomorphic_core(
             coordsref,
             coords,
-            atomicnumsref,
-            atomicnums,
+            apropsref,
+            aprops,
             amref,
             am,
             center=center,

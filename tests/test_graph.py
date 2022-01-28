@@ -97,7 +97,7 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
     assert graph.num_edges(G) == nbonds
 
     for idx, atomicnum in enumerate(mol.atomicnums):
-        assert graph.vertex_property(G, "atomicnum", idx) == atomicnum
+        assert graph.vertex_property(G, "aprops", idx) == atomicnum
 
 
 @pytest.mark.parametrize(
@@ -110,7 +110,7 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
 def test_match_graphs_isomorphic(G1, G2) -> None:
 
     with pytest.warns(
-        UserWarning, match="No atomic number information stored on nodes."
+        UserWarning, match="No atomic property information stored on nodes."
     ):
         isomorphisms = graph.match_graphs(G1, G2)
 

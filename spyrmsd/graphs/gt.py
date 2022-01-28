@@ -39,7 +39,7 @@ def _c_type(numpy_dtype):
 
 def graph_from_adjacency_matrix(
     adjacency_matrix: Union[np.ndarray, List[List[int]]],
-    atomicnums: Optional[Union[np.ndarray, List[int]]] = None,
+    aprops: Optional[Union[np.ndarray, List[Any]]] = None,
 ):
     """
     Graph from adjacency matrix.
@@ -48,8 +48,8 @@ def graph_from_adjacency_matrix(
     ----------
     adjacency_matrix: Union[np.ndarray, List[List[int]]]
         Adjacency matrix
-    atomicnums: Union[np.ndarray, List[int]], optional
-        Atomic numbers
+    aprops: Union[np.ndarray, List[Any]], optional
+        Atomic properties
 
     Returns
     -------
@@ -76,15 +76,15 @@ def graph_from_adjacency_matrix(
     if set(cc.a) != {0}:
         warnings.warn("Disconnected graph detected. Is this expected?")
 
-    if atomicnums is not None:
-        if not isinstance(atomicnums, np.ndarray):
-            atomicnums = np.array(atomicnums)
+    if aprops is not None:
+        if not isinstance(aprops, np.ndarray):
+            aprops = np.array(aprops)
 
-        assert atomicnums.shape[0] == num_vertices
+        assert aprops.shape[0] == num_vertices
 
-        ptype: str = _c_type(atomicnums.dtype)  # Get C type
-        vprop = G.new_vertex_property(ptype, vals=atomicnums)  # Create property map
-        G.vertex_properties["atomicnum"] = vprop  # Set property map
+        ptype: str = _c_type(aprops.dtype)  # Get C type
+        vprop = G.new_vertex_property(ptype, vals=aprops)  # Create property map
+        G.vertex_properties["aprops"] = vprop  # Set property map
 
     return G
 
@@ -116,14 +116,14 @@ def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
             G1,
             G2,
             vertex_label=(
-                G1.vertex_properties["atomicnum"],
-                G2.vertex_properties["atomicnum"],
+                G1.vertex_properties["aprops"],
+                G2.vertex_properties["aprops"],
             ),
             subgraph=False,
         )
-    except KeyError:  # No "atomicnum" vertex property
+    except KeyError:
         warnings.warn(
-            "No atomic number information stored on nodes. "
+            "No atomic property information stored on nodes. "
             + "Node matching is not performed..."
         )
 
