@@ -5,6 +5,12 @@ import graph_tool as gt
 import numpy as np
 from graph_tool import generation, topology
 
+from spyrmsd.graphs._common import (
+    error_non_isomorphic_graphs,
+    warn_disconnected_graph,
+    warn_no_atomic_properties,
+)
+
 
 # TODO: Implement all graph-tool supported types
 def _c_type(numpy_dtype):
@@ -74,7 +80,7 @@ def graph_from_adjacency_matrix(
     # Check if graph is connected, for warning
     cc, _ = topology.label_components(G)
     if set(cc.a) != {0}:
-        warnings.warn("Disconnected graph detected. Is this expected?")
+        warnings.warn(warn_disconnected_graph)
 
     if aprops is not None:
         if not isinstance(aprops, np.ndarray):
@@ -122,20 +128,14 @@ def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
             subgraph=False,
         )
     except KeyError:
-        warnings.warn(
-            "No atomic property information stored on nodes. "
-            + "Node matching is not performed..."
-        )
+        warnings.warn(warn_no_atomic_properties)
 
         maps = topology.subgraph_isomorphism(G1, G2, subgraph=False)
 
     # Check if graphs are actually isomorphic
     if len(maps) == 0:
         # TODO: Create a new exception
-        raise ValueError(
-            "Graphs are not isomorphic."
-            "\nMake sure graphs have the same connectivity."
-        )
+        raise ValueError(error_non_isomorphic_graphs)
 
     n = num_vertices(G1)
 

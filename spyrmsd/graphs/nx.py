@@ -4,6 +4,12 @@ from typing import Any, List, Optional, Tuple, Union
 import networkx as nx
 import numpy as np
 
+from spyrmsd.graphs._common import (
+    error_non_isomorphic_graphs,
+    warn_disconnected_graph,
+    warn_no_atomic_properties,
+)
+
 
 def graph_from_adjacency_matrix(
     adjacency_matrix: Union[np.ndarray, List[List[int]]],
@@ -32,7 +38,7 @@ def graph_from_adjacency_matrix(
     G = nx.Graph(adjacency_matrix)
 
     if not nx.is_connected(G):
-        warnings.warn("Disconnected graph detected. Is this expected?")
+        warnings.warn(warn_disconnected_graph)
 
     if aprops is not None:
         attributes = {idx: aprops for idx, aprops in enumerate(aprops)}
@@ -77,10 +83,7 @@ def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
         # No node-matching check
         node_match = None
 
-        warnings.warn(
-            "No atomic number information stored on nodes. "
-            + "Node matching is not performed..."
-        )
+        warnings.warn(warn_no_atomic_properties)
 
     else:
         node_match = match_aprops
@@ -90,10 +93,7 @@ def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
     # Check if graphs are actually isomorphic
     if not GM.is_isomorphic():
         # TODO: Create a new exception
-        raise ValueError(
-            "Graphs are not isomorphic."
-            "\nMake sure graphs have the same connectivity."
-        )
+        raise ValueError(error_non_isomorphic_graphs)
 
     return [
         (list(isomorphism.keys()), list(isomorphism.values()))
