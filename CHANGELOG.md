@@ -14,7 +14,7 @@ Contributors:    @RMeli
 
 ### Improved
 
-* Support for more types of node properties (including strings) with `graph-tool` [PR # | @RMeli]
+* Support for more types of node properties (including strings) with `graph-tool` [PR #64 | @RMeli]
 
 ### Added
 
