@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from spyrmsd import constants, graph, io, molecule
+from spyrmsd.exceptions import NonIsomorphicGraphs
 from tests import molecules
 
 
@@ -126,9 +127,9 @@ def test_match_graphs_isomorphic(G1, G2) -> None:
 )
 def test_match_graphs_not_isomorphic(G1, G2) -> None:
 
-    with pytest.raises(ValueError, match="Graphs are not isomorphic."), pytest.warns(
-        UserWarning, match="No atomic number information stored on nodes."
-    ):
+    with pytest.raises(
+        NonIsomorphicGraphs, match="Graphs are not isomorphic."
+    ), pytest.warns(UserWarning, match="No atomic number information stored on nodes."):
         graph.match_graphs(G1, G2)
 
 

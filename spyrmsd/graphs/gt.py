@@ -5,6 +5,7 @@ import graph_tool as gt
 import numpy as np
 from graph_tool import generation, topology
 
+from spyrmsd.exceptions import NonIsomorphicGraphs
 from spyrmsd.graphs._common import (
     error_non_isomorphic_graphs,
     warn_disconnected_graph,
@@ -26,6 +27,11 @@ def _c_type(numpy_dtype):
     -------
     str
         C type
+
+    Raises
+    ------
+    ValueError
+        If the data type is not supported
 
     Notes
     -----
@@ -113,7 +119,7 @@ def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
 
     Raises
     ------
-    ValueError
+    NonIsomorphicGraphs
         If the graphs `G1` and `G2` are not isomorphic
     """
 
@@ -134,8 +140,7 @@ def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
 
     # Check if graphs are actually isomorphic
     if len(maps) == 0:
-        # TODO: Create a new exception
-        raise ValueError(error_non_isomorphic_graphs)
+        raise NonIsomorphicGraphs(error_non_isomorphic_graphs)
 
     n = num_vertices(G1)
 
