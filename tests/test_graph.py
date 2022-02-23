@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from spyrmsd import constants, graph, io, molecule
+from spyrmsd.exceptions import NonIsomorphicGraphs
 from tests import molecules
 
 
@@ -97,7 +98,7 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
     assert graph.num_edges(G) == nbonds
 
     for idx, atomicnum in enumerate(mol.atomicnums):
-        assert graph.vertex_property(G, "atomicnum", idx) == atomicnum
+        assert graph.vertex_property(G, "aprops", idx) == atomicnum
 
 
 @pytest.mark.parametrize(
@@ -109,7 +110,9 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
 )
 def test_match_graphs_isomorphic(G1, G2) -> None:
 
-    with pytest.warns(UserWarning):
+    with pytest.warns(
+        UserWarning, match="No atomic property information stored on nodes."
+    ):
         isomorphisms = graph.match_graphs(G1, G2)
 
     assert len(isomorphisms) != 0
@@ -124,5 +127,37 @@ def test_match_graphs_isomorphic(G1, G2) -> None:
 )
 def test_match_graphs_not_isomorphic(G1, G2) -> None:
 
-    with pytest.raises(ValueError), pytest.warns(UserWarning):
+    with pytest.raises(
+        NonIsomorphicGraphs, match="Graphs are not isomorphic."
+    ), pytest.warns(UserWarning, match="No atomic number information stored on nodes."):
         graph.match_graphs(G1, G2)
+
+
+@pytest.mark.parametrize(
+    "property",
+    [
+        np.array([0, 1, 2], dtype=int),
+        np.array([0.1, 1.2, 2.3], dtype=float),
+        np.array(["H", "H", "H"], dtype=str),
+        np.array(["Csp3", "Csp3", "Csp3"], dtype=str),
+        ["LongProperty", "LongPropertyProperty", "LongPropertyProperty"],
+    ],
+)
+def test_build_graph_node_features(property) -> None:
+    A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
+    G = graph.graph_from_adjacency_matrix(A, property)
+
+    assert graph.num_edges(G) == 3
+
+
+def test_build_graph_node_features_unsupported() -> None:
+    pytest.importorskip(
+        "graph_tool", reason="NetworkX supports all Python objects as node properties."
+    )
+
+    A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
+
+    property = [True, False, True]
+
+    with pytest.raises(ValueError, match="Unsupported property type:"):
+        _ = graph.graph_from_adjacency_matrix(A, property)

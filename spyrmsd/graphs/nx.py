@@ -4,10 +4,17 @@ from typing import Any, List, Optional, Tuple, Union
 import networkx as nx
 import numpy as np
 
+from spyrmsd.exceptions import NonIsomorphicGraphs
+from spyrmsd.graphs._common import (
+    error_non_isomorphic_graphs,
+    warn_disconnected_graph,
+    warn_no_atomic_properties,
+)
+
 
 def graph_from_adjacency_matrix(
     adjacency_matrix: Union[np.ndarray, List[List[int]]],
-    atomicnums: Optional[Union[np.ndarray, List[int]]] = None,
+    aprops: Optional[Union[np.ndarray, List[Any]]] = None,
 ) -> nx.Graph:
     """
     Graph from adjacency matrix.
@@ -16,8 +23,8 @@ def graph_from_adjacency_matrix(
     ----------
     adjacency_matrix: Union[np.ndarray, List[List[int]]]
         Adjacency matrix
-    atomicnums: Union[np.ndarray, List[int]], optional
-        Atomic numbers
+    aprops: Union[np.ndarray, List[Any]], optional
+        Atomic properties
 
     Returns
     -------
@@ -31,9 +38,12 @@ def graph_from_adjacency_matrix(
 
     G = nx.Graph(adjacency_matrix)
 
-    if atomicnums is not None:
-        attributes = {idx: atomicnum for idx, atomicnum in enumerate(atomicnums)}
-        nx.set_node_attributes(G, attributes, "atomicnum")
+    if not nx.is_connected(G):
+        warnings.warn(warn_disconnected_graph)
+
+    if aprops is not None:
+        attributes = {idx: aprops for idx, aprops in enumerate(aprops)}
+        nx.set_node_attributes(G, attributes, "aprops")
 
     return G
 
@@ -56,38 +66,34 @@ def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
 
     Raises
     ------
-    ValueError
+    NonIsomorphicGraphs
         If the graphs `G1` and `G2` are not isomorphic
     """
 
-    def match_atomicnum(node1, node2):
-        return node1["atomicnum"] == node2["atomicnum"]
+    def match_aprops(node1, node2):
+        """
+        Check if atomic properties for two nodes match.
+        """
+        return node1["aprops"] == node2["aprops"]
 
     if (
-        nx.get_node_attributes(G1, "atomicnum") == {}
-        or nx.get_node_attributes(G2, "atomicnum") == {}
+        nx.get_node_attributes(G1, "aprops") == {}
+        or nx.get_node_attributes(G2, "aprops") == {}
     ):
         # Nodes without atomic number information
         # No node-matching check
         node_match = None
 
-        warnings.warn(
-            "No atomic number information stored on nodes. "
-            + "Node matching is not performed..."
-        )
+        warnings.warn(warn_no_atomic_properties)
 
     else:
-        node_match = match_atomicnum
+        node_match = match_aprops
 
     GM = nx.algorithms.isomorphism.GraphMatcher(G1, G2, node_match)
 
     # Check if graphs are actually isomorphic
     if not GM.is_isomorphic():
-        # TODO: Create a new exception
-        raise ValueError(
-            "Graphs are not isomorphic."
-            "\nMake sure graphs have the same connectivity."
-        )
+        raise NonIsomorphicGraphs(error_non_isomorphic_graphs)
 
     return [
         (list(isomorphism.keys()), list(isomorphism.values()))

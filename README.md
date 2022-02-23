@@ -122,13 +122,15 @@ The function  `rmsd.rmsd` computes RMSD without symmetry correction. The atoms a
 def rmsd(
     coords1: np.ndarray,    # Coordinates of molecule 1
     coords2: np.ndarray,    # Coordinates of molecule 2
-    atomicn1: np.ndarray,   # Atomic number of molecule 1
-    atomicn2: np.ndarray,   # Atomic number of molecule 2
+    aprops1: np.ndarray,    # Atomic properties of molecule 1
+    aprops2: np.ndarray,    # Atomic properties of molecule 2
     center: bool = False,   # Flag to center molecules at origin
     minimize: bool = False, # Flag to compute minimum RMSD
     atol: float = 1e-9,     # Numerical tolerance for QCP method
 )
 ```
+
+Note: atomic properties (`aprops`) can be any Python object when using [NetworkX](https://networkx.github.io/), or integers, floats, or strings when using [graph-tool](https://graph-tool.skewed.de/).
 
 #### Symmetry-Corrected RMSD
 
@@ -140,8 +142,8 @@ Atom matching is performed according to the molecular graph. This function shoul
 def symmrmsd(
     coordsref: np.ndarray,                       # Reference coordinated
     coords: Union[np.ndarray, List[np.ndarray]], # Coordinates (one set or multiple sets)
-    atomicnumsref: np.ndarray,                   # Reference atomic numbers
-    atomicnums: np.ndarray,                      # Atomic numbers
+    apropsref: np.ndarray,                       # Reference atomic properties
+    aprops: np.ndarray,                          # Atomic properties
     amref: np.ndarray,                           # Reference adjacency matrix
     am: np.ndarray,                              # Adjacency matrix
     center: bool = False,                        # Flag to center molecules at origin
@@ -150,6 +152,8 @@ def symmrmsd(
     atol: float = 1e-9,                          # Numerical tolerance for QCP method
 )
 ```
+
+Note: atomic properties (`aprops`) can be any Python object when using [NetworkX](https://networkx.github.io/), or integers, floats, or strings when using [graph-tool](https://graph-tool.skewed.de/).
 
 ## Development
 

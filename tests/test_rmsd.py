@@ -520,6 +520,18 @@ def test_rmsd_symmrmsd(index: int, RMSD: float, minimize: bool) -> None:
     )
 
 
+def test_rmsd_symmrmsd_disconnected_node() -> None:
+
+    c = np.array([[0.0, 1.0, 2.0], [1.0, 2.0, 3.0], [2.0, 3.0, 4.0]])
+    a = np.array([0, 1, 4])
+
+    # Adjacency matrix with disconnected node
+    A = np.array([[0, 1, 0], [1, 0, 0], [0, 0, 0]])
+
+    with pytest.warns(UserWarning, match="Disconnected graph detected."):
+        assert rmsd.symmrmsd(c, c, a, a, A, A) == pytest.approx(0.0, abs=1e-5)
+
+
 # Results obtained with OpenBabel
 @pytest.mark.parametrize(
     "minimize, referenceRMSDs",

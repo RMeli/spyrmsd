@@ -23,6 +23,7 @@ Submodules
 
    spyrmsd.constants
    spyrmsd.due
+   spyrmsd.exceptions
    spyrmsd.graph
    spyrmsd.hungarian
    spyrmsd.io
