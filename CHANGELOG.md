@@ -16,6 +16,10 @@ Contributors:    @RMeli
 
 * Support for more types of node properties (including strings) with `graph-tool` [PR #64 | @RMeli]
 
+### Changed
+
+* `ValueError` exception into `NonIsomorphicGraphs(ValueError)` exception [PR #65 | @RMeli]
+
 ### Added
 
 * Warning for disconnected graphs [PR #61| @RMeli]
