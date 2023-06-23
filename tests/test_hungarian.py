@@ -9,7 +9,6 @@ from tests import molecules
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
 def test_cost_mtx(mol: molecule.Molecule):
-
     mol1 = copy.deepcopy(mol)
     mol2 = copy.deepcopy(mol)
 
@@ -30,7 +29,6 @@ def test_cost_mtx(mol: molecule.Molecule):
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
 def test_optimal_assignement_same_molecule(mol: molecule.Molecule):
-
     mol1 = copy.deepcopy(mol)
     mol2 = copy.deepcopy(mol)
 

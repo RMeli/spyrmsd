@@ -3,7 +3,6 @@ Symmetry-corrected RMSD calculations in Python
 """
 
 if __name__ == "__main__":
-
     import argparse as ap
     import sys
 
