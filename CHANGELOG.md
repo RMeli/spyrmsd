@@ -10,6 +10,7 @@ Contributors:    @RMeli
 
 ### Changed
 
+* Versioneer to `0.28` [PR #76 | @RMeli]
 * Minimum Python version to `3.7` to match CI [PR #76 | @RMeli]
 * Code according to `black==23.3.0` [PR #76 | @RMeli]
 
