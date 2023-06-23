@@ -3,6 +3,22 @@
 
 ------------------------------------------------------------------------------
 
+## Version x.x.x
+
+Date:            XXX/XX/XXX
+Contributors:    @RMeli
+
+### Changed
+
+* Minimum Python version to `3.7` to match CI [PR #76 | @RMeli]
+* Code according to `black==23.3.0` [PR #76 | @RMeli]
+
+### Removed
+
+* LGTM badge and code annotations [PR #76 | @RMeli]
+
+------------------------------------------------------------------------------
+
 ## Version 0.5.2
 
 Date:            23/02/2022
