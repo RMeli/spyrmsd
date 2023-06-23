@@ -43,7 +43,6 @@ def molecules(request):
 @pytest.mark.benchmark
 @pytest.mark.parametrize("cache", [True, False])
 def test_benchmark_symmrmsd(cache, molecules, benchmark):
-
     ref, mols, system = molecules
 
     coords = [mol.coordinates for mol in mols]

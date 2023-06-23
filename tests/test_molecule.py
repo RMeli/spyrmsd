@@ -20,7 +20,6 @@ from tests import molecules
     ],
 )
 def test_load(mol: molecule.Molecule, atoms: List[Tuple[int, int]]) -> None:
-
     n = sum([n_atoms for _, n_atoms in atoms])
 
     assert len(mol) == n
@@ -39,7 +38,6 @@ def test_load(mol: molecule.Molecule, atoms: List[Tuple[int, int]]) -> None:
 
 
 def test_loadall() -> None:
-
     path = os.path.join(molecules.molpath, "1cbr_docking.sdf")
 
     mols = io.loadall(path)
@@ -49,7 +47,6 @@ def test_loadall() -> None:
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
 def test_molecule_translate(mol: molecule.Molecule) -> None:
-
     mt = copy.deepcopy(mol)
 
     t = np.array([0.5, 1.1, -0.1])
@@ -61,11 +58,9 @@ def test_molecule_translate(mol: molecule.Molecule) -> None:
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
 def test_molecule_rotate_z(mol: molecule.Molecule) -> None:
-
     z_axis = np.array([0, 0, 1])
 
     for angle in [0, 45, 90]:
-
         rotated = np.zeros((len(mol), 3))
         for i, coord in enumerate(mol.coordinates):
             rotated[i] = utils.rotate(coord, angle, z_axis, units="deg")
@@ -80,11 +75,9 @@ def test_molecule_rotate_z(mol: molecule.Molecule) -> None:
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
 def test_molecule_rotate(mol: molecule.Molecule) -> None:
-
     axis = np.random.rand(3)
 
     for angle in np.random.rand(10) * 180:
-
         rotated = np.zeros((len(mol), 3))
         for i, coord in enumerate(mol.coordinates):
             rotated[i] = utils.rotate(coord, angle, axis, units="deg")
@@ -98,21 +91,18 @@ def test_molecule_rotate(mol: molecule.Molecule) -> None:
 
 
 def test_molecule_center_of_geometry_benzene() -> None:
-
     mol = molecules.benzene
 
     assert np.allclose(mol.center_of_geometry(), np.zeros(3))
 
 
 def test_molecule_center_of_mass_benzene() -> None:
-
     mol = molecules.benzene
 
     assert np.allclose(mol.center_of_mass(), np.zeros(3))
 
 
 def test_molecule_center_of_mass_H2() -> None:
-
     atomicnums = [1, 1]
     coordinates = [[0.0, 0.0, -1.0], [0.0, 0.0, 1.0]]
 
@@ -122,7 +112,6 @@ def test_molecule_center_of_mass_H2() -> None:
 
 
 def test_molecule_center_of_mass_HF() -> None:
-
     atomicnums = [1, 9]
     coordinates = [[0.0, 0.0, -1.0], [0.0, 0.0, 1.0]]
 
@@ -145,7 +134,6 @@ def test_molecule_center_of_mass_HF() -> None:
     ],
 )
 def test_molecule_strip(mol: molecule.Molecule, n_atoms: int, stripped: int) -> None:
-
     m = copy.deepcopy(mol)
 
     assert len(m) == n_atoms
@@ -160,7 +148,6 @@ def test_molecule_strip(mol: molecule.Molecule, n_atoms: int, stripped: int) -> 
     [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
 )
 def test_graph_from_adjacency_matrix(mol: molecule.Molecule, n_bonds: int) -> None:
-
     G = mol.to_graph()
 
     assert graph.num_vertices(G) == len(mol)
@@ -177,14 +164,12 @@ def test_graph_from_adjacency_matrix(mol: molecule.Molecule, n_bonds: int) -> No
 def test_graph_from_atomic_coordinates_perception(
     mol: molecule.Molecule, n_bonds: int
 ) -> None:
-
     m = copy.deepcopy(mol)
 
     delattr(m, "adjacency_matrix")
     m.G = None
 
     with pytest.warns(UserWarning):
-
         # Uses automatic bond perception
         G = m.to_graph()
 

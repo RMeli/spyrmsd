@@ -31,7 +31,6 @@ def test_M_mtx(mol: molecule.Molecule) -> None:
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
 def test_K_mtx(mol: molecule.Molecule) -> None:
-
     mol1 = copy.deepcopy(mol)
     mol2 = copy.deepcopy(mol)
 
@@ -60,13 +59,11 @@ def test_K_mtx(mol: molecule.Molecule) -> None:
 def test_lambda_max(
     input: Tuple[float, float, float, float, float], result: float
 ) -> None:
-
     assert qcp.lambda_max(*input) == pytest.approx(result)
 
 
 @pytest.mark.parametrize("mol", molecules.allmolecules)
 def test_lambda_max_eig(mol: molecule.Molecule) -> None:
-
     mol1 = copy.deepcopy(mol)
     mol2 = copy.deepcopy(mol)
 

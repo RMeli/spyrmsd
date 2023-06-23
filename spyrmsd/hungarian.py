@@ -4,7 +4,7 @@ import scipy
 from .due import Doi, due
 
 due.cite(
-    Doi("10.1021/ci400534h"),  # lgtm[py/procedure-return-value-used]
+    Doi("10.1021/ci400534h"),
     path="spyrmsd.hungarian",
     description="Hungarian method",
 )
