@@ -34,7 +34,7 @@ dependencies:
 
   # Doc
   - sphinx<7
-  - furo
+  - sphinx_rtd_theme
   - pip:
     - duecredit
 

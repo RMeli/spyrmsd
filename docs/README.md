@@ -20,6 +20,15 @@ Create API documentation automatically with `sphinx-apidoc`:
 sphinx-apidoc -f -M -e  -T -o source/api ../spyrmsd
 ```
 
+### Convert Tutorial Jupyter Notebooks to HTML
+
+Jupyter Notebooks need to be converted to HTML:
+
+```bash
+pip install pandoc
+jupyter nbconvert --to rst tutorial.ipynb  
+```
+
 ### Build Documentation
 
 Use the `Makefile` to compile static HTML pages:
