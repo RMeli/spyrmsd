@@ -7,7 +7,7 @@ module = "spyrmsd"
 dist-name = "spyrmsd"
 description-file = "README.md"
 author = "Rocco Meli"
-author-email = "rocco.meli@biodtp.ox.ac.uk"
+author-email = "rocco.meli@cscs.ch"
 home-page = "https://spyrmsd.readthedocs.io"
 classifiers = [
     "License :: OSI Approved :: MIT License",

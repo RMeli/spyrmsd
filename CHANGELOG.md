@@ -8,12 +8,20 @@
 Date:            XXX/XX/XXX
 Contributors:    @RMeli
 
+### Improved
+
+* Documentation on loading RDKit and Open Babel molecules [PR #77 | @RMeli]
+
 ### Changed
 
 * Version of several GitHub actions [PR #76 | @RMeli]
 * Versioneer to `0.28` [PR #76 | @RMeli]
 * Minimum Python version to `3.7` to match CI [PR #76 | @RMeli]
 * Code according to `black==23.3.0` [PR #76 | @RMeli]
+
+### Added
+
+* Pin to `sphinx<7` to avoid compatibility with RTD theme [PR #77 | @RMeli] 
 
 ### Removed
 
