@@ -4,10 +4,10 @@ The docs for this project are built with [Sphinx](http://www.sphinx-doc.org/en/m
 
 ## Installation
 
-Ensure that Sphinx and the ReadTheDocs theme are installed:
+Ensure that Sphinx and the Furo theme are installed:
 
 ```bash
-conda install sphinx sphinx_rtd_theme
+conda install sphinx furo
 ```
 
 ## Documentation

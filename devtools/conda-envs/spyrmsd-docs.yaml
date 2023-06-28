@@ -17,5 +17,5 @@ dependencies:
   - rdkit
 
   # Doc
-  - sphinx
-  - sphinx_rtd_theme
+  - sphinx<7
+  - furo
