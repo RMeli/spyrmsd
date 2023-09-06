@@ -29,7 +29,7 @@ A clear and concise description of what you expected to happen.
 **Environment**
  - OS:
  - Python:
- - Package Manager [e.g. `pip`, `conda`]: 
+ - Package Manager [e.g. `pip`, `conda`]:
 
 **Additional Context**
 <!--

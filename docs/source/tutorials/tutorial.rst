@@ -79,14 +79,14 @@ reference molecule and all other molecules:
 .. code:: ipython3
 
     RMSD = rmsd.symmrmsd(
-        coords_ref, 
+        coords_ref,
         coords,
         anum_ref,
         anum,
         adj_ref,
         adj,
     )
-        
+
     print(RMSD)
 
 
@@ -104,7 +104,7 @@ molecular structures:
 .. code:: ipython3
 
     RMSD = rmsd.symmrmsd(
-        coords_ref, 
+        coords_ref,
         coords,
         anum_ref,
         anum,
@@ -112,11 +112,10 @@ molecular structures:
         adj,
         minimize=True,
     )
-        
+
     print(RMSD)
 
 
 .. parsed-literal::
 
     [1.2012368667355435, 1.0533413220699535, 1.153253104575529, 1.036542688936588, 0.8407673221224143, 1.1758143217869736, 0.7817315189656655, 1.0933314311267845, 1.0260767175206462, 0.9586369647000478]
-

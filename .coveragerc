@@ -1,6 +1,6 @@
 [run]
 source = spyrmsd
-omit = 
+omit =
     spyrmsd/_version.py
     spyrmsd/due.py
 
