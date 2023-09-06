@@ -21,7 +21,7 @@ setup(
     # Self-descriptive entries which should always be present
     name="spyrmsd",
     author="Rocco Meli",
-    author_email="rocco.meli@biodtp.ox.ac.uk",
+    author_email="rocco.meli@cscs.ch",
     description=short_description[0],
     long_description=long_description,
     long_description_content_type="text/markdown",

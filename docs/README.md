@@ -4,10 +4,10 @@ The docs for this project are built with [Sphinx](http://www.sphinx-doc.org/en/m
 
 ## Installation
 
-Ensure that Sphinx and the ReadTheDocs theme are installed:
+Ensure that Sphinx and the Furo theme are installed:
 
 ```bash
-conda install sphinx sphinx_rtd_theme
+conda install sphinx furo
 ```
 
 ## Documentation
@@ -18,6 +18,15 @@ Create API documentation automatically with `sphinx-apidoc`:
 
 ```bash
 sphinx-apidoc -f -M -e  -T -o source/api ../spyrmsd
+```
+
+### Convert Tutorial Jupyter Notebooks to HTML
+
+Jupyter Notebooks need to be converted to HTML:
+
+```bash
+pip install pandoc
+jupyter nbconvert --to rst tutorial.ipynb  
 ```
 
 ### Build Documentation

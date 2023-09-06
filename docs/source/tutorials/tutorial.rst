@@ -39,6 +39,47 @@ molecules we need to use ``io.loadallmols``:
 
     mols = io.loadallmols("molecules/1a4k_dock.sdf")
 
+Loading RDKit or OpenBabel Molecules
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``spyrmsd`` natively supports Open Babel and RDKit (if installed). The
+``Molecule`` class provides ``from_openbabel()`` and ``from_rdkit()``
+constructors.
+
+.. code:: ipython3
+
+    from rdkit import Chem
+    from rdkit.Chem import AllChem
+    
+    rdmol1 = Chem.MolFromSmiles("c1ccccc1")
+    rdmol2 = Chem.MolFromSmiles("c1ccccc1")
+    AllChem.EmbedMolecule(rdmol1)
+    AllChem.EmbedMolecule(rdmol2)
+    
+    from spyrmsd.molecule import Molecule
+    from spyrmsd.rmsd import rmsdwrapper
+    
+    mol1 = Molecule.from_rdkit(rdmol1)
+    mol2 = Molecule.from_rdkit(rdmol2)
+    
+    rmsdwrapper(mol1, mol2)
+
+
+.. parsed-literal::
+
+    <frozen importlib._bootstrap>:241: RuntimeWarning: to-Python converter for std::__1::pair<double, double> already registered; second conversion method ignored.
+    [18:44:03] Molecule does not have explicit Hs. Consider calling AddHs()
+    [18:44:03] Molecule does not have explicit Hs. Consider calling AddHs()
+
+
+
+
+.. parsed-literal::
+
+    [0.019162902039384797]
+
+
+
 Removing Hydrogen Atoms
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -118,5 +159,5 @@ molecular structures:
 
 .. parsed-literal::
 
-    [1.2012368667355435, 1.0533413220699535, 1.153253104575529, 1.036542688936588, 0.8407673221224143, 1.1758143217869736, 0.7817315189656655, 1.0933314311267845, 1.0260767175206462, 0.9586369647000478]
+    [1.2012368667355435, 1.0533413220699535, 1.153253104575529, 1.036542688936588, 0.8407673221224187, 1.1758143217869736, 0.7817315189656655, 1.0933314311267845, 1.0260767175206462, 0.9586369647000478]
 
