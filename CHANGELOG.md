@@ -19,6 +19,10 @@ Contributors:    @RMeli
 
 * LGTM badge and code annotations [PR #76 | @RMeli]
 
+### Added
+
+* Error message when `spyrmsd` is used as module but neither OpenBabel nor RDKit are installed [PR #81 | @RMeli]
+
 ------------------------------------------------------------------------------
 
 ## Version 0.5.2
