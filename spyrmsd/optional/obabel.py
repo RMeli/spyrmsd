@@ -1,11 +1,10 @@
 from typing import List, Optional, Tuple
 
 import numpy as np
-
-from spyrmsd import molecule, utils
-
 from openbabel import openbabel as ob
 from openbabel import pybel
+
+from spyrmsd import molecule, utils
 
 
 def load(fname: str):

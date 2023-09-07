@@ -26,7 +26,7 @@ Jupyter Notebooks need to be converted to HTML:
 
 ```bash
 pip install pandoc
-jupyter nbconvert --to rst tutorial.ipynb  
+jupyter nbconvert --to rst tutorial.ipynb
 ```
 
 ### Build Documentation

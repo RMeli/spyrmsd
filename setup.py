@@ -32,7 +32,11 @@ setup(
     include_package_data=True,
     url="https://spyrmsd.readthedocs.io",
     install_requires=["numpy", "scipy", "networkx>=2"],
-    extras_require={"bib": ["duecredit"], "rdkit": ["rdkit"], "openbabel": ["openbabel"]},
+    extras_require={
+        "bib": ["duecredit"],
+        "rdkit": ["rdkit"],
+        "openbabel": ["openbabel"],
+    },
     platforms=["Linux", "Mac OS-X", "Unix", "Windows"],
     python_requires=">=3.7",
 )

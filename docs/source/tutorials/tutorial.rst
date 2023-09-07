@@ -50,18 +50,18 @@ constructors.
 
     from rdkit import Chem
     from rdkit.Chem import AllChem
-    
+
     rdmol1 = Chem.MolFromSmiles("c1ccccc1")
     rdmol2 = Chem.MolFromSmiles("c1ccccc1")
     AllChem.EmbedMolecule(rdmol1)
     AllChem.EmbedMolecule(rdmol2)
-    
+
     from spyrmsd.molecule import Molecule
     from spyrmsd.rmsd import rmsdwrapper
-    
+
     mol1 = Molecule.from_rdkit(rdmol1)
     mol2 = Molecule.from_rdkit(rdmol2)
-    
+
     rmsdwrapper(mol1, mol2)
 
 
@@ -127,7 +127,7 @@ reference molecule and all other molecules:
         adj_ref,
         adj,
     )
-    
+
     print(RMSD)
 
 
@@ -153,11 +153,10 @@ molecular structures:
         adj,
         minimize=True,
     )
-    
+
     print(RMSD)
 
 
 .. parsed-literal::
 
     [1.2012368667355435, 1.0533413220699535, 1.153253104575529, 1.036542688936588, 0.8407673221224187, 1.1758143217869736, 0.7817315189656655, 1.0933314311267845, 1.0260767175206462, 0.9586369647000478]
-

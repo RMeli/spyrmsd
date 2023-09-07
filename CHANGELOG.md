@@ -21,7 +21,7 @@ Contributors:    @RMeli
 
 ### Added
 
-* Pin to `sphinx<7` to avoid compatibility with RTD theme [PR #77 | @RMeli] 
+* Pin to `sphinx<7` to avoid compatibility with RTD theme [PR #77 | @RMeli]
 
 ### Removed
 
