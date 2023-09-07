@@ -1,3 +1,7 @@
+exclude: |
+            (?x)^(
+                docs/source/conf.py
+            )$
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -25,3 +29,4 @@ repos:
     rev: v1.5.1
     hooks:
     -   id: mypy
+        additional_dependencies: [types-requests]
