@@ -39,6 +39,8 @@ If you find `spyrmsd` useful, please consider citing the following paper:
 
 _Note_: `spyrmsd` will install [NetworkX](https://networkx.github.io/) (multi-platform). You can install [graph-tool](https://graph-tool.skewed.de/) on macOS and Linux for higher performance.
 
+_Note_: If `spyrmsd` is used as a standalone tool, it is required to install either [RDKit](https://rdkit.org/) or [Open Babel](http://openbabel.org/). Neither is automatically installed with `pip` nor `conda`.
+
 ### PyPI
 
 ```bash
@@ -79,8 +81,6 @@ Additionally, one of the following packages is required to use `spyrmsd` as a st
 
 * [Open Babel](http://openbabel.org/)
 * [RDKit](https://rdkit.org/)
-
-_Note_: [RDKit](https://rdkit.org/) is not available on PyPI ([Why the RDKit isn't available on PyPi](https://rdkit.blogspot.com/2019/11/why-rdkit-isnt-available-on-pypi.html)). See [RDKit Installation](http://www.rdkit.org/docs/Install.html) for installation instructions.
 
 ## Usage
 

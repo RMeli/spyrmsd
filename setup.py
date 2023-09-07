@@ -21,7 +21,7 @@ setup(
     # Self-descriptive entries which should always be present
     name="spyrmsd",
     author="Rocco Meli",
-    author_email="rocco.meli@biodtp.ox.ac.uk",
+    author_email="rocco.meli@cscs.ch",
     description=short_description[0],
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -32,7 +32,7 @@ setup(
     include_package_data=True,
     url="https://spyrmsd.readthedocs.io",
     install_requires=["numpy", "scipy", "networkx>=2"],
-    extras_require={"bib": ["duecredit"]},
+    extras_require={"bib": ["duecredit"], "rdkit": ["rdkit"], "openbabel": ["openbabel"]},
     platforms=["Linux", "Mac OS-X", "Unix", "Windows"],
     python_requires=">=3.7",
 )

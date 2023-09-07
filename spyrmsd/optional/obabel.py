@@ -4,14 +4,8 @@ import numpy as np
 
 from spyrmsd import molecule, utils
 
-try:
-    # 3.0
-    from openbabel import openbabel as ob
-    from openbabel import pybel
-except ImportError:
-    # 2.0
-    import openbabel as ob
-    import pybel
+from openbabel import openbabel as ob
+from openbabel import pybel
 
 
 def load(fname: str):

@@ -8,6 +8,10 @@
 Date:            XXX/XX/XXX
 Contributors:    @RMeli
 
+### Improved
+
+* Documentation on loading RDKit and Open Babel molecules [PR #77 | @RMeli]
+
 ### Changed
 
 * Version of several GitHub actions [PR #76 | @RMeli]
@@ -15,9 +19,20 @@ Contributors:    @RMeli
 * Minimum Python version to `3.7` to match CI [PR #76 | @RMeli]
 * Code according to `black==23.3.0` [PR #76 | @RMeli]
 
+### Added
+
+* Pin to `sphinx<7` to avoid compatibility with RTD theme [PR #77 | @RMeli] 
+
 ### Removed
 
+* Outdated information about RDKit from the documentation [PR #84 | @RMeli]
+* Support for Open Babel 2 [PR #84 | @RMeli]
 * LGTM badge and code annotations [PR #76 | @RMeli]
+
+### Added
+
+* `extras_require` to `setup.py` for RDKit and Open Babel [PR #84 | @RMeli]
+* Error message when `spyrmsd` is used as module but neither OpenBabel nor RDKit are installed [PR #81 | @RMeli]
 
 ------------------------------------------------------------------------------
 
