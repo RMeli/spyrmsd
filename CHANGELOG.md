@@ -25,10 +25,13 @@ Contributors:    @RMeli
 
 ### Removed
 
+* Outdated information about RDKit from the documentation [PR #84 | @RMeli]
+* Support for Open Babel 2 [PR #84 | @RMeli]
 * LGTM badge and code annotations [PR #76 | @RMeli]
 
 ### Added
 
+* `extras_require` to `setup.py` for RDKit and Open Babel [PR #84 | @RMeli]
 * Error message when `spyrmsd` is used as module but neither OpenBabel nor RDKit are installed [PR #81 | @RMeli]
 
 ------------------------------------------------------------------------------

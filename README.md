@@ -82,8 +82,6 @@ Additionally, one of the following packages is required to use `spyrmsd` as a st
 * [Open Babel](http://openbabel.org/)
 * [RDKit](https://rdkit.org/)
 
-_Note_: [RDKit](https://rdkit.org/) is not available on PyPI ([Why the RDKit isn't available on PyPi](https://rdkit.blogspot.com/2019/11/why-rdkit-isnt-available-on-pypi.html)). See [RDKit Installation](http://www.rdkit.org/docs/Install.html) for installation instructions.
-
 ## Usage
 
 ### Standalone Tool
