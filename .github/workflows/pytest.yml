@@ -27,9 +27,11 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
         chemlib: [obabel, rdkit]
         graphlib: [nx, gt]
-        # graph-tools does not work on Windows
         exclude:
+        # graph-tools does not work on Windows
         - {os: "windows-latest", graphlib: "gt"}
+        # FIXME: Keeps failing in CI for unknown reasons during miniconda setup
+        - {os: "ubuntu-latest", graphlib: "gt", chemlib: "rdkit", python-version: "3.7"}
 
     steps:
     - uses: actions/checkout@v3
