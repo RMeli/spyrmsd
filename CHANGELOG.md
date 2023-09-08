@@ -3,9 +3,9 @@
 
 ------------------------------------------------------------------------------
 
-## Version x.x.x
+## Version 0.6.0
 
-Date:            XXX/XX/XXX
+Date:            08/09/2023
 Contributors:    @RMeli
 
 ### Improved

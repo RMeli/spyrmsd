@@ -5,7 +5,7 @@ authors:
   given-names: "Rocco"
   orcid: "https://orcid.org/0000-0002-2845-3410"
 title: "spyrmsd"
-version: 0.5.2
+version: 0.6.0
 doi: 10.5281/zenodo.3631876
 date-released: 2021-06-21
 url: "https://github.com/RMeli/spyrmsd"
