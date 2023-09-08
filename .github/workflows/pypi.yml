@@ -25,5 +25,6 @@ jobs:
         FLIT_USERNAME: ${{ secrets.FLIT_USERNAME }}
         FLIT_PASSWORD: ${{ secrets.FLIT_PASSWORD }}
       run: |
+        python -m pip install . --no-deps
         flit build
         flit publish
