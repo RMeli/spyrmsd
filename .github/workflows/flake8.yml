@@ -28,6 +28,6 @@ jobs:
     - name: Install  package
       run: |
         python setup.py develop --no-deps
-    - name: Lint with flake8 
+    - name: Lint with flake8
       run: |
         flake8 . --count --show-source --statistics

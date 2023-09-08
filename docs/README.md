@@ -4,10 +4,10 @@ The docs for this project are built with [Sphinx](http://www.sphinx-doc.org/en/m
 
 ## Installation
 
-Ensure that Sphinx and the Furo theme are installed:
+Ensure that Sphinx and the [Read the Docs](https://sphinx-rtd-theme.readthedocs.io/en/stable/index.html) theme are installed:
 
 ```bash
-conda install sphinx furo
+conda install sphinx sphinx_rtd_theme
 ```
 
 ## Documentation
@@ -26,7 +26,7 @@ Jupyter Notebooks need to be converted to HTML:
 
 ```bash
 pip install pandoc
-jupyter nbconvert --to rst tutorial.ipynb  
+jupyter nbconvert --to rst tutorial.ipynb
 ```
 
 ### Build Documentation
