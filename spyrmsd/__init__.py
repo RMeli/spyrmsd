@@ -12,13 +12,13 @@ del get_versions, versions
 
 # This will print latest Zenodo version
 due.cite(
-    Doi("10.5281/zenodo.3631876"),  # lgtm[py/procedure-return-value-used]
+    Doi("10.5281/zenodo.3631876"),
     path="spyrmsd",
     description="spyrmsd",
 )
 
 due.cite(
-    Doi("10.1186/s13321-020-00455-2"),  # lgtm[py/procedure-return-value-used]
+    Doi("10.1186/s13321-020-00455-2"),
     path="spyrmsd",
     description="spyrmsd",
 )

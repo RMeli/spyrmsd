@@ -1,6 +1,6 @@
 [run]
 source = spyrmsd
-omit = 
+omit =
     spyrmsd/_version.py
     spyrmsd/due.py
 
@@ -13,6 +13,3 @@ exclude_lines =
     # Don't complain if non-runnable code isn't run:
     if 0:
     if __name__ == .__main__.:
-
-    # OpenBabel2
-    except ImportError:

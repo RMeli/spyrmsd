@@ -1,17 +1,10 @@
 from typing import List, Optional, Tuple
 
 import numpy as np
+from openbabel import openbabel as ob
+from openbabel import pybel
 
 from spyrmsd import molecule, utils
-
-try:
-    # 3.0
-    from openbabel import openbabel as ob
-    from openbabel import pybel
-except ImportError:
-    # 2.0
-    import openbabel as ob
-    import pybel
 
 
 def load(fname: str):

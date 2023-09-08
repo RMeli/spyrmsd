@@ -10,7 +10,6 @@ try:
     )
 
 except ImportError:
-
     try:
         from spyrmsd.optional.rdkit import (
             adjacency_matrix,

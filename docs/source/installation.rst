@@ -59,13 +59,9 @@ Additionally, one of the following packages is required to use ``spyrmsd`` as a 
 * `Open Babel`_
 * RDKit_
 
-.. note::
-   RDKit_ has to be installed using ``conda`` (see `Why the RDKit isn't available on PyPi`_).
-
 .. _PyPI: https://pypi.org/project/spyrmsd/
 .. _conda-forge: https://github.com/conda-forge/spyrmsd-feedstock
 .. _RDKit: https://rdkit.org/
-.. _Why the RDKit isn't available on PyPi: https://rdkit.blogspot.com/2019/11/why-rdkit-isnt-available-on-pypi.html
 .. _Open Babel: http://openbabel.org/
 .. _graph-tool: https://graph-tool.skewed.de/
 .. _NetworkX: https://networkx.github.io/

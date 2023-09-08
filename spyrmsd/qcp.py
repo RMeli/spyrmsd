@@ -6,7 +6,7 @@ from scipy import optimize
 from .due import Doi, due
 
 due.cite(
-    Doi("10.1107/S0108767305015266"),  # lgtm[py/procedure-return-value-used]
+    Doi("10.1107/S0108767305015266"),
     path="spyrmsd.qcp",
     description="QCP method",
 )
@@ -188,13 +188,13 @@ def lambda_max(Ga: float, Gb: float, c2: float, c1: float, c0: float) -> float:
         """
         Quaternion polynomial
         """
-        return x ** 4 + c2 * x ** 2 + c1 * x + c0
+        return x**4 + c2 * x**2 + c1 * x + c0
 
     def dP(x):
         """
         Fist derivative of the quaternion polynomial
         """
-        return 4 * x ** 3 + 2 * c2 * x + c1
+        return 4 * x**3 + 2 * c2 * x + c1
 
     x0 = (Ga + Gb) * 0.5
 

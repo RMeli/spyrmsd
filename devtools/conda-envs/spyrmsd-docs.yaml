@@ -17,5 +17,5 @@ dependencies:
   - rdkit
 
   # Doc
-  - sphinx
+  - sphinx<7
   - sphinx_rtd_theme

@@ -13,7 +13,6 @@ molpath = os.path.join(fdir, "data/molecules/")
     [("benzene.sdf", 12, 12), ("ethanol.sdf", 9, 8), ("dialanine.sdf", 23, 22)],
 )
 def test_load_sdf(molfile, natoms: int, nbonds: int) -> None:
-
     m = io.load(os.path.join(molpath, molfile))
 
     assert io.numatoms(m) == natoms
@@ -25,7 +24,6 @@ def test_load_sdf(molfile, natoms: int, nbonds: int) -> None:
     [("1cbr_ligand.mol2", 49, 49)],
 )
 def test_load_mol2(molfile, natoms: int, nbonds: int) -> None:
-
     m = io.load(os.path.join(molpath, molfile))
 
     assert io.numatoms(m) == natoms
@@ -37,7 +35,6 @@ def test_load_mol2(molfile, natoms: int, nbonds: int) -> None:
     [("trp0.pdb", 217, 224), ("trp1.pdb", 217, 224), ("trp2.pdb", 217, 224)],
 )
 def test_load_pdb(molfile, natoms: int, nbonds: int) -> None:
-
     m = io.load(os.path.join(molpath, molfile))
 
     assert io.numatoms(m) == natoms
@@ -49,7 +46,6 @@ def test_load_pdb(molfile, natoms: int, nbonds: int) -> None:
     [("1cbr_docking.sdf", 22, 22)],
 )
 def test_loadall_sdf(molfile, natoms: int, nbonds: int) -> None:
-
     ms = io.loadall(os.path.join(molpath, molfile))
 
     assert len(ms) == 10
@@ -64,7 +60,6 @@ def test_loadall_sdf(molfile, natoms: int, nbonds: int) -> None:
     [("1cbr_docking.mol2", 22, 22)],
 )
 def test_loadall_mol2(molfile, natoms: int, nbonds: int) -> None:
-
     try:
         ms = io.loadall(os.path.join(molpath, molfile))
 
@@ -82,7 +77,6 @@ def test_loadall_mol2(molfile, natoms: int, nbonds: int) -> None:
     [("1cbr_docking.pdb", 22, 22)],
 )
 def test_loadall_pdb(molfile, natoms: int, nbonds: int) -> None:
-
     try:
         ms = io.loadall(os.path.join(molpath, molfile))
 
@@ -118,7 +112,6 @@ def test_loadall_pdb_single_model() -> None:
     [("benzene.sdf", 12), ("ethanol.sdf", 9), ("dialanine.sdf", 23)],
 )
 def test_loadmol_sdf(molfile, natoms: int) -> None:
-
     m = io.loadmol(os.path.join(molpath, molfile))
 
     assert len(m) == natoms
@@ -129,7 +122,6 @@ def test_loadmol_sdf(molfile, natoms: int) -> None:
     [("benzene.mol2", 12), ("1cbr_ligand.mol2", 49)],
 )
 def test_loadmol_mol2(molfile, natoms: int) -> None:
-
     m = io.loadmol(os.path.join(molpath, molfile))
 
     assert len(m) == natoms
@@ -140,7 +132,6 @@ def test_loadmol_mol2(molfile, natoms: int) -> None:
     [("1cbr_docking.sdf", 22)],
 )
 def test_loadallmols_sdf(molfile, natoms: int) -> None:
-
     ms = io.loadallmols(os.path.join(molpath, molfile))
 
     assert len(ms) == 10
@@ -154,7 +145,6 @@ def test_loadallmols_sdf(molfile, natoms: int) -> None:
     [("benzene.sdf.gz", 12), ("benzene.mol2.gz", 12), ("1a99_ligand.pdb.gz", 20)],
 )
 def test_loadmol_gz(molfile, natoms: int) -> None:
-
     m = io.loadmol(os.path.join(molpath, molfile))
 
     assert len(m) == natoms
@@ -165,7 +155,6 @@ def test_loadmol_gz(molfile, natoms: int) -> None:
     [("1cbr_docking.sdf.gz", 22)],
 )
 def test_loadallmols_sdf_gz(molfile, natoms: int) -> None:
-
     ms = io.loadallmols(os.path.join(molpath, molfile))
 
     assert len(ms) == 10

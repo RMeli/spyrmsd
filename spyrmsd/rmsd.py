@@ -181,7 +181,6 @@ def _rmsd_isomorphic_core(
 
     # Loop over all graph isomorphisms to find the lowest RMSD
     for idx1, idx2 in isomorphisms:
-
         # Use the isomorphism to shuffle coordinates around (from original order)
         c1i = c1[idx1, :]
         c2i = c2[idx2, :]
@@ -258,12 +257,10 @@ def symmrmsd(
     """
 
     if isinstance(coords, list):  # Multiple RMSD calculations
-
         RMSD: Any = []
         isomorphism = None
 
         for c in coords:
-
             if not cache:
                 # Reset isomorphism
                 isomorphism = None
@@ -284,7 +281,6 @@ def symmrmsd(
             RMSD.append(srmsd)
 
     else:  # Single RMSD calculation
-
         RMSD, isomorphism = _rmsd_isomorphic_core(
             coordsref,
             coords,

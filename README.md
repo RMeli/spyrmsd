@@ -4,13 +4,12 @@
 ![flake8](https://github.com/RMeli/spyrmsd/workflows/flake8/badge.svg)
 ![mypy](https://github.com/RMeli/spyrmsd/workflows/mypy/badge.svg)
 [![codecov](https://codecov.io/gh/RMeli/spyrmsd/branch/develop/graph/badge.svg)](https://codecov.io/gh/RMeli/spyrmsd/branch/master)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/RMeli/spyrmsd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RMeli/spyrmsd/context:python)
 
 [![Docs](https://img.shields.io/badge/docs-spyrmsd.readthedocs.io-blueviolet)](https://spyrmsd.readthedocs.io)
 [![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=develop)](https://spyrmsd.readthedocs.io/en/develop/?badge=develop)
 
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
-[![PyPI](https://img.shields.io/badge/PyPI-v0.5.2%20-ff69b4)](https://pypi.org/project/spyrmsd/)
+[![PyPI](https://img.shields.io/badge/PyPI-v0.6.0%20-ff69b4)](https://pypi.org/project/spyrmsd/)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/spyrmsd.svg)](https://anaconda.org/conda-forge/spyrmsd)
 
 [![J. Cheminform.](https://img.shields.io/badge/J.%20Cheminform.-10.1186%2Fs13321--020--00455--2-blue)](https://doi.org/10.1186/s13321-020-00455-2)
@@ -38,7 +37,11 @@ If you find `spyrmsd` useful, please consider citing the following paper:
 
 `spyrmsd` is available on [PyPI](https://pypi.org/project/spyrmsd/) and [conda-forge](https://github.com/conda-forge/spyrmsd-feedstock) and can be easily installed from source. See [Dependencies](###Dependencies) for a description of all the dependencies.
 
-_Note_: `spyrmsd` will install [NetworkX](https://networkx.github.io/) (multi-platform). You can install [graph-tool](https://graph-tool.skewed.de/) on macOS and Linux for higher performance.
+> [!NOTE]
+> `spyrmsd` will install [NetworkX](https://networkx.github.io/) (multi-platform). You can install [graph-tool](https://graph-tool.skewed.de/) on macOS and Linux for higher performance.
+
+> [!WARNING]
+> If `spyrmsd` is used as a standalone tool, it is required to install either [RDKit](https://rdkit.org/) or [Open Babel](http://openbabel.org/). Neither is automatically installed with `pip` nor `conda`.
 
 ### PyPI
 
@@ -72,7 +75,8 @@ The following packages are required to use `spyrmsd` as a module:
 * [numpy](https://numpy.org/)
 * [scipy](https://www.scipy.org/)
 
-_Note_: `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will fall back to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows). However, in order to support cross-platform installation [NetworkX](https://networkx.github.io/) is installed by default, and [graph-tool](https://graph-tool.skewed.de/) needs to be installed manually.
+> [!NOTE]
+> `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will fall back to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows). However, in order to support cross-platform installation [NetworkX](https://networkx.github.io/) is installed by default, and [graph-tool](https://graph-tool.skewed.de/) needs to be installed manually.
 
 #### Standalone Tool
 
@@ -80,8 +84,6 @@ Additionally, one of the following packages is required to use `spyrmsd` as a st
 
 * [Open Babel](http://openbabel.org/)
 * [RDKit](https://rdkit.org/)
-
-_Note_: [RDKit](https://rdkit.org/) is not available on PyPI ([Why the RDKit isn't available on PyPi](https://rdkit.blogspot.com/2019/11/why-rdkit-isnt-available-on-pypi.html)). See [RDKit Installation](http://www.rdkit.org/docs/Install.html) for installation instructions.
 
 ## Usage
 
@@ -130,7 +132,8 @@ def rmsd(
 )
 ```
 
-Note: atomic properties (`aprops`) can be any Python object when using [NetworkX](https://networkx.github.io/), or integers, floats, or strings when using [graph-tool](https://graph-tool.skewed.de/).
+> [!NOTE]
+> Atomic properties (`aprops`) can be any Python object when using [NetworkX](https://networkx.github.io/), or integers, floats, or strings when using [graph-tool](https://graph-tool.skewed.de/).
 
 #### Symmetry-Corrected RMSD
 
@@ -153,7 +156,8 @@ def symmrmsd(
 )
 ```
 
-Note: atomic properties (`aprops`) can be any Python object when using [NetworkX](https://networkx.github.io/), or integers, floats, or strings when using [graph-tool](https://graph-tool.skewed.de/).
+> [!NOTE]
+> Atomic properties (`aprops`) can be any Python object when using [NetworkX](https://networkx.github.io/), or integers, floats, or strings when using [graph-tool](https://graph-tool.skewed.de/).
 
 ## Development
 

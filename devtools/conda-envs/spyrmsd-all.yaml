@@ -33,7 +33,7 @@ dependencies:
   - codecov
 
   # Doc
-  - sphinx
+  - sphinx<7
   - sphinx_rtd_theme
   - pip:
     - duecredit
