@@ -3,6 +3,16 @@
 
 ------------------------------------------------------------------------------
 
+## Version X.Y.Z
+
+Date:            XX/YY/ZZZ
+Contributors:    @RMeli
+
+### Improved
+
+* Messages for `NotImplementedError` exceptions [PR #90 | @RMeli]
+
+
 ## Version 0.6.0
 
 Date:            08/09/2023
