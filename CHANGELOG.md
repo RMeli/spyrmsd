@@ -3,6 +3,15 @@
 
 ------------------------------------------------------------------------------
 
+## Version X.Y.Z
+
+Date:            XX/YY/ZZZZ
+Contributors:    @RMeli
+
+### Removed
+
+* `versioneer` [PR #91 | @RMeli]
+
 ## Version 0.6.0
 
 Date:            08/09/2023
