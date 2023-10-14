@@ -8,6 +8,10 @@
 Date:            XX/YY/ZZZZ
 Contributors:    @RMeli
 
+### Improved
+
+* Messages for `NotImplementedError` exceptions [PR #90 | @RMeli]
+
 ### Removed
 
 * `versioneer` [PR #91 | @RMeli]

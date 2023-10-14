@@ -64,7 +64,9 @@ def load(fname: str):
         else:
             rdmol = _load_block_gzipped(Chem.MolFromPDBBlock, fname)
     else:
-        raise NotImplementedError
+        raise NotImplementedError(
+            f"Format '{fmt}' is currently not supported with RDKit."
+        )
 
     return rdmol
 
@@ -87,7 +89,11 @@ def loadall(fname: str):
     fmt = utils.molformat(fname)
 
     if fmt == "mol2":
-        raise NotImplementedError  # See RDKit Issue #415
+        error = (
+            "Multiple molecules in MOL2 files are not supported. "
+            "See RDKit#415 (https://github.com/rdkit/rdkit/pull/415)."
+        )
+        raise NotImplementedError(error)  # See RDKit Issue #415
     elif fmt == "sdf":
         if not gzipped:
             rdmols = Chem.SDMolSupplier(fname, removeHs=False)
@@ -100,9 +106,11 @@ def loadall(fname: str):
                 mols = [rdmol for rdmol in rdmols]
     elif fmt == "pdb":
         # TODO: Implement
-        raise NotImplementedError
+        raise NotImplementedError("Multiple molecules in PDB files are not supported.")
     else:
-        raise NotImplementedError
+        raise NotImplementedError(
+            f"Format '{fmt}' is currently not supported with RDKit."
+        )
 
     return mols
 
