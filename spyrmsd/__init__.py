@@ -2,13 +2,9 @@
 Python RMSD tool with symmetry correction.
 """
 
-from ._version import get_versions
 from .due import Doi, due
 
-versions = get_versions()
-__version__ = versions["version"]
-__git_revision__ = versions["full-revisionid"]
-del get_versions, versions
+__version__ = "0.7.0-dev"
 
 # This will print latest Zenodo version
 due.cite(

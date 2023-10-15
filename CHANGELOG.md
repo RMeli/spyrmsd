@@ -5,13 +5,16 @@
 
 ## Version X.Y.Z
 
-Date:            XX/YY/ZZZ
+Date:            XX/YY/ZZZZ
 Contributors:    @RMeli
 
 ### Improved
 
 * Messages for `NotImplementedError` exceptions [PR #90 | @RMeli]
 
+### Removed
+
+* `versioneer` [PR #91 | @RMeli]
 
 ## Version 0.6.0
 
