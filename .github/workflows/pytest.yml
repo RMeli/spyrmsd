@@ -44,11 +44,11 @@ jobs:
         df -h
         ulimit -a
 
-    - uses: conda-incubator/setup-miniconda@v2
+    - uses: conda-incubator/setup-miniconda@v3
       with:
         python-version: ${{ matrix.python-version }}
         environment-file: devtools/conda-envs/spyrmsd-test-${{ matrix.chemlib }}-${{ matrix.graphlib }}.yaml
-        channels: conda-forge,defaults
+        miniforge-version: "latest"
         activate-environment: spyrmsd
         auto-update-conda: true
         auto-activate-base: false
@@ -57,7 +57,8 @@ jobs:
     - name: Install
       run: |
         python -m pip install . --no-deps
-        conda list
+        miniconda info
+        miniconda list
 
     - name: Test
       run: |
