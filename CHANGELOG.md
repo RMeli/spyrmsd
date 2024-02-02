@@ -8,6 +8,10 @@
 Date:            XX/YY/ZZZZ
 Contributors:    @RMeli
 
+### Fixed
+
+* Failing tests with `pytest=8.0.0` [PR #101 | @RMeli]
+
 ### Improved
 
 * Messages for `NotImplementedError` exceptions [PR #90 | @RMeli]
