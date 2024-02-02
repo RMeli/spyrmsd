@@ -3,6 +3,7 @@ import pytest
 
 from spyrmsd import constants, graph, io, molecule
 from spyrmsd.exceptions import NonIsomorphicGraphs
+from spyrmsd.graphs import _common as gc
 from tests import molecules
 
 
@@ -104,9 +105,7 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
     ],
 )
 def test_match_graphs_isomorphic(G1, G2) -> None:
-    with pytest.warns(
-        UserWarning, match="No atomic property information stored on nodes."
-    ):
+    with pytest.warns(UserWarning, match=gc.warn_no_atomic_properties):
         isomorphisms = graph.match_graphs(G1, G2)
 
     assert len(isomorphisms) != 0
@@ -121,8 +120,8 @@ def test_match_graphs_isomorphic(G1, G2) -> None:
 )
 def test_match_graphs_not_isomorphic(G1, G2) -> None:
     with pytest.raises(
-        NonIsomorphicGraphs, match="Graphs are not isomorphic."
-    ), pytest.warns(UserWarning, match="No atomic number information stored on nodes."):
+        NonIsomorphicGraphs, match=gc.error_non_isomorphic_graphs
+    ), pytest.warns(UserWarning, match=gc.warn_no_atomic_properties):
         graph.match_graphs(G1, G2)
 
 
