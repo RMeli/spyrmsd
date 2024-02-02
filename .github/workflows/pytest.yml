@@ -50,6 +50,8 @@ jobs:
         environment-file: devtools/conda-envs/spyrmsd-test-${{ matrix.chemlib }}-${{ matrix.graphlib }}.yaml
         miniforge-version: "latest"
         activate-environment: spyrmsd
+        miniforge-variant: Mambaforge
+        use-mamba: true
         auto-update-conda: true
         auto-activate-base: false
         show-channel-urls: true
