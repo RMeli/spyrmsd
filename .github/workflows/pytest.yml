@@ -24,14 +24,15 @@ jobs:
     strategy:
       matrix:
         os: [macOS-latest, ubuntu-latest, windows-latest]
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
         chemlib: [obabel, rdkit]
         graphlib: [nx, gt]
         exclude:
         # graph-tools does not work on Windows
         - {os: "windows-latest", graphlib: "gt"}
-        # FIXME: Keeps failing in CI for unknown reasons during miniconda setup
-        - {os: "ubuntu-latest", graphlib: "gt", chemlib: "rdkit", python-version: "3.7"}
+        include:
+        - {os: "macOS-14", graphlib: "gt", chemlib: "obabel", python-version: "3.12"}
+        - {os: "macOS-14", graphlib: "nx", chemlib: "rdkit", python-version: "3.12"}
 
     steps:
     - uses: actions/checkout@v3
@@ -43,12 +44,14 @@ jobs:
         df -h
         ulimit -a
 
-    - uses: conda-incubator/setup-miniconda@v2
+    - uses: conda-incubator/setup-miniconda@v3
       with:
         python-version: ${{ matrix.python-version }}
         environment-file: devtools/conda-envs/spyrmsd-test-${{ matrix.chemlib }}-${{ matrix.graphlib }}.yaml
-        channels: conda-forge,defaults
+        miniforge-version: "latest"
         activate-environment: spyrmsd
+        miniforge-variant: Mambaforge
+        use-mamba: true
         auto-update-conda: true
         auto-activate-base: false
         show-channel-urls: true
@@ -56,7 +59,8 @@ jobs:
     - name: Install
       run: |
         python -m pip install . --no-deps
-        conda list
+        mamba info
+        mamba list
 
     - name: Test
       run: |

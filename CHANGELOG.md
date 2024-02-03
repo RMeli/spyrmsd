@@ -12,9 +12,18 @@ Contributors:    @RMeli
 
 * Failing tests with `pytest=8.0.0` [PR #101 | @RMeli]
 
+### Changed
+
+* Minimum version of Python to `3.9` (to reduce CI matrix) [PR  #102 | @RMeli]
+
 ### Improved
 
 * Messages for `NotImplementedError` exceptions [PR #90 | @RMeli]
+
+### Added
+
+* Python `3.12` to CI [PR  #102 | @RMeli]
+* macOS M1 (`macoOS-14`) to CI [PR  #102 | @RMeli]
 
 ### Removed
 

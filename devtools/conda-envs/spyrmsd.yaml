@@ -4,8 +4,9 @@ channels:
 dependencies:
   # Base
   - python
+  - setuptools
 
   # Maths
   - numpy
   - scipy
-  - graph-tool
+  - networkx

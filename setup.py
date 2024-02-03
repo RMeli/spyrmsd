@@ -35,5 +35,5 @@ setup(
         "openbabel": ["openbabel"],
     },
     platforms=["Linux", "Mac OS-X", "Unix", "Windows"],
-    python_requires=">=3.7",
+    python_requires=">=3.9",
 )
