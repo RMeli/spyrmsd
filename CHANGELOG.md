@@ -6,7 +6,7 @@
 ## Version X.Y.Z
 
 Date:            XX/YY/ZZZZ
-Contributors:    @RMeli
+Contributors:    @RMeli, @takluyver
 
 ### Fixed
 
@@ -14,8 +14,8 @@ Contributors:    @RMeli
 
 ### Changed
 
-* Minimum version of Python to `3.9` (to reduce CI matrix) [PR  #102 | @RMeli]
 * Updated Python build system to use flit_core directly [PR #103 | @takluyver]
+* Minimum version of Python to `3.9` (to reduce CI matrix) [PR  #102 | @RMeli]
 
 ### Improved
 
