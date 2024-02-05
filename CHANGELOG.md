@@ -28,6 +28,7 @@ Contributors:    @RMeli, @takluyver
 
 ### Removed
 
+* `.gitattributes` and `.lgtm.yaml` stale files
 * `versioneer` [PR #91 | @RMeli]
 
 ## Version 0.6.0
