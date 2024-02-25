@@ -162,7 +162,7 @@ def _rmsd_isomorphic_core(
     available_backends = graph.get_backends()
     
     # Check the backend
-    if backend.lower() in ["graphtool", "graph-tool", "graph_tool", "gt"]:
+    if backend.lower() in ["graphtool", "graph-tool", "graph_tool", "graph tool", "gt"]:
         if "graph_tool" in available_backends:
             import spyrmsd.graphs.gt as graph_backend        
         else:
