@@ -186,7 +186,7 @@ class Molecule:
 
             self.stripped = True
 
-    def to_graph(self):
+    def to_graph(self, backend: str = "default"):
         """
         Convert molecule to graph.
 
@@ -202,9 +202,44 @@ class Molecule:
 
         The molecular graph is cached.
         """
-        if self.G is None:
+
+        ## Check if the graph exists and is in the correct backend type
+        if self.G is None or not backend.lower() in self.current_backend:
+            # Check the backend
+            available_backends = graph.get_backends()
+
+            gt_backends = ["graphtool", "graph-tool", "graph_tool", "gt"]
+            nx_backends = ["networkx", "nx"]
+            
+            if backend.lower() in gt_backends:
+                if "graph_tool" in available_backends:
+                    import spyrmsd.graphs.gt as graph_backend
+                    self.current_backend = gt_backends      
+
+                else:
+                    raise ImportError("Graph_tools backend not present")
+            elif backend.lower() in nx_backends:      
+                if "networkx" in available_backends:
+                    import spyrmsd.graphs.nx as graph_backend
+                    self.current_backend = nx_backends    
+                else:
+                    raise ImportError("NetworkX backend not present")
+            elif backend.lower() == "default":
+        
+                if len(available_backends) == 0:
+                    raise ValueError("No valid backends were found, please ensure one of the supported backends is installed correctly")
+                if "graph_tool" in available_backends:
+                    import spyrmsd.graphs.gt as graph_backend
+                    self.current_backend = gt_backends
+            
+                else:
+                    import spyrmsd.graphs.nx as graph_backend
+                    self.current_backend = nx_backends
+            else:
+                raise ValueError(f"Didn't recognize backend '{backend}'")
+            print(graph_backend)    
             try:
-                self.G = graph.graph_from_adjacency_matrix(
+                self.G = graph_backend.graph_from_adjacency_matrix(
                     self.adjacency_matrix, self.atomicnums
                 )
             except AttributeError:
@@ -218,7 +253,7 @@ class Molecule:
                     self.atomicnums, self.coordinates
                 )
 
-                self.G = graph.graph_from_adjacency_matrix(
+                self.G = graph_backend.graph_from_adjacency_matrix(
                     self.adjacency_matrix, self.atomicnums
                 )
 

@@ -125,6 +125,7 @@ def _rmsd_isomorphic_core(
     minimize: bool = False,
     isomorphisms: Optional[List[Tuple[List[int], List[int]]]] = None,
     atol: float = 1e-9,
+    backend: str = "default",
 ) -> Tuple[float, List[Tuple[List[int], List[int]]]]:
     """
     Compute RMSD using graph isomorphism.
@@ -158,6 +159,29 @@ def _rmsd_isomorphic_core(
         RMSD (after graph matching) and graph isomorphisms
     """
 
+    available_backends = graph.get_backends()
+    
+    # Check the backend
+    if backend.lower() in ["graphtool", "graph-tool", "graph_tool", "gt"]:
+        if "graph_tool" in available_backends:
+            import spyrmsd.graphs.gt as graph_backend        
+        else:
+            raise ImportError("Graph_tools backend not present")
+    elif backend.lower() in ["networkx", "nx"]:
+        if "networkx" in available_backends:
+            import spyrmsd.graphs.nx as graph_backend           
+        else:
+            raise ImportError("NetworkX backend not present")
+    elif backend.lower() == "default":      
+        if len(available_backends) == 0:
+            raise ValueError("No valid backends were found, please ensure one of the supported backends is installed correctly")
+        if "graph_tool" in available_backends:
+            import spyrmsd.graphs.gt as graph_backend           
+        else:
+            import spyrmsd.graphs.nx as graph_backend           
+    else:
+        raise ValueError(f"Didn't recognize backend '{backend}'")
+        
     assert coords1.shape == coords2.shape
 
     n = coords1.shape[0]
@@ -169,11 +193,11 @@ def _rmsd_isomorphic_core(
     # No cached isomorphisms
     if isomorphisms is None:
         # Convert molecules to graphs
-        G1 = graph.graph_from_adjacency_matrix(am1, aprops1)
-        G2 = graph.graph_from_adjacency_matrix(am2, aprops2)
+        G1 = graph_backend.graph_from_adjacency_matrix(am1, aprops1)
+        G2 = graph_backend.graph_from_adjacency_matrix(am2, aprops2)
 
         # Get all the possible graph isomorphisms
-        isomorphisms = graph.match_graphs(G1, G2)
+        isomorphisms = graph_backend.match_graphs(G1, G2)
 
     # Minimum result
     # Squared displacement (not minimize) or RMSD (minimize)
@@ -214,6 +238,7 @@ def symmrmsd(
     minimize: bool = False,
     cache: bool = True,
     atol: float = 1e-9,
+    backend: str = "default",
 ) -> Any:
     """
     Compute RMSD using graph isomorphism for multiple coordinates.
@@ -240,7 +265,9 @@ def symmrmsd(
         Cache graph isomorphisms
     atol: float
         Absolute tolerance parameter for QCP (see :func:`qcp_rmsd`)
-
+    backend: str
+        Which backend to use (default, graph_tool or networkx)
+    
     Returns
     -------
     float: Union[float, List[float]]
@@ -276,6 +303,7 @@ def symmrmsd(
                 minimize=minimize,
                 isomorphisms=isomorphism,
                 atol=atol,
+                backend=backend,
             )
 
             RMSD.append(srmsd)
@@ -292,6 +320,7 @@ def symmrmsd(
             minimize=minimize,
             isomorphisms=None,
             atol=atol,
+            backend=backend,
         )
 
     return RMSD
@@ -305,9 +334,10 @@ def rmsdwrapper(
     minimize: bool = False,
     strip: bool = True,
     cache: bool = True,
+    backend: str = "default",
 ) -> Any:
     """
-    Compute RMSD between two molecule.
+    Compute RMSD between two molecules.
 
     Parameters
     ----------
@@ -323,6 +353,8 @@ def rmsdwrapper(
         Minimised RMSD (using the quaternion polynomial method)
     strip: bool, optional
         Strip hydrogen atoms
+    backend: str
+        Which backend to use (default, graph_tool or networkx)
 
     Returns
     -------
@@ -358,6 +390,7 @@ def rmsdwrapper(
             center=center,
             minimize=minimize,
             cache=cache,
+            backend=backend,
         )
     else:  # No symmetry
         for c in cmols:

@@ -190,3 +190,4 @@ def cycle(n):
         Cycle graph
     """
     return nx.cycle_graph(n)
+
