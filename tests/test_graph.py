@@ -7,11 +7,11 @@ from spyrmsd.graphs import _common as gc
 from spyrmsd.graphs import gt, nx
 from tests import molecules
 
-@pytest.mark.parametrize(
-    "graph_backend",
-    [gt, nx],
-)
-def test_adjacency_matrix_from_atomic_coordinates_distance(graph_backend) -> None:
+@pytest.fixture(params=[(gt, "gt"), (nx, "nx")], ids=["gt", "nx"])
+def graph_backend_data(request):
+    return request.param[0], request.param[1]
+    
+def test_adjacency_matrix_from_atomic_coordinates_distance(graph_backend_data) -> None:
     # Lithium hydride (LiH)
     # H and Li have very different covalent radii
     atomicnums = np.array([1, 3])
@@ -25,22 +25,23 @@ def test_adjacency_matrix_from_atomic_coordinates_distance(graph_backend) -> Non
         [[0, 0, 0], [0, 0, d + constants.connectivity_tolerance - 0.01]]
     )
 
+    graph_backend, _ = graph_backend_data
+
     A = graph.adjacency_matrix_from_atomic_coordinates(atomicnums, coordinates)
     G = graph_backend.graph_from_adjacency_matrix(A)
 
     assert graph_backend.num_edges(G) == 1
 
-@pytest.mark.parametrize(
-    "graph_backend",
-    [gt, nx],
-)
+
 @pytest.mark.parametrize(
     "mol, n_bonds",
     [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
 )
 def test_adjacency_matrix_from_atomic_coordinates(
-    mol: molecule.Molecule, n_bonds: int, graph_backend
+    mol: molecule.Molecule, n_bonds: int, graph_backend_data
 ) -> None:
+    
+    graph_backend, _ = graph_backend_data
     A = graph.adjacency_matrix_from_atomic_coordinates(mol.atomicnums, mol.coordinates)
 
     G = graph_backend.graph_from_adjacency_matrix(A)
@@ -63,12 +64,13 @@ def test_adjacency_matrix_from_mol(mol) -> None:
     for i, j in io.bonds(mol):
         assert A[i, j] == 1
 
-@pytest.mark.parametrize("graph_backend",[gt, nx])
+
 @pytest.mark.parametrize("mol", molecules.allobmolecules)
-def test_graph_from_adjacency_matrix(mol, graph_backend) -> None:
+def test_graph_from_adjacency_matrix(mol, graph_backend_data) -> None:
     natoms = io.numatoms(mol)
     nbonds = io.numbonds(mol)
 
+    graph_backend, _ = graph_backend_data
     A = io.adjacency_matrix(mol)
 
     assert A.shape == (natoms, natoms)
@@ -80,16 +82,15 @@ def test_graph_from_adjacency_matrix(mol, graph_backend) -> None:
     assert graph_backend.num_vertices(G) == natoms
     assert graph_backend.num_edges(G) == nbonds
 
-@pytest.mark.parametrize(
-    "graph_backend, graph_backend_name",
-    [(gt,"gt"), (nx, "nx")],
-)
+
 @pytest.mark.parametrize(
     "rawmol, mol", zip(molecules.allobmolecules, molecules.allmolecules)
 )
-def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol, graph_backend, graph_backend_name) -> None:
+def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol, graph_backend_data) -> None:
     natoms = io.numatoms(rawmol)
     nbonds = io.numbonds(rawmol)
+
+    graph_backend, graph_backend_name = graph_backend_data
 
     A = io.adjacency_matrix(rawmol)
 
@@ -137,10 +138,7 @@ def test_match_graphs_not_isomorphic(G1, G2, graph_backend) -> None:
     ), pytest.warns(UserWarning, match=gc.warn_no_atomic_properties):
         graph_backend.match_graphs(G1, G2)
 
-@pytest.mark.parametrize(
-    "graph_backend",
-    [gt, nx],
-)
+
 @pytest.mark.parametrize(
     "property",
     [
@@ -152,8 +150,9 @@ def test_match_graphs_not_isomorphic(G1, G2, graph_backend) -> None:
     ],
     ids=lambda prop: f"{type(prop).__name__}"
 )
-def test_build_graph_node_features(graph_backend, property) -> None:
+def test_build_graph_node_features(graph_backend_data, property) -> None:
     A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
+    graph_backend, _ = graph_backend_data
     G = graph_backend.graph_from_adjacency_matrix(A, property)
 
     assert graph_backend.num_edges(G) == 3

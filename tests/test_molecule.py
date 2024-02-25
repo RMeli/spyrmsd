@@ -143,34 +143,39 @@ def test_molecule_strip(mol: molecule.Molecule, n_atoms: int, stripped: int) -> 
 
     assert len(m) == n_atoms - stripped
 
-@pytest.mark.parametrize(
-    "graph_backend, graph_backend_name",
-    [(gt,"gt"), (nx, "nx")],
-)
+@pytest.fixture(params=[(gt, "gt"), (nx, "nx")], ids=["gt", "nx"])
+def graph_backend(request):
+    return request.param[0], request.param[1]
+
+
 @pytest.mark.parametrize(
     "mol, n_bonds",
-    [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
+    [
+        (molecules.benzene, 12),
+        (molecules.ethanol, 8),
+        (molecules.dialanine, 22)
+    ]
 )
-def test_graph_from_adjacency_matrix(mol: molecule.Molecule, n_bonds: int, graph_backend, graph_backend_name) -> None:
-    G = mol.to_graph(backend=graph_backend_name)
-    print(type(G))
-    assert graph_backend.num_vertices(G) == len(mol)
-    assert graph_backend.num_edges(G) == n_bonds
+def test_graph_from_adjacency_matrix(mol: molecule.Molecule, n_bonds: int, graph_backend) -> None:
+    backend, backend_name = graph_backend
+    G = mol.to_graph(backend=backend_name)
+    assert backend.num_vertices(G) == len(mol)
+    assert backend.num_edges(G) == n_bonds
 
     for idx, atomicnum in enumerate(mol.atomicnums):
-        assert graph_backend.vertex_property(G, "aprops", idx) == atomicnum
+        assert backend.vertex_property(G, "aprops", idx) == atomicnum
+
 
 @pytest.mark.parametrize(
-    "graph_backend, graph_backend_name",
-    [(gt,"gt"), (nx, "nx")],
-)
-@pytest.mark.parametrize(
     "mol, n_bonds",
-    [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
+    [
+        (molecules.benzene, 12),
+        (molecules.ethanol, 8),
+        (molecules.dialanine, 22)
+    ]
 )
-def test_graph_from_atomic_coordinates_perception(
-    mol: molecule.Molecule, n_bonds: int, graph_backend, graph_backend_name
-) -> None:
+def test_graph_from_atomic_coordinates_perception(mol: molecule.Molecule, n_bonds: int, graph_backend) -> None:
+    backend, backend_name = graph_backend
     m = copy.deepcopy(mol)
 
     delattr(m, "adjacency_matrix")
@@ -178,13 +183,13 @@ def test_graph_from_atomic_coordinates_perception(
 
     with pytest.warns(UserWarning):
         # Uses automatic bond perception
-        G = m.to_graph(backend=graph_backend_name)
+        G = m.to_graph(backend=backend_name)
         
-        assert graph_backend.num_vertices(G) == len(m)
-        assert graph_backend.num_edges(G) == n_bonds
+        assert backend.num_vertices(G) == len(m)
+        assert backend.num_edges(G) == n_bonds
 
         for idx, atomicnum in enumerate(mol.atomicnums):
-            assert graph_backend.vertex_property(G, "aprops", idx) == atomicnum
+            assert backend.vertex_property(G, "aprops", idx) == atomicnum
 
 
 @pytest.mark.parametrize(
