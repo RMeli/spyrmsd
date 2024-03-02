@@ -5,6 +5,7 @@ import os
 import warnings
 
 _available_backends = []
+_current_backend = None
 
 try:
     from spyrmsd.graphs.gt import (
@@ -33,15 +34,12 @@ try:
    _available_backends.append("networkx")
 except ImportError:
    pass
-        
+
+
 def available_backends():
     return _available_backends 
 
 def set_backend(backend):
-
-    ## Get the current backend
-    current_backend = str(os.environ.get("SPYRMSD_BACKEND"))
-  
     ## Check if the backend is valid
     if backend.lower() in ["graph_tool", "graphtool", "graph-tool", "graph tool", "gt"]:
         backend = "graph-tool"
@@ -50,19 +48,18 @@ def set_backend(backend):
     else:
         raise ValueError("This backend is not recognized or supported")
 
-    ## Check if we the backend is installed
-    if not backend in _available_backends:
+    ## Check if the backend is installed
+    if backend not in _available_backends:
         raise ImportError(f"The {backend} backend doesn't seem to be installed")
 
     ## Check if we actually need to switch backends
-    if backend == current_backend:
+    if backend == _current_backend:
         warnings.warn(f"The backend is already {backend}", stacklevel=2)
-        return
+        return _current_backend
         
     global cycle, graph_from_adjacency_matrix, lattice, match_graphs, num_edges, num_vertices, vertex_property
     
     if backend == "graph-tool":      
-        
         cycle = gt_cycle
         graph_from_adjacency_matrix = gt_graph_from_adjacency_matrix
         lattice = gt_lattice
@@ -72,7 +69,6 @@ def set_backend(backend):
         vertex_property = gt_vertex_property
               
     elif backend == "networkx":
-              
         cycle = nx_cycle
         graph_from_adjacency_matrix = nx_graph_from_adjacency_matrix
         lattice = nx_lattice
@@ -81,18 +77,17 @@ def set_backend(backend):
         num_vertices = nx_num_vertices
         vertex_property = nx_vertex_property      
 
-    ## Update the environment variable
-    os.environ["SPYRMSD_BACKEND"] = backend
+    return backend
 
 if len(_available_backends) == 0:
     raise ImportError("No valid backends found. Please ensure that either graph-tool or NetworkX are installed.")
 else:
-    if os.environ.get("SPYRMSD_BACKEND") is None:
+    if _current_backend is None:
         ## Set the backend to the first available (preferred) backend         
-        set_backend(backend=_available_backends[0])
+        _current_backend = set_backend(backend=_available_backends[0])
     
 def get_backend():
-    return os.environ.get("SPYRMSD_BACKEND")
+    return _current_backend
 
 
 def adjacency_matrix_from_atomic_coordinates(
