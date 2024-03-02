@@ -2,6 +2,7 @@ from spyrmsd import constants
 
 import numpy as np
 import os
+import warnings
 
 _available_backends = []
 
@@ -15,7 +16,7 @@ try:
         num_vertices as gt_num_vertices,
         vertex_property as gt_vertex_property,
     )
-    available_backends.append("graph-tool")
+    _available_backends.append("graph-tool")
 except ImportError:
     pass
     
@@ -29,7 +30,7 @@ try:
         num_vertices as nx_num_vertices,
         vertex_property as nx_vertex_property,
     )
-   available_backends.append("networkx")
+   _available_backends.append("networkx")
 except ImportError:
    pass
         
@@ -50,12 +51,12 @@ def set_backend(backend):
         raise ValueError("This backend is not recognized or supported")
 
     ## Check if we the backend is installed
-    if not backend in available_backends:
+    if not backend in _available_backends:
         raise ImportError(f"The {backend} backend doesn't seem to be installed")
 
     ## Check if we actually need to switch backends
     if backend == current_backend:
-        print(f"The backend is already {backend}")
+        warnings.warn(f"The backend is already {backend}", stacklevel=2)
         return
         
     global cycle, graph_from_adjacency_matrix, lattice, match_graphs, num_edges, num_vertices, vertex_property
@@ -88,7 +89,7 @@ if len(_available_backends) == 0:
 else:
     if os.environ.get("SPYRMSD_BACKEND") is None:
         ## Set the backend to the first available (preferred) backend         
-        set_backend(backend=available_backends[0])
+        set_backend(backend=_available_backends[0])
     
 def get_backend():
     return os.environ.get("SPYRMSD_BACKEND")
