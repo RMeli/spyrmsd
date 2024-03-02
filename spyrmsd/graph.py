@@ -3,7 +3,7 @@ from spyrmsd import constants
 import numpy as np
 import os
 
-available_backends = []
+_available_backends = []
 
 try:
     from spyrmsd.graphs.gt import (
@@ -33,8 +33,8 @@ try:
 except ImportError:
    pass
         
-def get_available_backends():
-    return available_backends 
+def available_backends():
+    return _available_backends 
 
 def set_backend(backend):
 
@@ -83,8 +83,8 @@ def set_backend(backend):
     ## Update the environment variable
     os.environ["SPYRMSD_BACKEND"] = backend
 
-if len(available_backends) == 0:
-    raise ImportError("No valid backends found. Please ensure atleast Graph-Tool or NetworkX are properly installed")
+if len(_available_backends) == 0:
+    raise ImportError("No valid backends found. Please ensure that either graph-tool or NetworkX are installed.")
 else:
     if os.environ.get("SPYRMSD_BACKEND") is None:
         ## Set the backend to the first available (preferred) backend         
