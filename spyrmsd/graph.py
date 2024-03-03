@@ -52,7 +52,7 @@ except ImportError:
 def _validate_backend(backend):
     standardized_backend = _alias_to_backend.get(backend.lower())
     if standardized_backend is None:
-        raise ValueError("This backend is not recognized or supported")
+        raise ValueError(f"The {backend} backend is not recognized or supported")
     if standardized_backend not in _available_backends:
         raise ImportError(f"The {backend} backend doesn't seem to be installed")
     return standardized_backend
