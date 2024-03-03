@@ -18,6 +18,23 @@ for alias in _graph_tool_aliases:
 for alias in _networkx_aliases:
     _alias_to_backend[alias.lower()] = "networkx"
 
+
+def _dummy(*args, **kwargs):
+    """
+    Dummy function for backend not set.
+    """
+    raise NotImplementedError("No backend is set.")
+
+
+## Assigning the properties/methods associated with a backend to a temporary dummy function
+cycle = _dummy
+graph_from_adjacency_matrix = _dummy
+lattice = _dummy
+match_graphs = _dummy
+num_edges = _dummy
+num_vertices = _dummy
+vertex_property = _dummy
+
 try:
     from spyrmsd.graphs.gt import cycle as gt_cycle
     from spyrmsd.graphs.gt import (
