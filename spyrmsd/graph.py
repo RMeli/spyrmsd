@@ -1,11 +1,21 @@
 from spyrmsd import constants
 
 import numpy as np
-import os
 import warnings
 
 _available_backends = []
 _current_backend = None
+
+## Backend aliases
+_graph_tool_aliases = ["graph_tool", "graphtool", "graph-tool", "graph tool", "gt"]
+_networkx_aliases = ["networkx", "nx"]
+
+## Construct the alias dictionary
+_alias_backendDict = {}
+for alias in _graph_tool_aliases:
+    _alias_backendDict[alias.lower()] = "graph-tool"
+for alias in _networkx_aliases:
+    _alias_backendDict[alias.lower()] = "networkx"
 
 try:
     from spyrmsd.graphs.gt import (
@@ -19,7 +29,7 @@ try:
     )
     _available_backends.append("graph-tool")
 except ImportError:
-    pass
+    warnings.warn("The graph-tool backend does not seem to be installed.", stacklevel=2)
     
 try:
    from spyrmsd.graphs.nx import (
@@ -33,24 +43,23 @@ try:
     )
    _available_backends.append("networkx")
 except ImportError:
-   pass
+   warnings.warn("The networkx backend does not seem to be installed.", stacklevel=2)
 
+
+def _validate_backend(backend):
+    standardized_backend = _alias_backendDict.get(backend.lower())
+    if standardized_backend is None:
+        raise ValueError("This backend is not recognized or supported")
+    if standardized_backend not in _available_backends:
+        raise ImportError(f"The {backend} backend doesn't seem to be installed")
+    return standardized_backend
 
 def available_backends():
     return _available_backends 
 
 def set_backend(backend):
     ## Check if the backend is valid
-    if backend.lower() in ["graph_tool", "graphtool", "graph-tool", "graph tool", "gt"]:
-        backend = "graph-tool"
-    elif backend.lower() in ["networkx", "nx"]:
-        backend = "networkx"
-    else:
-        raise ValueError("This backend is not recognized or supported")
-
-    ## Check if the backend is installed
-    if backend not in _available_backends:
-        raise ImportError(f"The {backend} backend doesn't seem to be installed")
+    backend = _validate_backend(backend)
 
     ## Check if we actually need to switch backends
     if backend == _current_backend:
