@@ -63,12 +63,13 @@ def available_backends():
 
 
 def set_backend(backend):
+    global _current_backend
     backend = _validate_backend(backend)
 
     ## Check if we actually need to switch backends
     if backend == _current_backend:
         warnings.warn(f"The backend is already {backend}", stacklevel=2)
-        return _current_backend
+        return
 
     global cycle, graph_from_adjacency_matrix, lattice, match_graphs, num_edges, num_vertices, vertex_property
 
@@ -90,7 +91,7 @@ def set_backend(backend):
         num_vertices = nx_num_vertices
         vertex_property = nx_vertex_property
 
-    return backend
+    _current_backend = backend
 
 
 __all__ = [
