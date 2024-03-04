@@ -129,7 +129,7 @@ if len(_available_backends) == 0:
 else:
     if _current_backend is None:
         ## Set the backend to the first available (preferred) backend
-        _current_backend = set_backend(backend=_available_backends[0])
+        set_backend(backend=_available_backends[0])
 
 
 def get_backend():
