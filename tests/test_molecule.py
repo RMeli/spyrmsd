@@ -167,7 +167,7 @@ def test_graph_from_atomic_coordinates_perception(
     m = copy.deepcopy(mol)
 
     delattr(m, "adjacency_matrix")
-    m.G = None
+    m.G = {}
 
     with pytest.warns(UserWarning):
         # Uses automatic bond perception
