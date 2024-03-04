@@ -111,17 +111,6 @@ def set_backend(backend):
     _current_backend = backend
 
 
-__all__ = [
-    "graph_from_adjacency_matrix",
-    "match_graphs",
-    "vertex_property",
-    "num_vertices",
-    "num_edges",
-    "lattice",
-    "cycle",
-    "adjacency_matrix_from_atomic_coordinates",
-]
-
 if len(_available_backends) == 0:
     raise ImportError(
         "No valid backends found. Please ensure that either graph-tool or NetworkX are installed."
