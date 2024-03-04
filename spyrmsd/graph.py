@@ -10,6 +10,7 @@ _current_backend = None
 ## Backend aliases
 _graph_tool_aliases = ["graph_tool", "graphtool", "graph-tool", "graph tool", "gt"]
 _networkx_aliases = ["networkx", "nx"]
+_rustworkx_aliases = ["rustworkx", "rx"]
 
 ## Construct the alias dictionary
 _alias_to_backend = {}
@@ -17,6 +18,8 @@ for alias in _graph_tool_aliases:
     _alias_to_backend[alias.lower()] = "graph-tool"
 for alias in _networkx_aliases:
     _alias_to_backend[alias.lower()] = "networkx"
+for alias in _rustworkx_aliases:
+    _alias_to_backend[alias.lower()] = "rustworkx"
 
 
 def _dummy(*args, **kwargs):
@@ -65,6 +68,22 @@ try:
 except ImportError:
     warnings.warn("The networkx backend does not seem to be installed.", stacklevel=2)
 
+try:
+    from spyrmsd.graphs.rx import cycle as rx_cycle
+    from spyrmsd.graphs.rx import (
+        graph_from_adjacency_matrix as rx_graph_from_adjacency_matrix,
+    )
+    from spyrmsd.graphs.rx import lattice as rx_lattice
+    from spyrmsd.graphs.rx import match_graphs as rx_match_graphs
+    from spyrmsd.graphs.rx import num_edges as rx_num_edges
+    from spyrmsd.graphs.rx import num_vertices as rx_num_vertices
+    from spyrmsd.graphs.rx import vertex_property as rx_vertex_property
+
+    _available_backends.append("rustworkx")
+except ImportError:
+    warnings.warn("The rustworkx backend does not seem to be installed.", stacklevel=2)
+
+
 
 def _validate_backend(backend):
     standardized_backend = _alias_to_backend.get(backend.lower())
@@ -107,6 +126,15 @@ def set_backend(backend):
         num_edges = nx_num_edges
         num_vertices = nx_num_vertices
         vertex_property = nx_vertex_property
+    
+    elif backend == "rustworkx":
+        cycle = nx_cycle
+        graph_from_adjacency_matrix = rx_graph_from_adjacency_matrix
+        lattice = rx_lattice
+        match_graphs = rx_match_graphs
+        num_edges = rx_num_edges
+        num_vertices = rx_num_vertices
+        vertex_property = rx_vertex_property
 
     _current_backend = backend
 
@@ -129,7 +157,7 @@ if len(_available_backends) == 0:
 else:
     if _current_backend is None:
         ## Set the backend to the first available (preferred) backend
-        _current_backend = set_backend(backend=_available_backends[0])
+        set_backend(backend=_available_backends[0])
 
 
 def get_backend():
