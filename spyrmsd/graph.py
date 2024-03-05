@@ -48,7 +48,7 @@ try:
 
     _available_backends.append("graph-tool")
 except ImportError:
-    warnings.warn("The graph-tool backend does not seem to be installed.", stacklevel=2)
+    warnings.warn("The graph-tool backend does not seem to be installed.")
 
 try:
     from spyrmsd.graphs.nx import cycle as nx_cycle
@@ -63,7 +63,7 @@ try:
 
     _available_backends.append("networkx")
 except ImportError:
-    warnings.warn("The networkx backend does not seem to be installed.", stacklevel=2)
+    warnings.warn("The networkx backend does not seem to be installed.")
 
 
 def _validate_backend(backend):
@@ -75,17 +75,17 @@ def _validate_backend(backend):
     return standardized_backend
 
 
-def available_backends():
-    return _available_backends
+# def _get_available_backends():
+#    return _available_backends
 
 
-def set_backend(backend):
+def _set_backend(backend):
     global _current_backend
     backend = _validate_backend(backend)
 
     ## Check if we actually need to switch backends
     if backend == _current_backend:
-        warnings.warn(f"The backend is already {backend}", stacklevel=2)
+        warnings.warn(f"The backend is already {backend}")
         return
 
     global cycle, graph_from_adjacency_matrix, lattice, match_graphs, num_edges, num_vertices, vertex_property
@@ -118,10 +118,10 @@ if len(_available_backends) == 0:
 else:
     if _current_backend is None:
         ## Set the backend to the first available (preferred) backend
-        set_backend(backend=_available_backends[0])
+        _set_backend(backend=_available_backends[0])
 
 
-def get_backend():
+def _get_backend():
     return _current_backend
 
 
