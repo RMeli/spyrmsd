@@ -6,7 +6,11 @@
 ## Version X.Y.Z
 
 Date:            XX/YY/ZZZZ
-Contributors:    @RMeli, @takluyver
+Contributors:    @RMeli, @takluyver, @Jnelen
+
+### Added
+
+* Functionality to manually select the backend [PR  #107 | @Jnelen, @RMeli]
 
 ### Fixed
 
