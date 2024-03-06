@@ -10,7 +10,11 @@ Contributors:    @RMeli, @takluyver, @Jnelen
 
 ### Added
 
-* Functionality to manually select the backend [PR  #107 | @Jnelen, @RMeli]
+* Functionality to manually select the backend [PR  #107 | @Jnelen]
+
+### Changed
+
+* Molecular graphs are now cached per backend using a dictionary [PR  #107 | @Jnelen]
 
 ### Fixed
 
