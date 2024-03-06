@@ -6,6 +6,7 @@ from typing import DefaultDict, List, Tuple
 import numpy as np
 import pytest
 
+import spyrmsd
 from spyrmsd import constants, graph, io, molecule, utils
 from tests import molecules
 
@@ -236,3 +237,35 @@ def test_from_rdmol(adjacency):
             with pytest.raises(AttributeError):
                 # No adjacency_matrix attribute
                 mol.adjacency_matrix
+
+
+@pytest.mark.skipif(
+    len(spyrmsd.available_backends) < 2,
+    reason="Not all of the required backends are installed",
+)
+@pytest.mark.parametrize(
+    "mol", [(molecules.benzene), (molecules.ethanol), (molecules.dialanine)]
+)
+def test_molecule_graph_cache(mol) -> None:
+    import graph_tool as gt
+    import networkx as nx
+
+    ## Graph cache persists from previous tests, manually reset them
+    mol.G = {}
+    spyrmsd.set_backend("networkx")
+    mol.to_graph()
+
+    assert isinstance(mol.G["networkx"], nx.Graph)
+    assert "graph-tool" not in mol.G.keys()
+
+    spyrmsd.set_backend("graph-tool")
+    mol.to_graph()
+
+    ## Make sure both backends (still) have a cache
+    assert isinstance(mol.G["networkx"], nx.Graph)
+    assert isinstance(mol.G["graph-tool"], gt.Graph)
+
+    ## Strip the molecule to ensure the cache is reset
+    mol.strip()
+
+    assert len(mol.G.items()) == 0

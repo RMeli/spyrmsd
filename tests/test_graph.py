@@ -163,7 +163,7 @@ def test_build_graph_node_features_unsupported() -> None:
 def test_set_backend() -> None:
     import graph_tool as gt
     import networkx as nx
-    
+
     A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
 
     spyrmsd.set_backend("networkx")
