@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 
+import spyrmsd
 from spyrmsd import constants, graph, io, molecule
 from spyrmsd.exceptions import NonIsomorphicGraphs
 from spyrmsd.graphs import _common as gc
@@ -153,3 +154,29 @@ def test_build_graph_node_features_unsupported() -> None:
 
     with pytest.raises(ValueError, match="Unsupported property type:"):
         _ = graph.graph_from_adjacency_matrix(A, property)
+
+
+@pytest.mark.skipif(
+    len(spyrmsd.available_backends) < 2,
+    reason="Not all of the required backends are installed",
+)
+def test_set_backend() -> None:
+    A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
+
+    import graph_tool as gt
+    import networkx as nx
+
+    spyrmsd.set_backend("networkx")
+    assert spyrmsd.get_backend() == "networkx"
+
+    Gnx = graph.graph_from_adjacency_matrix(A)
+    assert isinstance(Gnx, nx.Graph)
+
+    spyrmsd.set_backend("graph-tool")
+    assert spyrmsd.get_backend() == "graph-tool"
+
+    Ggt = graph.graph_from_adjacency_matrix(A)
+    assert isinstance(Ggt, gt.Graph)
+
+    with pytest.raises(ValueError, match="backend is not recognized or supported"):
+        spyrmsd.set_backend("unknown")

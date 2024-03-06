@@ -3,6 +3,7 @@ Python RMSD tool with symmetry correction.
 """
 
 from .due import Doi, due
+
 # Make the backend related functions available from base spyrmsd
 # Add noqa to avoid flake8 error
 from .graph import _available_backends as available_backends  # noqa: F401
