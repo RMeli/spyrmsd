@@ -4,6 +4,9 @@ authors:
 - family-names: "Meli"
   given-names: "Rocco"
   orcid: "https://orcid.org/0000-0002-2845-3410"
+- family-names: "Nelen"
+  given-names: "Jochem"
+  orcid: "https://orcid.org/0000-0002-9970-4950"
 title: "spyrmsd"
 version: 0.6.0
 doi: 10.5281/zenodo.3631876
