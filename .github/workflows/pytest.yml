@@ -30,7 +30,7 @@ jobs:
         exclude:
         # graph-tools does not work on Windows
         - {os: "windows-latest", graphlib: "gt"}
-        - {graphlib: "all", chemlib: "openbabel"}
+        - {graphlib: "all", chemlib: "obabel"}
         include:
         - {os: "macOS-14", graphlib: "gt", chemlib: "obabel", python-version: "3.12"}
         - {os: "macOS-14", graphlib: "nx", chemlib: "rdkit", python-version: "3.12"}

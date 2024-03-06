@@ -161,10 +161,10 @@ def test_build_graph_node_features_unsupported() -> None:
     reason="Not all of the required backends are installed",
 )
 def test_set_backend() -> None:
-    A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
-
     import graph_tool as gt
     import networkx as nx
+    
+    A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
 
     spyrmsd.set_backend("networkx")
     assert spyrmsd.get_backend() == "networkx"
