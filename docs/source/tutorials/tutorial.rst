@@ -3,6 +3,7 @@ Tutorial
 
 .. code:: ipython3
 
+    import spyrmsd
     from spyrmsd import io, rmsd
 
 OpenBabel or RDKit
@@ -68,8 +69,8 @@ constructors.
 .. parsed-literal::
 
     <frozen importlib._bootstrap>:241: RuntimeWarning: to-Python converter for std::__1::pair<double, double> already registered; second conversion method ignored.
-    [18:44:03] Molecule does not have explicit Hs. Consider calling AddHs()
-    [18:44:03] Molecule does not have explicit Hs. Consider calling AddHs()
+    [21:58:01] Molecule does not have explicit Hs. Consider calling AddHs()
+    [21:58:01] Molecule does not have explicit Hs. Consider calling AddHs()
 
 
 
@@ -95,7 +96,7 @@ Hydrogen atoms can be removed with the ``strip()`` function:
         mol.strip()
 
 Symmetry-Corrected RMSD
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 ``spyrmsd`` only needs atomic coordinates, atomic number and the
 molecular adjacency matrix to compute the standard RMSD with
@@ -137,7 +138,7 @@ reference molecule and all other molecules:
 
 
 Minimum RMSD
-~~~~~~~~~~~~
+------------
 
 We can also compute the minimum RMSD obtained by superimposing the
 molecular structures:
@@ -160,3 +161,56 @@ molecular structures:
 .. parsed-literal::
 
     [1.2012368667355435, 1.0533413220699535, 1.153253104575529, 1.036542688936588, 0.8407673221224187, 1.1758143217869736, 0.7817315189656655, 1.0933314311267845, 1.0260767175206462, 0.9586369647000478]
+
+
+
+Change Backend
+~~~~~~~~~~~~~~
+
+``spyrmsd`` supports multiple backends. You see which backends are
+available by looking at the ``available_backends`` attribute:
+
+.. code:: ipython3
+
+    spyrmsd.available_backends
+
+
+
+
+.. parsed-literal::
+
+    ['graph_tool', 'networkx']
+
+
+
+The available backends are a subset of the supported backends. Only the
+backends that are installed will be available.
+
+You can check the current backend with
+
+.. code:: ipython3
+
+    spyrmsd.get_backend()
+
+
+
+
+.. parsed-literal::
+
+    'graph_tool'
+
+
+
+You can switch the backend using
+
+.. code:: ipython3
+
+    spyrmsd.set_backend("networkx")
+    spyrmsd.get_backend()
+
+
+
+
+.. parsed-literal::
+
+    'networkx'

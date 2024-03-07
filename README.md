@@ -89,25 +89,10 @@ Additionally, one of the following packages is required to use `spyrmsd` as a st
 
 ### Standalone Tool
 
+`spyrmsd` provides a convenient CLI tool. See `spyrmsd`'s `--help` for the usage:
+
 ```bash
 python -m spyrmsd -h
-```
-
-```text
-usage: python -m spyrmsd [-h] [-m] [-c] [--hydrogens] [-n] reference molecules [molecules ...]
-
-Symmetry-corrected RMSD calculations in Python.
-
-positional arguments:
-  reference       Reference file
-  molecules       Input file(s)
-
-optional arguments:
-  -h, --help      show this help message and exit
-  -m, --minimize  Minimize (fit)
-  -c, --center    Center molecules at origin
-  --hydrogens     Keep hydrogen atoms
-  -n, --nosymm    No graph isomorphism
 ```
 
 ### Module
@@ -158,6 +143,25 @@ def symmrmsd(
 
 > [!NOTE]
 > Atomic properties (`aprops`) can be any Python object when using [NetworkX](https://networkx.github.io/), or integers, floats, or strings when using [graph-tool](https://graph-tool.skewed.de/).
+
+#### Select Backend
+
+`spyrmsd` supports both [NetworkX](https://networkx.github.io/) and [graph-tool](https://graph-tool.skewed.de/) for the calculation of graph isomorphisms. You can check which backend is being used with
+
+```python
+spyrmsd.get_backend()
+```
+
+You can also manually select your preferred backend with
+
+```python
+spyrmsd.set_backend("networkx")
+# spyrmsd uses NetworkX
+spyrmsd.set_backend("graph_tool")
+# spyrmsd uses graph_tool
+```
+
+The available backends (which depend on the installed dependencies) are stored in `spyrmsd.available_backends`.
 
 ## Development
 
