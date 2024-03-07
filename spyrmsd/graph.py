@@ -20,7 +20,7 @@ for alias in _networkx_aliases:
     _alias_to_backend[alias.lower()] = "networkx"
 for alias in _rustworkx_aliases:
     _alias_to_backend[alias.lower()] = "rustworkx"
-
+    
 
 def _dummy(*args, **kwargs):
     """
@@ -51,7 +51,7 @@ try:
 
     _available_backends.append("graph-tool")
 except ImportError:
-    warnings.warn("The graph-tool backend does not seem to be installed.", stacklevel=2)
+    warnings.warn("The graph-tool backend does not seem to be installed.")
 
 try:
     from spyrmsd.graphs.nx import cycle as nx_cycle
@@ -65,9 +65,6 @@ try:
     from spyrmsd.graphs.nx import vertex_property as nx_vertex_property
 
     _available_backends.append("networkx")
-except ImportError:
-    warnings.warn("The networkx backend does not seem to be installed.", stacklevel=2)
-
 try:
     from spyrmsd.graphs.rx import cycle as rx_cycle
     from spyrmsd.graphs.rx import (
@@ -81,8 +78,7 @@ try:
 
     _available_backends.append("rustworkx")
 except ImportError:
-    warnings.warn("The rustworkx backend does not seem to be installed.", stacklevel=2)
-
+    warnings.warn("The networkx backend does not seem to be installed.")
 
 
 def _validate_backend(backend):
@@ -94,17 +90,13 @@ def _validate_backend(backend):
     return standardized_backend
 
 
-def available_backends():
-    return _available_backends
-
-
-def set_backend(backend):
+def _set_backend(backend):
     global _current_backend
     backend = _validate_backend(backend)
 
     ## Check if we actually need to switch backends
     if backend == _current_backend:
-        warnings.warn(f"The backend is already {backend}", stacklevel=2)
+        warnings.warn(f"The backend is already {backend}.")
         return
 
     global cycle, graph_from_adjacency_matrix, lattice, match_graphs, num_edges, num_vertices, vertex_property
@@ -126,29 +118,9 @@ def set_backend(backend):
         num_edges = nx_num_edges
         num_vertices = nx_num_vertices
         vertex_property = nx_vertex_property
-    
-    elif backend == "rustworkx":
-        cycle = nx_cycle
-        graph_from_adjacency_matrix = rx_graph_from_adjacency_matrix
-        lattice = rx_lattice
-        match_graphs = rx_match_graphs
-        num_edges = rx_num_edges
-        num_vertices = rx_num_vertices
-        vertex_property = rx_vertex_property
 
     _current_backend = backend
 
-
-__all__ = [
-    "graph_from_adjacency_matrix",
-    "match_graphs",
-    "vertex_property",
-    "num_vertices",
-    "num_edges",
-    "lattice",
-    "cycle",
-    "adjacency_matrix_from_atomic_coordinates",
-]
 
 if len(_available_backends) == 0:
     raise ImportError(
@@ -157,10 +129,10 @@ if len(_available_backends) == 0:
 else:
     if _current_backend is None:
         ## Set the backend to the first available (preferred) backend
-        set_backend(backend=_available_backends[0])
+        _set_backend(backend=_available_backends[0])
 
 
-def get_backend():
+def _get_backend():
     return _current_backend
 
 
