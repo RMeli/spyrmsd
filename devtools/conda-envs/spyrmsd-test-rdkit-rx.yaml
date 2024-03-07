@@ -1,0 +1,27 @@
+name: spyrmsd
+channels:
+  - conda-forge
+  - rdkit
+dependencies:
+  # Base
+  - python
+  - setuptools
+
+  # Maths
+  - numpy
+  - scipy
+  - rustworkx
+
+  # Chemistry
+  - rdkit
+
+  # Testing
+  - pytest
+  - pytest-cov
+  - pytest-benchmark
+
+  # Dev
+  - mypy
+  - flake8
+  - black
+  - codecov
