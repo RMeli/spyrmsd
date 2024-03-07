@@ -7,6 +7,7 @@ if __name__ == "__main__":
     import importlib.util
     import sys
 
+    import spyrmsd
     from spyrmsd import io
     from spyrmsd.rmsd import rmsdwrapper
 
@@ -24,6 +25,14 @@ if __name__ == "__main__":
     parser.add_argument("--hydrogens", action="store_true", help="Keep hydrogen atoms")
     parser.add_argument(
         "-n", "--nosymm", action="store_false", help="No graph isomorphism"
+    )
+    parser.add_argument(
+        "-g",
+        "--graph-backend",
+        type=str,
+        default=None,
+        choices=spyrmsd.available_backends,
+        help="Graph library (backend)",
     )
 
     args = parser.parse_args()
@@ -48,6 +57,9 @@ if __name__ == "__main__":
     except OSError:
         print("ERROR: Molecule file(s) not found.", file=sys.stderr)
         exit(-1)
+
+    if args.graph_backend is not None:
+        spyrmsd.set_backend(args.graph_backend)
 
     # Loop over molecules within fil
     RMSDlist = rmsdwrapper(
