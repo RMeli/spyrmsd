@@ -240,7 +240,8 @@ def test_from_rdmol(adjacency):
 
 
 @pytest.mark.skipif(
-    len(spyrmsd.available_backends) < 2,
+    # Run test if all supported backends are installed
+    not set(spyrmsd.graph._supported_backends) <= set(spyrmsd.available_backends),
     reason="Not all of the required backends are installed",
 )
 @pytest.mark.parametrize(
