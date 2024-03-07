@@ -164,6 +164,7 @@ def test_build_graph_node_features_unsupported() -> None:
 def test_set_backend() -> None:
     import graph_tool as gt
     import networkx as nx
+    import rustworkx as rx
 
     A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
 
@@ -178,6 +179,12 @@ def test_set_backend() -> None:
 
     Ggt = graph.graph_from_adjacency_matrix(A)
     assert isinstance(Ggt, gt.Graph)
+
+    spyrmsd.set_backend("rustworkx")
+    assert spyrmsd.get_backend() == "rustworkx"
+
+    Grx = graph.graph_from_adjacency_matrix(A)
+    assert isinstance(Grx, rx.PyGraph)
 
     with pytest.raises(ValueError, match="backend is not recognized or supported"):
         spyrmsd.set_backend("unknown")
