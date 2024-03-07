@@ -6,6 +6,7 @@ if __name__ == "__main__":
     import argparse as ap
     import importlib.util
     import sys
+    import warnings
 
     import spyrmsd
     from spyrmsd import io
@@ -31,7 +32,6 @@ if __name__ == "__main__":
         "--graph-backend",
         type=str,
         default=None,
-        choices=spyrmsd.available_backends,
         help="Graph library (backend)",
     )
 
@@ -59,7 +59,9 @@ if __name__ == "__main__":
         exit(-1)
 
     if args.graph_backend is not None:
-        spyrmsd.set_backend(args.graph_backend)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            spyrmsd.set_backend(args.graph_backend)
 
     # Loop over molecules within fil
     RMSDlist = rmsdwrapper(
