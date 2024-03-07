@@ -89,25 +89,10 @@ Additionally, one of the following packages is required to use `spyrmsd` as a st
 
 ### Standalone Tool
 
+`spyrmsd` provides a convenient CLI tool. See `spyrmsd`'s `--help` for the usage:
+
 ```bash
 python -m spyrmsd -h
-```
-
-```text
-usage: python -m spyrmsd [-h] [-m] [-c] [--hydrogens] [-n] reference molecules [molecules ...]
-
-Symmetry-corrected RMSD calculations in Python.
-
-positional arguments:
-  reference       Reference file
-  molecules       Input file(s)
-
-optional arguments:
-  -h, --help      show this help message and exit
-  -m, --minimize  Minimize (fit)
-  -c, --center    Center molecules at origin
-  --hydrogens     Keep hydrogen atoms
-  -n, --nosymm    No graph isomorphism
 ```
 
 ### Module
