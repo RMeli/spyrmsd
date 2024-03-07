@@ -1,8 +1,8 @@
 import warnings
 from typing import Any, List, Optional, Tuple, Union
 
-import rustworkx as rx
 import numpy as np
+import rustworkx as rx
 
 from spyrmsd.exceptions import NonIsomorphicGraphs
 from spyrmsd.graphs._common import (
@@ -36,14 +36,14 @@ def graph_from_adjacency_matrix(
     It the atomic numbers are passed, they are used as node attributes.
     """
 
-    G = rx.PyGraph.from_adjacency_matrix(adjacency_matrix)
+    G = rx.PyGraph.from_adjacency_matrix(np.asarray(adjacency_matrix, dtype=np.float64))
 
     if not rx.is_connected(G):
         warnings.warn(warn_disconnected_graph)
 
-    # if aprops is not None:
-    #     attributes = {idx: aprops for idx, aprops in enumerate(aprops)}
-    #     nx.set_node_attributes(G, attributes, "aprops")
+    if aprops is not None:
+        for i in G.node_indices():
+            G[i] = aprops[i]
 
     return G
 
@@ -70,36 +70,33 @@ def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
         If the graphs `G1` and `G2` are not isomorphic
     """
 
-    # def match_aprops(node1, node2):
-    #     """
-    #     Check if atomic properties for two nodes match.
-    #     """
-    #     return node1["aprops"] == node2["aprops"]
+    def match_aprops(node1, node2):
+        """
+        Check if atomic properties for two nodes match.
+        """
+        return node1 == node2
 
-    # if (
-    #     nx.get_node_attributes(G1, "aprops") == {}
-    #     or nx.get_node_attributes(G2, "aprops") == {}
-    # ):
-    #     # Nodes without atomic number information
-    #     # No node-matching check
-    #     node_match = None
+    if G1[0] is None or G2[0] is None:
+        # Nodes without atomic number information
+        # No node-matching check
+        node_match = None
 
-    #     warnings.warn(warn_no_atomic_properties)
+        warnings.warn(warn_no_atomic_properties)
 
-    # else:
-    #     node_match = match_aprops
+    else:
+        node_match = match_aprops
 
-    #GM = rx.vf2_mapping(G1, G2, node_match)
-    GM = rx.vf2_mapping(G1, G2, None)
+    GM = rx.vf2_mapping(G1, G2, node_match)
+
+    isomorphisms = [
+        (list(isomorphism.keys()), list(isomorphism.values())) for isomorphism in GM
+    ]
 
     # Check if graphs are actually isomorphic
-    if not GM:
+    if len(isomorphisms) == 0:
         raise NonIsomorphicGraphs(error_non_isomorphic_graphs)
 
-    return [
-        (list(isomorphism.keys()), list(isomorphism.values()))
-        for isomorphism in GM
-    ]
+    return isomorphisms
 
 
 def vertex_property(G, vproperty: str, idx: int) -> Any:
@@ -120,7 +117,7 @@ def vertex_property(G, vproperty: str, idx: int) -> Any:
     Any
         Vertex property value
     """
-    return G.nodes[idx][vproperty]
+    return G[idx]
 
 
 def num_vertices(G) -> int:
@@ -190,4 +187,4 @@ def cycle(n):
     Graph
         Cycle graph
     """
-    return rx.generators.cycle_graph(n)
+    return rx.generators.cycle_graph(n, multigraph=False)
