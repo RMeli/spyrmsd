@@ -5,7 +5,7 @@ import numpy as np
 
 from spyrmsd import constants
 
-_supported_backends = ("networkx", "rustworkx")
+_supported_backends = ("graph_tool", "networkx", "rustworkx")
 
 _available_backends = []
 _current_backend = None
