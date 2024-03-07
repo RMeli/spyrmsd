@@ -256,14 +256,14 @@ def test_molecule_graph_cache(mol) -> None:
     mol.to_graph()
 
     assert isinstance(mol.G["networkx"], nx.Graph)
-    assert "graph-tool" not in mol.G.keys()
+    assert "graph_tool" not in mol.G.keys()
 
     spyrmsd.set_backend("graph-tool")
     mol.to_graph()
 
     ## Make sure both backends (still) have a cache
     assert isinstance(mol.G["networkx"], nx.Graph)
-    assert isinstance(mol.G["graph-tool"], gt.Graph)
+    assert isinstance(mol.G["graph_tool"], gt.Graph)
 
     ## Strip the molecule to ensure the cache is reset
     mol.strip()
