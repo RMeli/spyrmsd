@@ -34,6 +34,9 @@ if __name__ == "__main__":
         default=None,
         help="Graph library (backend)",
     )
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="Enable verbose mode"
+    )
 
     args = parser.parse_args()
 
@@ -62,6 +65,9 @@ if __name__ == "__main__":
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             spyrmsd.set_backend(args.graph_backend)
+
+            if args.verbose:
+                print(f"Graph library: {spyrmsd.get_backend()}")
 
     # Loop over molecules within fil
     RMSDlist = rmsdwrapper(

@@ -263,7 +263,7 @@ def test_molecule_graph_cache(mol) -> None:
     spyrmsd.set_backend("graph-tool")
     mol.to_graph()
 
-    spyrmsd.set_backend("rustoworkx")
+    spyrmsd.set_backend("rustworkx")
     mol.to_graph()
 
     ## Make sure all backends (still) have a cache

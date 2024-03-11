@@ -12,6 +12,7 @@ dependencies:
   - scipy
   - graph-tool
   - networkx>=2
+  - rustworkx
 
   # Chemistry
   - rdkit

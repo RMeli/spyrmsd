@@ -93,6 +93,8 @@ Additionally, one of the following packages is required to use `spyrmsd` as a st
 
 ### Standalone Tool
 
+`spyrmsd` provides a convenient CLI tool. See `spyrmsd`'s `--help` for the usage:
+
 ```bash
 python -m spyrmsd -h
 ```
