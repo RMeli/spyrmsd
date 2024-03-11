@@ -307,7 +307,7 @@ def rmsdwrapper(
     cache: bool = True,
 ) -> Any:
     """
-    Compute RMSD between two molecule.
+    Compute RMSD between two molecules.
 
     Parameters
     ----------
@@ -373,3 +373,181 @@ def rmsdwrapper(
             )
 
     return RMSDlist
+
+
+import os
+from concurrent.futures import ProcessPoolExecutor
+from functools import partial
+from multiprocessing import Process, Queue
+
+
+def _rmsd_queue(
+    molref: molecule.Molecule,
+    mols: Union[molecule.Molecule, List[molecule.Molecule]],
+    queue: Queue,
+    symmetry: bool = True,
+    center: bool = False,
+    minimize: bool = False,
+    strip: bool = True,
+    cache: bool = True,
+) -> Any:
+    """
+    Compute RMSD between two molecules and put it in a queue.
+
+    Parameters
+    ----------
+    molref: molecule.Molecule
+        Reference molecule
+    mols: Union[molecule.Molecule, List[molecule.Molecule]]
+        Molecules to compare to reference molecule
+    queue: Queue
+        The queue where to put the result
+    symmetry: bool, optional
+        Symmetry-corrected RMSD (using graph isomorphism)
+    center: bool, optional
+        Center molecules at origin
+    minimize: bool, optional
+        Minimised RMSD (using the quaternion polynomial method)
+    strip: bool, optional
+        Strip hydrogen atoms
+
+    Returns
+    -------
+    None
+        The RMSD result is put in the queue.
+    """
+    queue.put(
+        rmsdwrapper(
+            molref=molref,
+            mols=mols,
+            symmetry=symmetry,
+            center=center,
+            minimize=minimize,
+            strip=strip,
+            cache=cache,
+        )
+    )
+
+
+def rmsd_timeout(
+    molref: molecule.Molecule,
+    mols: Union[molecule.Molecule, List[molecule.Molecule]],
+    symmetry: bool = True,
+    center: bool = False,
+    minimize: bool = False,
+    strip: bool = True,
+    cache: bool = True,
+    timeout: Optional[float] = 5,  ## Do you think this is a good default timeout value?
+) -> Any:
+    """
+    Compute RMSD between two molecules with a timeout.
+
+    Parameters
+    ----------
+    molref: molecule.Molecule
+        Reference molecule
+    mols: Union[molecule.Molecule, List[molecule.Molecule]]
+        Molecules to compare to reference molecule
+    symmetry: bool, optional
+        Symmetry-corrected RMSD (using graph isomorphism)
+    center: bool, optional
+        Center molecules at origin
+    minimize: bool, optional
+        Minimised RMSD (using the quaternion polynomial method)
+    strip: bool, optional
+        Strip hydrogen atoms
+    timeout: float, optional
+        After how many seconds to stop the RMSD calculations
+
+    Returns
+    -------
+    List[float]
+        RMSDs
+    """
+
+    if not isinstance(mols, list):
+        mols = [mols]
+
+    ## Inspired by https://superfastpython.com/task-with-timeout-child-process/
+    queue = Queue()
+    process = Process(
+        target=_rmsd_queue,
+        args=(molref, mols, queue, symmetry, center, minimize, strip, cache),
+    )
+
+    process.start()
+    process.join(timeout=timeout)
+
+    ## Check if the process finished running successfully
+    if not process.exitcode == 0:
+        ## Actually terminate the process
+        process.terminate()
+
+        ## Match the length of the mols list (Maybe this should be handled differently?)
+        return [None] * len(mols)
+    else:
+        ## Retrieve the result from the finished job
+        return queue.get()
+
+
+def rmsd_parallel(
+    molrefs: List[molecule.Molecule],
+    mols: List[molecule.Molecule],
+    num_workers: int = 1,
+    symmetry: bool = True,
+    center: bool = False,
+    minimize: bool = False,
+    strip: bool = True,
+    cache: bool = True,
+    timeout: Optional[float] = None,
+) -> Any:
+    """
+    Compute RMSD between two molecules with a timeout.
+
+    Parameters
+    ----------
+    molrefs: molecule.Molecule
+        Reference molecule
+    mols: Union[molecule.Molecule, List[molecule.Molecule]]
+        Molecules to compare to reference molecule
+    num_workers: int
+        Amount of processor to use for the parallel calculations
+    symmetry: bool, optional
+        Symmetry-corrected RMSD (using graph isomorphism)
+    center: bool, optional
+        Center molecules at origin
+    minimize: bool, optional
+        Minimised RMSD (using the quaternion polynomial method)
+    strip: bool, optional
+        Strip hydrogen atoms
+    timeout: float, optional
+        After how many seconds to stop the RMSD calculations
+
+    Returns
+    -------
+    List[float]
+        RMSDs
+    """
+
+    ## Ensure the num_workers is less or equal than the max number of CPUs
+    if num_workers > os.cpu_count():
+        ## Maybe we should raise some kind of a warning here?
+        num_workers = os.cpu_count()
+
+    ## Ensure molrefs and mols have the same len
+    if not len(molrefs) == len(mols):
+        raise ValueError("The input mol lists have different lengths")
+
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        rsmd_partial = partial(
+            rmsd_timeout,
+            symmetry=symmetry,
+            center=center,
+            minimize=minimize,
+            strip=strip,
+            cache=cache,
+            timeout=timeout,
+        )
+        results = executor.map(rsmd_partial, molrefs, mols)
+
+    return list(results)
