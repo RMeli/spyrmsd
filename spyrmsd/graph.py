@@ -5,7 +5,7 @@ import numpy as np
 
 from spyrmsd import constants
 
-_supported_backends = ("graph_tool", "networkx")
+_supported_backends = ("graph_tool", "networkx", "rustworkx")
 
 _available_backends = []
 _current_backend = None
@@ -13,6 +13,7 @@ _current_backend = None
 _backend_to_alias = {
     "graph_tool": ["graph_tool", "graphtool", "graph-tool", "graph tool", "gt"],
     "networkx": ["networkx", "nx"],
+    "rustworkx": ["rustworkx", "rx"],
 }
 
 _alias_to_backend = {}
@@ -140,6 +141,25 @@ def _set_backend(backend):
         num_edges = nx_num_edges
         num_vertices = nx_num_vertices
         vertex_property = nx_vertex_property
+
+    elif backend == "rustworkx":
+        from spyrmsd.graphs.rx import cycle as rx_cycle
+        from spyrmsd.graphs.rx import (
+            graph_from_adjacency_matrix as rx_graph_from_adjacency_matrix,
+        )
+        from spyrmsd.graphs.rx import lattice as rx_lattice
+        from spyrmsd.graphs.rx import match_graphs as rx_match_graphs
+        from spyrmsd.graphs.rx import num_edges as rx_num_edges
+        from spyrmsd.graphs.rx import num_vertices as rx_num_vertices
+        from spyrmsd.graphs.rx import vertex_property as rx_vertex_property
+
+        cycle = rx_cycle
+        graph_from_adjacency_matrix = rx_graph_from_adjacency_matrix
+        lattice = rx_lattice
+        match_graphs = rx_match_graphs
+        num_edges = rx_num_edges
+        num_vertices = rx_num_vertices
+        vertex_property = rx_vertex_property
 
     _current_backend = backend
 
