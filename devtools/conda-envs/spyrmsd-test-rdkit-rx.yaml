@@ -10,8 +10,6 @@ dependencies:
   # Maths
   - numpy
   - scipy
-  - graph-tool
-  - networkx>=2
   - rustworkx
 
   # Chemistry

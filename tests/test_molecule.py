@@ -250,6 +250,7 @@ def test_from_rdmol(adjacency):
 def test_molecule_graph_cache(mol) -> None:
     import graph_tool as gt
     import networkx as nx
+    import rustworkx as rx
 
     ## Graph cache persists from previous tests, manually reset them
     mol.G = {}
@@ -262,9 +263,13 @@ def test_molecule_graph_cache(mol) -> None:
     spyrmsd.set_backend("graph-tool")
     mol.to_graph()
 
-    ## Make sure both backends (still) have a cache
+    spyrmsd.set_backend("rustworkx")
+    mol.to_graph()
+
+    ## Make sure all backends (still) have a cache
     assert isinstance(mol.G["networkx"], nx.Graph)
     assert isinstance(mol.G["graph_tool"], gt.Graph)
+    assert isinstance(mol.G["rustworkx"], rx.PyGraph)
 
     ## Strip the molecule to ensure the cache is reset
     mol.strip()

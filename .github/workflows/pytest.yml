@@ -26,7 +26,7 @@ jobs:
         os: [macOS-latest, ubuntu-latest, windows-latest]
         python-version: ["3.9", "3.10", "3.11", "3.12"]
         chemlib: [obabel, rdkit]
-        graphlib: [nx, gt, all]
+        graphlib: [nx, gt, rx, all]
         exclude:
         # graph-tools does not work on Windows
         - {os: "windows-latest", graphlib: "gt"}
