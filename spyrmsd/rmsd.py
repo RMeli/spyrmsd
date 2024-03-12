@@ -423,7 +423,7 @@ def _rmsd_queue(
             minimize=minimize,
             strip=strip,
             cache=cache,
-        )
+        )[0]
     )
 
 
@@ -470,7 +470,7 @@ def _rmsd_timeout(
     if not isinstance(mols, list):
         mols = [mols]
 
-    queue = Queue[float]()
+    queue = Queue()
     process = Process(
         target=_rmsd_queue,
         args=(molref, mols, queue, symmetry, center, minimize, strip, cache),
@@ -492,8 +492,9 @@ def _rmsd_timeout(
 
 
 def rmsd_parallel(
-    molrefs: List[molecule.Molecule],
-    mols: List[molecule.Molecule],
+    # Should we change this to reflect to possibility of also allowing just 1 molecule as input?
+    molrefs: Union[molecule.Molecule, List[molecule.Molecule]],
+    mols: Union[molecule.Molecule, List[molecule.Molecule]],
     num_workers: int = 1,
     symmetry: bool = True,
     center: bool = False,
@@ -507,7 +508,7 @@ def rmsd_parallel(
 
     Parameters
     ----------
-    molrefs: molecule.Molecule
+    molrefs: Union[molecule.Molecule, List[molecule.Molecule]]
         Reference molecule
     mols: Union[molecule.Molecule, List[molecule.Molecule]]
         Molecules to compare to reference molecule
@@ -531,8 +532,18 @@ def rmsd_parallel(
     """
 
     # Ensure the num_workers is less or equal than the max number of CPUs
-    ## Makes MyPy unhappy because os.cpu_count() can return None in some cases (and num_workers is defined as an int)
+    # Makes MyPy unhappy because os.cpu_count() can return None in some cases (and num_workers is defined as an int)
     num_workers = min(num_workers, os.cpu_count())
+
+    # Cast the molecules to lists if they aren't already
+    if not isinstance(molrefs, list):
+        molrefs = [molrefs]
+    if not isinstance(mols, list):
+        mols = [mols]
+
+    # Match the length of the molref
+    if len(molrefs) == 1 and len(molrefs) < len(mols):
+        molrefs = molrefs * len(mols)
 
     # Ensure molrefs and mols have the same len
     if not len(molrefs) == len(mols):
