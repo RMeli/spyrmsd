@@ -1,3 +1,7 @@
+import os
+from concurrent.futures import ProcessPoolExecutor
+from functools import partial
+from multiprocessing import Process, Queue
 from typing import Any, List, Optional, Tuple, Union
 
 import numpy as np
@@ -375,12 +379,6 @@ def rmsdwrapper(
     return RMSDlist
 
 
-import os
-from concurrent.futures import ProcessPoolExecutor
-from functools import partial
-from multiprocessing import Process, Queue
-
-
 def _rmsd_queue(
     molref: molecule.Molecule,
     mols: Union[molecule.Molecule, List[molecule.Molecule]],
@@ -429,7 +427,7 @@ def _rmsd_queue(
     )
 
 
-def rmsd_timeout(
+def _rmsd_timeout(
     molref: molecule.Molecule,
     mols: Union[molecule.Molecule, List[molecule.Molecule]],
     symmetry: bool = True,
@@ -437,7 +435,7 @@ def rmsd_timeout(
     minimize: bool = False,
     strip: bool = True,
     cache: bool = True,
-    timeout: Optional[float] = 5,
+    timeout: Optional[float] = None,
 ) -> Any:
     """
     Compute RMSD between two molecules with a timeout.
@@ -463,12 +461,16 @@ def rmsd_timeout(
     -------
     List[float]
         RMSDs
+
+    Notes
+    -----
+    Timeout implemenation inspired by https://superfastpython.com/task-with-timeout-child-process/
     """
 
     if not isinstance(mols, list):
         mols = [mols]
 
-    queue = Queue()
+    queue = Queue[float]()
     process = Process(
         target=_rmsd_queue,
         args=(molref, mols, queue, symmetry, center, minimize, strip, cache),
@@ -528,6 +530,7 @@ def rmsd_parallel(
     """
 
     # Ensure the num_workers is less or equal than the max number of CPUs
+    ## Makes MyPy unhappy because os.cpu_count() can return None in some cases (and num_workers is defined as an int)
     num_workers = min(num_workers, os.cpu_count())
 
     # Ensure molrefs and mols have the same len
@@ -536,7 +539,7 @@ def rmsd_parallel(
 
     with ProcessPoolExecutor(max_workers=num_workers) as executor:
         rsmd_partial = partial(
-            rmsd_timeout,
+            _rmsd_timeout,
             symmetry=symmetry,
             center=center,
             minimize=minimize,
