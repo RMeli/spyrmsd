@@ -480,9 +480,10 @@ def _rmsd_timeout(
     process.join(timeout=timeout)
 
     # Check if the process finished running successfully
-    if not process.exitcode == 0:
-        # Actually terminate the process
-        process.terminate()
+    if process.exitcode != 0:
+        # Actually terminate the process if it still running
+        if process.is_alive():
+            process.terminate()
 
         return [np.nan] * len(mols)
     else:
