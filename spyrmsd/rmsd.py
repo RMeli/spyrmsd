@@ -437,7 +437,7 @@ def rmsd_timeout(
     minimize: bool = False,
     strip: bool = True,
     cache: bool = True,
-    timeout: Optional[float] = 5,  ## Do you think this is a good default timeout value?
+    timeout: Optional[float] = 5,
 ) -> Any:
     """
     Compute RMSD between two molecules with a timeout.
@@ -468,7 +468,6 @@ def rmsd_timeout(
     if not isinstance(mols, list):
         mols = [mols]
 
-    ## Inspired by https://superfastpython.com/task-with-timeout-child-process/
     queue = Queue()
     process = Process(
         target=_rmsd_queue,
@@ -478,15 +477,14 @@ def rmsd_timeout(
     process.start()
     process.join(timeout=timeout)
 
-    ## Check if the process finished running successfully
+    # Check if the process finished running successfully
     if not process.exitcode == 0:
-        ## Actually terminate the process
+        # Actually terminate the process
         process.terminate()
 
-        ## Match the length of the mols list (Maybe this should be handled differently?)
-        return [None] * len(mols)
+        return [np.nan] * len(mols)
     else:
-        ## Retrieve the result from the finished job
+        # Retrieve the result from the finished job
         return queue.get()
 
 
@@ -529,12 +527,10 @@ def rmsd_parallel(
         RMSDs
     """
 
-    ## Ensure the num_workers is less or equal than the max number of CPUs
-    if num_workers > os.cpu_count():
-        ## Maybe we should raise some kind of a warning here?
-        num_workers = os.cpu_count()
+    # Ensure the num_workers is less or equal than the max number of CPUs
+    num_workers = min(num_workers, os.cpu_count())
 
-    ## Ensure molrefs and mols have the same len
+    # Ensure molrefs and mols have the same len
     if not len(molrefs) == len(mols):
         raise ValueError("The input mol lists have different lengths")
 
