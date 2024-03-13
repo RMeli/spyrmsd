@@ -2,6 +2,7 @@ import os
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
 from multiprocessing import Process, Value
+from multiprocessing.sharedctypes import Synchronized
 from typing import Any, List, Optional, Tuple, Union
 
 import numpy as np
@@ -379,10 +380,10 @@ def rmsdwrapper(
     return RMSDlist
 
 
-def _rmsd_queue(
+def _rmsd_process(
     molref: molecule.Molecule,
     mols: Union[molecule.Molecule, List[molecule.Molecule]],
-    queue: Queue,
+    result: Synchronized,
     symmetry: bool = True,
     center: bool = False,
     minimize: bool = False,
@@ -398,8 +399,8 @@ def _rmsd_queue(
         Reference molecule
     mols: Union[molecule.Molecule, List[molecule.Molecule]]
         Molecules to compare to reference molecule
-    queue: Queue
-        The queue where to put the result
+    result: Value
+        The shared memory Value where the RMSD result is stored
     symmetry: bool, optional
         Symmetry-corrected RMSD (using graph isomorphism)
     center: bool, optional
@@ -412,19 +413,17 @@ def _rmsd_queue(
     Returns
     -------
     None
-        The RMSD result is put in the queue.
+        Stores the output RMSD in the shared "result" variable.
     """
-    queue.put(
-        rmsdwrapper(
-            molref=molref,
-            mols=mols,
-            symmetry=symmetry,
-            center=center,
-            minimize=minimize,
-            strip=strip,
-            cache=cache,
-        )[0]
-    )
+    result.value = rmsdwrapper(
+        molref=molref,
+        mols=mols,
+        symmetry=symmetry,
+        center=center,
+        minimize=minimize,
+        strip=strip,
+        cache=cache,
+    )[0]
 
 
 def _rmsd_timeout(
@@ -464,7 +463,7 @@ def _rmsd_timeout(
 
     Notes
     -----
-    Timeout implemenation inspired by https://superfastpython.com/task-with-timeout-child-process/
+    Timeout implementation inspired by https://superfastpython.com/task-with-timeout-child-process/
     """
 
     if not isinstance(mols, list):
@@ -473,9 +472,9 @@ def _rmsd_timeout(
     # RMSD is computed by the child process
     # The results need to be shared with the parent process
     # https://docs.python.org/3/library/multiprocessing.html#sharing-state-between-processes
-    result = Value(float)
+    result = Value("f")
     process = Process(
-        target=_rmsd_queue,
+        target=_rmsd_process,
         args=(molref, mols, result, symmetry, center, minimize, strip, cache),
     )
 
@@ -494,11 +493,10 @@ def _rmsd_timeout(
         return result.value
 
 
-def rmsd_parallel(
-    # Should we change this to reflect to possibility of also allowing just 1 molecule as input?
+def prmsdwrapper(
     molrefs: Union[molecule.Molecule, List[molecule.Molecule]],
     mols: Union[molecule.Molecule, List[molecule.Molecule]],
-    num_workers: int = 1,
+    num_workers: Union[int, None] = 1,
     symmetry: bool = True,
     center: bool = False,
     minimize: bool = False,
@@ -535,8 +533,7 @@ def rmsd_parallel(
     """
 
     # Ensure the num_workers is less or equal than the max number of CPUs
-    # Makes MyPy unhappy because os.cpu_count() can return None in some cases (and num_workers is defined as an int)
-    num_workers = min(num_workers, os.cpu_count())
+    num_workers = min(num_workers, os.cpu_count()) if os.cpu_count() is not None else 1
 
     # Cast the molecules to lists if they aren't already
     if not isinstance(molrefs, list):
