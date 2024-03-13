@@ -1,7 +1,7 @@
 import os
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Value
 from typing import Any, List, Optional, Tuple, Union
 
 import numpy as np
@@ -470,10 +470,13 @@ def _rmsd_timeout(
     if not isinstance(mols, list):
         mols = [mols]
 
-    queue = Queue()
+    # RMSD is computed by the child process
+    # The results need to be shared with the parent process
+    # https://docs.python.org/3/library/multiprocessing.html#sharing-state-between-processes
+    result = Value(float)
     process = Process(
         target=_rmsd_queue,
-        args=(molref, mols, queue, symmetry, center, minimize, strip, cache),
+        args=(molref, mols, result, symmetry, center, minimize, strip, cache),
     )
 
     process.start()
@@ -488,7 +491,7 @@ def _rmsd_timeout(
         return [np.nan] * len(mols)
     else:
         # Retrieve the result from the finished job
-        return queue.get()
+        return result.value
 
 
 def rmsd_parallel(
