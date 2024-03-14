@@ -489,8 +489,9 @@ def _rmsd_timeout(
 
         return [np.nan] * len(mols)
     else:
-        # Retrieve the result from the finished job
-        return result.value
+        # Retrieve the result from the finished job.
+        # Currently MyPy gives an error, it's being worked on: https://github.com/python/typeshed/issues/8799
+        return result.value  # type: ignore[attr-defined]
 
 
 def prmsdwrapper(
@@ -532,8 +533,9 @@ def prmsdwrapper(
         RMSDs
     """
 
-    # Ensure the num_workers is less or equal than the max number of CPUs
-    num_workers = min(num_workers, os.cpu_count()) if os.cpu_count() is not None else 1
+    # Ensure the num_workers is less or equal than the max number of CPUs.
+    # MyPy doesn't like the min() operator since os.cpu_count() can return None in some cases
+    num_workers = min(num_workers, os.cpu_count()) if os.cpu_count() is not None else 1  # type: ignore[type-var]
 
     # Cast the molecules to lists if they aren't already
     if not isinstance(molrefs, list):
