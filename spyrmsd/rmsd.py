@@ -487,7 +487,7 @@ def _rmsd_timeout(
         if process.is_alive():
             process.terminate()
 
-        return [np.nan] * len(mols)
+        return np.nan
     else:
         # Retrieve the result from the finished job.
         # Currently MyPy gives an error, it's being worked on: https://github.com/python/typeshed/issues/8799
