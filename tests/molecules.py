@@ -64,6 +64,8 @@ obdialanine, dialanine = load("dialanine.sdf")
 obsdf = [obbenzene, obpyridine, obethanol, obdialanine]
 sdf = [benzene, pyridine, ethanol, dialanine]
 
+obmuparfostat, muparfostat = load("muparfostat.sdf")
+
 allmolecules = sdf
 allobmolecules = obsdf
 
