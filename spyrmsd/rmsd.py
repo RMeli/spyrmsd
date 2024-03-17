@@ -490,7 +490,7 @@ def _rmsd_timeout(
         return np.nan
     else:
         # Retrieve the result from the finished job.
-        # Currently MyPy gives an error, it's being worked on: https://github.com/python/typeshed/issues/8799
+        # MyPy gives an error, see: https://github.com/python/typeshed/issues/8799
         return result.value  # type: ignore[attr-defined]
 
 
@@ -534,7 +534,7 @@ def prmsdwrapper(
     """
 
     # Ensure the num_workers is less or equal than the max number of CPUs.
-    # MyPy doesn't like the min() operator since os.cpu_count() can return None in some cases
+    # Silencing MyPy since os.cpu_count() can return None
     num_workers = min(num_workers, os.cpu_count()) if os.cpu_count() is not None else 1  # type: ignore[type-var]
 
     # Cast the molecules to lists if they aren't already
