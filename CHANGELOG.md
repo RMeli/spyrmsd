@@ -10,7 +10,7 @@ Contributors:    @RMeli
 
 ### Improved
 
-* Test IDs [PR | @RMeli]
+* Test IDs [PR #117 | @RMeli]
 
 ## Version 0.7.0
 
@@ -19,7 +19,7 @@ Contributors:    @RMeli, @takluyver, @Jnelen
 
 ### Added
 
-* Support for `rustworkx` graph library [PR 111 | @RMeli]
+* Support for `rustworkx` graph library [PR #111 | @RMeli]
 * Functionality to manually select the backend from CLI [PR #108 | @RMeli]
 * Functionality to manually select the backend [PR  #107 | @Jnelen]
 * Python `3.12` to CI [PR  #102 | @RMeli]
