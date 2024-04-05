@@ -6,6 +6,7 @@ from typing import DefaultDict, List, Tuple
 import numpy as np
 import pytest
 
+import spyrmsd
 from spyrmsd import constants, graph, io, molecule, utils
 from tests import molecules
 
@@ -167,7 +168,7 @@ def test_graph_from_atomic_coordinates_perception(
     m = copy.deepcopy(mol)
 
     delattr(m, "adjacency_matrix")
-    m.G = None
+    m.G = {}
 
     with pytest.warns(UserWarning):
         # Uses automatic bond perception
@@ -236,3 +237,41 @@ def test_from_rdmol(adjacency):
             with pytest.raises(AttributeError):
                 # No adjacency_matrix attribute
                 mol.adjacency_matrix
+
+
+@pytest.mark.skipif(
+    # Run test if all supported backends are installed
+    not set(spyrmsd.graph._supported_backends) <= set(spyrmsd.available_backends),
+    reason="Not all of the required backends are installed",
+)
+@pytest.mark.parametrize(
+    "mol", [(molecules.benzene), (molecules.ethanol), (molecules.dialanine)]
+)
+def test_molecule_graph_cache(mol) -> None:
+    import graph_tool as gt
+    import networkx as nx
+    import rustworkx as rx
+
+    ## Graph cache persists from previous tests, manually reset them
+    mol.G = {}
+    spyrmsd.set_backend("networkx")
+    mol.to_graph()
+
+    assert isinstance(mol.G["networkx"], nx.Graph)
+    assert "graph_tool" not in mol.G.keys()
+
+    spyrmsd.set_backend("graph-tool")
+    mol.to_graph()
+
+    spyrmsd.set_backend("rustworkx")
+    mol.to_graph()
+
+    ## Make sure all backends (still) have a cache
+    assert isinstance(mol.G["networkx"], nx.Graph)
+    assert isinstance(mol.G["graph_tool"], gt.Graph)
+    assert isinstance(mol.G["rustworkx"], rx.PyGraph)
+
+    ## Strip the molecule to ensure the cache is reset
+    mol.strip()
+
+    assert len(mol.G.items()) == 0

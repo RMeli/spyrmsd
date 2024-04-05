@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 import numpy as np
 
@@ -50,7 +50,7 @@ class Molecule:
             self.adjacency_matrix: np.ndarray = np.asarray(adjacency_matrix, dtype=int)
 
         # Molecular graph
-        self.G = None
+        self.G: Dict[str, object] = {}
 
         self.masses: Optional[List[float]] = None
 
@@ -182,7 +182,7 @@ class Molecule:
                 self.adjacency_matrix = self.adjacency_matrix[np.ix_(idx, idx)]
 
             # Reset molecular graph when stripping
-            self.G = None
+            self.G = {}
 
             self.stripped = True
 
@@ -200,11 +200,13 @@ class Molecule:
         If the molecule does not have an associated adjacency matrix, a simple
         bond perception is used.
 
-        The molecular graph is cached.
+        The molecular graph is cached per backend.
         """
-        if self.G is None:
+        _current_backend = graph._current_backend
+
+        if _current_backend not in self.G.keys():
             try:
-                self.G = graph.graph_from_adjacency_matrix(
+                self.G[_current_backend] = graph.graph_from_adjacency_matrix(
                     self.adjacency_matrix, self.atomicnums
                 )
             except AttributeError:
@@ -218,11 +220,11 @@ class Molecule:
                     self.atomicnums, self.coordinates
                 )
 
-                self.G = graph.graph_from_adjacency_matrix(
+                self.G[_current_backend] = graph.graph_from_adjacency_matrix(
                     self.adjacency_matrix, self.atomicnums
                 )
 
-        return self.G
+        return self.G[_current_backend]
 
     def __len__(self) -> int:
         """

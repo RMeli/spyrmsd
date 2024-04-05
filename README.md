@@ -9,7 +9,7 @@
 [![Documentation Status](https://readthedocs.org/projects/spyrmsd/badge/?version=develop)](https://spyrmsd.readthedocs.io/en/develop/?badge=develop)
 
 [![License](https://img.shields.io/github/license/RMeli/pyrmsd?color=%2333BBFF)](https://opensource.org/licenses/MIT)
-[![PyPI](https://img.shields.io/badge/PyPI-v0.6.0%20-ff69b4)](https://pypi.org/project/spyrmsd/)
+[![PyPI](https://img.shields.io/badge/PyPI-v0.7.0%20-ff69b4)](https://pypi.org/project/spyrmsd/)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/spyrmsd.svg)](https://anaconda.org/conda-forge/spyrmsd)
 
 [![J. Cheminform.](https://img.shields.io/badge/J.%20Cheminform.-10.1186%2Fs13321--020--00455--2-blue)](https://doi.org/10.1186/s13321-020-00455-2)
@@ -38,7 +38,7 @@ If you find `spyrmsd` useful, please consider citing the following paper:
 `spyrmsd` is available on [PyPI](https://pypi.org/project/spyrmsd/) and [conda-forge](https://github.com/conda-forge/spyrmsd-feedstock) and can be easily installed from source. See [Dependencies](###Dependencies) for a description of all the dependencies.
 
 > [!NOTE]
-> `spyrmsd` will install [NetworkX](https://networkx.github.io/) (multi-platform). You can install [graph-tool](https://graph-tool.skewed.de/) on macOS and Linux for higher performance.
+> `spyrmsd` will install [NetworkX](https://networkx.github.io/) (multi-platform). You can install the other backends for higher performance.
 
 > [!WARNING]
 > If `spyrmsd` is used as a standalone tool, it is required to install either [RDKit](https://rdkit.org/) or [Open Babel](http://openbabel.org/). Neither is automatically installed with `pip` nor `conda`.
@@ -71,12 +71,16 @@ pip install .
 
 The following packages are required to use `spyrmsd` as a module:
 
-* [graph-tool](https://graph-tool.skewed.de/) or [NetworkX](https://networkx.github.io/)
 * [numpy](https://numpy.org/)
 * [scipy](https://www.scipy.org/)
 
+One of the following graph libraries is required:
+* [graph-tool]
+* [NetworkX]
+* [rustworkx]
+
 > [!NOTE]
-> `spyrmsd` uses [graph-tool](https://graph-tool.skewed.de/) by default but will fall back to [NetworkX](https://networkx.github.io/) if the former is not installed (e.g. on Windows). However, in order to support cross-platform installation [NetworkX](https://networkx.github.io/) is installed by default, and [graph-tool](https://graph-tool.skewed.de/) needs to be installed manually.
+> `spyrmsd` uses the following priority when multiple graph libraries are present: [graph-tool], [NetworkX], [rustworkx]. *This order might change. Use `set_backend` to ensure you are always using the same backend, if needed.* However, in order to support cross-platform installation [NetworkX](https://networkx.github.io/) is installed by default, and the other graph library need to be installed manually.
 
 #### Standalone Tool
 
@@ -89,25 +93,10 @@ Additionally, one of the following packages is required to use `spyrmsd` as a st
 
 ### Standalone Tool
 
+`spyrmsd` provides a convenient CLI tool. See `spyrmsd`'s `--help` for the usage:
+
 ```bash
 python -m spyrmsd -h
-```
-
-```text
-usage: python -m spyrmsd [-h] [-m] [-c] [--hydrogens] [-n] reference molecules [molecules ...]
-
-Symmetry-corrected RMSD calculations in Python.
-
-positional arguments:
-  reference       Reference file
-  molecules       Input file(s)
-
-optional arguments:
-  -h, --help      show this help message and exit
-  -m, --minimize  Minimize (fit)
-  -c, --center    Center molecules at origin
-  --hydrogens     Keep hydrogen atoms
-  -n, --nosymm    No graph isomorphism
 ```
 
 ### Module
@@ -133,7 +122,7 @@ def rmsd(
 ```
 
 > [!NOTE]
-> Atomic properties (`aprops`) can be any Python object when using [NetworkX](https://networkx.github.io/), or integers, floats, or strings when using [graph-tool](https://graph-tool.skewed.de/).
+> Atomic properties (`aprops`) can be any Python object when using [NetworkX] and [rustworkx], or integers, floats, or strings when using [graph-tool].
 
 #### Symmetry-Corrected RMSD
 
@@ -157,7 +146,31 @@ def symmrmsd(
 ```
 
 > [!NOTE]
-> Atomic properties (`aprops`) can be any Python object when using [NetworkX](https://networkx.github.io/), or integers, floats, or strings when using [graph-tool](https://graph-tool.skewed.de/).
+> Atomic properties (`aprops`) can be any Python object when using [NetworkX] and [rustworkx], or integers, floats, or strings when using [graph-tool](https://graph-tool.skewed.de/).
+
+#### Select Backend
+
+`spyrmsd` supports the following graph libraries for the calculation of graph isomorphisms:
+* [graph-tool]
+* [NetworkX]
+* [rustworkx]
+
+ You can check which backend is being used with
+
+```python
+spyrmsd.get_backend()
+```
+
+You can also manually select your preferred backend with
+
+```python
+spyrmsd.set_backend("networkx")
+# spyrmsd uses NetworkX
+spyrmsd.set_backend("graph_tool")
+# spyrmsd uses graph_tool
+```
+
+The available backends (which depend on the installed dependencies) are stored in `spyrmsd.available_backends`.
 
 ## Development
 
@@ -172,7 +185,7 @@ Pre-commit `git` hooks can be installed with [pre-commit](https://pre-commit.com
 
 ## Copyright
 
-Copyright (c) 2019-2021, Rocco Meli.
+Copyright (c) 2019-2024, Rocco Meli.
 
 ## References
 
@@ -181,3 +194,7 @@ References are tracked with [duecredit](https://github.com/duecredit/duecredit/)
 ### Acknowledgements
 
 Project based on the [Computational Molecular Science Python Cookiecutter](https://github.com/molssi/cookiecutter-cms) version `1.1`.
+
+[rustworkx]: https://www.rustworkx.org
+[NetworkX]: https://networkx.github.io/
+[graph-tool]: https://graph-tool.skewed.de/

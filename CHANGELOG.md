@@ -3,6 +3,38 @@
 
 ------------------------------------------------------------------------------
 
+## Version 0.7.0
+
+Date:            05/04/2024
+Contributors:    @RMeli, @takluyver, @Jnelen
+
+### Added
+
+* Support for `rustworkx` graph library [PR 111 | @RMeli]
+* Functionality to manually select the backend from CLI [PR #108 | @RMeli]
+* Functionality to manually select the backend [PR  #107 | @Jnelen]
+* Python `3.12` to CI [PR  #102 | @RMeli]
+* macOS M1 (`macoOS-14`) to CI [PR  #102 | @RMeli]
+
+### Changed
+
+* Molecular graphs cache to cache by backend [PR  #107 | @Jnelen]
+* Python build system to use flit_core directly [PR #103 | @takluyver]
+* Minimum version of Python to `3.9` (to reduce CI matrix) [PR  #102 | @RMeli]
+
+### Fixed
+
+* Failing tests with `pytest=8.0.0` [PR #101 | @RMeli]
+
+### Improved
+
+* Messages for `NotImplementedError` exceptions [PR #90 | @RMeli]
+
+### Removed
+
+* `.gitattributes` and `.lgtm.yaml` stale files
+* `versioneer` [PR #91 | @RMeli]
+
 ## Version 0.6.0
 
 Date:            08/09/2023

@@ -1,8 +1,10 @@
 import numpy as np
 import pytest
 
+import spyrmsd
 from spyrmsd import constants, graph, io, molecule
 from spyrmsd.exceptions import NonIsomorphicGraphs
+from spyrmsd.graphs import _common as gc
 from tests import molecules
 
 
@@ -104,9 +106,7 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
     ],
 )
 def test_match_graphs_isomorphic(G1, G2) -> None:
-    with pytest.warns(
-        UserWarning, match="No atomic property information stored on nodes."
-    ):
+    with pytest.warns(UserWarning, match=gc.warn_no_atomic_properties):
         isomorphisms = graph.match_graphs(G1, G2)
 
     assert len(isomorphisms) != 0
@@ -121,8 +121,8 @@ def test_match_graphs_isomorphic(G1, G2) -> None:
 )
 def test_match_graphs_not_isomorphic(G1, G2) -> None:
     with pytest.raises(
-        NonIsomorphicGraphs, match="Graphs are not isomorphic."
-    ), pytest.warns(UserWarning, match="No atomic number information stored on nodes."):
+        NonIsomorphicGraphs, match=gc.error_non_isomorphic_graphs
+    ), pytest.warns(UserWarning, match=gc.warn_no_atomic_properties):
         graph.match_graphs(G1, G2)
 
 
@@ -143,14 +143,48 @@ def test_build_graph_node_features(property) -> None:
     assert graph.num_edges(G) == 3
 
 
+@pytest.mark.skipif(
+    spyrmsd.get_backend() != "graph_tool",
+    reason="NetworkX supports all Python objects as node properties.",
+)
 def test_build_graph_node_features_unsupported() -> None:
-    pytest.importorskip(
-        "graph_tool", reason="NetworkX supports all Python objects as node properties."
-    )
-
     A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
 
     property = [True, False, True]
 
     with pytest.raises(ValueError, match="Unsupported property type:"):
         _ = graph.graph_from_adjacency_matrix(A, property)
+
+
+@pytest.mark.skipif(
+    # Run test if all supported backends are installed
+    not set(spyrmsd.graph._supported_backends) <= set(spyrmsd.available_backends),
+    reason="Not all of the required backends are installed",
+)
+def test_set_backend() -> None:
+    import graph_tool as gt
+    import networkx as nx
+    import rustworkx as rx
+
+    A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
+
+    spyrmsd.set_backend("networkx")
+    assert spyrmsd.get_backend() == "networkx"
+
+    Gnx = graph.graph_from_adjacency_matrix(A)
+    assert isinstance(Gnx, nx.Graph)
+
+    spyrmsd.set_backend("graph-tool")
+    assert spyrmsd.get_backend() == "graph_tool"
+
+    Ggt = graph.graph_from_adjacency_matrix(A)
+    assert isinstance(Ggt, gt.Graph)
+
+    spyrmsd.set_backend("rustworkx")
+    assert spyrmsd.get_backend() == "rustworkx"
+
+    Grx = graph.graph_from_adjacency_matrix(A)
+    assert isinstance(Grx, rx.PyGraph)
+
+    with pytest.raises(ValueError, match="backend is not recognized or supported"):
+        spyrmsd.set_backend("unknown")

@@ -19,7 +19,6 @@ def systems():
     return systems
 
 
-@pytest.mark.benchmark
 @pytest.fixture(scope="module", params=systems())
 def molecules(request):
     system = request.param

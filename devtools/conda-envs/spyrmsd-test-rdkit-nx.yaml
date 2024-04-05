@@ -5,6 +5,7 @@ channels:
 dependencies:
   # Base
   - python
+  - setuptools
 
   # Maths
   - numpy
