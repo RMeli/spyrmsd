@@ -8,7 +8,7 @@ authors:
   given-names: "Jochem"
   orcid: "https://orcid.org/0000-0002-9970-4950"
 title: "spyrmsd"
-version: 0.6.0
+version: 0.7.0
 doi: 10.5281/zenodo.3631876
 date-released: 2021-06-21
 url: "https://github.com/RMeli/spyrmsd"

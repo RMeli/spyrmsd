@@ -3,9 +3,9 @@
 
 ------------------------------------------------------------------------------
 
-## Version X.Y.Z
+## Version 0.7.0
 
-Date:            XX/YY/ZZZZ
+Date:            05/04/2024
 Contributors:    @RMeli, @takluyver, @Jnelen
 
 ### Added
