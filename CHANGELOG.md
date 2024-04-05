@@ -28,7 +28,7 @@ Contributors:    @RMeli, @takluyver, @Jnelen
 ### Changed
 
 * Molecular graphs cache to cache by backend [PR  #107 | @Jnelen]
-* Python build system to use flit_core directly [PR #103 | @takluyver]
+* Python build system to use `flit_core` directly [PR #103 | @takluyver]
 * Minimum version of Python to `3.9` (to reduce CI matrix) [PR  #102 | @RMeli]
 
 ### Fixed
