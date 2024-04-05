@@ -19,6 +19,7 @@ from tests import molecules
         (molecules.ethanol, [(1, 6), (6, 2), (8, 1)]),
         (molecules.dialanine, [(1, 12), (6, 6), (7, 2), (8, 3)]),
     ],
+    ids=["benzene", "ethanol", "dialanine"],
 )
 def test_load(mol: molecule.Molecule, atoms: List[Tuple[int, int]]) -> None:
     n = sum([n_atoms for _, n_atoms in atoms])
@@ -133,6 +134,7 @@ def test_molecule_center_of_mass_HF() -> None:
         (molecules.ethanol, 9, 6),
         (molecules.dialanine, 23, 12),
     ],
+    ids=["benzene", "ethanol", "dialanine"],
 )
 def test_molecule_strip(mol: molecule.Molecule, n_atoms: int, stripped: int) -> None:
     m = copy.deepcopy(mol)
@@ -147,6 +149,7 @@ def test_molecule_strip(mol: molecule.Molecule, n_atoms: int, stripped: int) -> 
 @pytest.mark.parametrize(
     "mol, n_bonds",
     [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
+    ids=["benzene", "ethanol", "dialanine"],
 )
 def test_graph_from_adjacency_matrix(mol: molecule.Molecule, n_bonds: int) -> None:
     G = mol.to_graph()
@@ -161,6 +164,7 @@ def test_graph_from_adjacency_matrix(mol: molecule.Molecule, n_bonds: int) -> No
 @pytest.mark.parametrize(
     "mol, n_bonds",
     [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
+    ids=["benzene", "ethanol", "dialanine"],
 )
 def test_graph_from_atomic_coordinates_perception(
     mol: molecule.Molecule, n_bonds: int
@@ -184,6 +188,7 @@ def test_graph_from_atomic_coordinates_perception(
 @pytest.mark.parametrize(
     "adjacency",
     [True, False],
+    ids=["adjacency", "no_adjacency"],
 )
 def test_from_obmol(adjacency):
     pytest.importorskip("openbabel")
@@ -213,6 +218,7 @@ def test_from_obmol(adjacency):
 @pytest.mark.parametrize(
     "adjacency",
     [True, False],
+    ids=["adjacency", "no_adjacency"],
 )
 def test_from_rdmol(adjacency):
     pytest.importorskip("rdkit")
@@ -245,7 +251,9 @@ def test_from_rdmol(adjacency):
     reason="Not all of the required backends are installed",
 )
 @pytest.mark.parametrize(
-    "mol", [(molecules.benzene), (molecules.ethanol), (molecules.dialanine)]
+    "mol",
+    [(molecules.benzene), (molecules.ethanol), (molecules.dialanine)],
+    ids=["benzene", "ethanol", "dialanine"],
 )
 def test_molecule_graph_cache(mol) -> None:
     import graph_tool as gt

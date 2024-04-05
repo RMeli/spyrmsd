@@ -8,7 +8,9 @@ import requests
 from spyrmsd import io, qcp, rmsd
 
 
-@pytest.fixture(autouse=True, params=[True, False])
+@pytest.fixture(
+    autouse=True, params=[True, False], ids=["lamnda_max_fast", "lambda_max_fallback"]
+)
 def lambda_max_failure(monkeypatch, request):
     """
     Monkey patch fixture for :code:`lambda_max` function to simulate convergence
@@ -95,7 +97,7 @@ def test_dowload(download, path):
 
 
 @pytest.mark.large
-@pytest.mark.parametrize("minimize", [True, False])
+@pytest.mark.parametrize("minimize", [True, False], ids=["minimize", "no_minimize"])
 def test_rmsd(idx, download, path, minimize):
     id = download[idx]
 
