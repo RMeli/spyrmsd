@@ -25,6 +25,7 @@ def test_molformat(extin: str, extout: str) -> None:
 @pytest.mark.parametrize(
     "deg, rad",
     [(0, 0), (90, np.pi / 2), (180, np.pi), (270, 3 * np.pi / 2), (360, 2 * np.pi)],
+    ids=["0", "90", "180", "270", "360"],
 )
 def test_deg_to_rad(deg: float, rad: float) -> None:
     assert utils.deg_to_rad(deg) == pytest.approx(rad)

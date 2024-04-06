@@ -31,6 +31,7 @@ def test_adjacency_matrix_from_atomic_coordinates_distance() -> None:
 @pytest.mark.parametrize(
     "mol, n_bonds",
     [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
+    ids=["benzene", "ethanol", "dialanine"],
 )
 def test_adjacency_matrix_from_atomic_coordinates(
     mol: molecule.Molecule, n_bonds: int

@@ -8,7 +8,9 @@ from spyrmsd import molecule, qcp, rmsd
 from tests import molecules
 
 
-@pytest.fixture(autouse=True, params=[True, False])
+@pytest.fixture(
+    autouse=True, params=[True, False], ids=["lambda_max_fast", "lambda_max_fallback"]
+)
 def lambda_max_failure(monkeypatch, request):
     """
     Monkey patch fixture for :code:`lambda_max` function to simulate convergence
@@ -37,7 +39,9 @@ def lambda_max_failure(monkeypatch, request):
         monkeypatch.setattr(qcp, "lambda_max", lambda_max_failure)
 
 
-@pytest.mark.parametrize("t, RMSD", [(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)])
+@pytest.mark.parametrize(
+    "t, RMSD", [(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)], ids=["t0", "t1", "t2"]
+)
 def test_rmsd_benzene(t: float, RMSD: float) -> None:
     mol1 = copy.deepcopy(molecules.benzene)
     mol2 = copy.deepcopy(molecules.benzene)
@@ -52,7 +56,9 @@ def test_rmsd_benzene(t: float, RMSD: float) -> None:
 # Results obtained with PyTraj
 #   pytraj.analysis.rmsd.rmsd(i, ref=j, nofit=True)
 @pytest.mark.parametrize(
-    "i, j, result", [(1, 2, 2.60065218), (1, 3, 9.94411523), (2, 3, 9.4091711)]
+    "i, j, result",
+    [(1, 2, 2.60065218), (1, 3, 9.94411523), (2, 3, 9.4091711)],
+    ids=["1-2", "1-3", "2-3"],
 )
 def test_rmsd_2viz(i: int, j: int, result: float) -> None:
     moli = copy.deepcopy(molecules.docking_2viz[i])
@@ -66,7 +72,9 @@ def test_rmsd_2viz(i: int, j: int, result: float) -> None:
 # Results obtained with PyTraj
 #   pytraj.analysis.rmsd.rmsd(i, mask="!@H=", ref=j, ref_mask="!@H=", nofit=True)
 @pytest.mark.parametrize(
-    "i, j, result", [(1, 2, 2.65327362), (1, 3, 10.11099065), (2, 3, 9.57099612)]
+    "i, j, result",
+    [(1, 2, 2.65327362), (1, 3, 10.11099065), (2, 3, 9.57099612)],
+    ids=["1-2", "1-3", "2-3"],
 )
 def test_rmsd_2viz_stripped(i: int, j: int, result: float) -> None:
     moli = copy.deepcopy(molecules.docking_2viz[i])
@@ -139,7 +147,9 @@ def test_rmsd_minimize(mol: molecule.Molecule) -> None:
 # Results obtained with PyTraj
 #   pytraj.analysis.rmsd.rmsd(i, ref=j)
 @pytest.mark.parametrize(
-    "i, j, result", [(1, 2, 1.95277757), (1, 3, 3.11801105), (2, 3, 2.98609758)]
+    "i, j, result",
+    [(1, 2, 1.95277757), (1, 3, 3.11801105), (2, 3, 2.98609758)],
+    ids=["1-2", "1-3", "2-3"],
 )
 def test_rmsd_qcp_2viz(i: int, j: int, result: float) -> None:
     moli = copy.deepcopy(molecules.docking_2viz[i])
@@ -157,7 +167,9 @@ def test_rmsd_qcp_2viz(i: int, j: int, result: float) -> None:
 # Results obtained with PyTraj
 #   pytraj.analysis.rmsd.rmsd(i, "!@H=", ref=j, ref_mask="!@H=")
 @pytest.mark.parametrize(
-    "i, j, result", [(1, 2, 1.98171656), (1, 3, 3.01799306), (2, 3, 2.82917355)]
+    "i, j, result",
+    [(1, 2, 1.98171656), (1, 3, 3.01799306), (2, 3, 2.82917355)],
+    ids=["1-2", "1-3", "2-3"],
 )
 def test_rmsd_qcp_2viz_stripped(i: int, j: int, result: float) -> None:
     moli = copy.deepcopy(molecules.docking_2viz[i])
@@ -194,6 +206,7 @@ def test_rmsd_qcp_2viz_stripped(i: int, j: int, result: float) -> None:
         (4, 9.772939589989000, 2.1234944939308220),
         (5, 8.901837608843241, 2.4894805175766606),
     ],
+    ids=["1", "2", "3", "4", "5"],
 )
 def test_rmsd_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
     mol0 = copy.deepcopy(molecules.trp[0])
@@ -213,7 +226,9 @@ def test_rmsd_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
 
 
 @pytest.mark.parametrize(
-    "angle, tol", [(60, 1e-4), (120, 1e-4), (180, 1e-4), (240, 1e-4), (300, 1e-4)]
+    "angle, tol",
+    [(60, 1e-4), (120, 1e-4), (180, 1e-4), (240, 1e-4), (300, 1e-4)],
+    ids=["60", "120", "180", "240", "300"],
 )
 def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
     mol1 = copy.deepcopy(molecules.benzene)
@@ -239,9 +254,13 @@ def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
     ) == pytest.approx(0, abs=tol)
 
 
-@pytest.mark.parametrize("d", [-0.5, 0.0, 0.5, 1.0, 1.5])
 @pytest.mark.parametrize(
-    "angle, tol", [(60, 1e-4), (120, 1e-4), (180, 1e-4), (240, 1e-4), (300, 1e-4)]
+    "d", [-0.5, 0.0, 0.5, 1.0, 1.5], ids=["t1", "t2", "t3", "t4", "t5"]
+)
+@pytest.mark.parametrize(
+    "angle, tol",
+    [(60, 1e-4), (120, 1e-4), (180, 1e-4), (240, 1e-4), (300, 1e-4)],
+    ids=["60", "120", "180", "240", "300"],
 )
 def test_rmsd_hungarian_benzene_shifted_rotated(
     d: float, angle: float, tol: float
@@ -443,6 +462,28 @@ def test_symmrmsd_atomicnums_matching_pyridine_stripped() -> None:
         (9, 0.965387, True),
         (10, 1.37842, True),
     ],
+    ids=[
+        "1-no_minimize",
+        "2-no_minimize",
+        "3-no_minimize",
+        "4-no_minimize",
+        "5-no_minimize",
+        "6-no_minimize",
+        "7-no_minimize",
+        "8-no_minimize",
+        "9-no_minimize",
+        "10-no_minimize",
+        "1-minimize",
+        "2-minimize",
+        "3-minimize",
+        "4-minimize",
+        "5-minimize",
+        "6-minimize",
+        "7-minimize",
+        "8-minimize",
+        "9-minimize",
+        "10-minimize",
+    ],
 )
 def test_rmsd_symmrmsd(index: int, RMSD: float, minimize: bool) -> None:
     molc = copy.deepcopy(molecules.docking_1cbr[0])
@@ -508,6 +549,7 @@ def test_rmsd_symmrmsd_disconnected_node() -> None:
             ],
         ),
     ],
+    ids=["no_minimize", "minimize"],
 )
 def test_multi_spyrmsd(minimize: bool, referenceRMSDs: List[float]) -> None:
     molc = copy.deepcopy(molecules.docking_1cbr[0])
@@ -567,6 +609,7 @@ def test_multi_spyrmsd(minimize: bool, referenceRMSDs: List[float]) -> None:
             ],
         ),
     ],
+    ids=["no_minimize", "minimize"],
 )
 def test_symmrmsd_cache(minimize: bool, referenceRMSDs: List[float]) -> None:
     molc = copy.deepcopy(molecules.docking_1cbr[0])
@@ -709,7 +752,9 @@ def test_issue_35_2():
 
 
 @pytest.mark.parametrize(
-    "i, j, result", [(1, 2, 1.95277757), (1, 3, 3.11801105), (2, 3, 2.98609758)]
+    "i, j, result",
+    [(1, 2, 1.95277757), (1, 3, 3.11801105), (2, 3, 2.98609758)],
+    ids=["1-2", "1-3", "2-3"],
 )
 def test_rmsd_atol(i: int, j: int, result: float):
     """
@@ -744,7 +789,9 @@ def test_rmsd_atol(i: int, j: int, result: float):
 
 
 # Results obtained with OpenBabel
-@pytest.mark.parametrize("i, reference", [(1, 0.476858), (2, 1.68089), (3, 1.50267)])
+@pytest.mark.parametrize(
+    "i, reference", [(1, 0.476858), (2, 1.68089), (3, 1.50267)], ids=["1", "2", "3"]
+)
 def test_symmrmsd_atol(i: bool, reference: float) -> None:
     moli = copy.deepcopy(molecules.docking_1cbr[0])
     molj = copy.deepcopy(molecules.docking_1cbr[i])
@@ -852,6 +899,7 @@ def test_symmrmsd_atol_multi() -> None:
             ],
         ),
     ],
+    ids=["no_minimize", "minimize"],
 )
 def test_rmsdwrapper_nosymm_protein(minimize: bool, referenceRMSDs: List[float]):
     mol0 = copy.deepcopy(molecules.trp[0])
@@ -898,6 +946,7 @@ def test_rmsdwrapper_nosymm_protein(minimize: bool, referenceRMSDs: List[float])
             ],
         ),
     ],
+    ids=["minimize", "no_minimize"],
 )
 def test_rmsdwrapper_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> None:
     molref = copy.deepcopy(molecules.docking_1cbr[0])
@@ -913,6 +962,7 @@ def test_rmsdwrapper_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> 
     # Reference results obtained with OpenBabel
     "minimize, referenceRMSD",
     [(True, 0.476858), (False, 0.592256)],
+    ids=["minimize", "no_minimize"],
 )
 def test_rmsdwrapper_single_molecule(minimize: bool, referenceRMSD: float) -> None:
     molref = copy.deepcopy(molecules.docking_1cbr[0])

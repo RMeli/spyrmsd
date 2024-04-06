@@ -5,8 +5,12 @@
 
 ## Version X.Y.Z
 
-Date:            XX/YY/ZZZ
+Date:            XX/YY/ZZZZ
 Contributors:    @RMeli
+
+### Improved
+
+* Test IDs [PR #117 | @RMeli]
 
 ## Version 0.7.0
 
@@ -15,7 +19,7 @@ Contributors:    @RMeli, @takluyver, @Jnelen
 
 ### Added
 
-* Support for `rustworkx` graph library [PR 111 | @RMeli]
+* Support for `rustworkx` graph library [PR #111 | @RMeli]
 * Functionality to manually select the backend from CLI [PR #108 | @RMeli]
 * Functionality to manually select the backend [PR  #107 | @Jnelen]
 * Python `3.12` to CI [PR  #102 | @RMeli]
@@ -24,7 +28,7 @@ Contributors:    @RMeli, @takluyver, @Jnelen
 ### Changed
 
 * Molecular graphs cache to cache by backend [PR  #107 | @Jnelen]
-* Python build system to use flit_core directly [PR #103 | @takluyver]
+* Python build system to use `flit_core` directly [PR #103 | @takluyver]
 * Minimum version of Python to `3.9` (to reduce CI matrix) [PR  #102 | @RMeli]
 
 ### Fixed

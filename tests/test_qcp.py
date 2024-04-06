@@ -55,6 +55,7 @@ def test_K_mtx(mol: molecule.Molecule) -> None:
         ((-1, -1, -5, 0, 4), -1),  # f(x) = x^4 - 5 * x^2 + 4; x_0 = -1/2
         ((-3, -3, -5, 0, 4), -2),  # f(x) = x^4 - 5 * x^2 + 4; x_0 = -3
     ],
+    ids=["f1", "f2", "f3", "f4", "f5", "f6"],
 )
 def test_lambda_max(
     input: Tuple[float, float, float, float, float], result: float
