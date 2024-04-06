@@ -5,6 +5,8 @@ Soource:
     https://docs.pytest.org/en/latest/example/simple.html
 """
 
+import os
+
 import numpy as np
 import pytest
 
@@ -76,3 +78,43 @@ def pytest_generate_tests(metafunc):
 @pytest.fixture(autouse=True, scope="session", params=spyrmsd.available_backends)
 def set_backend(request):
     spyrmsd.set_backend(request.param)
+
+
+@pytest.fixture(scope="session")
+def molpath():
+    fdir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(fdir, "data/molecules/")
+
+
+@pytest.fixture(
+    params=[
+        ("benzene", 12, 12),
+        ("ethanol", 9, 8),
+        ("pyridine", 11, 11),
+        ("dialanine", 23, 22),
+    ]
+)
+def mol(request, molpath):
+    from collections import namedtuple
+
+    from spyrmsd import io
+
+    name, n_atoms, n_bonds = request.param
+
+    mol = io.loadmol(f"{molpath}/{name}.sdf")
+
+    Mol = namedtuple("Mol", ["mol", "name", "n_atoms", "n_bonds"])
+    return Mol(mol, name, n_atoms, n_bonds)
+
+
+@pytest.fixture
+def rawmol(mol, molpath):
+    from collections import namedtuple
+
+    from spyrmsd import io
+
+    Mol = namedtuple("Mol", ["mol", "rawmol", "name", "n_atoms", "n_bonds"])
+
+    rawmol = io.load(f"{molpath}/{mol.name}.sdf")
+
+    return Mol(mol.mol, rawmol, mol.name, mol.n_atoms, mol.n_bonds)

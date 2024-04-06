@@ -2,10 +2,9 @@ import numpy as np
 import pytest
 
 import spyrmsd
-from spyrmsd import constants, graph, io, molecule
+from spyrmsd import constants, graph, io
 from spyrmsd.exceptions import NonIsomorphicGraphs
 from spyrmsd.graphs import _common as gc
-from tests import molecules
 
 
 def test_adjacency_matrix_from_atomic_coordinates_distance() -> None:
@@ -28,43 +27,42 @@ def test_adjacency_matrix_from_atomic_coordinates_distance() -> None:
     assert graph.num_edges(G) == 1
 
 
-@pytest.mark.parametrize(
-    "mol, n_bonds",
-    [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
-    ids=["benzene", "ethanol", "dialanine"],
-)
-def test_adjacency_matrix_from_atomic_coordinates(
-    mol: molecule.Molecule, n_bonds: int
-) -> None:
-    A = graph.adjacency_matrix_from_atomic_coordinates(mol.atomicnums, mol.coordinates)
+def test_adjacency_matrix_from_atomic_coordinates(mol) -> None:
+    A = graph.adjacency_matrix_from_atomic_coordinates(
+        mol.mol.atomicnums, mol.mol.coordinates
+    )
 
     G = graph.graph_from_adjacency_matrix(A)
 
-    assert graph.num_vertices(G) == len(mol)
-    assert graph.num_edges(G) == n_bonds
+    assert graph.num_vertices(G) == mol.n_atoms
+    assert graph.num_edges(G) == mol.n_bonds
 
 
-@pytest.mark.parametrize("mol", molecules.allobmolecules)
-def test_adjacency_matrix_from_mol(mol) -> None:
-    natoms = io.numatoms(mol)
-    nbonds = io.numbonds(mol)
+def test_adjacency_matrix_from_mol(rawmol) -> None:
+    natoms = io.numatoms(rawmol.rawmol)
+    nbonds = io.numbonds(rawmol.rawmol)
 
-    A = io.adjacency_matrix(mol)
+    assert natoms == rawmol.n_atoms
+    assert nbonds == rawmol.n_bonds
+
+    A = io.adjacency_matrix(rawmol.rawmol)
 
     assert A.shape == (natoms, natoms)
     assert np.all(A == A.T)
     assert np.sum(A) == nbonds * 2
 
-    for i, j in io.bonds(mol):
+    for i, j in io.bonds(rawmol.rawmol):
         assert A[i, j] == 1
 
 
-@pytest.mark.parametrize("mol", molecules.allobmolecules)
-def test_graph_from_adjacency_matrix(mol) -> None:
-    natoms = io.numatoms(mol)
-    nbonds = io.numbonds(mol)
+def test_graph_from_adjacency_matrix(rawmol) -> None:
+    natoms = io.numatoms(rawmol.rawmol)
+    nbonds = io.numbonds(rawmol.rawmol)
 
-    A = io.adjacency_matrix(mol)
+    assert natoms == rawmol.n_atoms
+    assert nbonds == rawmol.n_bonds
+
+    A = io.adjacency_matrix(rawmol.rawmol)
 
     assert A.shape == (natoms, natoms)
     assert np.all(A == A.T)
@@ -76,14 +74,13 @@ def test_graph_from_adjacency_matrix(mol) -> None:
     assert graph.num_edges(G) == nbonds
 
 
-@pytest.mark.parametrize(
-    "rawmol, mol", zip(molecules.allobmolecules, molecules.allmolecules)
-)
-def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
-    natoms = io.numatoms(rawmol)
-    nbonds = io.numbonds(rawmol)
+def test_graph_from_adjacency_matrix_atomicnums(rawmol) -> None:
+    mol = rawmol.mol
 
-    A = io.adjacency_matrix(rawmol)
+    natoms = io.numatoms(rawmol.rawmol)
+    nbonds = io.numbonds(rawmol.rawmol)
+
+    A = io.adjacency_matrix(rawmol.rawmol)
 
     assert len(mol) == natoms
     assert mol.adjacency_matrix.shape == (natoms, natoms)
