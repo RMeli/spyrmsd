@@ -6,11 +6,15 @@ Soource:
 """
 
 import os
+from collections import namedtuple
 
 import numpy as np
 import pytest
 
 import spyrmsd
+from spyrmsd import io
+
+Mol = namedtuple("Mol", ["mol", "name", "n_atoms", "n_bonds", "n_h"])
 
 
 def pytest_addoption(parser):
@@ -86,35 +90,40 @@ def molpath():
     return os.path.join(fdir, "data/molecules/")
 
 
+@pytest.fixture
+def benzene(molpath):
+    mol = io.loadmol(f"{molpath}/benzene.sdf")
+    return Mol(mol, "benzene", 12, 12, 6)
+
+
+@pytest.fixture
+def pyridine(molpath):
+    mol = io.loadmol(f"{molpath}/pyridine.sdf")
+    return Mol(mol, "pyridine", 11, 11, 5)
+
+
 @pytest.fixture(
     params=[
-        ("benzene", 12, 12),
-        ("ethanol", 9, 8),
-        ("pyridine", 11, 11),
-        ("dialanine", 23, 22),
+        ("benzene", 12, 12, 6),
+        ("ethanol", 9, 8, 6),
+        ("pyridine", 11, 11, 5),
+        ("dialanine", 23, 22, 12),
     ]
 )
 def mol(request, molpath):
-    from collections import namedtuple
-
-    from spyrmsd import io
-
-    name, n_atoms, n_bonds = request.param
+    name, n_atoms, n_bonds, n_h = request.param
 
     mol = io.loadmol(f"{molpath}/{name}.sdf")
 
-    Mol = namedtuple("Mol", ["mol", "name", "n_atoms", "n_bonds"])
-    return Mol(mol, name, n_atoms, n_bonds)
+    return Mol(mol, name, n_atoms, n_bonds, n_h)
 
 
 @pytest.fixture
 def rawmol(mol, molpath):
-    from collections import namedtuple
-
-    from spyrmsd import io
-
-    Mol = namedtuple("Mol", ["mol", "rawmol", "name", "n_atoms", "n_bonds"])
+    RawMol = namedtuple(
+        "RawMol", ["mol", "rawmol", "name", "n_atoms", "n_bonds", "n_h"]
+    )
 
     rawmol = io.load(f"{molpath}/{mol.name}.sdf")
 
-    return Mol(mol.mol, rawmol, mol.name, mol.n_atoms, mol.n_bonds)
+    return RawMol(mol.mol, rawmol, mol.name, mol.n_atoms, mol.n_bonds, mol.n_h)

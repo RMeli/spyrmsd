@@ -5,14 +5,12 @@ from typing import Tuple
 import numpy as np
 import pytest
 
-from spyrmsd import molecule, qcp
-from tests import molecules
+from spyrmsd import qcp
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_M_mtx(mol: molecule.Molecule) -> None:
-    mol1 = copy.deepcopy(mol)
-    mol2 = copy.deepcopy(mol)
+def test_M_mtx(mol) -> None:
+    mol1 = copy.deepcopy(mol.mol)
+    mol2 = copy.deepcopy(mol.mol)
 
     # Build rotated coordinate set
     mol2.rotate(10, np.random.rand(3))
@@ -29,10 +27,9 @@ def test_M_mtx(mol: molecule.Molecule) -> None:
         assert M[i, j] == pytest.approx(S(i, j))
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_K_mtx(mol: molecule.Molecule) -> None:
-    mol1 = copy.deepcopy(mol)
-    mol2 = copy.deepcopy(mol)
+def test_K_mtx(mol) -> None:
+    mol1 = copy.deepcopy(mol.mol)
+    mol2 = copy.deepcopy(mol.mol)
 
     # Build rotated coordinate set
     mol2.rotate(10, np.random.rand(3))
@@ -63,10 +60,9 @@ def test_lambda_max(
     assert qcp.lambda_max(*input) == pytest.approx(result)
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_lambda_max_eig(mol: molecule.Molecule) -> None:
-    mol1 = copy.deepcopy(mol)
-    mol2 = copy.deepcopy(mol)
+def test_lambda_max_eig(mol) -> None:
+    mol1 = copy.deepcopy(mol.mol)
+    mol2 = copy.deepcopy(mol.mol)
 
     # Build rotated coordinate set
     mol2.rotate(10, np.random.rand(3))

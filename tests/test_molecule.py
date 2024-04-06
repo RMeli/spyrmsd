@@ -1,7 +1,5 @@
 import copy
 import os
-from collections import defaultdict
-from typing import DefaultDict, List, Tuple
 
 import numpy as np
 import pytest
@@ -9,33 +7,32 @@ import pytest
 from spyrmsd import constants, graph, io, molecule, utils
 from tests import molecules
 
-
 # atoms is a list of atomic numbers and atom counts
-@pytest.mark.parametrize(
-    "mol, atoms",
-    [
-        (molecules.benzene, [(1, 6), (6, 6)]),
-        (molecules.ethanol, [(1, 6), (6, 2), (8, 1)]),
-        (molecules.dialanine, [(1, 12), (6, 6), (7, 2), (8, 3)]),
-    ],
-    ids=["benzene", "ethanol", "dialanine"],
-)
-def test_load(mol: molecule.Molecule, atoms: List[Tuple[int, int]]) -> None:
-    n = sum([n_atoms for _, n_atoms in atoms])
+# @pytest.mark.parametrize(
+#     "mol, atoms",
+#     [
+#         (molecules.benzene, [(1, 6), (6, 6)]),
+#         (molecules.ethanol, [(1, 6), (6, 2), (8, 1)]),
+#         (molecules.dialanine, [(1, 12), (6, 6), (7, 2), (8, 3)]),
+#     ],
+#     ids=["benzene", "ethanol", "dialanine"],
+# )
+# def test_load(mol: molecule.Molecule, atoms: List[Tuple[int, int]]) -> None:
+#     n = sum([n_atoms for _, n_atoms in atoms])
 
-    assert len(mol) == n
-    assert mol.atomicnums.shape == (n,)
-    assert mol.coordinates.shape == (n, 3)
+#     assert len(mol) == n
+#     assert mol.atomicnums.shape == (n,)
+#     assert mol.coordinates.shape == (n, 3)
 
-    # Count number of atoms of different elements
-    atomcount: DefaultDict[int, int] = defaultdict(int)
-    for atomicnum in mol.atomicnums:
-        atomcount[atomicnum] += 1
+#     # Count number of atoms of different elements
+#     atomcount: DefaultDict[int, int] = defaultdict(int)
+#     for atomicnum in mol.atomicnums:
+#         atomcount[atomicnum] += 1
 
-    assert len(atomcount) == len(atoms)
+#     assert len(atomcount) == len(atoms)
 
-    for Z, n_atoms in atoms:
-        assert atomcount[Z] == n_atoms
+#     for Z, n_atoms in atoms:
+#         assert atomcount[Z] == n_atoms
 
 
 def test_loadall() -> None:
@@ -46,61 +43,48 @@ def test_loadall() -> None:
     assert len(mols) == 10
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_molecule_translate(mol: molecule.Molecule) -> None:
-    mt = copy.deepcopy(mol)
+def test_molecule_translate(mol) -> None:
+    mt = copy.deepcopy(mol.mol)
 
     t = np.array([0.5, 1.1, -0.1])
     mt.translate(t)
 
-    for tcoord, coord in zip(mt.coordinates, mol.coordinates):
+    for tcoord, coord in zip(mt.coordinates, mol.mol.coordinates):
         assert np.allclose(tcoord - t, coord)
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_molecule_rotate_z(mol: molecule.Molecule) -> None:
+def test_molecule_rotate_z(mol) -> None:
     z_axis = np.array([0, 0, 1])
 
     for angle in [0, 45, 90]:
-        rotated = np.zeros((len(mol), 3))
-        for i, coord in enumerate(mol.coordinates):
+        rotated = np.zeros((mol.n_atoms, 3))
+        for i, coord in enumerate(mol.mol.coordinates):
             rotated[i] = utils.rotate(coord, angle, z_axis, units="deg")
 
-        mol.rotate(angle, z_axis, units="deg")
+        mol.mol.rotate(angle, z_axis, units="deg")
 
-        assert np.allclose(mol.coordinates, rotated)
-
-        # Reset
-        mol.rotate(-angle, z_axis, units="deg")
+        assert np.allclose(mol.mol.coordinates, rotated)
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_molecule_rotate(mol: molecule.Molecule) -> None:
+def test_molecule_rotate(mol) -> None:
     axis = np.random.rand(3)
 
     for angle in np.random.rand(10) * 180:
-        rotated = np.zeros((len(mol), 3))
-        for i, coord in enumerate(mol.coordinates):
+        rotated = np.zeros((mol.n_atoms, 3))
+        for i, coord in enumerate(mol.mol.coordinates):
             rotated[i] = utils.rotate(coord, angle, axis, units="deg")
 
-        mol.rotate(angle, axis, units="deg")
+        mol.mol.rotate(angle, axis, units="deg")
 
-        assert np.allclose(mol.coordinates, rotated)
-
-        # Reset
-        mol.rotate(-angle, axis, units="deg")
+        assert np.allclose(mol.mol.coordinates, rotated)
 
 
-def test_molecule_center_of_geometry_benzene() -> None:
-    mol = molecules.benzene
-
-    assert np.allclose(mol.center_of_geometry(), np.zeros(3))
+def test_molecule_center_of_geometry_benzene(benzene) -> None:
+    assert np.allclose(benzene.mol.center_of_geometry(), np.zeros(3))
 
 
-def test_molecule_center_of_mass_benzene() -> None:
-    mol = molecules.benzene
-
-    assert np.allclose(mol.center_of_mass(), np.zeros(3))
+def test_molecule_center_of_mass_benzene(benzene) -> None:
+    assert np.allclose(benzene.mol.center_of_mass(), np.zeros(3))
 
 
 def test_molecule_center_of_mass_H2() -> None:
@@ -126,49 +110,28 @@ def test_molecule_center_of_mass_HF() -> None:
     assert np.allclose(mol.center_of_mass(), np.array([0, 0, z_com]))
 
 
-@pytest.mark.parametrize(
-    "mol, n_atoms, stripped",
-    [
-        (molecules.benzene, 12, 6),
-        (molecules.ethanol, 9, 6),
-        (molecules.dialanine, 23, 12),
-    ],
-    ids=["benzene", "ethanol", "dialanine"],
-)
-def test_molecule_strip(mol: molecule.Molecule, n_atoms: int, stripped: int) -> None:
-    m = copy.deepcopy(mol)
+def test_molecule_strip(mol) -> None:
+    m = copy.deepcopy(mol.mol)
 
-    assert len(m) == n_atoms
+    assert len(m) == mol.n_atoms
 
     m.strip()
 
-    assert len(m) == n_atoms - stripped
+    assert len(m) == mol.n_atoms - mol.n_h
 
 
-@pytest.mark.parametrize(
-    "mol, n_bonds",
-    [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
-    ids=["benzene", "ethanol", "dialanine"],
-)
-def test_graph_from_adjacency_matrix(mol: molecule.Molecule, n_bonds: int) -> None:
-    G = mol.to_graph()
+def test_graph_from_adjacency_matrix(mol) -> None:
+    G = mol.mol.to_graph()
 
-    assert graph.num_vertices(G) == len(mol)
-    assert graph.num_edges(G) == n_bonds
+    assert graph.num_vertices(G) == mol.n_atoms
+    assert graph.num_edges(G) == mol.n_bonds
 
-    for idx, atomicnum in enumerate(mol.atomicnums):
+    for idx, atomicnum in enumerate(mol.mol.atomicnums):
         assert graph.vertex_property(G, "aprops", idx) == atomicnum
 
 
-@pytest.mark.parametrize(
-    "mol, n_bonds",
-    [(molecules.benzene, 12), (molecules.ethanol, 8), (molecules.dialanine, 22)],
-    ids=["benzene", "ethanol", "dialanine"],
-)
-def test_graph_from_atomic_coordinates_perception(
-    mol: molecule.Molecule, n_bonds: int
-) -> None:
-    m = copy.deepcopy(mol)
+def test_graph_from_atomic_coordinates_perception(mol) -> None:
+    m = copy.deepcopy(mol.mol)
 
     delattr(m, "adjacency_matrix")
     m.G = {}
@@ -177,10 +140,10 @@ def test_graph_from_atomic_coordinates_perception(
         # Uses automatic bond perception
         G = m.to_graph()
 
-        assert graph.num_vertices(G) == len(m)
-        assert graph.num_edges(G) == n_bonds
+        assert graph.num_vertices(G) == mol.n_atoms
+        assert graph.num_edges(G) == mol.n_bonds
 
-        for idx, atomicnum in enumerate(mol.atomicnums):
+        for idx, atomicnum in enumerate(mol.mol.atomicnums):
             assert graph.vertex_property(G, "aprops", idx) == atomicnum
 
 

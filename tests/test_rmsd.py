@@ -4,7 +4,7 @@ from typing import List
 import numpy as np
 import pytest
 
-from spyrmsd import molecule, qcp, rmsd
+from spyrmsd import qcp, rmsd
 from tests import molecules
 
 
@@ -42,9 +42,9 @@ def lambda_max_failure(monkeypatch, request):
 @pytest.mark.parametrize(
     "t, RMSD", [(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)], ids=["t0", "t1", "t2"]
 )
-def test_rmsd_benzene(t: float, RMSD: float) -> None:
-    mol1 = copy.deepcopy(molecules.benzene)
-    mol2 = copy.deepcopy(molecules.benzene)
+def test_rmsd_benzene(benzene, t: float, RMSD: float) -> None:
+    mol1 = copy.deepcopy(benzene.mol)
+    mol2 = copy.deepcopy(benzene.mol)
 
     mol2.translate(np.array([0, 0, t]))
 
@@ -88,9 +88,9 @@ def test_rmsd_2viz_stripped(i: int, j: int, result: float) -> None:
     ) == pytest.approx(result)
 
 
-def test_rmsd_centred_benzene() -> None:
-    mol1 = copy.deepcopy(molecules.benzene)
-    mol2 = copy.deepcopy(molecules.benzene)
+def test_rmsd_centred_benzene(benzene) -> None:
+    mol1 = copy.deepcopy(benzene.mol)
+    mol2 = copy.deepcopy(benzene.mol)
 
     mol2.translate(np.array([0, 0, 1]))
 
@@ -107,10 +107,9 @@ def test_rmsd_centred_benzene() -> None:
     ) == pytest.approx(0)
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_rmsd_minimize(mol: molecule.Molecule) -> None:
-    mol1 = copy.deepcopy(mol)
-    mol2 = copy.deepcopy(mol)
+def test_rmsd_minimize(mol) -> None:
+    mol1 = copy.deepcopy(mol.mol)
+    mol2 = copy.deepcopy(mol.mol)
 
     assert rmsd.rmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
@@ -230,9 +229,9 @@ def test_rmsd_qcp_protein(i: int, rmsd_dummy: float, rmsd_min: float):
     [(60, 1e-4), (120, 1e-4), (180, 1e-4), (240, 1e-4), (300, 1e-4)],
     ids=["60", "120", "180", "240", "300"],
 )
-def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
-    mol1 = copy.deepcopy(molecules.benzene)
-    mol2 = copy.deepcopy(molecules.benzene)
+def test_rmsd_hungarian_benzene_rotated(benzene, angle: float, tol: float) -> None:
+    mol1 = copy.deepcopy(benzene.mol)
+    mol2 = copy.deepcopy(benzene.mol)
 
     assert rmsd.rmsd(
         mol1.coordinates, mol2.coordinates, mol1.atomicnums, mol2.atomicnums
@@ -263,10 +262,10 @@ def test_rmsd_hungarian_benzene_rotated(angle: float, tol: float) -> None:
     ids=["60", "120", "180", "240", "300"],
 )
 def test_rmsd_hungarian_benzene_shifted_rotated(
-    d: float, angle: float, tol: float
+    benzene, d: float, angle: float, tol: float
 ) -> None:
-    mol1 = copy.deepcopy(molecules.benzene)
-    mol2 = copy.deepcopy(molecules.benzene)
+    mol1 = copy.deepcopy(benzene.mol)
+    mol2 = copy.deepcopy(benzene.mol)
 
     mol2.translate([0, 0, d])
 
@@ -289,10 +288,9 @@ def test_rmsd_hungarian_benzene_shifted_rotated(
     ) == pytest.approx(abs(d), abs=tol)
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_rmsd_hungarian_centred(mol: molecule.Molecule) -> None:
-    mol1 = copy.deepcopy(mol)
-    mol2 = copy.deepcopy(mol)
+def test_rmsd_hungarian_centred(mol) -> None:
+    mol1 = copy.deepcopy(mol.mol)
+    mol2 = copy.deepcopy(mol.mol)
 
     mol2.translate(np.random.rand(3))
 
@@ -310,10 +308,9 @@ def test_rmsd_hungarian_centred(mol: molecule.Molecule) -> None:
     ) == pytest.approx(0)
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_symmrmsd_centred(mol: molecule.Molecule) -> None:
-    mol1 = copy.deepcopy(mol)
-    mol2 = copy.deepcopy(mol)
+def test_symmrmsd_centred(mol) -> None:
+    mol1 = copy.deepcopy(mol.mol)
+    mol2 = copy.deepcopy(mol.mol)
 
     mol2.translate(np.random.rand(3))
 
@@ -341,9 +338,9 @@ def test_symmrmsd_centred(mol: molecule.Molecule) -> None:
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
-def test_symmrmsd_rotated_benzene(angle: float) -> None:
-    mol1 = copy.deepcopy(molecules.benzene)
-    mol2 = copy.deepcopy(molecules.benzene)
+def test_symmrmsd_rotated_benzene(benzene, angle: float) -> None:
+    mol1 = copy.deepcopy(benzene.mol)
+    mol2 = copy.deepcopy(benzene.mol)
 
     mol2.rotate(angle, np.array([0, 0, 1]), units="deg")
 
@@ -375,9 +372,9 @@ def test_symmrmsd_rotated_benzene(angle: float) -> None:
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
-def test_symmrmsd_rotated_benzene_stripped(angle: float) -> None:
-    mol1 = copy.deepcopy(molecules.benzene)
-    mol2 = copy.deepcopy(molecules.benzene)
+def test_symmrmsd_rotated_benzene_stripped(benzene, angle: float) -> None:
+    mol1 = copy.deepcopy(benzene.mol)
+    mol2 = copy.deepcopy(benzene.mol)
 
     mol2.rotate(angle, np.array([0, 0, 1]), units="deg")
 
@@ -411,9 +408,9 @@ def test_symmrmsd_rotated_benzene_stripped(angle: float) -> None:
     ) == pytest.approx(0, abs=1e-4)
 
 
-def test_symmrmsd_atomicnums_matching_pyridine_stripped() -> None:
-    mol1 = copy.deepcopy(molecules.pyridine)
-    mol2 = copy.deepcopy(molecules.pyridine)
+def test_symmrmsd_atomicnums_matching_pyridine_stripped(pyridine) -> None:
+    mol1 = copy.deepcopy(pyridine.mol)
+    mol2 = copy.deepcopy(pyridine.mol)
 
     mol2.rotate(60, np.array([0, 0, 1]), units="deg")
 
