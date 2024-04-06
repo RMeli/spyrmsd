@@ -99,28 +99,44 @@ def test_graph_from_adjacency_matrix_atomicnums(rawmol, mol) -> None:
         assert graph.vertex_property(G, "aprops", idx) == atomicnum
 
 
-@pytest.mark.parametrize(
-    "G1, G2",
-    [
-        *[(graph.lattice(n, n), graph.lattice(n, n)) for n in range(2, 5)],
-        *[(graph.cycle(n), graph.cycle(n)) for n in range(2, 5)],
-    ],
-)
-def test_match_graphs_isomorphic(G1, G2) -> None:
+@pytest.mark.parametrize("n", list(range(2, 5)))
+def test_match_graphs_isomorphic_lattice(n) -> None:
+    G1 = graph.lattice(n, n)
+    G2 = graph.lattice(n, n)
+
     with pytest.warns(UserWarning, match=gc.warn_no_atomic_properties):
         isomorphisms = graph.match_graphs(G1, G2)
 
     assert len(isomorphisms) != 0
 
 
-@pytest.mark.parametrize(
-    "G1, G2",
-    [
-        *[(graph.lattice(n, n), graph.lattice(n + 1, n)) for n in range(2, 5)],
-        *[(graph.cycle(n), graph.cycle(n + 1)) for n in range(1, 5)],
-    ],
-)
-def test_match_graphs_not_isomorphic(G1, G2) -> None:
+@pytest.mark.parametrize("n", list(range(2, 5)))
+def test_match_graphs_isomorphic_cycle(n) -> None:
+    G1 = graph.cycle(n)
+    G2 = graph.cycle(n)
+
+    with pytest.warns(UserWarning, match=gc.warn_no_atomic_properties):
+        isomorphisms = graph.match_graphs(G1, G2)
+
+    assert len(isomorphisms) != 0
+
+
+@pytest.mark.parametrize("n", list(range(2, 5)))
+def test_match_graphs_not_isomorphic_lattice(n) -> None:
+    G1 = graph.lattice(n, n)
+    G2 = graph.lattice(n + 1, n)
+
+    with pytest.raises(
+        NonIsomorphicGraphs, match=gc.error_non_isomorphic_graphs
+    ), pytest.warns(UserWarning, match=gc.warn_no_atomic_properties):
+        graph.match_graphs(G1, G2)
+
+
+@pytest.mark.parametrize("n", range(2, 5))
+def test_match_graphs_not_isomorphic_cycle(n) -> None:
+    G1 = graph.cycle(n)
+    G2 = graph.cycle(n + 1)
+
     with pytest.raises(
         NonIsomorphicGraphs, match=gc.error_non_isomorphic_graphs
     ), pytest.warns(UserWarning, match=gc.warn_no_atomic_properties):
@@ -144,11 +160,12 @@ def test_build_graph_node_features(property) -> None:
     assert graph.num_edges(G) == 3
 
 
-@pytest.mark.skipif(
-    spyrmsd.get_backend() != "graph_tool",
-    reason="NetworkX supports all Python objects as node properties.",
-)
 def test_build_graph_node_features_unsupported() -> None:
+    if spyrmsd.get_backend() != "graph-tool":
+        pytest.skip(
+            "NetworkX and RustworkX support all Python objects as node properties."
+        )
+
     A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
 
     property = [True, False, True]

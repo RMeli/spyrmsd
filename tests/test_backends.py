@@ -5,6 +5,8 @@ import spyrmsd
 from spyrmsd import graph
 from tests import molecules
 
+# TODO: Run even with two backends installed
+
 
 @pytest.mark.skipif(
     # Run test if all supported backends are installed

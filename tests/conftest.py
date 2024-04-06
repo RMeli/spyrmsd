@@ -8,6 +8,8 @@ Soource:
 import numpy as np
 import pytest
 
+import spyrmsd
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -69,3 +71,8 @@ def pytest_generate_tests(metafunc):
         n = metafunc.config.getoption("--n-tests")
 
         metafunc.parametrize("idx", np.random.randint(0, pytest.n_systems, size=n))
+
+
+@pytest.fixture(autouse=True, scope="session", params=spyrmsd.available_backends)
+def set_backend(request):
+    spyrmsd.set_backend(request.param)
