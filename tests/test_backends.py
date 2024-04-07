@@ -20,6 +20,8 @@ def test_set_backend() -> None:
     import networkx as nx
     import rustworkx as rx
 
+    _current_backend = spyrmsd.get_backend()
+
     A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
 
     spyrmsd.set_backend("networkx")
@@ -43,6 +45,9 @@ def test_set_backend() -> None:
     with pytest.raises(ValueError, match="backend is not recognized or supported"):
         spyrmsd.set_backend("unknown")
 
+    # Reset backend to the original one
+    spyrmsd.set_backend(_current_backend)
+
 
 @pytest.mark.skipif(
     # Run test if all supported backends are installed
@@ -53,6 +58,8 @@ def test_molecule_graph_cache(mol) -> None:
     import graph_tool as gt
     import networkx as nx
     import rustworkx as rx
+
+    _current_backend = spyrmsd.get_backend()
 
     m = mol.mol
 
@@ -90,3 +97,6 @@ def test_molecule_graph_cache(mol) -> None:
     m.strip()
 
     assert len(m.G.items()) == 0
+
+    # Reset backend to the original one
+    spyrmsd.set_backend(_current_backend)
