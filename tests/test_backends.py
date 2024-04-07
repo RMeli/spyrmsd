@@ -7,6 +7,9 @@ from spyrmsd import graph
 # TODO: Run even with two backends installed
 
 
+@pytest.mark.filterwarnings(
+    "ignore::UserWarning"
+)  # Silence "The backend is already" warning
 @pytest.mark.skipif(
     # Run test if all supported backends are installed
     not set(spyrmsd.graph._supported_backends) <= set(spyrmsd.available_backends),

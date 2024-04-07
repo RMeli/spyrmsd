@@ -87,18 +87,18 @@ def set_backend(request):
 @pytest.fixture(scope="session")
 def molpath():
     fdir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(fdir, "data/molecules/")
+    return os.path.join(fdir, f"data{os.sep}molecules")
 
 
 @pytest.fixture
 def benzene(molpath):
-    mol = io.loadmol(f"{molpath}/benzene.sdf")
+    mol = io.loadmol(os.path.join(molpath, "benzene.sdf"))
     return Mol(mol, "benzene", 12, 12, 6)
 
 
 @pytest.fixture
 def pyridine(molpath):
-    mol = io.loadmol(f"{molpath}/pyridine.sdf")
+    mol = io.loadmol(os.path.join(molpath, "pyridine.sdf"))
     return Mol(mol, "pyridine", 11, 11, 5)
 
 
@@ -113,7 +113,7 @@ def pyridine(molpath):
 def mol(request, molpath):
     name, n_atoms, n_bonds, n_h = request.param
 
-    mol = io.loadmol(f"{molpath}/{name}.sdf")
+    mol = io.loadmol(os.path.join(molpath, f"{name}.sdf"))
 
     return Mol(mol, name, n_atoms, n_bonds, n_h)
 
@@ -124,6 +124,32 @@ def rawmol(mol, molpath):
         "RawMol", ["mol", "rawmol", "name", "n_atoms", "n_bonds", "n_h"]
     )
 
-    rawmol = io.load(f"{molpath}/{mol.name}.sdf")
+    rawmol = io.load(os.path.join(molpath, f"{mol.name}.sdf"))
 
     return RawMol(mol.mol, rawmol, mol.name, mol.n_atoms, mol.n_bonds, mol.n_h)
+
+
+@pytest.fixture
+def trps(molpath):
+    trp_list = []
+    for i in range(6):
+        trp_list.append(io.loadmol(os.path.join(molpath, f"trp{i}.pdb")))
+
+    return trp_list
+
+
+@pytest.fixture
+def docking_2viz(molpath):
+    mols = {}  # Dictionary (pose, molecule)
+    for i in [1, 2, 3]:
+        mols[i] = io.loadmol(os.path.join(molpath, f"2viz_{i}.sdf"))
+
+    return mols
+
+
+@pytest.fixture
+def docking_1cbr(molpath):
+    return [
+        io.loadmol(os.path.join(molpath, "1cbr_ligand.mol2")),
+        *io.loadallmols(os.path.join(molpath, "1cbr_docking.sdf")),
+    ]

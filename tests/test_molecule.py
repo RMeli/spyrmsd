@@ -1,42 +1,42 @@
 import copy
 import os
+from collections import defaultdict
+from typing import DefaultDict
 
 import numpy as np
 import pytest
 
 from spyrmsd import constants, graph, io, molecule, utils
-from tests import molecules
-
-# atoms is a list of atomic numbers and atom counts
-# @pytest.mark.parametrize(
-#     "mol, atoms",
-#     [
-#         (molecules.benzene, [(1, 6), (6, 6)]),
-#         (molecules.ethanol, [(1, 6), (6, 2), (8, 1)]),
-#         (molecules.dialanine, [(1, 12), (6, 6), (7, 2), (8, 3)]),
-#     ],
-#     ids=["benzene", "ethanol", "dialanine"],
-# )
-# def test_load(mol: molecule.Molecule, atoms: List[Tuple[int, int]]) -> None:
-#     n = sum([n_atoms for _, n_atoms in atoms])
-
-#     assert len(mol) == n
-#     assert mol.atomicnums.shape == (n,)
-#     assert mol.coordinates.shape == (n, 3)
-
-#     # Count number of atoms of different elements
-#     atomcount: DefaultDict[int, int] = defaultdict(int)
-#     for atomicnum in mol.atomicnums:
-#         atomcount[atomicnum] += 1
-
-#     assert len(atomcount) == len(atoms)
-
-#     for Z, n_atoms in atoms:
-#         assert atomcount[Z] == n_atoms
 
 
-def test_loadall() -> None:
-    path = os.path.join(molecules.molpath, "1cbr_docking.sdf")
+def test_load(mol) -> None:
+    # Atoms for each type
+    atoms = {
+        "benzene": [(1, 6), (6, 6)],
+        "ethanol": [(1, 6), (6, 2), (8, 1)],
+        "pyridine": [(1, 5), (6, 5), (7, 1)],
+        "dialanine": [(1, 12), (6, 6), (7, 2), (8, 3)],
+    }
+
+    n = sum([n_atoms for _, n_atoms in atoms[mol.name]])
+
+    assert mol.n_atoms == n
+    assert mol.mol.atomicnums.shape == (n,)
+    assert mol.mol.coordinates.shape == (n, 3)
+
+    # Count number of atoms of different elements
+    atomcount: DefaultDict[int, int] = defaultdict(int)
+    for atomicnum in mol.mol.atomicnums:
+        atomcount[atomicnum] += 1
+
+    assert len(atomcount) == len(atoms[mol.name])
+
+    for Z, n_atoms in atoms[mol.name]:
+        assert atomcount[Z] == n_atoms
+
+
+def test_loadall(molpath) -> None:
+    path = os.path.join(molpath, "1cbr_docking.sdf")
 
     mols = io.loadall(path)
 
@@ -152,13 +152,13 @@ def test_graph_from_atomic_coordinates_perception(mol) -> None:
     [True, False],
     ids=["adjacency", "no_adjacency"],
 )
-def test_from_obmol(adjacency):
+def test_from_obmol(molpath, adjacency):
     pytest.importorskip("openbabel")
 
     from spyrmsd.optional import obabel as ob
 
     # Load molecules with OpenBabel
-    path = os.path.join(molecules.molpath, "1cbr_docking.sdf")
+    path = os.path.join(molpath, "1cbr_docking.sdf")
     mols = ob.loadall(path)
 
     # Convert OpenBabel molecules to spyrmsd molecules
@@ -182,13 +182,13 @@ def test_from_obmol(adjacency):
     [True, False],
     ids=["adjacency", "no_adjacency"],
 )
-def test_from_rdmol(adjacency):
+def test_from_rdmol(molpath, adjacency):
     pytest.importorskip("rdkit")
 
     from spyrmsd.optional import rdkit as rd
 
     # Load molecules with RDKit
-    path = os.path.join(molecules.molpath, "1cbr_docking.sdf")
+    path = os.path.join(molpath, "1cbr_docking.sdf")
     mols = rd.loadall(path)
 
     # Convert OpenBabel molecules to spyrmsd molecules
