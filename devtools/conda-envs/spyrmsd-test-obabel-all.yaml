@@ -9,7 +9,7 @@ dependencies:
   # Maths
   - numpy
   - scipy
-  - graph-tool
+  - graph-tool # [not win]
   - networkx>=2
   - rustworkx
 
