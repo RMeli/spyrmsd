@@ -108,6 +108,7 @@ def pyridine(molpath):
 
 @pytest.fixture(
     params=[
+        # (name, n_atoms, n_bonds, n_h)
         ("benzene", 12, 12, 6),
         ("ethanol", 9, 8, 6),
         ("pyridine", 11, 11, 5),
@@ -115,6 +116,10 @@ def pyridine(molpath):
     ]
 )
 def mol(request, molpath):
+    """
+    Load molecule as sPyRMSD molecule.
+    """
+    
     name, n_atoms, n_bonds, n_h = request.param
 
     mol = io.loadmol(os.path.join(molpath, f"{name}.sdf"))
@@ -124,6 +129,10 @@ def mol(request, molpath):
 
 @pytest.fixture
 def rawmol(mol, molpath):
+    """
+    Load molecule as a molecule of the current molecular I/O library.
+    """
+
     RawMol = namedtuple(
         "RawMol", ["mol", "rawmol", "name", "n_atoms", "n_bonds", "n_h"]
     )

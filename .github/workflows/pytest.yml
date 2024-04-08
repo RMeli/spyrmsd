@@ -28,7 +28,7 @@ jobs:
         chemlib: [obabel, rdkit]
         graphlib: [nogt, all]
         exclude:
-          # graph-tools does not work on Windows
+          # graph-tool does not work on Windows
           - {os: "windows-latest", graphlib: "all"}
           # Don't run without graph-tool on Ubuntu and macOS
           - {os: "ubuntu-latest", graphlib: "nogt"}

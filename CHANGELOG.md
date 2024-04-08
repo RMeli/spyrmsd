@@ -11,7 +11,7 @@ Contributors:    @RMeli
 ### Added
 
 * Warnings filter for tests of multiple backends [PR #118 | @RMeli]
-* Parametrized session fixture to run tests with all available backends [PR #118 | @RMeli]
+* Parametrized fixture to run tests with all available backends [PR #118 | @RMeli]
 
 ### Improved
 
