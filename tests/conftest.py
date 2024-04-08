@@ -6,6 +6,7 @@ Soource:
 """
 
 import os
+import warnings
 from collections import namedtuple
 
 import numpy as np
@@ -79,9 +80,12 @@ def pytest_generate_tests(metafunc):
         metafunc.parametrize("idx", np.random.randint(0, pytest.n_systems, size=n))
 
 
-@pytest.fixture(autouse=True, scope="session", params=spyrmsd.available_backends)
+@pytest.fixture(autouse=True, params=spyrmsd.available_backends)
 def set_backend(request):
-    spyrmsd.set_backend(request.param)
+    # Capture warning when trying to switch to the same backend
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        spyrmsd.set_backend(request.param)
 
 
 @pytest.fixture(scope="session")
