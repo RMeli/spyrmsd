@@ -119,7 +119,7 @@ def mol(request, molpath):
     """
     Load molecule as sPyRMSD molecule.
     """
-    
+
     name, n_atoms, n_bonds, n_h = request.param
 
     mol = io.loadmol(os.path.join(molpath, f"{name}.sdf"))
