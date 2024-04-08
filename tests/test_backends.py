@@ -40,8 +40,16 @@ def test_set_backend() -> None:
     Grx = graph.graph_from_adjacency_matrix(A)
     assert isinstance(Grx, rx.PyGraph)
 
+
+def test_set_backend_unknown():
     with pytest.raises(ValueError, match="backend is not recognized or supported"):
         spyrmsd.set_backend("unknown")
+
+
+def test_set_backend_same():
+    current_backend = spyrmsd.get_backend()
+    with pytest.warns(UserWarning, match=f"The backend is already {current_backend}."):
+        spyrmsd.set_backend(current_backend)
 
 
 @pytest.mark.filterwarnings(
