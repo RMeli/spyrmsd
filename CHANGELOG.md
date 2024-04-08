@@ -8,9 +8,23 @@
 Date:            XX/YY/ZZZZ
 Contributors:    @RMeli
 
+### Added
+
+* Warnings filter for tests of multiple backends [PR #118 | @RMeli]
+* Parametrized session fixture to run tests with all available backends [PR #118 | @RMeli]
+
 ### Improved
 
 * Test IDs [PR #117 | @RMeli]
+
+### Changed
+
+* Location of backend tests to standalone file [PR #118 | @RMeli]
+
+### Removed
+
+* Many CI configurations in favour of running tests for all available backends [PR #118 | @RMeli]
+* `tests/molecule.py` in favour of fixtures [PR #118 | @RMeli]
 
 ## Version 0.7.0
 
