@@ -4,7 +4,10 @@ from typing import List
 import numpy as np
 import pytest
 
-from spyrmsd.parallel import prmsdwrapper
+try:
+    from spyrmsd.parallel import prmsdwrapper
+except ImportError:
+    pytest.skip("Pebble not available", allow_module_level=True)
 
 
 # Results obtained with MDAnalysis
