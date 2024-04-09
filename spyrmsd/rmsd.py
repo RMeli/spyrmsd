@@ -307,7 +307,7 @@ def rmsdwrapper(
     cache: bool = True,
 ) -> Any:
     """
-    Compute RMSD between two molecule.
+    Compute RMSD between two molecules.
 
     Parameters
     ----------

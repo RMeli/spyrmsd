@@ -5,9 +5,17 @@ import numpy as np
 import pytest
 
 from spyrmsd.parallel import prmsdwrapper
-from tests import molecules
 
 
+# Results obtained with MDAnalysis
+#   trp0 = mda.Universe("trp0.pdb")
+#   c0 = trp0.coord -trp0.select_atoms("protein").center_of_geometry()
+#   for i in [1,2,3,4,5]:
+#       trp = mda.Universe(f"trp{i}.pdb")
+#       rmsd_dummy = mda.analysis.rms.rmsd(trp.coord, trp0.coord)
+#       c = trp.coord - trp.select_atoms("protein").center_of_geometry()
+#       _, rmsd_min = align.rotation_matrix(tc, tc0)
+#       print(rmsd_dummy, rmsd_min)
 @pytest.mark.parametrize(
     "minimize, referenceRMSDs",
     [
@@ -32,10 +40,11 @@ from tests import molecules
             ],
         ),
     ],
+    ids=["no_minimize", "minimize"],
 )
-def test_prmsdwrapper_nosymm_protein(minimize: bool, referenceRMSDs: List[float]):
-    mol0 = copy.deepcopy(molecules.trp[0])
-    mols = [copy.deepcopy(mol) for mol in molecules.trp[1:]]
+def test_prmsdwrapper_nosymm_protein(trps, minimize: bool, referenceRMSDs: List[float]):
+    mol0 = copy.deepcopy(trps[0])
+    mols = [copy.deepcopy(mol) for mol in trps[1:]]
 
     RMSDs = prmsdwrapper(mol0, mols, symmetry=False, minimize=minimize, strip=False)
 
@@ -78,10 +87,13 @@ def test_prmsdwrapper_nosymm_protein(minimize: bool, referenceRMSDs: List[float]
             ],
         ),
     ],
+    ids=["minimize", "no_minimize"],
 )
-def test_prmsdwrapper_isomorphic(minimize: bool, referenceRMSDs: List[float]) -> None:
-    molref = copy.deepcopy(molecules.docking_1cbr[0])
-    mols = [copy.deepcopy(mol) for mol in molecules.docking_1cbr[1:]]
+def test_prmsdwrapper_isomorphic(
+    docking_1cbr, minimize: bool, referenceRMSDs: List[float]
+) -> None:
+    molref = copy.deepcopy(docking_1cbr[0])
+    mols = [copy.deepcopy(mol) for mol in docking_1cbr[1:]]
 
     RMSDs = prmsdwrapper(molref, mols, minimize=minimize, strip=True)
 
@@ -93,20 +105,23 @@ def test_prmsdwrapper_isomorphic(minimize: bool, referenceRMSDs: List[float]) ->
     # Reference results obtained with OpenBabel
     "minimize, referenceRMSD",
     [(True, 0.476858), (False, 0.592256)],
+    ids=["minimize", "no_minimize"],
 )
-def test_prmsdwrapper_single_molecule(minimize: bool, referenceRMSD: float) -> None:
-    molref = copy.deepcopy(molecules.docking_1cbr[0])
-    mols = copy.deepcopy(molecules.docking_1cbr[1])
+def test_prmsdwrapper_single_molecule(
+    docking_1cbr, minimize: bool, referenceRMSD: float
+) -> None:
+    molref = copy.deepcopy(docking_1cbr[0])
+    mols = copy.deepcopy(docking_1cbr[1])
 
     RMSD = prmsdwrapper(molref, mols, minimize=minimize, strip=True)
 
     assert RMSD[0] == pytest.approx(referenceRMSD, abs=1e-5)
 
 
-def test_prmsdwrapper_single_molecule_timeout() -> None:
-    mol1 = copy.deepcopy(molecules.muparfostat)
-    mol2 = copy.deepcopy(molecules.muparfostat)
+def test_prmsdwrapper_single_molecule_timeout(muparfostat) -> None:
+    mol1 = copy.deepcopy(muparfostat)
+    mol2 = copy.deepcopy(muparfostat)
 
-    RMSD = prmsdwrapper(mol1, mol2, strip=True, timeout=3, num_workers=1)
+    RMSD = prmsdwrapper(mol1, mol2, strip=True, timeout=1, num_workers=1)
 
     assert np.isnan(RMSD[0])
