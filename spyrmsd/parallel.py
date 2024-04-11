@@ -21,12 +21,12 @@ from spyrmsd.rmsd import rmsdwrapper
 def prmsdwrapper(
     molrefs: Union[molecule.Molecule, List[molecule.Molecule]],
     mols: Union[molecule.Molecule, List[molecule.Molecule]],
-    num_workers: Union[int, None] = 1,
     symmetry: bool = True,
     center: bool = False,
     minimize: bool = False,
     strip: bool = True,
     cache: bool = True,
+    num_workers: Optional[int] = None,
     timeout: Optional[float] = None,
     chunksize: int = 1,
 ) -> List[float]:
@@ -60,6 +60,8 @@ def prmsdwrapper(
 
     # Ensure the num_workers is less or equal than the max number of CPUs.
     # Silencing MyPy since os.cpu_count() can return None
+    if num_workers is None:
+        num_workers = os.cpu_count()
     num_workers = min(num_workers, os.cpu_count()) if os.cpu_count() is not None else 1  # type: ignore[type-var]
 
     # Cast the molecules to lists if they aren't already
@@ -74,7 +76,7 @@ def prmsdwrapper(
 
     # Ensure molrefs and mols have the same len
     if not len(molrefs) == len(mols):
-        raise ValueError("The input mol lists have different lengths")
+        raise ValueError("The 'mols' and 'molrefs' lists have different lengths.")
 
     outputList = []
 
@@ -103,16 +105,21 @@ def prmsdwrapper(
             except StopIteration:
                 break
             except TimeoutError:
-                # Not sure what the best way is to report the errors when the chunksize is non-zero
-                timeoutCounter += 1  # * chunksize
+                timeoutCounter += 1
+                ## This still needs work, it seems like it processes the chunk until the timeout,
+                ## but if some compounds from this chunk were already processed, we're adding too many np.nan.
+                ## I haven't found a way yet to know how many compounds were processed successfully,
+                ## which is important to determine the correct amount of np.nan to add to keep the total length and order the same.
+                outputList += [np.nan]  # * chunksize
+            except Exception:
+                errorCounter += 1
                 outputList.append(np.nan)
-            except Exception as error:
-                errorCounter += 1  # * chunksize
-                outputList.append(np.nan)
-                print(f"molecule pair {idx}: {error}")
             idx += 1
+    if timeoutCounter + errorCounter > 0:
+        # Calculate total number of np.nan
+        failedCompoundsTotal = np.count_nonzero(np.isnan(outputList))
 
-    print(
-        f"{timeoutCounter} compounds timed out and were skipped, {errorCounter} compounds raised an error"
-    )
+        print(
+            f"{failedCompoundsTotal} compounds failed in total. {timeoutCounter} chunks (up to {timeoutCounter * chunksize} compounds) timed out and were skipped, {errorCounter} compounds raised an error"
+        )
     return outputList

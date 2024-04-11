@@ -125,6 +125,6 @@ def test_prmsdwrapper_single_molecule_timeout(muparfostat) -> None:
     mol1 = copy.deepcopy(muparfostat)
     mol2 = copy.deepcopy(muparfostat)
 
-    RMSD = prmsdwrapper(mol1, mol2, strip=True, timeout=1, num_workers=1)
+    RMSD = prmsdwrapper(mol1, mol2, strip=True, timeout=1e-3, num_workers=1)
 
     assert np.isnan(RMSD[0])
