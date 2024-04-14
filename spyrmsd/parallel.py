@@ -8,6 +8,7 @@ except ImportError:
     raise ImportError(errmsg)
 
 import os
+import warnings
 from concurrent.futures import TimeoutError
 from functools import partial
 from typing import List, Optional, Union
@@ -64,6 +65,11 @@ def prmsdwrapper(
         num_workers = os.cpu_count()
     num_workers = min(num_workers, os.cpu_count()) if os.cpu_count() is not None else 1  # type: ignore[type-var]
 
+    if chunksize > 1 and timeout is not None:
+        warnings.warn("When using the timeout feature, a chunksize of 1 is required")
+        ## We could also raise an error here
+        chunksize = 1
+
     # Cast the molecules to lists if they aren't already
     if not isinstance(molrefs, list):
         molrefs = [molrefs]
@@ -106,11 +112,7 @@ def prmsdwrapper(
                 break
             except TimeoutError:
                 timeoutCounter += 1
-                ## This still needs work, it seems like it processes the chunk until the timeout,
-                ## but if some compounds from this chunk were already processed, we're adding too many np.nan.
-                ## I haven't found a way yet to know how many compounds were processed successfully,
-                ## which is important to determine the correct amount of np.nan to add to keep the total length and order the same.
-                outputList += [np.nan]  # * chunksize
+                outputList += [np.nan]
             except Exception:
                 errorCounter += 1
                 outputList.append(np.nan)
@@ -119,7 +121,7 @@ def prmsdwrapper(
         # Calculate total number of np.nan
         failedCompoundsTotal = np.count_nonzero(np.isnan(outputList))
 
-        print(
-            f"{failedCompoundsTotal} compounds failed in total. {timeoutCounter} chunks (up to {timeoutCounter * chunksize} compounds) timed out and were skipped, {errorCounter} compounds raised an error"
+        warnings.warn(
+            f"{failedCompoundsTotal} compounds failed to process successfully"
         )
     return outputList
