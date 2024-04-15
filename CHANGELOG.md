@@ -19,6 +19,7 @@ Contributors:    @RMeli
 
 ### Changed
 
+* Versions of several GitHub Actions [PR #120 | @RMeli] 
 * Location of backend tests to standalone file [PR #118 | @RMeli]
 
 ### Removed
