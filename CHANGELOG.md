@@ -19,8 +19,8 @@ Contributors:    @RMeli
 
 ### Changed
 
-* `pre-commit` versions [PR #120 | @RMeli] 
-* Versions of several GitHub Actions [PR #120 | @RMeli] 
+* `pre-commit` versions [PR #120 | @RMeli]
+* Versions of several GitHub Actions [PR #120 | @RMeli]
 * Location of backend tests to standalone file [PR #118 | @RMeli]
 
 ### Removed
