@@ -125,6 +125,116 @@ def test_prmsdwrapper_single_molecule_timeout(muparfostat) -> None:
     mol1 = copy.deepcopy(muparfostat)
     mol2 = copy.deepcopy(muparfostat)
 
-    RMSD = prmsdwrapper(mol1, mol2, strip=True, timeout=1e-3, num_workers=1)
+    with pytest.warns():
+        RMSD = prmsdwrapper(mol1, mol2, strip=True, timeout=1e-3, num_workers=1)
 
     assert np.isnan(RMSD[0])
+
+
+@pytest.mark.parametrize(
+    # Reference results obtained with OpenBabel
+    "minimize, referenceRMSDs",
+    [
+        (
+            True,  # Minimize: QCP + Isomorphism
+            [
+                0.476858,
+                1.68089,
+                1.50267,
+                1.90623,
+                1.01324,
+                1.31716,
+                1.11312,
+                1.06044,
+                0.965387,
+                1.37842,
+            ],
+        ),
+        (
+            False,  # No minimize: Isomorphism only
+            [
+                0.592256,
+                2.11545,
+                2.29824,
+                9.45773,
+                1.35005,
+                9.44356,
+                9.59758,
+                9.55076,
+                2.44067,
+                9.6171,
+            ],
+        ),
+    ],
+    ids=["minimize", "no_minimize"],
+)
+def test_prmsdwrapper_molecules_chunksize_no_timeout(
+    docking_1cbr, minimize: bool, referenceRMSDs: List[float]
+) -> None:
+    molref = copy.deepcopy(docking_1cbr[0])
+    mols = [copy.deepcopy(mol) for mol in docking_1cbr[1:]]
+
+    RMSDlist = prmsdwrapper(
+        molref, mols, minimize=minimize, strip=True, chunksize=4, num_workers=1
+    )
+
+    for RMSD, referenceRMSD in zip(RMSDlist, referenceRMSDs):
+        assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
+
+
+@pytest.mark.parametrize(
+    # Reference results obtained with OpenBabel
+    "minimize, referenceRMSDs",
+    [
+        (
+            True,  # Minimize: QCP + Isomorphism
+            [
+                0.476858,
+                1.68089,
+                1.50267,
+                1.90623,
+                1.01324,
+                1.31716,
+                1.11312,
+                1.06044,
+                0.965387,
+                1.37842,
+            ],
+        ),
+        (
+            False,  # No minimize: Isomorphism only
+            [
+                0.592256,
+                2.11545,
+                2.29824,
+                9.45773,
+                1.35005,
+                9.44356,
+                9.59758,
+                9.55076,
+                2.44067,
+                9.6171,
+            ],
+        ),
+    ],
+    ids=["minimize", "no_minimize"],
+)
+def test_prmsdwrapper_molecules_chunksize_timeout(
+    docking_1cbr, minimize: bool, referenceRMSDs: List[float]
+) -> None:
+    molref = copy.deepcopy(docking_1cbr[0])
+    mols = [copy.deepcopy(mol) for mol in docking_1cbr[1:]]
+
+    with pytest.warns():
+        RMSDlist = prmsdwrapper(
+            molref,
+            mols,
+            minimize=minimize,
+            strip=True,
+            timeout=1,
+            chunksize=4,
+            num_workers=1,
+        )
+
+    for RMSD, referenceRMSD in zip(RMSDlist, referenceRMSDs):
+        assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
