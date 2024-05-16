@@ -63,7 +63,7 @@ def prmsdwrapper(
     # Silencing MyPy since os.cpu_count() can return None
     if num_workers is None:
         num_workers = os.cpu_count()
-    num_workers = min(num_workers, os.cpu_count()) if os.cpu_count() is not None else 1  # type: ignore[type-var]
+    num_workers = min(num_workers, os.cpu_count())  # type: ignore[type-var]
 
     if chunksize > 1 and timeout is not None:
         warnings.warn("When using the timeout feature, a chunksize of 1 is required")
@@ -112,7 +112,7 @@ def prmsdwrapper(
                 break
             except TimeoutError:
                 timeoutCounter += 1
-                outputList += [np.nan]
+                outputList += [np.nan] * chunksize
             except Exception:
                 errorCounter += 1
                 outputList.append(np.nan)
@@ -122,6 +122,6 @@ def prmsdwrapper(
         failedCompoundsTotal = np.count_nonzero(np.isnan(outputList))
 
         warnings.warn(
-            f"{failedCompoundsTotal} compounds failed to process successfully"
+            f"{failedCompoundsTotal} compounds failed to process successfully ({errorCounter} compounds raised an error, {timeoutCounter} chunks timed out"
         )
     return outputList
