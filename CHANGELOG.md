@@ -3,9 +3,9 @@
 
 ------------------------------------------------------------------------------
 
-## Version X.Y.Z
+## Version 0.8.0
 
-Date:            XX/YY/ZZZZ
+Date:            28/05/2024
 Contributors:    @RMeli
 
 ### Added

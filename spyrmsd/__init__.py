@@ -10,7 +10,7 @@ from .graph import _available_backends as available_backends  # noqa: F401
 from .graph import _get_backend as get_backend  # noqa: F401
 from .graph import _set_backend as set_backend  # noqa: F401
 
-__version__ = "0.8.0-dev"
+__version__ = "0.8.0"
 
 # This will print latest Zenodo version
 due.cite(
