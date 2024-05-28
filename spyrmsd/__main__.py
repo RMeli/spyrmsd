@@ -66,8 +66,8 @@ if __name__ == "__main__":
             warnings.simplefilter("ignore")
             spyrmsd.set_backend(args.graph_backend)
 
-            if args.verbose:
-                print(f"Graph library: {spyrmsd.get_backend()}")
+    if args.verbose:
+        print(f"Graph library: {spyrmsd.get_backend()}")
 
     # Loop over molecules within fil
     RMSDlist = rmsdwrapper(

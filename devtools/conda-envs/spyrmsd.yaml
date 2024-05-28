@@ -9,4 +9,4 @@ dependencies:
   # Maths
   - numpy
   - scipy
-  - networkx
+  - rustworkx

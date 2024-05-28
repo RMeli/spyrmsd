@@ -5,7 +5,10 @@ import numpy as np
 
 from spyrmsd import constants
 
-_supported_backends = ("graph_tool", "networkx", "rustworkx")
+# The first backend found from this list is set as default
+# TODO: Need to determine if graph_tool or rustworkx is better
+# NetworkX is slow, therefore it is the last resort
+_supported_backends = ("graph_tool", "rustworkx", "networkx")
 
 _available_backends = []
 _current_backend = None

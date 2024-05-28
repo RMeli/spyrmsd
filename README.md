@@ -38,7 +38,7 @@ If you find `spyrmsd` useful, please consider citing the following paper:
 `spyrmsd` is available on [PyPI](https://pypi.org/project/spyrmsd/) and [conda-forge](https://github.com/conda-forge/spyrmsd-feedstock) and can be easily installed from source. See [Dependencies](###Dependencies) for a description of all the dependencies.
 
 > [!NOTE]
-> `spyrmsd` will install [NetworkX](https://networkx.github.io/) (multi-platform). You can install the other backends for higher performance.
+> `spyrmsd` will install [rustworkx] (multi-platform) when using `pip` or `conda`. You can install other backends manually.
 
 > [!WARNING]
 > If `spyrmsd` is used as a standalone tool, it is required to install either [RDKit](https://rdkit.org/) or [Open Babel](http://openbabel.org/). Neither is automatically installed with `pip` nor `conda`.
@@ -76,11 +76,11 @@ The following packages are required to use `spyrmsd` as a module:
 
 One of the following graph libraries is required:
 * [graph-tool]
-* [NetworkX]
 * [rustworkx]
+* [NetworkX]
 
 > [!NOTE]
-> `spyrmsd` uses the following priority when multiple graph libraries are present: [graph-tool], [NetworkX], [rustworkx]. *This order might change. Use `set_backend` to ensure you are always using the same backend, if needed.* However, in order to support cross-platform installation [NetworkX](https://networkx.github.io/) is installed by default, and the other graph library need to be installed manually.
+> `spyrmsd` uses the following priority when multiple graph libraries are present: [graph-tool], [rustworkx], [NetworkX]. *This order might change. Use `set_backend` to ensure you are always using the same backend, if needed.*
 
 #### Standalone Tool
 
@@ -178,10 +178,10 @@ To ensure code quality and consistency the following tools are used during devel
 
 * [black](https://black.readthedocs.io/en/stable/)
 * [Flake 8](http://flake8.pycqa.org/en/latest/) (CI)
-* [isort]()
+* [isort](https://pycqa.github.io/isort/)
 * [mypy](http://mypy-lang.org/) (CI)
 
-Pre-commit `git` hooks can be installed with [pre-commit](https://pre-commit.com/).
+Pre-commit `git` hooks can be installed with [pre-commit].
 
 ## Copyright
 
@@ -198,3 +198,4 @@ Project based on the [Computational Molecular Science Python Cookiecutter](https
 [rustworkx]: https://www.rustworkx.org
 [NetworkX]: https://networkx.github.io/
 [graph-tool]: https://graph-tool.skewed.de/
+[pre-commit]: https://pre-commit.com/
