@@ -19,6 +19,7 @@ Contributors:    @RMeli
 
 ### Changed
 
+* the default backend for `pip` installations to `rustworkx` [PR#122 | @RMeli]
 * `pre-commit` versions [PR #120 | @RMeli]
 * Versions of several GitHub Actions [PR #120 | @RMeli]
 * Location of backend tests to standalone file [PR #118 | @RMeli]
