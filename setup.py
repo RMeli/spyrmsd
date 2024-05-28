@@ -28,7 +28,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     url="https://spyrmsd.readthedocs.io",
-    install_requires=["numpy", "scipy", "networkx>=2"],
+    install_requires=["numpy", "scipy", "rustworkx"],
     extras_require={
         "bib": ["duecredit"],
         "rdkit": ["rdkit"],
