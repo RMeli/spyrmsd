@@ -33,6 +33,7 @@ setup(
         "bib": ["duecredit"],
         "rdkit": ["rdkit"],
         "openbabel": ["openbabel"],
+        "networkx": ["networkx"],
     },
     platforms=["Linux", "Mac OS-X", "Unix", "Windows"],
     python_requires=">=3.9",
