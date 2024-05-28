@@ -5,14 +5,12 @@ from typing import Tuple
 import numpy as np
 import pytest
 
-from spyrmsd import molecule, qcp
-from tests import molecules
+from spyrmsd import qcp
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_M_mtx(mol: molecule.Molecule) -> None:
-    mol1 = copy.deepcopy(mol)
-    mol2 = copy.deepcopy(mol)
+def test_M_mtx(mol) -> None:
+    mol1 = copy.deepcopy(mol.mol)
+    mol2 = copy.deepcopy(mol.mol)
 
     # Build rotated coordinate set
     mol2.rotate(10, np.random.rand(3))
@@ -29,10 +27,9 @@ def test_M_mtx(mol: molecule.Molecule) -> None:
         assert M[i, j] == pytest.approx(S(i, j))
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_K_mtx(mol: molecule.Molecule) -> None:
-    mol1 = copy.deepcopy(mol)
-    mol2 = copy.deepcopy(mol)
+def test_K_mtx(mol) -> None:
+    mol1 = copy.deepcopy(mol.mol)
+    mol2 = copy.deepcopy(mol.mol)
 
     # Build rotated coordinate set
     mol2.rotate(10, np.random.rand(3))
@@ -55,6 +52,7 @@ def test_K_mtx(mol: molecule.Molecule) -> None:
         ((-1, -1, -5, 0, 4), -1),  # f(x) = x^4 - 5 * x^2 + 4; x_0 = -1/2
         ((-3, -3, -5, 0, 4), -2),  # f(x) = x^4 - 5 * x^2 + 4; x_0 = -3
     ],
+    ids=["f1", "f2", "f3", "f4", "f5", "f6"],
 )
 def test_lambda_max(
     input: Tuple[float, float, float, float, float], result: float
@@ -62,10 +60,9 @@ def test_lambda_max(
     assert qcp.lambda_max(*input) == pytest.approx(result)
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_lambda_max_eig(mol: molecule.Molecule) -> None:
-    mol1 = copy.deepcopy(mol)
-    mol2 = copy.deepcopy(mol)
+def test_lambda_max_eig(mol) -> None:
+    mol1 = copy.deepcopy(mol.mol)
+    mol2 = copy.deepcopy(mol.mol)
 
     # Build rotated coordinate set
     mol2.rotate(10, np.random.rand(3))

@@ -11,6 +11,7 @@ molpath = os.path.join(fdir, "data/molecules/")
 @pytest.mark.parametrize(
     "molfile, natoms, nbonds",
     [("benzene.sdf", 12, 12), ("ethanol.sdf", 9, 8), ("dialanine.sdf", 23, 22)],
+    ids=["benzene", "ethanol", "dialanine"],
 )
 def test_load_sdf(molfile, natoms: int, nbonds: int) -> None:
     m = io.load(os.path.join(molpath, molfile))
@@ -22,6 +23,7 @@ def test_load_sdf(molfile, natoms: int, nbonds: int) -> None:
 @pytest.mark.parametrize(
     "molfile, natoms, nbonds",
     [("1cbr_ligand.mol2", 49, 49)],
+    ids=["1cbr_ligand"],
 )
 def test_load_mol2(molfile, natoms: int, nbonds: int) -> None:
     m = io.load(os.path.join(molpath, molfile))
@@ -33,6 +35,7 @@ def test_load_mol2(molfile, natoms: int, nbonds: int) -> None:
 @pytest.mark.parametrize(
     "molfile, natoms, nbonds",
     [("trp0.pdb", 217, 224), ("trp1.pdb", 217, 224), ("trp2.pdb", 217, 224)],
+    ids=["trp0", "trp1", "trp2"],
 )
 def test_load_pdb(molfile, natoms: int, nbonds: int) -> None:
     m = io.load(os.path.join(molpath, molfile))
@@ -44,6 +47,7 @@ def test_load_pdb(molfile, natoms: int, nbonds: int) -> None:
 @pytest.mark.parametrize(
     "molfile, natoms, nbonds",
     [("1cbr_docking.sdf", 22, 22)],
+    ids=["1cbr_docking"],
 )
 def test_loadall_sdf(molfile, natoms: int, nbonds: int) -> None:
     ms = io.loadall(os.path.join(molpath, molfile))
@@ -58,6 +62,7 @@ def test_loadall_sdf(molfile, natoms: int, nbonds: int) -> None:
 @pytest.mark.parametrize(
     "molfile, natoms, nbonds",
     [("1cbr_docking.mol2", 22, 22)],
+    ids=["1cbr_docking"],
 )
 def test_loadall_mol2(molfile, natoms: int, nbonds: int) -> None:
     try:
@@ -75,6 +80,7 @@ def test_loadall_mol2(molfile, natoms: int, nbonds: int) -> None:
 @pytest.mark.parametrize(
     "molfile, natoms, nbonds",
     [("1cbr_docking.pdb", 22, 22)],
+    ids=["1cbr_docking"],
 )
 def test_loadall_pdb(molfile, natoms: int, nbonds: int) -> None:
     try:
@@ -110,6 +116,7 @@ def test_loadall_pdb_single_model() -> None:
 @pytest.mark.parametrize(
     "molfile, natoms",
     [("benzene.sdf", 12), ("ethanol.sdf", 9), ("dialanine.sdf", 23)],
+    ids=["benzene", "ethanol", "dialanine"],
 )
 def test_loadmol_sdf(molfile, natoms: int) -> None:
     m = io.loadmol(os.path.join(molpath, molfile))
@@ -120,6 +127,7 @@ def test_loadmol_sdf(molfile, natoms: int) -> None:
 @pytest.mark.parametrize(
     "molfile, natoms",
     [("benzene.mol2", 12), ("1cbr_ligand.mol2", 49)],
+    ids=["benzene", "1cbr_ligand"],
 )
 def test_loadmol_mol2(molfile, natoms: int) -> None:
     m = io.loadmol(os.path.join(molpath, molfile))
@@ -130,6 +138,7 @@ def test_loadmol_mol2(molfile, natoms: int) -> None:
 @pytest.mark.parametrize(
     "molfile, natoms",
     [("1cbr_docking.sdf", 22)],
+    ids=["1cbr_docking"],
 )
 def test_loadallmols_sdf(molfile, natoms: int) -> None:
     ms = io.loadallmols(os.path.join(molpath, molfile))
@@ -143,6 +152,7 @@ def test_loadallmols_sdf(molfile, natoms: int) -> None:
 @pytest.mark.parametrize(
     "molfile, natoms",
     [("benzene.sdf.gz", 12), ("benzene.mol2.gz", 12), ("1a99_ligand.pdb.gz", 20)],
+    ids=["benzene", "benzene_mol2", "1a99_ligand"],
 )
 def test_loadmol_gz(molfile, natoms: int) -> None:
     m = io.loadmol(os.path.join(molpath, molfile))
@@ -153,6 +163,7 @@ def test_loadmol_gz(molfile, natoms: int) -> None:
 @pytest.mark.parametrize(
     "molfile, natoms",
     [("1cbr_docking.sdf.gz", 22)],
+    ids=["1cbr_docking"],
 )
 def test_loadallmols_sdf_gz(molfile, natoms: int) -> None:
     ms = io.loadallmols(os.path.join(molpath, molfile))

@@ -3,14 +3,12 @@ import copy
 import numpy as np
 import pytest
 
-from spyrmsd import hungarian, molecule
-from tests import molecules
+from spyrmsd import hungarian
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_cost_mtx(mol: molecule.Molecule):
-    mol1 = copy.deepcopy(mol)
-    mol2 = copy.deepcopy(mol)
+def test_cost_mtx(mol):
+    mol1 = copy.deepcopy(mol.mol)
+    mol2 = copy.deepcopy(mol.mol)
 
     M = hungarian.cost_mtx(mol1.coordinates, mol2.coordinates)
 
@@ -27,10 +25,9 @@ def test_cost_mtx(mol: molecule.Molecule):
             assert M[i, j] == pytest.approx(np.dot(ab, ab))
 
 
-@pytest.mark.parametrize("mol", molecules.allmolecules)
-def test_optimal_assignement_same_molecule(mol: molecule.Molecule):
-    mol1 = copy.deepcopy(mol)
-    mol2 = copy.deepcopy(mol)
+def test_optimal_assignement_same_molecule(mol):
+    mol1 = copy.deepcopy(mol.mol)
+    mol2 = copy.deepcopy(mol.mol)
 
     assert len(mol1) == len(mol2)
 

@@ -26,18 +26,19 @@ jobs:
         os: [macOS-latest, ubuntu-latest, windows-latest]
         python-version: ["3.9", "3.10", "3.11", "3.12"]
         chemlib: [obabel, rdkit]
-        graphlib: [nx, gt, rx, all]
+        graphlib: [nogt, all]
         exclude:
-        # graph-tools does not work on Windows
-        - {os: "windows-latest", graphlib: "gt"}
-        - {os: "windows-latest", graphlib: "all"}
-        - {graphlib: "all", chemlib: "obabel"}
+          # graph-tool does not work on Windows
+          - {os: "windows-latest", graphlib: "all"}
+          # Don't run without graph-tool on Ubuntu and macOS
+          - {os: "ubuntu-latest", graphlib: "nogt"}
+          - {os: "macOS-latest", graphlib: "nogt"}
         include:
-        - {os: "macOS-14", graphlib: "gt", chemlib: "obabel", python-version: "3.12"}
-        - {os: "macOS-14", graphlib: "nx", chemlib: "rdkit", python-version: "3.12"}
+          - {os: "macOS-14", graphlib: "all", chemlib: "obabel", python-version: "3.12"}
+          - {os: "macOS-14", graphlib: "all", chemlib: "rdkit", python-version: "3.12"}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Info
       shell: bash
@@ -69,7 +70,7 @@ jobs:
         pytest -v --benchmark --cov=spyrmsd --cov-report=xml --color=yes tests/
 
     - name: CodeCov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./coverage.xml
         flags: unittests

@@ -16,8 +16,9 @@ dependencies:
   - numpy
   - pandas
   - scipy
-  - networkx>=2
   - graph-tool
+  - rustworkx
+  - networkx>=2
   - scikit-learn
 
   # Chemistry
