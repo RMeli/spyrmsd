@@ -39,8 +39,6 @@ def prmsdwrapper(
         Reference molecule
     mols: Union[molecule.Molecule, List[molecule.Molecule]]
         Molecules to compare to reference molecule
-    num_workers: int
-        Amount of processor to use for the parallel calculations
     symmetry: bool, optional
         Symmetry-corrected RMSD (using graph isomorphism)
     center: bool, optional
@@ -49,10 +47,15 @@ def prmsdwrapper(
         Minimised RMSD (using the quaternion polynomial method)
     strip: bool, optional
         Strip hydrogen atoms
+    cache: bool, optional
+        Cache graph isomorphisms
+    num_workers: int
+        Amount of processor to use for the parallel calculations
     timeout: float, optional
         After how many seconds to stop the RMSD calculations
     chunksize: int, optional
-        How many molecules to handle per process
+        How many molecules to handle per child process
+
     Returns
     -------
     List[float]
@@ -66,8 +69,9 @@ def prmsdwrapper(
     num_workers = min(num_workers, os.cpu_count())  # type: ignore[type-var]
 
     if chunksize > 1 and timeout is not None:
-        warnings.warn("When using the timeout feature, a chunksize of 1 is required")
-        ## We could also raise an error here
+        warnings.warn(
+            "When using the timeout feature, a chunksize of 1 is required. The chunksize is set to 1 automatically in order to continue the calculations"
+        )
         chunksize = 1
 
     # Cast the molecules to lists if they aren't already
@@ -84,7 +88,7 @@ def prmsdwrapper(
     if not len(molrefs) == len(mols):
         raise ValueError("The 'mols' and 'molrefs' lists have different lengths.")
 
-    outputList = []
+    results = []
 
     timeoutCounter = 0
     errorCounter = 0
@@ -103,25 +107,28 @@ def prmsdwrapper(
             rsmd_partial, molrefs, mols, timeout=timeout, chunksize=chunksize
         )
         iterator = future.result()
-        idx = 0
+
+        # See https://pebble.readthedocs.io/en/latest/#pools
         while True:
             try:
                 result = next(iterator)
-                outputList.append(result[0])
+                results.append(result[0])
             except StopIteration:
                 break
             except TimeoutError:
                 timeoutCounter += 1
-                outputList += [np.nan] * chunksize
+                results += [np.nan] * chunksize
             except Exception:
                 errorCounter += 1
-                outputList.append(np.nan)
-            idx += 1
+                results.append(np.nan)
+
     if timeoutCounter + errorCounter > 0:
         # Calculate total number of np.nan
-        failedCompoundsTotal = np.count_nonzero(np.isnan(outputList))
+        failedCompoundsTotal = np.count_nonzero(np.isnan(results))
 
         warnings.warn(
-            f"{failedCompoundsTotal} compounds failed to process successfully ({errorCounter} compounds raised an error, {timeoutCounter} chunks timed out"
+            f"{failedCompoundsTotal} compounds failed to process successfully and have been added as 'np.nan'."
+            + f" {errorCounter} compounds raised an error, {timeoutCounter} chunks timed out"
         )
-    return outputList
+
+    return results

@@ -52,7 +52,7 @@ def test_prmsdwrapper_nosymm_protein(trps, minimize: bool, referenceRMSDs: List[
     RMSDs = prmsdwrapper(mol0, mols, symmetry=False, minimize=minimize, strip=False)
 
     for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
-        assert RMSD == pytest.approx(referenceRMSD)
+        np.testing.assert_allclose(RMSD, referenceRMSD, atol=1e-5)
 
 
 @pytest.mark.parametrize(
@@ -101,7 +101,7 @@ def test_prmsdwrapper_isomorphic(
     RMSDs = prmsdwrapper(molref, mols, minimize=minimize, strip=True)
 
     for RMSD, referenceRMSD in zip(RMSDs, referenceRMSDs):
-        assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
+        np.testing.assert_allclose(RMSD, referenceRMSD, atol=1e-5)
 
 
 @pytest.mark.parametrize(
@@ -118,15 +118,17 @@ def test_prmsdwrapper_single_molecule(
 
     RMSD = prmsdwrapper(molref, mols, minimize=minimize, strip=True)
 
-    assert RMSD[0] == pytest.approx(referenceRMSD, abs=1e-5)
+    np.testing.assert_allclose(RMSD[0], referenceRMSD, atol=1e-5)
 
 
 def test_prmsdwrapper_single_molecule_timeout(muparfostat) -> None:
     mol1 = copy.deepcopy(muparfostat)
     mol2 = copy.deepcopy(muparfostat)
 
-    with pytest.warns():
-        RMSD = prmsdwrapper(mol1, mol2, strip=True, timeout=1e-3, num_workers=1)
+    with pytest.warns(
+        UserWarning, match=r"\d+ compounds failed to process successfully"
+    ):
+        RMSD = prmsdwrapper(mol1, mol2, timeout=1e-3, num_workers=1)
 
     assert np.isnan(RMSD[0])
 
@@ -174,12 +176,10 @@ def test_prmsdwrapper_molecules_chunksize_no_timeout(
     molref = copy.deepcopy(docking_1cbr[0])
     mols = [copy.deepcopy(mol) for mol in docking_1cbr[1:]]
 
-    RMSDlist = prmsdwrapper(
-        molref, mols, minimize=minimize, strip=True, chunksize=4, num_workers=1
-    )
+    RMSDlist = prmsdwrapper(molref, mols, minimize=minimize, chunksize=4, num_workers=1)
 
     for RMSD, referenceRMSD in zip(RMSDlist, referenceRMSDs):
-        assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
+        np.testing.assert_allclose(RMSD, referenceRMSD, atol=1e-5)
 
 
 @pytest.mark.parametrize(
@@ -225,16 +225,46 @@ def test_prmsdwrapper_molecules_chunksize_timeout(
     molref = copy.deepcopy(docking_1cbr[0])
     mols = [copy.deepcopy(mol) for mol in docking_1cbr[1:]]
 
-    with pytest.warns():
+    with pytest.warns(UserWarning, match="When using the timeout feature"):
         RMSDlist = prmsdwrapper(
             molref,
             mols,
             minimize=minimize,
-            strip=True,
             timeout=1,
             chunksize=4,
             num_workers=1,
         )
 
     for RMSD, referenceRMSD in zip(RMSDlist, referenceRMSDs):
-        assert RMSD == pytest.approx(referenceRMSD, abs=1e-5)
+        np.testing.assert_allclose(RMSD, referenceRMSD, atol=1e-5)
+
+
+@pytest.mark.skip(
+    reason="Chunksize is currently automatically set to 1 when a timeout is set"
+)
+def test_prmsdwrapper_mixed_timeout(muparfostat, benzene) -> None:
+    muparfostat_mol = copy.deepcopy(muparfostat)
+    benzene_mol = copy.deepcopy(benzene)
+
+    lst_1 = [
+        muparfostat_mol,
+        benzene_mol,
+        benzene_mol,
+        benzene_mol,
+        benzene_mol,
+        muparfostat_mol,
+    ]
+    lst_2 = [
+        muparfostat_mol,
+        benzene_mol,
+        benzene_mol,
+        benzene_mol,
+        benzene_mol,
+        muparfostat_mol,
+    ]
+
+    # Currently we force the num_workers to be 1 when there is a timeout set, but this could make it easier to debug things in the future
+    RMSDlist = prmsdwrapper(lst_1, lst_2, timeout=1e-3, num_workers=1, chunksize=2)
+
+    expectedResult = [np.nan, np.nan, 0, 0, np.nan, np.nan]
+    np.testing.assert_allclose(RMSDlist, expectedResult, atol=1e-5)
