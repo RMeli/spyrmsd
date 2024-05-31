@@ -69,6 +69,8 @@ def prmsdwrapper(
     num_workers = min(num_workers, os.cpu_count())  # type: ignore[type-var]
 
     if chunksize > 1 and timeout is not None:
+        # When this is not enforced, it can lead to unexpected results (output list length not matching the input list for example).
+        # To ensure correctness we force the chunksize to be 1 to avoid potential correctness problems.
         warnings.warn(
             "When using the timeout feature, a chunksize of 1 is required. The chunksize is set to 1 automatically in order to continue the calculations"
         )
@@ -117,6 +119,9 @@ def prmsdwrapper(
                 break
             except TimeoutError:
                 timeoutCounter += 1
+
+                # Upon timeout, the whole chunk fails. To ensure the length and order of the output is maintained we add np.nan for the whole chunk
+                # More information regarding pebble error handling: https://github.com/noxdafox/pebble/issues/132#issuecomment-2105267462
                 results += [np.nan] * chunksize
             except Exception:
                 errorCounter += 1

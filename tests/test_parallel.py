@@ -237,34 +237,3 @@ def test_prmsdwrapper_molecules_chunksize_timeout(
 
     for RMSD, referenceRMSD in zip(RMSDlist, referenceRMSDs):
         np.testing.assert_allclose(RMSD, referenceRMSD, atol=1e-5)
-
-
-@pytest.mark.skip(
-    reason="Chunksize is currently automatically set to 1 when a timeout is set"
-)
-def test_prmsdwrapper_mixed_timeout(muparfostat, benzene) -> None:
-    muparfostat_mol = copy.deepcopy(muparfostat)
-    benzene_mol = copy.deepcopy(benzene)
-
-    lst_1 = [
-        muparfostat_mol,
-        benzene_mol,
-        benzene_mol,
-        benzene_mol,
-        benzene_mol,
-        muparfostat_mol,
-    ]
-    lst_2 = [
-        muparfostat_mol,
-        benzene_mol,
-        benzene_mol,
-        benzene_mol,
-        benzene_mol,
-        muparfostat_mol,
-    ]
-
-    # Currently we force the num_workers to be 1 when there is a timeout set, but this could make it easier to debug things in the future
-    RMSDlist = prmsdwrapper(lst_1, lst_2, timeout=1e-3, num_workers=1, chunksize=2)
-
-    expectedResult = [np.nan, np.nan, 0, 0, np.nan, np.nan]
-    np.testing.assert_allclose(RMSDlist, expectedResult, atol=1e-5)
