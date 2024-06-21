@@ -122,11 +122,11 @@ def test_prmsdwrapper_single_molecule(
 
 
 def test_prmsdwrapper_single_molecule_timeout(muparfostat) -> None:
-    mol1 = copy.deepcopy(muparfostat)
-    mol2 = copy.deepcopy(muparfostat)
+    mol1 = muparfostat.mol
+    mol2 = muparfostat.mol
 
     with pytest.warns(
-        UserWarning, match=r"\d+ compounds failed to process successfully"
+        UserWarning, match="1 chunks timed out"
     ):
         RMSD = prmsdwrapper(mol1, mol2, timeout=1e-3, num_workers=1)
 
