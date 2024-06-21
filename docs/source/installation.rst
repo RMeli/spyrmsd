@@ -44,12 +44,12 @@ Module
 
 The following packages are required to use ``spyrmsd`` as a module:
 
-* graph-tool_ or NetworkX_
+* graph-tool_, rustworkx_, or NetworkX_
 * numpy_
 * scipy_
 
 .. note::
-   ``spyrmsd`` uses graph-tool_ by default but will  fall back  to NetworkX_ if the former is not installed (e.g. on Windows).
+   ``spyrmsd`` uses graph-tool_ by default but will fall back to either rustworkx_ or NetworkX_ if the former is not installed (e.g. on Windows).
 
 Standalone Tool
 ~~~~~~~~~~~~~~~
@@ -67,3 +67,4 @@ Additionally, one of the following packages is required to use ``spyrmsd`` as a 
 .. _NetworkX: https://networkx.github.io/
 .. _numpy: https://numpy.org/
 .. _scipy: https://www.scipy.org/
+.. _rustworkx: https://www.rustworkx.org

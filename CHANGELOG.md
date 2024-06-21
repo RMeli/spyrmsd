@@ -3,9 +3,18 @@
 
 ------------------------------------------------------------------------------
 
-## Version X.Y.Z
+## Version 0.9.0
 
-Date:            XX/YY/ZZZZ
+Date:            XX/YY/ZZZ
+Contributors:    @RMeli
+
+### Added
+
+* `--version` CLI option [PR # | @RMeli]
+
+## Version 0.8.0
+
+Date:            28/05/2024
 Contributors:    @RMeli
 
 ### Added
@@ -19,6 +28,7 @@ Contributors:    @RMeli
 
 ### Changed
 
+* the default backend for `pip` installations to `rustworkx` [PR#122 | @RMeli]
 * `pre-commit` versions [PR #120 | @RMeli]
 * Versions of several GitHub Actions [PR #120 | @RMeli]
 * Location of backend tests to standalone file [PR #118 | @RMeli]
