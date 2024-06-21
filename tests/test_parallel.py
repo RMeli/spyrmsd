@@ -125,9 +125,7 @@ def test_prmsdwrapper_single_molecule_timeout(muparfostat) -> None:
     mol1 = muparfostat.mol
     mol2 = muparfostat.mol
 
-    with pytest.warns(
-        UserWarning, match="1 chunks timed out"
-    ):
+    with pytest.warns(UserWarning, match="1 chunks timed out"):
         RMSD = prmsdwrapper(mol1, mol2, timeout=1e-3, num_workers=1)
 
     assert np.isnan(RMSD[0])
