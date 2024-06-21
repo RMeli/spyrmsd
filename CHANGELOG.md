@@ -3,6 +3,15 @@
 
 ------------------------------------------------------------------------------
 
+## Version 0.9.0
+
+Date:            XX/YY/ZZZ
+Contributors:    @RMeli
+
+### Added
+
+* `--version` CLI option [PR # | @RMeli]
+
 ## Version 0.8.0
 
 Date:            28/05/2024

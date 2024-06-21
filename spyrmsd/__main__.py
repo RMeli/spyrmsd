@@ -13,7 +13,7 @@ if __name__ == "__main__":
     from spyrmsd.rmsd import rmsdwrapper
 
     parser = ap.ArgumentParser(
-        prog="python -m spyrmsd",
+        prog="spyrmsd",
         description="Symmetry-corrected RMSD calculations in Python.",
     )
 
@@ -36,6 +36,9 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-v", "--verbose", action="store_true", help="Enable verbose mode"
+    )
+    parser.add_argument(
+        "-V", "--version", action="version", version=f"%(prog)s {spyrmsd.__version__}"
     )
 
     args = parser.parse_args()
