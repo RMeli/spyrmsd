@@ -14,6 +14,9 @@ dependencies:
   - networkx>=2
   - rustworkx
 
+  # Parallel
+  - pebble
+
   # Chemistry
   - rdkit
 

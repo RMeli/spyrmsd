@@ -6,11 +6,12 @@
 ## Version 0.9.0
 
 Date:            XX/YY/ZZZ
-Contributors:    @RMeli
+Contributors:    @RMeli, @Jnelen
 
 ### Added
 
-* `--version` CLI option [PR # | @RMeli]
+* `--version` CLI option [PR #131 | @RMeli]
+* `prmsdwrapper`, a first implementation of a multicore version of `rmsdwrapper`. It also supports a timeout functionality. [PR #113 | @Jnelen]
 
 ## Version 0.8.0
 

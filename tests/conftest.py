@@ -106,6 +106,12 @@ def pyridine(molpath):
     return Mol(mol, "pyridine", 11, 11, 5)
 
 
+@pytest.fixture
+def muparfostat(molpath):
+    mol = io.loadmol(os.path.join(molpath, "muparfostat.sdf"))
+    return Mol(mol, "muparfostat", 78, 80, 33)
+
+
 @pytest.fixture(
     params=[
         # (name, n_atoms, n_bonds, n_h)
