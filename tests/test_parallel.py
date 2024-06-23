@@ -121,6 +121,28 @@ def test_prmsdwrapper_single_molecule(
     np.testing.assert_allclose(RMSD[0], referenceRMSD, atol=1e-5)
 
 
+def test_prmsdwrapper_mismatch_inputs(muparfostat) -> None:
+    mol = muparfostat.mol
+
+    molLst1 = [mol, mol, mol]
+    molLst2 = [mol, mol]
+
+    with pytest.raises(ValueError, match="lists have different lengths"):
+        prmsdwrapper(molLst1, molLst2)
+
+
+def test_prmsdwrapper_invalid_molecule(benzene) -> None:
+
+    mol = benzene.mol
+
+    molLst1 = [None, mol]
+    molLst2 = [mol, mol]
+
+    RMSD = prmsdwrapper(molLst1, molLst2, strip=True)  # type: ignore[arg-type]
+
+    np.testing.assert_allclose(RMSD, [np.nan, 0], atol=1e-5)
+
+
 def test_prmsdwrapper_single_molecule_timeout(muparfostat) -> None:
     mol1 = muparfostat.mol
     mol2 = muparfostat.mol
