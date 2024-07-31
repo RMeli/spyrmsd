@@ -18,7 +18,7 @@ dependencies:
   - pebble
 
   # Chemistry
-  - rdkit
+  - rdkit<=2024.03.4
 
   # Testing
   - pytest
