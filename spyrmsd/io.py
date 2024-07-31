@@ -20,10 +20,9 @@ except ImportError:
             numbonds,
             to_molecule,
         )
-    except ImportError as e:
+    except ImportError:
         # Use sPyRMSD as standalone library
         __all__ = []
-        raise e
     else:
         # Avoid flake8 complaint "imported but unused"
         __all__ = [

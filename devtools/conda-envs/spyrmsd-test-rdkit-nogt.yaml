@@ -18,6 +18,8 @@ dependencies:
   - pebble
 
   # Chemistry
+  # TODO: Remove pin when issue is fixed upstream
+  # INFO: See https://github.com/RMeli/spyrmsd/pull/134
   - rdkit<=2024.03.4
 
   # Testing
