@@ -218,12 +218,7 @@ def symmrmsd(
     cache: bool = True,
     atol: float = 1e-9,
     return_best_isomorphism: bool = False,
-) -> Union[
-    float,
-    List[float],
-    Tuple[float, Tuple[List[int], List[int]]],
-    Tuple[List[float], List[Tuple[List[int], List[int]]]],
-]:
+) -> Any:
     """
     Compute RMSD using graph isomorphism for multiple coordinates.
 
