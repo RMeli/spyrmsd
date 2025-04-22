@@ -370,6 +370,32 @@ def test_symmrmsd_rotated_benzene(benzene, angle: float) -> None:
     ) == pytest.approx(0, abs=1e-4)
 
 
+@pytest.mark.parametrize(
+    "angle, shift", [(5, 0), (65, 1), (125, 2), (185, 3), (245, 4), (305, 5)]
+)
+def test_symmrmsd_benzene_isomorphism(benzene, angle: float, shift: int) -> None:
+    mol1 = copy.deepcopy(benzene.mol)
+    mol2 = copy.deepcopy(benzene.mol)
+
+    mol2.rotate(angle, np.array([0, 0, 1]), units="deg")
+
+    _, best_isomorphism = rmsd.symmrmsd(
+        mol1.coordinates,
+        mol2.coordinates,
+        mol1.atomicnums,
+        mol2.atomicnums,
+        mol1.adjacency_matrix,
+        mol2.adjacency_matrix,
+        return_best_isomorphism=True,
+    )
+
+    assert best_isomorphism[1] == list(range(12))
+
+    # Indices should be shifted by 2 (Carbon+Hydrogen) for every 60 degrees
+    expected_first_list = [(i + 2 * shift) % 12 for i in range(12)]
+    assert best_isomorphism[0] == expected_first_list
+
+
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
 def test_symmrmsd_rotated_benzene_stripped(benzene, angle: float) -> None:
     mol1 = copy.deepcopy(benzene.mol)
