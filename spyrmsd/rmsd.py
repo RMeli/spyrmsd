@@ -178,6 +178,7 @@ def _rmsd_isomorphic_core(
     # Minimum result
     # Squared displacement (not minimize) or RMSD (minimize)
     min_result = np.inf
+    best_isomorphism = None
 
     # Loop over all graph isomorphisms to find the lowest RMSD
     for idx1, idx2 in isomorphisms:
@@ -193,14 +194,16 @@ def _rmsd_isomorphic_core(
             # Compute minimized RMSD using QCP
             result = qcp.qcp_rmsd(c1i, c2i, atol)
 
-        min_result = result if result < min_result else min_result
+        if result < min_result:
+            min_result = result
+            best_isomorphism = (idx1, idx2)
 
     if not minimize:
         # Compute actual RMSD from square displacement
         min_result = np.sqrt(min_result / n)
 
     # Return the actual RMSD
-    return min_result, isomorphisms
+    return min_result, isomorphisms, best_isomorphism
 
 
 def symmrmsd(
@@ -214,7 +217,7 @@ def symmrmsd(
     minimize: bool = False,
     cache: bool = True,
     atol: float = 1e-9,
-) -> Any:
+) -> Union[float, List[float]]:
     """
     Compute RMSD using graph isomorphism for multiple coordinates.
 
@@ -248,7 +251,6 @@ def symmrmsd(
 
     Notes
     -----
-
     Graph isomorphism is introduced for symmetry corrections. However, it is also
     useful when two molecules do not have the atoms in the same order since atom
     matching according to atomic numbers and the molecular connectivity is
@@ -257,7 +259,7 @@ def symmrmsd(
     """
 
     if isinstance(coords, list):  # Multiple RMSD calculations
-        RMSD: Any = []
+        RMSD: List[float] = []
         isomorphism = None
 
         for c in coords:
@@ -265,7 +267,7 @@ def symmrmsd(
                 # Reset isomorphism
                 isomorphism = None
 
-            srmsd, isomorphism = _rmsd_isomorphic_core(
+            srmsd, isomorphism, _ = _rmsd_isomorphic_core(
                 coordsref,
                 c,
                 apropsref,
@@ -281,7 +283,7 @@ def symmrmsd(
             RMSD.append(srmsd)
 
     else:  # Single RMSD calculation
-        RMSD, isomorphism = _rmsd_isomorphic_core(
+        RMSD, isomorphism, _ = _rmsd_isomorphic_core(
             coordsref,
             coords,
             apropsref,
@@ -295,6 +297,102 @@ def symmrmsd(
         )
 
     return RMSD
+
+
+def symmrmsd_and_isomorphism(
+    coordsref: np.ndarray,
+    coords: Union[np.ndarray, List[np.ndarray]],
+    apropsref: np.ndarray,
+    aprops: np.ndarray,
+    amref: np.ndarray,
+    am: np.ndarray,
+    center: bool = False,
+    minimize: bool = False,
+    cache: bool = True,
+    atol: float = 1e-9,
+) -> Tuple[
+    Union[float, List[float]],
+    Union[Tuple[List[int], List[int]], List[Tuple[List[int], List[int]]]],
+]:
+    """
+    Compute RMSD using graph isomorphism for multiple coordinates. Additionally
+    return the atom mapping `best_isomorphism` for the minimum RMSD.
+
+    Parameters
+    ----------
+    coordsref: np.ndarray
+        Coordinate of reference molecule
+    coords: List[np.ndarray]
+        Coordinates of other molecule
+    apropsref: np.ndarray
+        Atomic properties for reference
+    aprops: np.ndarray
+        Atomic properties for other molecule
+    amref: np.ndarray
+        Adjacency matrix for reference molecule
+    am: np.ndarray
+        Adjacency matrix for other molecule
+    center: bool
+        Centering flag
+    minimize: bool
+        Minimum RMSD
+    cache: bool
+        Cache graph isomorphisms
+    atol: float
+        Absolute tolerance parameter for QCP (see :func:`qcp_rmsd`)
+
+    Returns
+    -------
+    Tuple[Union[float, List[float]], Union[Tuple[List[int], List[int]], List[Tuple[List[int], List[int]]]]]
+        Symmetry-corrected RMSD(s) and best graph isomorphism(s)
+
+    Notes
+    -----
+    Same as `symmrmsd` but also returns the best isomorphism for the minimum RMSD.
+    """
+
+    if isinstance(coords, list):  # Multiple RMSD calculations
+        RMSD: List[float] = []
+        best_isomorphisms: List[Tuple[List[int], List[int]]] = []
+        isomorphism = None
+
+        for c in coords:
+            if not cache:
+                isomorphism = None  # Reset isomorphism
+
+            srmsd, isomorphism, best_iso = _rmsd_isomorphic_core(
+                coordsref,
+                c,
+                apropsref,
+                aprops,
+                amref,
+                am,
+                center=center,
+                minimize=minimize,
+                isomorphisms=isomorphism,
+                atol=atol,
+            )
+
+            RMSD.append(srmsd)
+            best_isomorphisms.append(best_iso)
+
+        return RMSD, best_isomorphisms
+
+    else:  # Single RMSD calculation
+        RMSD, isomorphism, best_isomorphism = _rmsd_isomorphic_core(
+            coordsref,
+            coords,
+            apropsref,
+            aprops,
+            amref,
+            am,
+            center=center,
+            minimize=minimize,
+            isomorphisms=None,
+            atol=atol,
+        )
+
+        return RMSD, best_isomorphism
 
 
 def rmsdwrapper(
