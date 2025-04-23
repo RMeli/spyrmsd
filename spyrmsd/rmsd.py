@@ -267,8 +267,8 @@ def symmrmsd(
     """
 
     if isinstance(coords, list):  # Multiple RMSD calculations
-        RMSD: List[float] = []
-        best_isomorphism: List[Tuple[List[int], List[int]]] = []
+        RMSD: Any = []
+        best_isomorphism: Any = []
         isomorphism = None
 
         for c in coords:
@@ -292,14 +292,8 @@ def symmrmsd(
             RMSD.append(srmsd)
             best_isomorphism.append(best_isomorphism_)
 
-        if return_best_isomorphism:
-            return RMSD, best_isomorphism
-        return RMSD
-
     else:  # Single RMSD calculation
-        single_RMSD: float
-        single_best_isomorphism: Tuple[List[int], List[int]]
-        single_RMSD, isomorphism, single_best_isomorphism = _rmsd_isomorphic_core(
+        RMSD, isomorphism, best_isomorphism = _rmsd_isomorphic_core(
             coordsref,
             coords,
             apropsref,
@@ -313,8 +307,8 @@ def symmrmsd(
         )
 
     if return_best_isomorphism:
-        return single_RMSD, single_best_isomorphism
-    return single_RMSD
+        return RMSD, best_isomorphism
+    return RMSD
 
 
 def rmsdwrapper(
