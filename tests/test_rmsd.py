@@ -371,7 +371,7 @@ def test_symmrmsd_rotated_benzene(benzene, angle: float) -> None:
 
 
 @pytest.mark.parametrize(
-    "angle, shift", [(5, 0), (65, 1), (125, 2), (185, 3), (245, 4), (305, 5)]
+    "angle, shift", [(5, 0), (65, 2), (125, 4), (185, 6), (245, 8), (305, 10)]
 )
 def test_symmrmsd_benzene_isomorphism(benzene, angle: float, shift: int) -> None:
     mol1 = copy.deepcopy(benzene.mol)
