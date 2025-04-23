@@ -389,11 +389,11 @@ def test_symmrmsd_benzene_isomorphism(benzene, angle: float, shift: int) -> None
         return_best_isomorphism=True,
     )
 
-    assert best_isomorphism[1] == list(range(12))
+    assert np.all(best_isomorphism[1] == list(range(12)))
 
     # Indices should be shifted by 2 (Carbon+Hydrogen) for every 60 degrees
     expected_first_list = [(i + 2 * shift) % 12 for i in range(12)]
-    assert best_isomorphism[0] == expected_first_list
+    assert np.all(best_isomorphism[0] == expected_first_list)
 
 
 @pytest.mark.parametrize("angle", [60, 120, 180, 240, 300, 360])
