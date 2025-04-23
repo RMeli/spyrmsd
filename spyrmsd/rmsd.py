@@ -125,7 +125,7 @@ def _rmsd_isomorphic_core(
     minimize: bool = False,
     isomorphisms: Optional[List[Tuple[List[int], List[int]]]] = None,
     atol: float = 1e-9,
-) -> Tuple[float, List[Tuple[List[int], List[int]]], Tuple[List[int], List[int]]]:
+) -> Any:
     """
     Compute RMSD using graph isomorphism.
 
