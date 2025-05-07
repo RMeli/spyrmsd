@@ -3,6 +3,22 @@
 
 ------------------------------------------------------------------------------
 
+## Version 0.Y.Z
+
+Date:            DD/MM/YYYY
+Contributors:
+
+## Version 0.9.0
+
+Date:            07/05/2025
+Contributors:    @RMeli, @Jnelen, @frgoe003
+
+### Added
+
+* `--version` CLI option [PR #131 | @RMeli]
+* `prmsdwrapper`, a first implementation of a multicore version of `rmsdwrapper`. It also supports a timeout functionality. [PR #113 | @Jnelen]
+* `return_best_isomorphism` option for `symmrmsd` calculation [PR #143 | @frgoe003]
+
 ## Version 0.8.0
 
 Date:            28/05/2024

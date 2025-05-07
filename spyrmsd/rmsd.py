@@ -125,7 +125,7 @@ def _rmsd_isomorphic_core(
     minimize: bool = False,
     isomorphisms: Optional[List[Tuple[List[int], List[int]]]] = None,
     atol: float = 1e-9,
-) -> Tuple[float, List[Tuple[List[int], List[int]]]]:
+) -> Any:
     """
     Compute RMSD using graph isomorphism.
 
@@ -147,14 +147,14 @@ def _rmsd_isomorphic_core(
         Centering flag
     minimize: bool
         Compute minized RMSD
-    isomorphisms: Optional[List[Dict[int,int]]]
+    isomorphisms: Optional[List[Tuple[List[int], List[int]]]]]
         Previously computed graph isomorphism
     atol: float
         Absolute tolerance parameter for QCP (see :func:`qcp_rmsd`)
 
     Returns
     -------
-    Tuple[float, List[Dict[int, int]]]
+    Tuple[float, List[Tuple[List[int], List[int]]]], Tuple[List[int], List[int]]]
         RMSD (after graph matching) and graph isomorphisms
     """
 
@@ -178,6 +178,7 @@ def _rmsd_isomorphic_core(
     # Minimum result
     # Squared displacement (not minimize) or RMSD (minimize)
     min_result = np.inf
+    best_isomorphism = None
 
     # Loop over all graph isomorphisms to find the lowest RMSD
     for idx1, idx2 in isomorphisms:
@@ -193,14 +194,16 @@ def _rmsd_isomorphic_core(
             # Compute minimized RMSD using QCP
             result = qcp.qcp_rmsd(c1i, c2i, atol)
 
-        min_result = result if result < min_result else min_result
+        if result < min_result:
+            min_result = result
+            best_isomorphism = (idx1, idx2)
 
     if not minimize:
         # Compute actual RMSD from square displacement
         min_result = np.sqrt(min_result / n)
 
     # Return the actual RMSD
-    return min_result, isomorphisms
+    return min_result, isomorphisms, best_isomorphism
 
 
 def symmrmsd(
@@ -214,6 +217,7 @@ def symmrmsd(
     minimize: bool = False,
     cache: bool = True,
     atol: float = 1e-9,
+    return_best_isomorphism: bool = False,
 ) -> Any:
     """
     Compute RMSD using graph isomorphism for multiple coordinates.
@@ -240,15 +244,21 @@ def symmrmsd(
         Cache graph isomorphisms
     atol: float
         Absolute tolerance parameter for QCP (see :func:`qcp_rmsd`)
+    return_best_isomorphism: bool
+        Return best isomorphism
 
     Returns
     -------
-    float: Union[float, List[float]]
-        Symmetry-corrected RMSD(s) and graph isomorphisms
+    Union[
+        float,
+        List[float],
+        Tuple[float, Tuple[List[int], List[int]]],
+        Tuple[List[float], List[Tuple[List[int], List[int]]]],
+    ]
+        Symmetry-corrected RMSD(s) and optionally graph isomorphism(s)
 
     Notes
     -----
-
     Graph isomorphism is introduced for symmetry corrections. However, it is also
     useful when two molecules do not have the atoms in the same order since atom
     matching according to atomic numbers and the molecular connectivity is
@@ -258,6 +268,7 @@ def symmrmsd(
 
     if isinstance(coords, list):  # Multiple RMSD calculations
         RMSD: Any = []
+        best_isomorphism: Any = []
         isomorphism = None
 
         for c in coords:
@@ -265,7 +276,7 @@ def symmrmsd(
                 # Reset isomorphism
                 isomorphism = None
 
-            srmsd, isomorphism = _rmsd_isomorphic_core(
+            srmsd, isomorphism, best_isomorphism_ = _rmsd_isomorphic_core(
                 coordsref,
                 c,
                 apropsref,
@@ -279,9 +290,10 @@ def symmrmsd(
             )
 
             RMSD.append(srmsd)
+            best_isomorphism.append(best_isomorphism_)
 
     else:  # Single RMSD calculation
-        RMSD, isomorphism = _rmsd_isomorphic_core(
+        RMSD, isomorphism, best_isomorphism = _rmsd_isomorphic_core(
             coordsref,
             coords,
             apropsref,
@@ -294,6 +306,8 @@ def symmrmsd(
             atol=atol,
         )
 
+    if return_best_isomorphism:
+        return RMSD, best_isomorphism
     return RMSD
 
 
@@ -307,7 +321,7 @@ def rmsdwrapper(
     cache: bool = True,
 ) -> Any:
     """
-    Compute RMSD between two molecule.
+    Compute RMSD between two molecules.
 
     Parameters
     ----------
