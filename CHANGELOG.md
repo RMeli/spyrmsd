@@ -3,9 +3,14 @@
 
 ------------------------------------------------------------------------------
 
+## Version 0.Y.Z
+
+Date:            DD/MM/YYYY
+Contributors:
+
 ## Version 0.9.0
 
-Date:            XX/YY/ZZZ
+Date:            07/05/2025
 Contributors:    @RMeli, @Jnelen, @frgoe003
 
 ### Added
