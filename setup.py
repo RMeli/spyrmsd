@@ -23,7 +23,7 @@ setup(
     description=short_description[0],
     long_description=long_description,
     long_description_content_type="text/markdown",
-    version="0.9.0",
+    version="0.10.0-dev",
     license="MIT",
     packages=find_packages(),
     include_package_data=True,
