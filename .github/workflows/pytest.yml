@@ -38,7 +38,7 @@ jobs:
           - {os: "macOS-14", graphlib: "all", chemlib: "rdkit", python-version: "3.12"}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Info
       shell: bash
