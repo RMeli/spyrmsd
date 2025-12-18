@@ -14,7 +14,7 @@ from spyrmsd.graphs._common import (
 
 
 # TODO: Implement all graph-tool supported types
-def _c_type(numpy_dtype):
+def _c_type(numpy_dtype: np.dtype) -> str:
     """
     Get C type compatible with graph-tool from numpy dtype
 
@@ -89,19 +89,17 @@ def graph_from_adjacency_matrix(
         warnings.warn(warn_disconnected_graph)
 
     if aprops is not None:
-        if not isinstance(aprops, np.ndarray):
-            aprops = np.array(aprops)
+        aprops_ = np.asarray(aprops)
+        assert aprops_.shape[0] == num_vertices
 
-        assert aprops.shape[0] == num_vertices
-
-        ptype: str = _c_type(aprops.dtype)  # Get C type
-        vprop = G.new_vertex_property(ptype, vals=aprops)  # Create property map
+        ptype: str = _c_type(aprops_.dtype)  # Get C type
+        vprop = G.new_vertex_property(ptype, vals=aprops_)  # Create property map
         G.vertex_properties["aprops"] = vprop  # Set property map
 
     return G
 
 
-def match_graphs(G1, G2) -> List[Tuple[List[int], List[int]]]:
+def match_graphs(G1, G2) -> List[Tuple[np.ndarray, np.ndarray]]:
     """
     Compute graph isomorphisms.
 
