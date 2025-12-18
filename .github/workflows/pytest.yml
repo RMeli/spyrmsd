@@ -34,8 +34,8 @@ jobs:
           - {os: "ubuntu-latest", graphlib: "nogt"}
           - {os: "macos-latest", graphlib: "nogt"}
           # Open Babel has not been updated for Python 3.13 and 3.14
-          - {graphlib: "obabel", python-version: "3.13"}
-          - {graphlib: "obabel", python-version: "3.14"}
+          - {chemlib: "obabel", python-version: "3.13"}
+          - {chemlib: "obabel", python-version: "3.14"}
 
     steps:
     - uses: actions/checkout@v4
