@@ -6,7 +6,15 @@
 ## Version 0.Y.Z
 
 Date:            DD/MM/YYYY
-Contributors:
+Contributors: @RMeli
+
+### Added
+
+* Python `3.13` and `3.14` in CI [PR #147 | @RMeli]
+
+### Removed
+
+* Python `3.9` and `3.10` from CI [PR #147 | @RMeli]
 
 ## Version 0.9.0
 
