@@ -7,7 +7,7 @@ conda installation, and other development tools not directly related to the codi
 
 The code is tested on Ubuntu, macOS and Windows ([GitHub Actions](https://docs.github.com/en/actions)).
 
-CI primarily uses [uv](https://github.com/astral-sh/uv) for fast and reliable dependency management. For configurations requiring graph-tool (which is only available via conda), micromamba is used in a hybrid approach.
+CI uses [uv](https://github.com/astral-sh/uv) for fast and reliable dependency management.
 
 ## Conda Environments
 

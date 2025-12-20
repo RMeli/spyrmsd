@@ -14,20 +14,14 @@ on:
 
 jobs:
   test:
-    name: Test ${{ matrix.os }}-${{ matrix.python-version }}-${{ matrix.chemlib }}-${{ matrix.graphlib }}
+    name: Test ${{ matrix.os }}-${{ matrix.python-version }}-${{ matrix.chemlib }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
         python-version: ["3.11", "3.12", "3.13", "3.14"]
         chemlib: [obabel, rdkit]
-        graphlib: [nogt, all]
         exclude:
-          # graph-tool does not work on Windows
-          - {os: "windows-latest", graphlib: "all"}
-          # Don't run without graph-tool on Ubuntu and macOS
-          - {os: "ubuntu-latest", graphlib: "nogt"}
-          - {os: "macos-latest", graphlib: "nogt"}
           # Open Babel has not been updated for Python 3.13 and 3.14
           - {chemlib: "obabel", python-version: "3.13"}
           - {chemlib: "obabel", python-version: "3.14"}
@@ -42,82 +36,38 @@ jobs:
         df -h
         ulimit -a
 
-    # For graph-tool configurations, use micromamba (conda-only package)
-    - name: Setup micromamba for graph-tool configurations
-      if: matrix.graphlib == 'all'
-      uses: mamba-org/setup-micromamba@v2
-      with:
-        micromamba-version: 'latest'
-        environment-name: spyrmsd
-        create-args: >-
-          python=${{ matrix.python-version }}
-          graph-tool
-        channels: conda-forge
-        init-shell: bash
-
-    # For non-graph-tool configurations, use uv
     - name: Install uv
-      if: matrix.graphlib == 'nogt'
       uses: astral-sh/setup-uv@v5
       with:
         enable-cache: true
 
-    - name: Set up Python with uv
-      if: matrix.graphlib == 'nogt'
+    - name: Set up Python ${{ matrix.python-version }}
       run: uv python install ${{ matrix.python-version }}
 
     - name: Install base dependencies
-      shell: ${{ matrix.graphlib == 'all' && 'bash -l {0}' || 'bash' }}
       run: |
-        if [ "${{ matrix.graphlib }}" == "all" ]; then
-          # Use pip with micromamba's Python for graph-tool configurations
-          python -m pip install numpy scipy networkx rustworkx pebble pytest pytest-cov pytest-benchmark
-        else
-          # Use uv for non-graph-tool configurations
-          uv pip install --system numpy scipy networkx rustworkx pebble pytest pytest-cov pytest-benchmark
-        fi
+        uv pip install --system numpy scipy networkx rustworkx pebble pytest pytest-cov pytest-benchmark
 
     - name: Install chemistry library (rdkit)
       if: matrix.chemlib == 'rdkit'
-      shell: ${{ matrix.graphlib == 'all' && 'bash -l {0}' || 'bash' }}
       run: |
-        if [ "${{ matrix.graphlib }}" == "all" ]; then
-          python -m pip install rdkit
-        else
-          uv pip install --system rdkit
-        fi
+        uv pip install --system rdkit
 
     - name: Install chemistry library (openbabel)
       if: matrix.chemlib == 'obabel'
-      shell: ${{ matrix.graphlib == 'all' && 'bash -l {0}' || 'bash' }}
       run: |
-        if [ "${{ matrix.graphlib }}" == "all" ]; then
-          python -m pip install openbabel-wheel
-        else
-          uv pip install --system openbabel-wheel
-        fi
+        uv pip install --system openbabel-wheel
 
     - name: Install package
-      shell: ${{ matrix.graphlib == 'all' && 'bash -l {0}' || 'bash' }}
       run: |
-        if [ "${{ matrix.graphlib }}" == "all" ]; then
-          python -m pip install -e . --no-deps
-        else
-          uv pip install --system -e . --no-deps
-        fi
+        uv pip install --system -e . --no-deps
 
     - name: Show environment
-      shell: ${{ matrix.graphlib == 'all' && 'bash -l {0}' || 'bash' }}
       run: |
-        python --version
-        if [ "${{ matrix.graphlib }}" == "all" ]; then
-          python -m pip list
-        else
-          uv pip list
-        fi
+        uv python list
+        uv pip list
 
     - name: Test
-      shell: ${{ matrix.graphlib == 'all' && 'bash -l {0}' || 'bash' }}
       run: |
         pytest -v --benchmark --cov=spyrmsd --cov-report=xml --color=yes tests/
 
@@ -126,4 +76,4 @@ jobs:
       with:
         file: ./coverage.xml
         flags: unittests
-        name: codecov-${{ matrix.os }}-py${{ matrix.python-version }}-${{ matrix.chemlib }}-${{ matrix.graphlib }}
+        name: codecov-${{ matrix.os }}-py${{ matrix.python-version }}-${{ matrix.chemlib }}
