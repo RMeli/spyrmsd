@@ -123,9 +123,10 @@ def test_match_graphs_not_isomorphic_lattice(n) -> None:
     G1 = graph.lattice(n, n)
     G2 = graph.lattice(n + 1, n)
 
-    with pytest.raises(
-        NonIsomorphicGraphs, match=gc.error_non_isomorphic_graphs
-    ), pytest.warns(UserWarning, match=gc.warn_no_atomic_properties):
+    with (
+        pytest.raises(NonIsomorphicGraphs, match=gc.error_non_isomorphic_graphs),
+        pytest.warns(UserWarning, match=gc.warn_no_atomic_properties),
+    ):
         graph.match_graphs(G1, G2)
 
 
@@ -134,9 +135,10 @@ def test_match_graphs_not_isomorphic_cycle(n) -> None:
     G1 = graph.cycle(n)
     G2 = graph.cycle(n + 1)
 
-    with pytest.raises(
-        NonIsomorphicGraphs, match=gc.error_non_isomorphic_graphs
-    ), pytest.warns(UserWarning, match=gc.warn_no_atomic_properties):
+    with (
+        pytest.raises(NonIsomorphicGraphs, match=gc.error_non_isomorphic_graphs),
+        pytest.warns(UserWarning, match=gc.warn_no_atomic_properties),
+    ):
         graph.match_graphs(G1, G2)
 
 
