@@ -1,7 +1,7 @@
-spyrmsd.molecule module
+spyrmsd.parallel module
 =======================
 
-.. automodule:: spyrmsd.molecule
+.. automodule:: spyrmsd.parallel
    :members:
    :show-inheritance:
    :undoc-members:

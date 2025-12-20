@@ -43,12 +43,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if (
-        importlib.util.find_spec("openbabel") is None
-        and importlib.util.find_spec("rdkit") is None
-    ):
+    if importlib.util.find_spec("rdkit") is None:
         raise ImportError(
-            "OpenBabel or RDKit not found. Please install OpenBabel or RDKit to use sPyRMSD as a standalone tool."
+            "RDKit not found. Please install RDKit to use sPyRMSD as a standalone tool."
         )
 
     try:

@@ -14,15 +14,6 @@ def test_format(ext: str) -> None:
 
 
 @pytest.mark.parametrize(
-    "extin, extout", [("smi", "smi"), ("pdb", "pdb"), ("xyz", "XYZ")]
-)
-def test_molformat(extin: str, extout: str) -> None:
-    for fname in ["test", "root/test", "root/test.test"]:
-        fmt = utils.molformat(f"{fname}.{extin}")
-        assert fmt == extout
-
-
-@pytest.mark.parametrize(
     "deg, rad",
     [(0, 0), (90, np.pi / 2), (180, np.pi), (270, 3 * np.pi / 2), (360, 2 * np.pi)],
     ids=["0", "90", "180", "270", "360"],

@@ -1,5 +1,5 @@
 try:
-    from spyrmsd.optional.obabel import (
+    from spyrmsd.optional.rdkit import (
         adjacency_matrix,
         bonds,
         load,
@@ -8,32 +8,9 @@ try:
         numbonds,
         to_molecule,
     )
-
 except ImportError:
-    try:
-        from spyrmsd.optional.rdkit import (
-            adjacency_matrix,
-            bonds,
-            load,
-            loadall,
-            numatoms,
-            numbonds,
-            to_molecule,
-        )
-    except ImportError:
-        # Use sPyRMSD as standalone library
-        __all__ = []
-    else:
-        # Avoid flake8 complaint "imported but unused"
-        __all__ = [
-            "load",
-            "loadall",
-            "adjacency_matrix",
-            "to_molecule",
-            "numatoms",
-            "numbonds",
-            "bonds",
-        ]
+    # Use sPyRMSD as standalone library
+    __all__ = []
 else:
     # Avoid flake8 complaint "imported but unused"
     __all__ = [

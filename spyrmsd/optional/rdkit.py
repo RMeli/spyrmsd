@@ -45,7 +45,7 @@ def load(fname: str):
     """
 
     gzipped = os.path.splitext(fname)[-1] == ".gz"
-    fmt = utils.molformat(fname)
+    fmt = utils.format(fname)
 
     if fmt == "mol2":
         if not gzipped:
@@ -86,7 +86,7 @@ def loadall(fname: str):
     """
 
     gzipped = os.path.splitext(fname)[-1] == ".gz"
-    fmt = utils.molformat(fname)
+    fmt = utils.format(fname)
 
     if fmt == "mol2":
         error = (
@@ -117,7 +117,7 @@ def loadall(fname: str):
 
 def adjacency_matrix(mol) -> np.ndarray:
     """
-    Adjacency matrix from OpenBabel molecule.
+    Adjacency matrix from RDKit molecule.
 
     Parameters
     ----------

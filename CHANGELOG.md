@@ -14,6 +14,7 @@ Contributors: @RMeli
 
 ### Removed
 
+* support for Open Babel [PR #151 | @RMeli]
 * Python `3.9` and `3.10` from CI [PR #147 | @RMeli]
 
 ## Version 0.9.0
