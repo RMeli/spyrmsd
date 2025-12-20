@@ -6,18 +6,17 @@ Tutorial
     import spyrmsd
     from spyrmsd import io, rmsd
 
-OpenBabel or RDKit
-~~~~~~~~~~~~~~~~~~
+RDKit
+~~~~~
 
-``spyrmsd`` natively supports
-`OpenBabel <http://openbabel.org/wiki/Main_Page>`__ and
-`RDKit <http://rdkit.org/>`__ to load molecules in order to work as a
-standalone tool. However, the API for RMSD calculations is extremely
-minimal and only needs the following information:
+``spyrmsd`` natively supports `RDKit <http://rdkit.org/>`__ to load
+molecules in order to work as a standalone tool. However, the API for
+RMSD calculations is extremely minimal and only needs the following
+information:
 
--  Atomic coordinates
--  Atomic numbers
--  Molecular adjacency matrix (for symmetry)
+- Atomic coordinates
+- Atomic numbers
+- Molecular adjacency matrix (for symmetry)
 
 This means that ``spyrmsd`` can be used in combination with any library
 that can provide such information.
@@ -40,12 +39,26 @@ molecules we need to use ``io.loadallmols``:
 
     mols = io.loadallmols("molecules/1a4k_dock.sdf")
 
-Loading RDKit or OpenBabel Molecules
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``spyrmsd`` natively supports Open Babel and RDKit (if installed). The
-``Molecule`` class provides ``from_openbabel()`` and ``from_rdkit()``
-constructors.
+.. parsed-literal::
+
+    [22:16:58] Warning: molecule is tagged as 2D, but at least one Z coordinate is not zero. Marking the mol as 3D.
+    [22:16:58] Warning: molecule is tagged as 2D, but at least one Z coordinate is not zero. Marking the mol as 3D.
+    [22:16:58] Warning: molecule is tagged as 2D, but at least one Z coordinate is not zero. Marking the mol as 3D.
+    [22:16:58] Warning: molecule is tagged as 2D, but at least one Z coordinate is not zero. Marking the mol as 3D.
+    [22:16:58] Warning: molecule is tagged as 2D, but at least one Z coordinate is not zero. Marking the mol as 3D.
+    [22:16:58] Warning: molecule is tagged as 2D, but at least one Z coordinate is not zero. Marking the mol as 3D.
+    [22:16:58] Warning: molecule is tagged as 2D, but at least one Z coordinate is not zero. Marking the mol as 3D.
+    [22:16:58] Warning: molecule is tagged as 2D, but at least one Z coordinate is not zero. Marking the mol as 3D.
+    [22:16:58] Warning: molecule is tagged as 2D, but at least one Z coordinate is not zero. Marking the mol as 3D.
+    [22:16:58] Warning: molecule is tagged as 2D, but at least one Z coordinate is not zero. Marking the mol as 3D.
+
+
+Loading RDKit Molecules
+~~~~~~~~~~~~~~~~~~~~~~~
+
+``spyrmsd`` natively supports RDKit (if installed). The ``Molecule``
+class provides a ``from_rdkit()`` constructor.
 
 .. code:: ipython3
 
@@ -68,16 +81,15 @@ constructors.
 
 .. parsed-literal::
 
-    <frozen importlib._bootstrap>:241: RuntimeWarning: to-Python converter for std::__1::pair<double, double> already registered; second conversion method ignored.
-    [21:58:01] Molecule does not have explicit Hs. Consider calling AddHs()
-    [21:58:01] Molecule does not have explicit Hs. Consider calling AddHs()
+    [22:16:58] Molecule does not have explicit Hs. Consider calling AddHs()
+    [22:16:58] Molecule does not have explicit Hs. Consider calling AddHs()
 
 
 
 
 .. parsed-literal::
 
-    [0.019162902039384797]
+    [np.float64(0.12488387292807933)]
 
 
 
@@ -96,7 +108,7 @@ Hydrogen atoms can be removed with the ``strip()`` function:
         mol.strip()
 
 Symmetry-Corrected RMSD
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 ``spyrmsd`` only needs atomic coordinates, atomic number and the
 molecular adjacency matrix to compute the standard RMSD with
@@ -134,11 +146,11 @@ reference molecule and all other molecules:
 
 .. parsed-literal::
 
-    [2.0246085732404446, 1.4951562971486378, 10.028009301306854, 7.900570020309068, 7.578344354783399, 9.52999506817054, 4.952371789159667, 7.762808670066815, 9.996922964463582, 7.1732072690335755]
+    [np.float64(2.024608573240444), np.float64(1.4951562971486378), np.float64(10.028009301306854), np.float64(7.900570020309069), np.float64(7.578344354783399), np.float64(9.52999506817054), np.float64(4.952371789159666), np.float64(7.762808670066815), np.float64(9.996922964463582), np.float64(7.1732072690335755)]
 
 
 Minimum RMSD
-------------
+~~~~~~~~~~~~
 
 We can also compute the minimum RMSD obtained by superimposing the
 molecular structures:
@@ -160,12 +172,11 @@ molecular structures:
 
 .. parsed-literal::
 
-    [1.2012368667355435, 1.0533413220699535, 1.153253104575529, 1.036542688936588, 0.8407673221224187, 1.1758143217869736, 0.7817315189656655, 1.0933314311267845, 1.0260767175206462, 0.9586369647000478]
-
+    [np.float64(1.2012368667355466), np.float64(1.0533413220699535), np.float64(1.153253104575548), np.float64(1.036542688936588), np.float64(0.8407673221224143), np.float64(1.1758143217869736), np.float64(0.7817315189656703), np.float64(1.0933314311267779), np.float64(1.0260767175206498), np.float64(0.9586369647000478)]
 
 
 Change Backend
-~~~~~~~~~~~~~~
+==============
 
 ``spyrmsd`` supports multiple backends. You see which backends are
 available by looking at the ``available_backends`` attribute:
@@ -179,7 +190,7 @@ available by looking at the ``available_backends`` attribute:
 
 .. parsed-literal::
 
-    ['graph_tool', 'networkx']
+    ['rustworkx', 'networkx']
 
 
 
@@ -197,7 +208,7 @@ You can check the current backend with
 
 .. parsed-literal::
 
-    'graph_tool'
+    'rustworkx'
 
 
 

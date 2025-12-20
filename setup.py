@@ -32,7 +32,6 @@ setup(
     extras_require={
         "bib": ["duecredit"],
         "rdkit": ["rdkit"],
-        "openbabel": ["openbabel"],
         "networkx": ["networkx"],
     },
     platforms=["Linux", "Mac OS-X", "Unix", "Windows"],

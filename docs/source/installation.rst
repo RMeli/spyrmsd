@@ -7,7 +7,7 @@ Installation
 Installation
 ------------
 
-Installing ``spyrmsd`` with ``pip``, ``conda`` or from source will install the package as a library. In order to install the package as a standalone tool, `Open Babel`_ or RDKit_ need to be installed as well (see :ref:`Dependencies`).
+Installing ``spyrmsd`` with ``pip``, ``conda`` or from source will install the package as a library. In order to install the package as a standalone tool, RDKit_ needs to be installed as well (see :ref:`Dependencies`).
 
 pip
 ~~~
@@ -56,13 +56,11 @@ Standalone Tool
 
 Additionally, one of the following packages is required to use ``spyrmsd`` as a standalone tool:
 
-* `Open Babel`_
 * RDKit_
 
 .. _PyPI: https://pypi.org/project/spyrmsd/
 .. _conda-forge: https://github.com/conda-forge/spyrmsd-feedstock
 .. _RDKit: https://rdkit.org/
-.. _Open Babel: http://openbabel.org/
 .. _graph-tool: https://graph-tool.skewed.de/
 .. _NetworkX: https://networkx.github.io/
 .. _numpy: https://numpy.org/

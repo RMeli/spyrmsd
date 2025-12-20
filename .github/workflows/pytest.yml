@@ -20,11 +20,7 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
         python-version: ["3.11", "3.12", "3.13", "3.14"]
-        chemlib: [obabel, rdkit]
-        exclude:
-          # Open Babel has not been updated for Python 3.13 and 3.14
-          - {chemlib: "obabel", python-version: "3.13"}
-          - {chemlib: "obabel", python-version: "3.14"}
+        chemlib: [rdkit]
 
     steps:
     - uses: actions/checkout@v5

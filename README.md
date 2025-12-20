@@ -41,7 +41,7 @@ If you find `spyrmsd` useful, please consider citing the following paper:
 > `spyrmsd` will install [rustworkx] (multi-platform) when using `pip` or `conda`. You can install other backends manually.
 
 > [!WARNING]
-> If `spyrmsd` is used as a standalone tool, it is required to install either [RDKit](https://rdkit.org/) or [Open Babel](http://openbabel.org/). Neither is automatically installed with `pip` nor `conda`.
+> If `spyrmsd` is used as a standalone tool, it is required to install [RDKit](https://rdkit.org/). It is not automatically installed with `pip` nor `conda`.
 
 ### PyPI
 
@@ -84,9 +84,8 @@ One of the following graph libraries is required:
 
 #### Standalone Tool
 
-Additionally, one of the following packages is required to use `spyrmsd` as a standalone tool:
+Additionally, the following package is required to use `spyrmsd` as a standalone tool:
 
-* [Open Babel](http://openbabel.org/)
 * [RDKit](https://rdkit.org/)
 
 ## Usage

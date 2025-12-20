@@ -15,7 +15,6 @@ dependencies:
   - rustworkx
 
   # Chemistry
-  - openbabel
   - rdkit
 
   # Doc

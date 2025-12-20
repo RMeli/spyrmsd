@@ -1,7 +1,7 @@
-spyrmsd.graphs.gt module
+spyrmsd.graphs.rx module
 ========================
 
-.. automodule:: spyrmsd.graphs.gt
+.. automodule:: spyrmsd.graphs.rx
    :members:
    :show-inheritance:
    :undoc-members:
