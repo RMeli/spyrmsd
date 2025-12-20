@@ -64,7 +64,7 @@ jobs:
 
     - name: Show environment
       run: |
-        uv python list
+        python --version
         uv pip list
 
     - name: Test
