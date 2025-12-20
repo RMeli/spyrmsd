@@ -28,7 +28,7 @@ jobs:
         python -m pip install flake8
     - name: Install  package
       run: |
-        python setup.py develop --no-deps
+        python -m pip install -e . --no-deps
     - name: Lint with flake8
       run: |
         flake8 . --count --show-source --statistics

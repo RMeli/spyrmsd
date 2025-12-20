@@ -31,7 +31,7 @@ jobs:
         python -m pip install types-requests
     - name: Install  package
       run: |
-        python setup.py develop --no-deps
+        python -m pip install -e . --no-deps
     - name: Lint with mypy
       run: |
         mypy

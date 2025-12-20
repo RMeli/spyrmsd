@@ -2,15 +2,66 @@
 requires = ["flit_core >=2,<4"]
 build-backend = "flit_core.buildapi"
 
-[tool.flit.metadata]
-module = "spyrmsd"
-dist-name = "spyrmsd"
-description-file = "README.md"
-author = "Rocco Meli"
-author-email = "rocco.meli@cscs.ch"
-home-page = "https://spyrmsd.readthedocs.io"
+[project]
+name = "spyrmsd"
+version = "0.10.0-dev"
+description = "Python tool for symmetry-corrected RMSD"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Rocco Meli", email = "rocco.meli@cscs.ch"}
+]
 classifiers = [
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",]
+    "Programming Language :: Python :: 3",
+]
 requires-python = ">=3.9"
-requires = ["numpy", "scipy", "rustworkx"]
+dependencies = ["numpy", "scipy", "rustworkx"]
+
+[project.urls]
+Homepage = "https://spyrmsd.readthedocs.io"
+
+[project.optional-dependencies]
+bib = ["duecredit"]
+rdkit = ["rdkit"]
+openbabel = ["openbabel"]
+networkx = ["networkx"]
+
+[tool.flit.module]
+name = "spyrmsd"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers"
+markers = [
+    "slow",
+]
+
+[tool.coverage.run]
+source = ["spyrmsd"]
+omit = [
+    "spyrmsd/_version.py",
+    "spyrmsd/due.py",
+    "*/tests/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "# Don't complain if tests don't hit defensive assertion code:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "# Don't complain if non-runnable code isn't run:",
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
+
+[tool.mypy]
+files = ["spyrmsd", "tests"]
+ignore_missing_imports = true
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
