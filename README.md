@@ -84,7 +84,7 @@ One of the following graph libraries is required:
 
 #### Standalone Tool
 
-Additionally, following package is required to use `spyrmsd` as a standalone tool:
+Additionally, the following package is required to use `spyrmsd` as a standalone tool:
 
 * [RDKit](https://rdkit.org/)
 
