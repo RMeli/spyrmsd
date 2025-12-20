@@ -3,8 +3,8 @@ spyrmsd package
 
 .. automodule:: spyrmsd
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Subpackages
 -----------
@@ -28,6 +28,7 @@ Submodules
    spyrmsd.hungarian
    spyrmsd.io
    spyrmsd.molecule
+   spyrmsd.parallel
    spyrmsd.qcp
    spyrmsd.rmsd
    spyrmsd.utils

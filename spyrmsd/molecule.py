@@ -29,8 +29,8 @@ class Molecule:
         -----
 
         A molecule is built from atomic numbers and atomic coordinates only.
-        Optionally, a good representation of the molecular graph (obtained with
-        OpenBabel or RDKit) can be stored as adjacency matrix.
+        Optionally, a good representation of the molecular graph
+        (obtained with RDKit) can be stored as adjacency matrix.
         """
 
         atomicnums = np.asarray(atomicnums, dtype=int)
@@ -53,28 +53,6 @@ class Molecule:
         self.G: Dict[str, object] = {}
 
         self.masses: Optional[List[float]] = None
-
-    @classmethod
-    def from_obabel(cls, obmol, adjacency: bool = True):
-        """
-        Constructor from OpenBabel molecule.
-
-        Parameters
-        ----------
-        obmol:
-            OpenBabel molecule
-        adjacency:
-            Flag to compute the adjacency matrix
-
-        Returns
-        -------
-        spyrmsd.molecule.Molecule
-            :code:`spyrmsd` Molecule
-        """
-        # TODO: Check if OpenBabel is available?
-        from spyrmsd.optional import obabel as ob
-
-        return ob.to_molecule(obmol, adjacency=adjacency)
 
     @classmethod
     def from_rdkit(cls, rdmol, adjacency: bool = True):
