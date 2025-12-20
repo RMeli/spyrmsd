@@ -49,11 +49,6 @@ jobs:
       run: |
         uv pip install --system rdkit
 
-    - name: Install chemistry library (openbabel)
-      if: matrix.chemlib == 'obabel'
-      run: |
-        uv pip install --system openbabel-wheel
-
     - name: Install package
       run: |
         uv pip install --system -e . --no-deps
