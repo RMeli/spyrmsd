@@ -158,21 +158,14 @@ def test_build_graph_node_features(property) -> None:
 
 
 @pytest.mark.skipif(
-    spyrmsd.get_backend() != "graph_tool",
-    reason="NetworkX supports all Python objects as node properties.",
+    # This test is no longer applicable as graph_tool has been removed
+    True,
+    reason="graph_tool has been removed as a supported backend.",
 )
 def test_build_graph_node_features_unsupported() -> None:
-    if spyrmsd.get_backend() != "graph-tool":
-        pytest.skip(
-            "NetworkX and RustworkX support all Python objects as node properties."
-        )
-
-    A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 1]])
-
-    property = [True, False, True]
-
-    with pytest.raises(ValueError, match="Unsupported property type:"):
-        _ = graph.graph_from_adjacency_matrix(A, property)
+    # This test was specific to graph_tool limitations
+    # NetworkX and RustworkX support all Python objects as node properties
+    pass
 
 
 @pytest.mark.skipif(
@@ -181,7 +174,6 @@ def test_build_graph_node_features_unsupported() -> None:
     reason="Not all of the required backends are installed",
 )
 def test_set_backend() -> None:
-    import graph_tool as gt
     import networkx as nx
     import rustworkx as rx
 
@@ -192,12 +184,6 @@ def test_set_backend() -> None:
 
     Gnx = graph.graph_from_adjacency_matrix(A)
     assert isinstance(Gnx, nx.Graph)
-
-    spyrmsd.set_backend("graph-tool")
-    assert spyrmsd.get_backend() == "graph_tool"
-
-    Ggt = graph.graph_from_adjacency_matrix(A)
-    assert isinstance(Ggt, gt.Graph)
 
     spyrmsd.set_backend("rustworkx")
     assert spyrmsd.get_backend() == "rustworkx"

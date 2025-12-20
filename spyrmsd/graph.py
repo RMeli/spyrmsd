@@ -6,15 +6,12 @@ import numpy as np
 from spyrmsd import constants
 
 # The first backend found from this list is set as default
-# TODO: Need to determine if graph_tool or rustworkx is better
-# NetworkX is slow, therefore it is the last resort
-_supported_backends = ("graph_tool", "rustworkx", "networkx")
+_supported_backends = ("rustworkx", "networkx")
 
 _available_backends = []
 _current_backend = None
 
 _backend_to_alias = {
-    "graph_tool": ["graph_tool", "graphtool", "graph-tool", "graph tool", "gt"],
     "networkx": ["networkx", "nx"],
     "rustworkx": ["rustworkx", "rx"],
 }
@@ -107,26 +104,7 @@ def _set_backend(backend):
         warnings.warn(f"The backend is already {backend}.")
         return
 
-    if backend == "graph_tool":
-        from spyrmsd.graphs.gt import cycle as gt_cycle
-        from spyrmsd.graphs.gt import (
-            graph_from_adjacency_matrix as gt_graph_from_adjacency_matrix,
-        )
-        from spyrmsd.graphs.gt import lattice as gt_lattice
-        from spyrmsd.graphs.gt import match_graphs as gt_match_graphs
-        from spyrmsd.graphs.gt import num_edges as gt_num_edges
-        from spyrmsd.graphs.gt import num_vertices as gt_num_vertices
-        from spyrmsd.graphs.gt import vertex_property as gt_vertex_property
-
-        cycle = gt_cycle
-        graph_from_adjacency_matrix = gt_graph_from_adjacency_matrix
-        lattice = gt_lattice
-        match_graphs = gt_match_graphs
-        num_edges = gt_num_edges
-        num_vertices = gt_num_vertices
-        vertex_property = gt_vertex_property
-
-    elif backend == "networkx":
+    if backend == "networkx":
         from spyrmsd.graphs.nx import cycle as nx_cycle
         from spyrmsd.graphs.nx import (
             graph_from_adjacency_matrix as nx_graph_from_adjacency_matrix,

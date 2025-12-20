@@ -16,7 +16,6 @@ dependencies:
   - numpy
   - pandas
   - scipy
-  - graph-tool
   - rustworkx
   - networkx>=2
   - scikit-learn

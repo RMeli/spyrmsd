@@ -16,7 +16,6 @@ from spyrmsd import graph
     reason="Not all of the required backends are installed",
 )
 def test_set_backend() -> None:
-    import graph_tool as gt
     import networkx as nx
     import rustworkx as rx
 
@@ -27,12 +26,6 @@ def test_set_backend() -> None:
 
     Gnx = graph.graph_from_adjacency_matrix(A)
     assert isinstance(Gnx, nx.Graph)
-
-    spyrmsd.set_backend("graph-tool")
-    assert spyrmsd.get_backend() == "graph_tool"
-
-    Ggt = graph.graph_from_adjacency_matrix(A)
-    assert isinstance(Ggt, gt.Graph)
 
     spyrmsd.set_backend("rustworkx")
     assert spyrmsd.get_backend() == "rustworkx"
@@ -61,7 +54,6 @@ def test_set_backend_same():
     reason="Not all of the required backends are installed",
 )
 def test_molecule_graph_cache(mol) -> None:
-    import graph_tool as gt
     import networkx as nx
     import rustworkx as rx
 
@@ -75,26 +67,16 @@ def test_molecule_graph_cache(mol) -> None:
     m.to_graph()
 
     assert "networkx" in m.G.keys()
-    assert "graph_tool" not in m.G.keys()
-    assert "rustworkx" not in m.G.keys()
-
-    spyrmsd.set_backend("graph-tool")
-    m.to_graph()
-
-    assert "networkx" in m.G.keys()
-    assert "graph_tool" in m.G.keys()
     assert "rustworkx" not in m.G.keys()
 
     spyrmsd.set_backend("rustworkx")
     m.to_graph()
 
     assert "networkx" in m.G.keys()
-    assert "graph_tool" in m.G.keys()
     assert "rustworkx" in m.G.keys()
 
     # Make sure all backends (still) have a cache
     assert isinstance(m.G["networkx"], nx.Graph)
-    assert isinstance(m.G["graph_tool"], gt.Graph)
     assert isinstance(m.G["rustworkx"], rx.PyGraph)
 
     # Strip molecule to ensure the cache is reset
