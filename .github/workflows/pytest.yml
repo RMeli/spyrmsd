@@ -40,27 +40,30 @@ jobs:
     - name: Set up Python ${{ matrix.python-version }}
       run: uv python install ${{ matrix.python-version }}
 
+    - name: Create virtual environment
+      run: uv venv
+
     - name: Install base dependencies
       run: |
-        uv pip install --system numpy scipy networkx rustworkx pebble pytest pytest-cov pytest-benchmark
+        uv pip install numpy scipy networkx rustworkx pebble pytest pytest-cov pytest-benchmark
 
     - name: Install chemistry library (rdkit)
       if: matrix.chemlib == 'rdkit'
       run: |
-        uv pip install --system rdkit
+        uv pip install rdkit
 
     - name: Install package
       run: |
-        uv pip install --system -e . --no-deps
+        uv pip install -e . --no-deps
 
     - name: Show environment
       run: |
-        python --version
+        uv run python --version
         uv pip list
 
     - name: Test
       run: |
-        pytest -v --benchmark --cov=spyrmsd --cov-report=xml --color=yes tests/
+        uv run pytest -v --benchmark --cov=spyrmsd --cov-report=xml --color=yes tests/
 
     - name: CodeCov
       uses: codecov/codecov-action@v5
