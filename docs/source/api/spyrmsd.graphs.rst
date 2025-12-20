@@ -3,8 +3,8 @@ spyrmsd.graphs package
 
 .. automodule:: spyrmsd.graphs
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------
@@ -14,3 +14,4 @@ Submodules
 
    spyrmsd.graphs.gt
    spyrmsd.graphs.nx
+   spyrmsd.graphs.rx

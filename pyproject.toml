@@ -28,7 +28,6 @@ Homepage = "https://spyrmsd.readthedocs.io"
 [project.optional-dependencies]
 bib = ["duecredit"]
 rdkit = ["rdkit"]
-openbabel = ["openbabel"]
 networkx = ["networkx"]
 
 [tool.flit.module]

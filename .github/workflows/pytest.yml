@@ -25,7 +25,7 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
         python-version: ["3.11", "3.12", "3.13", "3.14"]
-        chemlib: [obabel, rdkit]
+        chemlib: [rdkit]
         graphlib: [nogt, all]
         exclude:
           # graph-tool does not work on Windows
@@ -33,10 +33,6 @@ jobs:
           # Don't run without graph-tool on Ubuntu and macOS
           - {os: "ubuntu-latest", graphlib: "nogt"}
           - {os: "macos-latest", graphlib: "nogt"}
-          # Open Babel has not been updated for Python 3.13 and 3.14
-          - {chemlib: "obabel", python-version: "3.13"}
-          - {chemlib: "obabel", python-version: "3.14"}
-
     steps:
     - uses: actions/checkout@v5
 
