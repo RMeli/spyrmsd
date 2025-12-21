@@ -29,6 +29,7 @@ Homepage = "https://spyrmsd.readthedocs.io"
 bib = ["duecredit"]
 rdkit = ["rdkit"]
 networkx = ["networkx"]
+parallel = ["pebble"]
 test = [
     "pytest",
     "pytest-cov",
