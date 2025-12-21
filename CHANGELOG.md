@@ -11,11 +11,17 @@ Contributors: @RMeli
 ### Added
 
 * Python `3.13` and `3.14` in CI [PR #147 | @RMeli]
+* Optional dependencies for testing (`test`), development (`dev`), and parallelization (`parallel`) in `pyproject.toml` [PR #152 | @copilot]
+
+### Changed
+
+* Migrated all package configuration from `setup.cfg` and `setup.py` to `pyproject.toml` [PR #152 | @copilot]
 
 ### Removed
 
 * support for Open Babel [PR #151 | @RMeli]
 * Python `3.9` and `3.10` from CI [PR #147 | @RMeli]
+* `setup.cfg` and `setup.py` in favour of `pyproject.toml` [PR #152 | @copilot]
 
 ## Version 0.9.0
 
