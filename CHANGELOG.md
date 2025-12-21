@@ -11,7 +11,7 @@ Contributors: @RMeli
 ### Added
 
 * Python `3.13` and `3.14` in CI [PR #147 | @RMeli]
-* Optional dependencies for testing (`test`), development (`dev`), and parallelization (`parallel`) in `pyproject.toml` [PR #XXX | @RMeli]
+* Optional dependencies for testing (`test`), development (`dev`), and parallelization (`parallel`) in `pyproject.toml` [PR #152 | @copilot]
 
 ### Changed
 
