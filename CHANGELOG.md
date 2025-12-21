@@ -15,16 +15,13 @@ Contributors: @RMeli
 
 ### Changed
 
-* Migrated all package configuration from `setup.cfg` and `setup.py` to `pyproject.toml` [PR #XXX | @RMeli]
-* Workflows to use `pip install -e .` instead of `python setup.py develop` [PR #XXX | @RMeli]
+* Migrated all package configuration from `setup.cfg` and `setup.py` to `pyproject.toml` [PR #152 | @copilot]
 
 ### Removed
 
 * support for Open Babel [PR #151 | @RMeli]
 * Python `3.9` and `3.10` from CI [PR #147 | @RMeli]
-* `setup.cfg` file in favour of `pyproject.toml` [PR #XXX | @RMeli]
-* `setup.py` file in favour of `pyproject.toml` [PR #XXX | @RMeli]
-* `.coveragerc` file in favour of `pyproject.toml` [PR #XXX | @RMeli]
+* `setup.cfg` and `setup.py` in favour of `pyproject.toml` [PR #152 | @copilot]
 
 ## Version 0.9.0
 
