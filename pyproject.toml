@@ -29,6 +29,19 @@ Homepage = "https://spyrmsd.readthedocs.io"
 bib = ["duecredit"]
 rdkit = ["rdkit"]
 networkx = ["networkx"]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-benchmark",
+]
+dev = [
+    "mypy",
+    "types-requests",
+    "flake8",
+    "black",
+    "isort",
+    "pre-commit",
+]
 
 [tool.flit.module]
 name = "spyrmsd"
