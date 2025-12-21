@@ -9,7 +9,7 @@ description = "Python tool for symmetry-corrected RMSD"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Rocco Meli", email = "rocco.meli@cscs.ch"}
+    {name = "Rocco Meli", email = "r.meli@bluemail.ch"}
 ]
 classifiers = [
     "License :: OSI Approved :: MIT License",
