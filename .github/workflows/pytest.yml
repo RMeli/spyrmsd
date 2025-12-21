@@ -45,7 +45,7 @@ jobs:
 
     - name: Install base dependencies
       run: |
-        uv pip install numpy scipy networkx rustworkx pebble pytest pytest-cov pytest-benchmark
+        uv pip install numpy scipy networkx rustworkx pebble pytest pytest-cov pytest-benchmark requests
 
     - name: Install chemistry library (rdkit)
       if: matrix.chemlib == 'rdkit'
