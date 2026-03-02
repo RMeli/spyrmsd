@@ -28,6 +28,9 @@ if __name__ == "__main__":
         "-n", "--nosymm", action="store_false", help="No graph isomorphism"
     )
     parser.add_argument(
+        "-k", "--noCache", action="store_false", help="Compute the isomorphism for each molecule"
+    )
+    parser.add_argument(
         "-g",
         "--graph-backend",
         type=str,
@@ -77,6 +80,7 @@ if __name__ == "__main__":
         center=args.center,
         minimize=args.minimize,
         strip=not args.hydrogens,
+        cache=not args.noCache:
     )
 
     for RMSD in RMSDlist:
