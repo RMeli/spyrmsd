@@ -80,7 +80,7 @@ if __name__ == "__main__":
         center=args.center,
         minimize=args.minimize,
         strip=not args.hydrogens,
-        cache= args.noCache
+        cache=args.noCache,
     )
 
     for RMSD in RMSDlist:
