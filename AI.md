@@ -29,7 +29,7 @@ When AI tools contribute to `spyrmsd` development, proper attribution helps trac
 Assisted-by: AGENT_NAME:MODEL_VERSION [TOOL1] [TOOL2]
 ```
 
-Where `AGENT_NAME` is the name of the AI tool or framework, 
+Where `AGENT_NAME` is the name of the AI tool or framework,
 `MODEL_VERSION` is the specific model version used, and
 `[TOOL1] [TOOL2]` are optional specialized analysis tools used.
 Basic development tools (git, gcc, make, editors) should not be listed.
