@@ -173,6 +173,9 @@ The available backends (which depend on the installed dependencies) are stored i
 
 ## Development
 
+> [!WARNING]
+> Please check out our [AI policy](AI.md) for the use of AI tools in development.
+
 To ensure code quality and consistency the following tools are used during development:
 
 * [black](https://black.readthedocs.io/en/stable/)
