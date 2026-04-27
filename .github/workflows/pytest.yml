@@ -43,7 +43,7 @@ jobs:
         df -h
         ulimit -a
 
-    - uses: conda-incubator/setup-miniconda@v3
+    - uses: conda-incubator/setup-miniconda@v4
       with:
         python-version: ${{ matrix.python-version }}
         environment-file: devtools/conda-envs/spyrmsd-test-${{ matrix.chemlib }}-${{ matrix.graphlib }}.yaml
