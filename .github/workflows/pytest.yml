@@ -34,7 +34,7 @@ jobs:
           - {os: "ubuntu-latest", graphlib: "nogt"}
           - {os: "macos-latest", graphlib: "nogt"}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Info
       shell: bash
