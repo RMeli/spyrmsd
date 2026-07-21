@@ -9,6 +9,7 @@ sPyRMSD documentation
 
    installation
    tutorials/tutorial
+   xyzgraph_adapter
    api
 
 Indices and tables
