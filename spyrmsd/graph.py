@@ -3,8 +3,6 @@ import warnings
 
 import numpy as np
 
-from spyrmsd import constants
-
 # The first backend found from this list is set as default
 # TODO: Need to determine if graph_tool or rustworkx is better
 # NetworkX is slow, therefore it is the last resort
@@ -12,6 +10,8 @@ _supported_backends = ("graph_tool", "rustworkx", "networkx")
 
 _available_backends = []
 _current_backend = None
+_supported_graph_builders = ("simple", "xyzgraph")
+_current_graph_builder = "simple"
 
 _backend_to_alias = {
     "graph_tool": ["graph_tool", "graphtool", "graph-tool", "graph tool", "gt"],
@@ -184,6 +184,39 @@ def _get_backend():
     return _current_backend
 
 
+def _validate_graph_builder(graph_builder):
+    """
+    Validate graph builder.
+    """
+    if graph_builder not in _supported_graph_builders:
+        raise ValueError(
+            f"The {graph_builder} graph builder is not recognized or supported"
+        )
+
+    return graph_builder
+
+
+def set_graph_builder(graph_builder):
+    """
+    Set graph builder used for adjacency construction.
+    """
+    global _current_graph_builder
+
+    graph_builder = _validate_graph_builder(graph_builder)
+
+    if graph_builder == _current_graph_builder:
+        return
+
+    _current_graph_builder = graph_builder
+
+
+def get_graph_builder():
+    """
+    Get the current graph builder.
+    """
+    return _current_graph_builder
+
+
 def adjacency_matrix_from_atomic_coordinates(
     aprops: np.ndarray, coordinates: np.ndarray
 ) -> np.ndarray:
@@ -202,38 +235,22 @@ def adjacency_matrix_from_atomic_coordinates(
     numpy.ndarray
         Adjacency matrix
 
-    Notes
-    -----
-
-    This function is based on an automatic bond perception algorithm: two
-    atoms are considered to be bonded when their distance is smaller than
-    the sum of their covalent radii plus a tolerance value. [3]_
-
-    .. warning::
-        The automatic bond perceptron rule implemented in this functions
-        is very simple and only depends on atomic coordinates. Use
-        with care!
-
-    .. [3] E. C. Meng and R. A. Lewis, *Determination of molecular topology and atomic
-       hybridization states from heavy atom coordinates*, J. Comp. Chem. **12**, 891-898
-       (1991).
     """
 
-    n = len(aprops)
+    if _current_graph_builder == "simple":
+        from spyrmsd.adapters.simple import (
+            adjacency_matrix_from_atomic_coordinates as simple_adjacency_matrix,
+        )
 
-    assert coordinates.shape == (n, 3)
+        return simple_adjacency_matrix(aprops, coordinates)
 
-    A = np.zeros((n, n))
+    if _current_graph_builder == "xyzgraph":
+        from spyrmsd.adapters.xyzgraph import (
+            adjacency_matrix_from_atomic_coordinates as xyzgraph_adjacency_matrix,
+        )
 
-    for i in range(n):
-        r_i = constants.anum_to_covalentradius[aprops[i]]
+        return xyzgraph_adjacency_matrix(aprops, coordinates)
 
-        for j in range(i + 1, n):
-            r_j = constants.anum_to_covalentradius[aprops[j]]
-
-            distance = np.sqrt(np.sum((coordinates[i] - coordinates[j]) ** 2))
-
-            if distance < (r_i + r_j + constants.connectivity_tolerance):
-                A[i, j] = A[j, i] = 1
-
-    return A
+    raise ValueError(
+        f"The {_current_graph_builder} graph builder is not recognized or supported"
+    )
