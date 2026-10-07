@@ -29,6 +29,7 @@ Homepage = "https://spyrmsd.readthedocs.io"
 bib = ["duecredit"]
 rdkit = ["rdkit"]
 networkx = ["networkx"]
+xyzgraph = ["xyzgraph; python_version >= '3.10'"]
 parallel = ["pebble"]
 test = [
     "pytest",

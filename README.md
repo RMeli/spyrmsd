@@ -82,6 +82,9 @@ One of the following graph libraries is required:
 > [!NOTE]
 > `spyrmsd` uses the following priority when multiple graph libraries are present: [graph-tool], [rustworkx], [NetworkX]. *This order might change. Use `set_backend` to ensure you are always using the same backend, if needed.*
 
+The xyzgraph adapter is optional:
+* [xyzgraph](https://github.com/aligfellow/xyzgraph) (install with `pip install spyrmsd[xyzgraph]`)
+
 #### Standalone Tool
 
 Additionally, the following package is required to use `spyrmsd` as a standalone tool:
@@ -146,6 +149,34 @@ def symmrmsd(
 
 > [!NOTE]
 > Atomic properties (`aprops`) can be any Python object when using [NetworkX] and [rustworkx], or integers, floats, or strings when using [graph-tool](https://graph-tool.skewed.de/).
+
+#### xyzgraph Adapter
+
+If you want to use `xyzgraph` as an optional adjacency builder, build the
+adjacency matrix first and then pass it to the existing `symmrmsd` interface.
+
+```python
+from spyrmsd.adapters.xyzgraph import (
+    adjacency_matrix_from_atomic_coordinates as xyzgraph_adjacency_matrix,
+)
+from spyrmsd.rmsd import symmrmsd
+
+amref = xyzgraph_adjacency_matrix(atomicnums_ref, coords_ref)
+am = xyzgraph_adjacency_matrix(atomicnums, coords)
+
+value = symmrmsd(
+    coords_ref,
+    coords,
+    atomicnums_ref,
+    atomicnums,
+    amref,
+    am,
+)
+print(value)
+```
+
+This keeps the public API aligned with the existing `spyrmsd` workflow while
+making `xyzgraph` available as an opt-in topology builder.
 
 #### Select Backend
 

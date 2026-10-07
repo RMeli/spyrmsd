@@ -1,10 +1,22 @@
+import importlib
+
 import numpy as np
 import pytest
 
 import spyrmsd
 from spyrmsd import constants, graph, io
+from spyrmsd.adapters.simple import (
+    adjacency_matrix_from_atomic_coordinates as simple_adjacency_matrix,
+)
 from spyrmsd.exceptions import NonIsomorphicGraphs
 from spyrmsd.graphs import _common as gc
+
+
+@pytest.fixture(autouse=True)
+def reset_graph_builder():
+    graph.set_graph_builder("simple")
+    yield
+    graph.set_graph_builder("simple")
 
 
 def test_adjacency_matrix_from_atomic_coordinates_distance() -> None:
@@ -36,6 +48,57 @@ def test_adjacency_matrix_from_atomic_coordinates(mol) -> None:
 
     assert graph.num_vertices(G) == mol.n_atoms
     assert graph.num_edges(G) == mol.n_bonds
+
+
+def test_adjacency_matrix_simple_adapter_parity(mol) -> None:
+    from_graph = graph.adjacency_matrix_from_atomic_coordinates(
+        mol.mol.atomicnums, mol.mol.coordinates
+    )
+    from_adapter = simple_adjacency_matrix(mol.mol.atomicnums, mol.mol.coordinates)
+
+    assert np.array_equal(from_graph, from_adapter)
+
+
+def test_graph_builder_defaults_to_simple() -> None:
+    assert graph.get_graph_builder() == "simple"
+
+
+def test_set_graph_builder_rejects_unknown_builder() -> None:
+    with pytest.raises(ValueError, match="graph builder"):
+        graph.set_graph_builder("unknown")
+
+
+def test_xyzgraph_builder_dispatch(monkeypatch) -> None:
+    calls = []
+
+    def fake_xyzgraph_adjacency(aprops, coordinates):
+        calls.append((aprops.copy(), coordinates.copy()))
+        return np.array([[0, 1], [1, 0]], dtype=int)
+
+    xyzgraph_adapter = importlib.import_module("spyrmsd.adapters.xyzgraph")
+
+    monkeypatch.setattr(
+        xyzgraph_adapter,
+        "adjacency_matrix_from_atomic_coordinates",
+        fake_xyzgraph_adjacency,
+    )
+    graph.set_graph_builder("xyzgraph")
+
+    adjacency = graph.adjacency_matrix_from_atomic_coordinates(
+        np.array([1, 1]), np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.7]])
+    )
+
+    assert len(calls) == 1
+    assert np.array_equal(adjacency, np.array([[0, 1], [1, 0]], dtype=int))
+
+
+def test_graph_builder_dispatch_rejects_invalid_internal_state(monkeypatch) -> None:
+    monkeypatch.setattr(graph, "_current_graph_builder", "unknown")
+
+    with pytest.raises(ValueError, match="unknown graph builder"):
+        graph.adjacency_matrix_from_atomic_coordinates(
+            np.array([1]), np.array([[0.0, 0.0, 0.0]])
+        )
 
 
 def test_adjacency_matrix_from_mol(rawmol) -> None:

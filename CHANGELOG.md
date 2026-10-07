@@ -6,10 +6,11 @@
 ## Version 0.Y.Z
 
 Date:            DD/MM/YYYY
-Contributors: @RMeli
+Contributors: @RMeli, @JamesOBrien2
 
 ### Added
 
+* Optional `xyzgraph` adjacency matrix builder [PR #157 | @JamesOBrien2]
 * Python `3.13` and `3.14` in CI [PR #147 | @RMeli]
 * Optional dependencies for testing (`test`), development (`dev`), and parallelization (`parallel`) in `pyproject.toml` [PR #152 | @copilot]
 
