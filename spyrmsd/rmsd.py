@@ -210,9 +210,9 @@ def symmrmsd(
     coordsref: np.ndarray,
     coords: Union[np.ndarray, List[np.ndarray]],
     apropsref: np.ndarray,
-    aprops: np.ndarray,
+    apropsList: Union[np.ndarray, List[np.ndarray]],
     amref: np.ndarray,
-    am: np.ndarray,
+    amList: Union[np.ndarray, List[np.ndarray]],
     center: bool = False,
     minimize: bool = False,
     cache: bool = True,
@@ -230,12 +230,12 @@ def symmrmsd(
         Coordinates of other molecule
     apropsref: np.ndarray
         Atomic properties for reference
-    aprops: np.ndarray
-        Atomic properties for other molecule
+    apropsList: List[np.ndarray]
+        Atomic properties for other molecules
     amref: np.ndarray
         Adjacency matrix for reference molecule
-    am: np.ndarray
-        Adjacency matrix for other molecule
+    amList: List[np.ndarray]
+        Adjacency matrix for other molecules
     center: bool
         Centering flag
     minimize: bool
@@ -271,7 +271,7 @@ def symmrmsd(
         best_isomorphism: Any = []
         isomorphism = None
 
-        for c in coords:
+        for i, c in enumerate(coords):
             if not cache:
                 # Reset isomorphism
                 isomorphism = None
@@ -280,9 +280,9 @@ def symmrmsd(
                 coordsref,
                 c,
                 apropsref,
-                aprops,
+                apropsList[i],
                 amref,
-                am,
+                amList[i],
                 center=center,
                 minimize=minimize,
                 isomorphisms=isomorphism,
@@ -297,9 +297,9 @@ def symmrmsd(
             coordsref,
             coords,
             apropsref,
-            aprops,
+            apropsList,
             amref,
-            am,
+            amList,
             center=center,
             minimize=minimize,
             isomorphisms=None,
@@ -358,6 +358,8 @@ def rmsdwrapper(
 
     cref = molecule.coords_from_molecule(molref, center)
     cmols = [molecule.coords_from_molecule(mol, center) for mol in mols]
+    apropsList = [mol.atomicnums for mol in mols]
+    amList = [mol.adjacency_matrix for mol in mols]
 
     RMSDlist = []
 
@@ -366,21 +368,21 @@ def rmsdwrapper(
             cref,
             cmols,
             molref.atomicnums,
-            mols[0].atomicnums,
+            apropsList,
             molref.adjacency_matrix,
-            mols[0].adjacency_matrix,
+            amList,
             center=center,
             minimize=minimize,
             cache=cache,
         )
     else:  # No symmetry
-        for c in cmols:
+        for i, c in enumerate(cmols):
             RMSDlist.append(
                 rmsd(
                     cref,
                     c,
                     molref.atomicnums,
-                    mols[0].atomicnums,
+                    apropsList[i],
                     center=center,
                     minimize=minimize,
                 )
